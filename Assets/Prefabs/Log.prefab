@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4773236747134236269}
   - component: {fileID: 3370347823858824680}
   - component: {fileID: 540907505168305025}
-  - component: {fileID: 9009159994409408846}
+  - component: {fileID: 2693191020399290639}
   m_Layer: 0
   m_Name: Log
   m_TagString: Untagged
@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5770115402988614203}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0.00000016391276}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 12.74, y: 5.42, z: 16.64366}
   m_LocalScale: {x: 2.5, y: 5, z: 2.5}
   m_ConstrainProportionsScale: 0
@@ -141,7 +141,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &9009159994409408846
+--- !u!114 &2693191020399290639
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -150,10 +150,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5770115402988614203}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f78a83a6735ccc4d8de0d63f47180eb, type: 3}
+  m_Script: {fileID: 11500000, guid: b866a28731e74644491ee60557d48567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   itemName: Log
-  itemIcon: {fileID: 21300000, guid: cc8e7f6e3b761a143ba06e8cbb87e02d, type: 3}
   itemType: 0
-  itemPrefab: {fileID: 0}
+  itemIcon: {fileID: 21300000, guid: cc8e7f6e3b761a143ba06e8cbb87e02d, type: 3}
+  itemPrefab: {fileID: 5770115402988614203}

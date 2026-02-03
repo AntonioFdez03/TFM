@@ -64,20 +64,37 @@ public class HotBarController : MonoBehaviour
     }
 
     public void RefreshHandItem()
-    {   
+    {
+        if (slots[selectedIndex] == null) return;
+
         ItemData data = slots[selectedIndex].GetComponentInChildren<ItemData>(true);
-        print(data);
-        //Si no hay objeto en la mano, y tenemos datos de prefab del slot actual
-        if (currentItem == null && data.GetItemPrefab() != null)
-        {  
-            currentItem = Instantiate(data.GetItemPrefab(), handSlot);
+        GameObject newPrefab = data != null ? data.GetItemPrefab() : null;
+
+        // Caso 1: slot vacío → quitar item
+        if (newPrefab == null)
+        {
+            if (currentItem != null)
+            {
+                Destroy(currentItem);
+                currentItem = null;
+            }
+            return;
+        }
+
+        // Caso 2: hay item distinto → reemplazar
+        if (currentItem == null || currentItem.name != newPrefab.name)
+        {
+            if (currentItem != null)
+                Destroy(currentItem);
+
+            currentItem = Instantiate(newPrefab, handSlot);
+            currentItem.SetActive(true);
             currentItem.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             currentItem.transform.localScale = Vector3.one;
             DisablePhysics();
         }
-        else if(data.GetItemPrefab() == null)
-            Destroy(currentItem);
     }
+
 
     private void DisablePhysics()
     {

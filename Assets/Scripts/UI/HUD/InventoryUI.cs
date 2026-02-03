@@ -9,7 +9,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] Transform hotBarPanel;
     [SerializeField] Transform hudHotBar;
     [SerializeField] GameObject slotPrefab;
-    [SerializeField] InventoryController controller;
+    [SerializeField] InventoryController inventoryController;
     [SerializeField] Transform DragginLayer;
     [SerializeField] HotBarController hotBarController;
     
@@ -53,7 +53,7 @@ public class InventoryUI : MonoBehaviour
             if (scriptSlot != null)
             {
                 scriptSlot.slotIndex = i;
-                scriptSlot.SetController(controller);
+                scriptSlot.SetController(inventoryController);
                 scriptSlot.SetDragginLayer(DragginLayer);
                 scriptSlot.SetHotBarController(hotBarController);
             }
@@ -89,7 +89,7 @@ public class InventoryUI : MonoBehaviour
 
     public void UpdateUI()
     {
-        GameObject[] items = controller.GetInventoryItems();
+        GameObject[] items = inventoryController.GetInventoryItems();
 
         foreach (Image slotImage in inventorySlots)
         {
@@ -114,10 +114,7 @@ public class InventoryUI : MonoBehaviour
                         if (originalData != null && uiData != null)
                         {
                             // 3. PASO CRUCIAL: Copiamos la información al icono de la UI
-                            uiData.SetItemName(originalData.GetItemName());
-                            uiData.SetItemIcon(originalData.GetItemIcon());
-                            uiData.SetItemType(originalData.GetItemType());
-                            uiData.SetItemPrefab(originalData.GetItemPrefab()); // El HotBarController leerá esto
+                            uiData.CopyFrom(originalData);
 
                             // 4. Actualizamos el aspecto visual
                             iconGo.GetComponent<Image>().sprite = originalData.GetItemIcon();
@@ -140,7 +137,7 @@ public class InventoryUI : MonoBehaviour
     public void UpdateHUD()
     {
         // Obtenemos los items del controlador
-        GameObject[] items = controller.GetInventoryItems();
+        GameObject[] items = inventoryController.GetInventoryItems();
 
         // Recorremos solo los slots asignados al HUD (los 7 permanentes)
         for (int i = 0; i < hotBarSize; i++)

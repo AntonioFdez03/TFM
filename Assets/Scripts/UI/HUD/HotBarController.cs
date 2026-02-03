@@ -12,7 +12,7 @@ public class HotBarController : MonoBehaviour
     [SerializeField] Transform handSlot;
 
     [Header("Settings")]
-    [SerializeField] [Range(0, 6)] private int selectedIndex = 0;
+    [Range(0, 6)] private int selectedIndex = 0;
     
     private Transform[] slots = new Transform[7];
     private GameObject currentItem;
@@ -68,14 +68,14 @@ public class HotBarController : MonoBehaviour
         ItemData data = slots[selectedIndex].GetComponentInChildren<ItemData>(true);
         print(data);
         //Si no hay objeto en la mano, y tenemos datos de prefab del slot actual
-        if (currentItem == null && data.itemPrefab != null)
+        if (currentItem == null && data.GetItemPrefab() != null)
         {  
-            currentItem = Instantiate(data.itemPrefab, handSlot);
+            currentItem = Instantiate(data.GetItemPrefab(), handSlot);
             currentItem.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             currentItem.transform.localScale = Vector3.one;
             DisablePhysics();
         }
-        else if(data.itemPrefab == null)
+        else if(data.GetItemPrefab() == null)
             Destroy(currentItem);
     }
 
@@ -96,16 +96,16 @@ public class HotBarController : MonoBehaviour
         {
             print("Drop");
             Rigidbody rb = currentItem.GetComponent<Rigidbody>();
-            ItemData itemData = slots[selectedIndex].GetComponentInChildren<ItemData>(true);
+            ItemData data = slots[selectedIndex].GetComponentInChildren<ItemData>(true);
             print(rb);
-            print(itemData);
-            if(rb != null && itemData != null)
+            print(data);
+            if(rb != null && data != null)
             {
                 print("Se ha dropeado");
                 inventoryController.DropItem(selectedIndex);
-                itemData.itemName = null;
-                itemData.itemIcon = null;
-                itemData.itemPrefab = null;
+                data.SetItemName(null);
+                data.SetItemIcon(null);
+                data.SetItemPrefab(null);
                 Destroy(currentItem);
             }
             

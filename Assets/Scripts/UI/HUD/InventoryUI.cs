@@ -114,13 +114,13 @@ public class InventoryUI : MonoBehaviour
                         if (originalData != null && uiData != null)
                         {
                             // 3. PASO CRUCIAL: Copiamos la información al icono de la UI
-                            uiData.itemName = originalData.itemName;
-                            uiData.itemIcon = originalData.itemIcon;
-                            uiData.itemType = originalData.itemType;
-                            uiData.itemPrefab = originalData.itemPrefab; // El HotBarController leerá esto
+                            uiData.SetItemName(originalData.GetItemName());
+                            uiData.SetItemIcon(originalData.GetItemIcon());
+                            uiData.SetItemType(originalData.GetItemType());
+                            uiData.SetItemPrefab(originalData.GetItemPrefab()); // El HotBarController leerá esto
 
                             // 4. Actualizamos el aspecto visual
-                            iconGo.GetComponent<Image>().sprite = originalData.itemIcon;
+                            iconGo.GetComponent<Image>().sprite = originalData.GetItemIcon();
                             iconGo.SetActive(true);
                         }
                     }
@@ -128,7 +128,7 @@ public class InventoryUI : MonoBehaviour
                     {
                         // Si el slot está vacío, reseteamos el ItemData de la UI para no dejar basura
                         ItemData uiData = iconGo.GetComponent<ItemData>();
-                        if (uiData != null) uiData.itemPrefab = null;
+                        if (uiData != null) uiData.SetItemPrefab(null);
 
                         iconGo.SetActive(false);
                     }
@@ -155,7 +155,7 @@ public class InventoryUI : MonoBehaviour
                 if (i < items.Length && items[i] != null)
                 {
                     ItemData data = items[i].GetComponent<ItemData>();
-                    iconGo.GetComponent<Image>().sprite = data.itemIcon;
+                    iconGo.GetComponent<Image>().sprite = data.GetItemIcon();
                     iconGo.SetActive(true);
                 }
                 else

@@ -1,0 +1,169 @@
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections.Generic;
+
+public class InventoryUI : MonoBehaviour
+{
+    [Header("References")]
+    [SerializeField] Transform gridPanel; 
+    [SerializeField] Transform hotBarPanel;
+    [SerializeField] Transform hudHotBar;
+    [SerializeField] GameObject slotPrefab;
+    [SerializeField] InventoryController controller;
+    [SerializeField] Transform DragginLayer;
+    [SerializeField] HotBarController hotBarController;
+    
+    [Header("Settings")]
+    [SerializeField] int gridSize = 21;
+    [SerializeField] int hotBarSize = 7;
+
+    private List<Image> inventorySlots = new List<Image>();
+
+    void Awake()
+    {   
+        CleanPanel(hudHotBar);
+        CleanPanel(hotBarPanel);
+        CleanPanel(gridPanel);
+
+        GenerateSlots(hudHotBar, hotBarSize, 0);
+        GenerateSlots(hotBarPanel, hotBarSize, 0); // Barra de equipamiento del inventario
+        GenerateSlots(gridPanel, gridSize, hotBarSize); // Grid del inventario
+    }
+
+    void CleanPanel(Transform panel)
+    {   
+        foreach(Transform child in panel)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+    
+    void GenerateSlots(Transform parent, int count, int startIndex)
+    {
+        for (int i = startIndex; i < count + startIndex; i++)
+        {
+            GameObject newSlot = Instantiate(slotPrefab, parent);
+            newSlot.name = "Slot_" + i;
+
+            RectTransform rect = newSlot.GetComponent<RectTransform>();
+            if (rect != null) rect.sizeDelta = new Vector2(110f,110f);
+        
+
+            InventorySlot scriptSlot = newSlot.GetComponent<InventorySlot>();
+            if (scriptSlot != null)
+            {
+                scriptSlot.slotIndex = i;
+                scriptSlot.SetController(controller);
+                scriptSlot.SetDragginLayer(DragginLayer);
+                scriptSlot.SetHotBarController(hotBarController);
+            }
+
+            inventorySlots.Add(newSlot.GetComponent<Image>());
+            CreateChildIcon(newSlot.transform, i);
+        }
+    }
+
+    //Función para crear un hijo imagen para cada slot, que contiene el icono del objeto
+    void CreateChildIcon(Transform slot, int index)
+    {
+        GameObject itemIcon = new GameObject("Icon_" + index);
+        itemIcon.transform.SetParent(slot);
+        
+        // Añadimos la imagen para el sprite
+        Image iconImage = itemIcon.AddComponent<Image>();
+        iconImage.raycastTarget = false; 
+
+        // --- EL CAMBIO CLAVE: Añadir ItemData ---
+        itemIcon.AddComponent<ItemData>(); 
+        // ----------------------------------------
+        
+        RectTransform rect = itemIcon.GetComponent<RectTransform>();
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+        rect.localScale = Vector3.one;
+
+        itemIcon.SetActive(false);
+    }
+
+    public void UpdateUI()
+    {
+        GameObject[] items = controller.GetInventoryItems();
+
+        foreach (Image slotImage in inventorySlots)
+        {
+            InventorySlot scriptSlot = slotImage.GetComponent<InventorySlot>();
+            
+            if (scriptSlot != null)
+            {
+                int realIndex = scriptSlot.slotIndex; 
+                
+                if (slotImage.transform.childCount > 0)
+                {
+                    GameObject iconGo = slotImage.transform.GetChild(0).gameObject;
+
+                    if (realIndex < items.Length && items[realIndex] != null)
+                    {
+                        // 1. Obtenemos los datos del objeto real que está en el controlador
+                        ItemData originalData = items[realIndex].GetComponent<ItemData>();
+                        
+                        // 2. Obtenemos el script ItemData que añadimos al Icono en CreateChildIcon
+                        ItemData uiData = iconGo.GetComponent<ItemData>();
+
+                        if (originalData != null && uiData != null)
+                        {
+                            // 3. PASO CRUCIAL: Copiamos la información al icono de la UI
+                            uiData.itemName = originalData.itemName;
+                            uiData.itemIcon = originalData.itemIcon;
+                            uiData.itemType = originalData.itemType;
+                            uiData.itemPrefab = originalData.itemPrefab; // El HotBarController leerá esto
+
+                            // 4. Actualizamos el aspecto visual
+                            iconGo.GetComponent<Image>().sprite = originalData.itemIcon;
+                            iconGo.SetActive(true);
+                        }
+                    }
+                    else
+                    {
+                        // Si el slot está vacío, reseteamos el ItemData de la UI para no dejar basura
+                        ItemData uiData = iconGo.GetComponent<ItemData>();
+                        if (uiData != null) uiData.itemPrefab = null;
+
+                        iconGo.SetActive(false);
+                    }
+                }
+            }
+        }
+    }
+
+    public void UpdateHUD()
+    {
+        // Obtenemos los items del controlador
+        GameObject[] items = controller.GetInventoryItems();
+
+        // Recorremos solo los slots asignados al HUD (los 7 permanentes)
+        for (int i = 0; i < hotBarSize; i++)
+        {
+            print("i: "+i+", "+inventorySlots.Count);
+            // Buscamos el objeto del icono (el hijo 0 que crea tu función CreateChildIcon)
+            if (inventorySlots[i].transform.childCount > 0)
+            {
+                GameObject iconGo = inventorySlots[i].transform.GetChild(0).gameObject;
+
+                // Si hay un item en esa posición del inventario, mostramos su icono
+                if (i < items.Length && items[i] != null)
+                {
+                    ItemData data = items[i].GetComponent<ItemData>();
+                    iconGo.GetComponent<Image>().sprite = data.itemIcon;
+                    iconGo.SetActive(true);
+                }
+                else
+                {
+                    // Si no hay item, ocultamos el icono
+                    iconGo.SetActive(false);
+                }
+            }
+        }
+    }
+}

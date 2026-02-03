@@ -3,6 +3,10 @@ using UnityEngine;
 
 public abstract class ItemBehaviour : MonoBehaviour
 {   
-    protected abstract void Awake();
-    protected abstract void Use();
+    protected ItemData itemData;
+    protected virtual void Awake()
+    {
+        itemData = GetComponent<ItemData>();
+    }
+    public abstract void Use();
 }

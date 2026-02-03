@@ -128,4 +128,11 @@ public class HotBarController : MonoBehaviour
             
         }
     }
+
+    //Método para saber el behaviour del item actual
+    public ItemBehaviour GetCurrentItemBehaviour()
+    {
+        if (currentItem == null) return null;
+        return currentItem.GetComponent<ItemBehaviour>();
+    }
 }

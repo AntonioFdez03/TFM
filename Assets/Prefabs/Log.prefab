@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3370347823858824680}
   - component: {fileID: 540907505168305025}
   - component: {fileID: 2693191020399290639}
+  - component: {fileID: 7588824835195342520}
   m_Layer: 0
   m_Name: Log
   m_TagString: Untagged
@@ -157,3 +158,15 @@ MonoBehaviour:
   itemType: 0
   itemIcon: {fileID: 21300000, guid: cc8e7f6e3b761a143ba06e8cbb87e02d, type: 3}
   itemPrefab: {fileID: 5770115402988614203}
+--- !u!114 &7588824835195342520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5770115402988614203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 863d4a83ace4815448a1110b8a22244c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ResourceBehaviour

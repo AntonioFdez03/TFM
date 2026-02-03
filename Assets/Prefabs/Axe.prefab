@@ -122,6 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 490424818100209789}
   - component: {fileID: 2698127036676663220}
+  - component: {fileID: 1829185389994907932}
   - component: {fileID: 2985089118778204499}
   - component: {fileID: 5198166656976593570}
   m_Layer: 0
@@ -162,7 +163,20 @@ MonoBehaviour:
   itemName: Axe
   itemType: 3
   itemIcon: {fileID: 21300000, guid: ce31a7b7a4bb52a4da163a2de18f7ee5, type: 3}
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 2540111425335757373}
+--- !u!114 &1829185389994907932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2540111425335757373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9932d298fded97e4dacf35547d3695f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ToolBehaviour
+  useCooldown: 0.5
 --- !u!54 &2985089118778204499
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -5,25 +5,28 @@ public class PlayerInteraction : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] InventoryController inventory;
-
-    [Header("Settings")]
+    [SerializeField] HotBarController hotBarController;
     [SerializeField] private Transform playerCamera;
-    [SerializeField] private float interactDistance = 100f;
-    [SerializeField] private LayerMask interactLayer = 0;
+    private float interactDistance = 10f;
+    private float attackDistance = 5f;
+    private LayerMask interactLayer = 1;
 
     private InputAction interact;
+    private InputAction attack;
 
     void Start()
     {
         interact = InputSystem.actions.FindAction("Interact");
+        attack = InputSystem.actions.FindAction("Attack");
     }
 
     void Update()
     {   
-        CheckForInteractable();
+        Interact();
+        Attack();
     }
 
-    private void CheckForInteractable()
+    private void Interact()
     {
         // Rayo desde el centro de la cámara
         Ray ray = new Ray(playerCamera.position, playerCamera.forward);
@@ -37,6 +40,21 @@ public class PlayerInteraction : MonoBehaviour
             if (interact.WasPressedThisFrame())
             {   
                 inventory.AddItem(hit.collider.gameObject);
+            }
+        }
+    }
+
+    private void Attack()
+    {
+        print("Entra");
+        if (attack.WasPressedThisFrame())
+        {   
+            print("Ataca");
+            ItemBehaviour item = hotBarController.GetCurrentItemBehaviour();
+            print(item);
+            if (item != null)
+            {
+                item.Use();
             }
         }
     }

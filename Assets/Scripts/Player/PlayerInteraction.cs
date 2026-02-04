@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class PlayerInteraction : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] ArmController arm;
     [SerializeField] InventoryController inventory;
     [SerializeField] HotBarController hotBarController;
     [SerializeField] private Transform playerCamera;
@@ -49,7 +50,7 @@ public class PlayerInteraction : MonoBehaviour
         print("Entra");
         if (attack.WasPressedThisFrame())
         {   
-            print("Ataca");
+            if (arm != null) arm.PlayAttackAnimation();
             ItemBehaviour item = hotBarController.GetCurrentItemBehaviour();
             print(item);
             if (item != null)

@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -50,12 +51,17 @@ public class PlayerInteraction : MonoBehaviour
         print("Entra");
         if (attack.WasPressedThisFrame())
         {   
-            if (arm != null) arm.PlayAttackAnimation();
             ItemBehaviour item = hotBarController.GetCurrentItemBehaviour();
-            print(item);
-            if (item != null)
+            if(item is ToolBehaviour || item == null)
             {
-                item.Use();
+                if (arm != null) 
+                    arm.PlayAttackAnimation();
+                if (item != null)
+                    item.Use();
+            }
+            else
+            {
+                print("Otro tipo de item");
             }
         }
     }

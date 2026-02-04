@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ArmController : MonoBehaviour
 {
-    [Header("Configuración del Ataque")]
+    [Header("Attack settings")]
     [SerializeField] private float swingAngle = -40f;   // Ángulo de inclinación (X)
     [SerializeField] private float swingDuration = 0.1f; // Velocidad de bajada
     [SerializeField] private float returnDuration = 0.15f; // Velocidad de subida

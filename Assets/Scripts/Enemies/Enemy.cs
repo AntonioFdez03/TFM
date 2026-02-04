@@ -16,7 +16,6 @@ public abstract class Enemy : MonoBehaviour
     protected bool playerInRange = false;
     protected PlayerAttributes playerAttributes;
 
-
     protected abstract void Awake();
     protected virtual void Update()
     {

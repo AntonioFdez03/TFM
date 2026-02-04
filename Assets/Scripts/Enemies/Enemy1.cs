@@ -10,6 +10,8 @@ public class Enemy1 : Enemy
         currentHealth = maxHealth;
         speed = 7;
         detectionRange = 100;
+        damage = 10;
+        attackCooldown = 1.2f;
     }
 
     override protected void Move()

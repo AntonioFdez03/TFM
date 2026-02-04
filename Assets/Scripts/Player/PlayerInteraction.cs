@@ -57,7 +57,10 @@ public class PlayerInteraction : MonoBehaviour
                 if (arm != null) 
                     arm.PlayAttackAnimation();
                 if (item != null)
+                {
                     item.Use();
+                    print("Usando item: " + item.GetItemData().GetItemName());
+                }
             }
             else
             {

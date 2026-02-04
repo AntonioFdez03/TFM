@@ -9,9 +9,9 @@ public abstract class Enemy : MonoBehaviour
     protected float maxHealth;
     protected float currentHealth;
     protected float speed;
-    protected int damage = 10;
+    protected int damage;
     protected float detectionRange;
-    protected float attackCooldown = 1.2f;
+    protected float attackCooldown;
     protected bool canAttack = true;
     protected bool playerInRange = false;
     protected PlayerAttributes playerAttributes;
@@ -52,5 +52,19 @@ public abstract class Enemy : MonoBehaviour
         canAttack = false;
         yield return new WaitForSeconds(attackCooldown);
         canAttack = true;
+    }
+
+    public void TakeDamage(float playerDamage)
+    {
+        currentHealth -= playerDamage;
+        print("Enemigo recibe daño: " + playerDamage + ", salud restante: " + currentHealth);
+        if (currentHealth <= 0)
+            Die();
+    }
+
+    protected void Die()
+    {
+        print("Enemigo muerto");
+        Destroy(gameObject);
     }
 }

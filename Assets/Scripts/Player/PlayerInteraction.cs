@@ -39,7 +39,7 @@ public class PlayerInteraction : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, interactDistance, interactLayer))
         {
-            if (interact.WasPressedThisFrame())
+            if (interact.WasPressedThisFrame() && hit.collider.CompareTag("Item"))
             {   
                 inventory.AddItem(hit.collider.gameObject);
             }

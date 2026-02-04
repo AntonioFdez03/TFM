@@ -90,5 +90,4 @@ public class PlayerController : MonoBehaviour
         // Devolvemos el vector vertical
         return new Vector3(0, yVelocity, 0);
     }
-
 }

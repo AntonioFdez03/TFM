@@ -1,10 +1,14 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerAttributes : MonoBehaviour
 {   
     [Header("Health attributes")]
+    [SerializeField] UnityEngine.UI.Image healthBar;
     [SerializeField] float currentHealth;
     [SerializeField] float maxHealth = 100f;
+    private float invulnerabilityDuration = 1f;
+    private bool isInvulnerable = false;
 
     [Header("Stamina attributes")]
     [SerializeField] UnityEngine.UI.Image staminaBar;
@@ -46,8 +50,26 @@ public class PlayerAttributes : MonoBehaviour
 
         currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
     }
+
+    public void TakeDamage(float damage)
+    {
+        if (isInvulnerable)
+            return;
+        currentHealth -= damage;
+        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
+        StartCoroutine(InvulnerabilityCooldown());
+    }
+    IEnumerator InvulnerabilityCooldown()
+    {
+        isInvulnerable = true;
+        yield return new WaitForSeconds(invulnerabilityDuration);
+        isInvulnerable = false;
+    }
+
     private void UpdateUI()
     {
+        if (healthBar != null)
+            healthBar.fillAmount = currentHealth / maxHealth;
         if (staminaBar != null)
             staminaBar.fillAmount = currentStamina / maxStamina;
     }

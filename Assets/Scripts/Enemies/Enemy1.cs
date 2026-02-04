@@ -9,19 +9,28 @@ public class Enemy1 : Enemy
         maxHealth = 100;
         currentHealth = maxHealth;
         speed = 7;
-        attackRange = 100;
+        detectionRange = 100;
     }
 
-    override protected void Attack()
+    override protected void Move()
     {
         float distance = Vector3.Distance(transform.position, player.position);
 
-        if(distance <= attackRange){
+        if(distance <= detectionRange){
             Vector3 direction = (player.position - transform.position).normalized;
             rb.linearVelocity = direction * speed;
         }
         else{
             rb.linearVelocity = Vector3.zero;
         }
-    } 
+    }
+
+    override protected void Attack()
+    {
+        if(playerAttributes != null)
+        {   
+            print("Ataca");
+            playerAttributes.TakeDamage(10);
+        }
+    }
 }

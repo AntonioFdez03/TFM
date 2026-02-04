@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 5198166656976593570}
   m_Layer: 0
   m_Name: Axe
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -176,7 +176,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9932d298fded97e4dacf35547d3695f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ToolBehaviour
-  useCooldown: 0.5
 --- !u!54 &2985089118778204499
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -16,11 +16,14 @@ public class Enemy1 : Enemy
 
     override protected void Move()
     {
-        float distance = Vector3.Distance(transform.position, player.position);
+        float playerDistance = Vector3.Distance(transform.position, player.position);
 
-        if(distance <= detectionRange){
+        if(playerDistance <= detectionRange && playerDistance > 5f){
             Vector3 direction = (player.position - transform.position).normalized;
             rb.linearVelocity = direction * speed;
+
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
         }
         else{
             rb.linearVelocity = Vector3.zero;

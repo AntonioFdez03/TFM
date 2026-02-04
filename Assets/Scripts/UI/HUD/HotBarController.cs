@@ -103,6 +103,7 @@ public class HotBarController : MonoBehaviour
         if (rb != null && bc != null)
         {
             rb.isKinematic = true;
+            rb.detectCollisions = false;
             bc.enabled = false;
         }
     }

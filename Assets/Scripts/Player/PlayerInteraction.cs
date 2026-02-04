@@ -10,7 +10,6 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] HotBarController hotBarController;
     [SerializeField] private Transform playerCamera;
     private float interactDistance = 10f;
-    private float attackDistance = 5f;
     private LayerMask interactLayer = 1;
 
     private InputAction interact;

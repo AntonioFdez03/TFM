@@ -13,9 +13,11 @@ public abstract class ItemBehaviour : MonoBehaviour
     }
     public abstract void Use();
 
-    IEnumerator UseCooldown()
+    protected IEnumerator UseCooldown()
     {
+        canUse = false;
         yield return new WaitForSeconds(useCooldown);
+        canUse = true;
         print("Herramienta usada");
     }
 

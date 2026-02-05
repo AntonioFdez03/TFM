@@ -8,7 +8,7 @@ public class Enemy1 : Enemy
         rb = GetComponent<Rigidbody>();
         maxHealth = 100;
         currentHealth = maxHealth;
-        speed = 7;
+        speed = 5;
         detectionRange = 100;
         damage = 10;
         attackCooldown = 1.2f;
@@ -16,7 +16,6 @@ public class Enemy1 : Enemy
 
     override protected void Move()
     {   
-        /*
         float playerDistance = Vector3.Distance(transform.position, player.position);
 
         if(playerDistance <= detectionRange && playerDistance > 5f){
@@ -28,7 +27,7 @@ public class Enemy1 : Enemy
         }
         else{
             rb.linearVelocity = Vector3.zero;
-        }*/
+        }
     }
 
     override protected void Attack()

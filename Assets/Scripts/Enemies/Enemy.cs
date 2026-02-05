@@ -19,11 +19,14 @@ public abstract class Enemy : MonoBehaviour
     protected abstract void Awake();
     protected virtual void Update()
     {
-        Move();
-        if(playerInRange && canAttack)
+        if (canAttack)
         {
-            Attack();
-            StartCoroutine(AttackCooldown());
+            Move();
+            if(playerInRange)
+            {
+                Attack();
+                StartCoroutine(AttackCooldown());
+            }
         }
     }
 

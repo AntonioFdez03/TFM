@@ -7,6 +7,7 @@ public class ArmController : MonoBehaviour
     [SerializeField] HotBarController hotBarController;
     private Camera playerCamera;
     private bool isMoving = false;
+
     //Swing settings
     private float swingAngle = -40f;   // Ángulo de inclinación (X)
     private float swingDuration = 0.5f; // Velocidad de subida
@@ -18,7 +19,7 @@ public class ArmController : MonoBehaviour
     private float punchRange = 5f;
     private float punchBackDistance = 0.2f;
     private float punchForwardDistance = 0.2f;
-    private float punchBackDuration = 0.1f;
+    private float punchBackDuration = 0.3f;
     private float punchForwardDuration = 0.05f;
     private float punchReturnDuration = 0.1f;
     private Vector3 initialLocalPos;
@@ -37,12 +38,9 @@ public class ArmController : MonoBehaviour
             ItemBehaviour itemBehaviour = hotBarController.GetCurrentItemBehaviour();
             print(itemBehaviour);
             if(itemBehaviour == null)
-            {
                 StartCoroutine(PunchMovementCoroutine());  
-            }else if(itemBehaviour is ToolBehaviour)
-            {
+            else if(itemBehaviour is ToolBehaviour)
                 StartCoroutine(ToolSwingCoroutine());
-            }
         }
     }
 
@@ -147,4 +145,6 @@ public class ArmController : MonoBehaviour
                 enemy.TakeDamage(punchDamage);
         }
     }
+
+
 }

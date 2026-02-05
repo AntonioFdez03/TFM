@@ -1,37 +1,50 @@
 using UnityEngine;
 using System.Collections;
+using UnityEditor;
 
 public class ArmController : MonoBehaviour
 {   
     [SerializeField] HotBarController hotBarController;
-    [Header("Swing settings")]
+    private Camera playerCamera;
+    private bool isMoving = false;
+    //Swing settings
     private float swingAngle = -40f;   // Ángulo de inclinación (X)
     private float swingDuration = 0.5f; // Velocidad de subida
     private float returnDuration = 0.1f; // Velocidad de bajada
+    private Quaternion initialRotation;
+
+    //Punch movement settings
     private float punchDamage = 5f;
     private float punchRange = 5f;
-    private Camera playerCamera;
-    
-    private Quaternion initialRotation;
-    private bool isSwinging = false;
+    private float punchBackDistance = 0.2f;
+    private float punchForwardDistance = 0.2f;
+    private float punchBackDuration = 0.1f;
+    private float punchForwardDuration = 0.05f;
+    private float punchReturnDuration = 0.1f;
+    private Vector3 initialLocalPos;
 
     void Start()
     {
+        initialLocalPos = transform.localPosition;
         initialRotation = transform.localRotation;
         playerCamera = Camera.main;
     }
 
     public void PlayAttackAnimation()
     {
-        if (!isSwinging)
+        if (!isMoving)
         {
-            StartCoroutine(SwingCoroutine());
+            ItemBehaviour itemBehaviour = hotBarController.GetCurrentItemBehaviour();
+            if(itemBehaviour is ToolBehaviour)
+                StartCoroutine(ToolSwingCoroutine());
+            else if(itemBehaviour == null)
+                StartCoroutine(PunchMovementCoroutine());  
         }
     }
 
-    private IEnumerator SwingCoroutine()
+    private IEnumerator ToolSwingCoroutine()
     {
-        isSwinging = true;
+        isMoving = true;
 
         // Calculamos la rotación de "golpe" sumando el ángulo al eje X
         Quaternion targetRotation = initialRotation * Quaternion.Euler(swingAngle, 0, 0);
@@ -56,8 +69,56 @@ public class ArmController : MonoBehaviour
 
         // Aseguramos que vuelva exactamente a la posición original
         transform.localRotation = initialRotation;
-        isSwinging = false;
+        isMoving = false;
         SwingHit();
+    }
+
+    private IEnumerator PunchMovementCoroutine()
+    {
+        isMoving = true;
+
+        Vector3 backPos = initialLocalPos + Vector3.back * punchBackDistance;
+        Vector3 forwardPos = initialLocalPos + Vector3.forward * punchForwardDistance;
+
+        float elapsed = 0f;
+
+        // 1. Retroceso
+        while (elapsed < punchBackDuration)
+        {
+            transform.localPosition = Vector3.Lerp(
+                initialLocalPos, backPos, elapsed / punchBackDuration
+            );
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // 2. Golpe hacia delante
+        elapsed = 0f;
+        while (elapsed < punchForwardDuration)
+        {
+            transform.localPosition = Vector3.Lerp(
+                backPos, forwardPos, elapsed / punchForwardDuration
+            );
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // 💥 Aquí es donde debe pegar
+        Punch();
+
+        // 3. Retorno
+        elapsed = 0f;
+        while (elapsed < punchReturnDuration)
+        {
+            transform.localPosition = Vector3.Lerp(
+                forwardPos, initialLocalPos, elapsed / punchReturnDuration
+            );
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.localPosition = initialLocalPos;
+        isMoving = false;
     }
 
     private void SwingHit()

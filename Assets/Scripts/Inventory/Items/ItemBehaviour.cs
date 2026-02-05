@@ -6,7 +6,7 @@ public abstract class ItemBehaviour : MonoBehaviour
 {  
     protected ItemData itemData;
     protected Camera playerCamera;
-    protected float useCooldown = 10f;
+    protected float useCooldown = 1f;
     protected bool canUse = true;
 
     protected virtual void Awake()

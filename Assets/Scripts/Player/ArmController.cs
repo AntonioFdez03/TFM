@@ -2,22 +2,21 @@ using UnityEngine;
 using System.Collections;
 
 public class ArmController : MonoBehaviour
-{
-    [Header("Attack settings")]
-    [SerializeField] private float swingAngle = -40f;   // Ángulo de inclinación (X)
-    [SerializeField] private float swingDuration = 0.1f; // Velocidad de bajada
-    [SerializeField] private float returnDuration = 0.15f; // Velocidad de subida
+{   
+    [SerializeField] HotBarController hotBarController;
+    [Header("Swing settings")]
+    private float swingAngle = -40f;   // Ángulo de inclinación (X)
+    private float swingDuration = 0.5f; // Velocidad de subida
+    private float returnDuration = 0.1f; // Velocidad de bajada
     
     private Quaternion initialRotation;
     private bool isSwinging = false;
 
     void Start()
     {
-        // Guardamos la rotación que le diste en el Inspector como base
         initialRotation = transform.localRotation;
     }
 
-    // Esta función la llamarás desde PlayerInteraction
     public void PlayAttackAnimation()
     {
         if (!isSwinging)
@@ -54,5 +53,13 @@ public class ArmController : MonoBehaviour
         // Aseguramos que vuelva exactamente a la posición original
         transform.localRotation = initialRotation;
         isSwinging = false;
+        UseItem();
+    }
+
+    private void UseItem()
+    {
+        ItemBehaviour item = hotBarController.GetCurrentItemBehaviour();
+        if(item != null)
+            item.GetComponent<ItemBehaviour>().Use();
     }
 }

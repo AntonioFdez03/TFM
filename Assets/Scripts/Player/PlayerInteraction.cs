@@ -7,7 +7,6 @@ public class PlayerInteraction : MonoBehaviour
     [Header("References")]
     [SerializeField] ArmController arm;
     [SerializeField] InventoryController inventory;
-    [SerializeField] HotBarController hotBarController;
     [SerializeField] private Transform playerCamera;
     private float interactDistance = 10f;
     private LayerMask interactLayer = 1;
@@ -49,19 +48,8 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (attack.triggered)
         {   
-            ItemBehaviour item = hotBarController.GetCurrentItemBehaviour();
-
-            if( item is ToolBehaviour)
-            {
-                if (arm != null) 
-                    arm.PlayAttackAnimation();
-
-                item.GetComponent<ToolBehaviour>().Use();
-            }
-            else
-            {
-                print("Otro tipo de item");
-            }
+            if (arm != null) 
+                arm.PlayAttackAnimation();
         }
     }
 }

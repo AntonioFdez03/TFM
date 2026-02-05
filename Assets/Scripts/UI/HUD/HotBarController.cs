@@ -16,6 +16,8 @@ public class HotBarController : MonoBehaviour
     
     private Transform[] slots = new Transform[7];
     private GameObject currentItem;
+    private ItemBehaviour currentItemBehaviour;
+    private GameObject currentPrefab;
     private InputAction dropItem; 
 
     void Start()
@@ -77,24 +79,33 @@ public class HotBarController : MonoBehaviour
             {
                 Destroy(currentItem);
                 currentItem = null;
+                currentPrefab = null;
+                currentItemBehaviour = null;
             }
             return;
         }
 
         // Caso 2: hay item distinto → reemplazar
-        if (currentItem == null || currentItem.name != newPrefab.name)
+        if (currentItem == null || currentPrefab != newPrefab)
         {
             if (currentItem != null)
+            {
+                print("Se destruye el item");
                 Destroy(currentItem);
+            }
 
+            currentPrefab = newPrefab;
             currentItem = Instantiate(newPrefab, handSlot);
             currentItem.SetActive(true);
-            currentItem.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+            currentItem.transform.localPosition = Vector3.zero;
+            currentItem.transform.localRotation = Quaternion.identity;
             currentItem.transform.localScale = Vector3.one;
             DisablePhysics();
-        }
-    }
 
+            currentItemBehaviour = currentItem.GetComponent<ItemBehaviour>();
+        }
+
+    }
 
     private void DisablePhysics()
     {
@@ -130,10 +141,6 @@ public class HotBarController : MonoBehaviour
         }
     }
 
-    //Método para saber el behaviour del item actual
-    public ItemBehaviour GetCurrentItemBehaviour()
-    {
-        if (currentItem == null) return null;
-        return currentItem.GetComponent<ItemBehaviour>();
-    }
+    public GameObject GetCurrentItem() => currentItem;
+    public ItemBehaviour GetCurrentItemBehaviour() => currentItemBehaviour;
 }

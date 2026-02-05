@@ -47,19 +47,16 @@ public class PlayerInteraction : MonoBehaviour
 
     private void Attack()
     {
-        print("Entra");
-        if (attack.WasPressedThisFrame())
+        if (attack.triggered)
         {   
             ItemBehaviour item = hotBarController.GetCurrentItemBehaviour();
-            if(item is ToolBehaviour || item == null)
+
+            if( item is ToolBehaviour)
             {
                 if (arm != null) 
                     arm.PlayAttackAnimation();
-                if (item != null)
-                {
-                    item.Use();
-                    print("Usando item: " + item.GetItemData().GetItemName());
-                }
+
+                item.GetComponent<ToolBehaviour>().Use();
             }
             else
             {

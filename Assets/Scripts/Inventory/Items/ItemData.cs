@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum ItemType { Resource, Weapon, Consumable, Tool }
+public enum ItemType { None, Resource, Weapon, Consumable, Tool }
 
 [DisallowMultipleComponent]
 public class ItemData : MonoBehaviour

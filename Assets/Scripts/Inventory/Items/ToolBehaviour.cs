@@ -4,7 +4,7 @@ using UnityEngine;
 public class ToolBehaviour : ItemBehaviour
 {
     protected float toolDamage;
-    protected float useRange = 10f;
+    protected float useRange = 5f;
     protected override void Awake()
     {
         base.Awake(); 
@@ -13,31 +13,31 @@ public class ToolBehaviour : ItemBehaviour
 
     public override void Use()
     {
-        if (canUse)
+        Debug.Log($"ToolBehaviour instance ID: {GetInstanceID()}");
+        if (!canUse) 
         {
-            print("Herramienta lista para usar.");
-            UseTool();
+            print("Herramienta en cooldown.");
+            return;
         }
+
+        canUse = false;          // 🔒 BLOQUEAS AQUÍ
+        print("Herramienta usada.");
+        UseTool();
+        StartCoroutine(UseCooldown());
     }
+
 
     protected void UseTool()
     {
-        print("Buscando enemigos para golpear...");
-        Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         RaycastHit hit;
 
         Debug.DrawRay(ray.origin, ray.direction * useRange, Color.red);
-        print("Usando herraminenta, buscando enemigos en rango...");    
         if (Physics.Raycast(ray, out hit, useRange))
         {
-            print("Rayo golpeó: " + hit.collider.name);
             Enemy enemy = hit.collider.CompareTag("Enemy") ? hit.collider.GetComponent<Enemy>() : null;
             if (enemy != null)
-            {
                 enemy.TakeDamage(toolDamage);
-                print("Enemigo golpeado con herramienta, daño: " + toolDamage);
-            }
         }
-        StartCoroutine(UseCooldown());
     }
 }

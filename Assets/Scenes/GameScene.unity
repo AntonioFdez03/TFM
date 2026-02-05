@@ -1655,10 +1655,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Axe
       objectReference: {fileID: 0}
-    - target: {fileID: 2698127036676663220, guid: 79be5dcc78a1afc45be9ce2805926df9, type: 3}
-      propertyPath: itemType
-      value: 4
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2742,7 +2738,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteraction
   arm: {fileID: 2084325939}
   inventory: {fileID: 816133980}
-  hotBarController: {fileID: 1927946364}
   playerCamera: {fileID: 1581440718}
 --- !u!1 &1117188882
 GameObject:
@@ -4490,9 +4485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2691acf49c4a4de4cb2c807532baa077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArmController
-  swingAngle: -40
-  swingDuration: 0.1
-  returnDuration: 0.15
+  hotBarController: {fileID: 1927946364}
 --- !u!1 &2135746126
 GameObject:
   m_ObjectHideFlags: 0

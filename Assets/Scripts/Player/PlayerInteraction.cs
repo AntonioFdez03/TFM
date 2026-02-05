@@ -34,7 +34,7 @@ public class PlayerInteraction : MonoBehaviour
         RaycastHit hit;
 
         //Muestra el rayo en el editor
-        Debug.DrawRay(ray.origin, ray.direction * interactDistance, Color.blue);
+        //Debug.DrawRay(ray.origin, ray.direction * interactDistance, Color.blue);
 
         if (Physics.Raycast(ray, out hit, interactDistance, interactLayer))
         {

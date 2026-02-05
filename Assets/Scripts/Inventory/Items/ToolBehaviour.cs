@@ -23,13 +23,12 @@ public class ToolBehaviour : ItemBehaviour
     protected void UseTool()
     {
         print("Buscando enemigos para golpear...");
-        Vector3 origin = Camera.main.transform.position + Camera.main.transform.forward * 0.6f;
-        Ray ray = new Ray(origin, Camera.main.transform.forward);
+        Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         RaycastHit hit;
 
         Debug.DrawRay(ray.origin, ray.direction * useRange, Color.red);
         print("Usando herraminenta, buscando enemigos en rango...");    
-        if (Physics.Raycast(ray, out hit, useRange,1))
+        if (Physics.Raycast(ray, out hit, useRange))
         {
             print("Rayo golpeó: " + hit.collider.name);
             Enemy enemy = hit.collider.CompareTag("Enemy") ? hit.collider.GetComponent<Enemy>() : null;

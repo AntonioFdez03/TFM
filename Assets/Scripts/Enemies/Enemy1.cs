@@ -15,7 +15,8 @@ public class Enemy1 : Enemy
     }
 
     override protected void Move()
-    {
+    {   
+        /*
         float playerDistance = Vector3.Distance(transform.position, player.position);
 
         if(playerDistance <= detectionRange && playerDistance > 5f){
@@ -27,7 +28,7 @@ public class Enemy1 : Enemy
         }
         else{
             rb.linearVelocity = Vector3.zero;
-        }
+        }*/
     }
 
     override protected void Attack()

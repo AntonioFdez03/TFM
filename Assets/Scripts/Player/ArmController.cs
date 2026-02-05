@@ -33,12 +33,16 @@ public class ArmController : MonoBehaviour
     public void PlayAttackAnimation()
     {
         if (!isMoving)
-        {
+        {   
             ItemBehaviour itemBehaviour = hotBarController.GetCurrentItemBehaviour();
-            if(itemBehaviour is ToolBehaviour)
-                StartCoroutine(ToolSwingCoroutine());
-            else if(itemBehaviour == null)
+            print(itemBehaviour);
+            if(itemBehaviour == null)
+            {
                 StartCoroutine(PunchMovementCoroutine());  
+            }else if(itemBehaviour is ToolBehaviour)
+            {
+                StartCoroutine(ToolSwingCoroutine());
+            }
         }
     }
 

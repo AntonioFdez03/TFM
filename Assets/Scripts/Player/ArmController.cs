@@ -18,10 +18,12 @@ public class ArmController : MonoBehaviour
     private float punchDamage = 5f;
     private float punchRange = 5f;
     private float punchBackDistance = 0.2f;
-    private float punchForwardDistance = 0.2f;
+    private float punchForwardDistance = 0.4f;
     private float punchBackDuration = 0.3f;
-    private float punchForwardDuration = 0.05f;
-    private float punchReturnDuration = 0.1f;
+    private float punchForwardDuration = 0.1f;
+    private float punchReturnDuration = 0.5f;
+    private float punchReturnCooldown = 0.2f;
+    private float punchCooldown = 0.2f;
     private Vector3 initialLocalPos;
 
     void Start()
@@ -82,42 +84,44 @@ public class ArmController : MonoBehaviour
         Vector3 backPos = initialLocalPos + Vector3.back * punchBackDistance;
         Vector3 forwardPos = initialLocalPos + Vector3.forward * punchForwardDistance;
 
-        float elapsed = 0f;
+        float time = 0f;
 
         // 1. Retroceso
-        while (elapsed < punchBackDuration)
+        while (time < punchBackDuration)
         {
             transform.localPosition = Vector3.Lerp(
-                initialLocalPos, backPos, elapsed / punchBackDuration
+                initialLocalPos, backPos, time / punchBackDuration
             );
-            elapsed += Time.deltaTime;
+            time += Time.deltaTime;
             yield return null;
         }
 
         // 2. Golpe hacia delante
-        elapsed = 0f;
-        while (elapsed < punchForwardDuration)
+        time = 0f;
+        while (time < punchForwardDuration)
         {
             transform.localPosition = Vector3.Lerp(
-                backPos, forwardPos, elapsed / punchForwardDuration
+                backPos, forwardPos, time / punchForwardDuration
             );
-            elapsed += Time.deltaTime;
+            time += Time.deltaTime;
             yield return null;
         }
-
         // 💥 Aquí es donde debe pegar
         Punch();
-
-        // 3. Retorno
-        elapsed = 0f;
-        while (elapsed < punchReturnDuration)
+        yield return new WaitForSeconds(punchReturnCooldown);
+        // 3. Cooldown antes de retroceder
+        // 4. Retorno
+        time = 0f;
+        while (time < punchReturnDuration)
         {
             transform.localPosition = Vector3.Lerp(
-                forwardPos, initialLocalPos, elapsed / punchReturnDuration
+                forwardPos, initialLocalPos, time / punchReturnDuration
             );
-            elapsed += Time.deltaTime;
+            time += Time.deltaTime;
             yield return null;
         }
+
+        yield return new WaitForSeconds(punchCooldown);
 
         transform.localPosition = initialLocalPos;
         isMoving = false;

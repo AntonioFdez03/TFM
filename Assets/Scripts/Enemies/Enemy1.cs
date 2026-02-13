@@ -12,6 +12,7 @@ public class Enemy1 : Enemy
         detectionRange = 100;
         damage = 10;
         attackCooldown = 1.2f;
+        flinchCooldown = 1f;
     }
 
     override protected void Move()

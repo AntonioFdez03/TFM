@@ -12,8 +12,10 @@ public abstract class Enemy : MonoBehaviour
     protected int damage;
     protected float detectionRange;
     protected float attackCooldown;
-    protected bool canAttack = true;
     protected bool playerInRange = false;
+    protected bool canAttack = true;
+    protected bool canMove = true;
+    protected float flinchCooldown;
     protected PlayerAttributes playerAttributes;
 
     protected abstract void Awake();
@@ -21,7 +23,8 @@ public abstract class Enemy : MonoBehaviour
     {
         if (canAttack)
         {
-            Move();
+            if (canMove)
+                Move();
             if(playerInRange)
             {
                 Attack();
@@ -50,17 +53,11 @@ public abstract class Enemy : MonoBehaviour
             playerInRange = false;
     }
 
-    IEnumerator AttackCooldown()
-    {
-        canAttack = false;
-        yield return new WaitForSeconds(attackCooldown);
-        canAttack = true;
-    }
-
     public void TakeDamage(float playerDamage)
     {
         currentHealth -= playerDamage;
         print("Enemigo recibe daño: " + playerDamage + ", salud restante: " + currentHealth);
+        StartCoroutine(FlinchCooldown());
         if (currentHealth <= 0)
             Die();
     }
@@ -69,5 +66,19 @@ public abstract class Enemy : MonoBehaviour
     {
         print("Enemigo muerto");
         Destroy(gameObject);
+    }
+
+    protected IEnumerator AttackCooldown()
+    {
+        canAttack = false;
+        yield return new WaitForSeconds(attackCooldown);
+        canAttack = true;
+    }
+
+    protected IEnumerator FlinchCooldown()
+    {
+        canMove = false;
+        yield return new WaitForSeconds(flinchCooldown);
+        canMove = true;
     }
 }

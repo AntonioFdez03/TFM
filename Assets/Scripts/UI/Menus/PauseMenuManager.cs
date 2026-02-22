@@ -4,10 +4,9 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenuManager : MonoBehaviour
 {
-    [SerializeField] UIController controller;
     public void Resume()
     {
-        controller.SetState(UIController.UIState.Gameplay);
+        UIController.SetState(UIState.Gameplay);
     }
 
     public void Settings()

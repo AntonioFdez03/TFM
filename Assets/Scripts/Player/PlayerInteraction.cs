@@ -21,9 +21,12 @@ public class PlayerInteraction : MonoBehaviour
     }
 
     void Update()
-    {   
-        Interact();
-        Attack();
+    {
+        if (PlayerController.GetCanMove())
+        {
+            Interact();
+            Attack();
+        }
     }
 
     private void Interact()
@@ -37,10 +40,14 @@ public class PlayerInteraction : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, interactDistance, interactLayer))
         {
-            if (interact.WasPressedThisFrame() && hit.collider.CompareTag("Item"))
-            {   
-                inventory.AddItem(hit.collider.gameObject);
+            if (interact.WasPressedThisFrame())
+            {
+                if (hit.collider.CompareTag("Item"))  
+                    inventory.AddItem(hit.collider.gameObject);
+                else if (hit.collider.CompareTag("Interactive"))
+                    hit.collider.gameObject.GetComponent<InteractiveObject>().Interact();
             }
+                
         }
     }
 

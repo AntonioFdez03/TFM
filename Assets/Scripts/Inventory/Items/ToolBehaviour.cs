@@ -1,14 +1,22 @@
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 
+public enum ToolType { Axe, Pickaxe}
 public class ToolBehaviour : ItemBehaviour
 {
-    protected float toolDamage;
-    protected float useRange = 5f;
+    protected ToolType toolType;
+    protected int toolDamage;
+    protected float toolRange = 5f;
+
+    public ToolType GetToolType() => toolType;
+    public int GetToolDamage() => toolDamage;
+
     protected override void Awake()
     {
         base.Awake(); 
-        toolDamage = 25f;
+        toolType = ToolType.Axe;
+        toolDamage = 20;
     }
 
     public override void Use()
@@ -26,18 +34,23 @@ public class ToolBehaviour : ItemBehaviour
         StartCoroutine(UseCooldown());
     }
 
-
     protected void UseTool()
     {
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         RaycastHit hit;
 
-        Debug.DrawRay(ray.origin, ray.direction * useRange, Color.red);
-        if (Physics.Raycast(ray, out hit, useRange))
+        Debug.DrawRay(ray.origin, ray.direction * toolRange, Color.red);
+        if (Physics.Raycast(ray, out hit, toolRange))
         {
             Enemy enemy = hit.collider.CompareTag("Enemy") ? hit.collider.GetComponent<Enemy>() : null;
             if (enemy != null)
                 enemy.TakeDamage(toolDamage);
+
+            HarvestableObject harvestableObject = hit.collider.CompareTag("Harvestable") ? hit.collider.GetComponent<HarvestableObject>() : null;
+            if(harvestableObject != null)
+            {
+                harvestableObject.TakeHit(this);
+            }
         }
     }
 }

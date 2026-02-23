@@ -4,9 +4,10 @@ using UnityEngine.InputSystem;
 using UnityEngine.XR;
 
 public class HotBarController : MonoBehaviour
-{
+{   
+    public static HotBarController hotBarInstance;
+
     [Header("References")]
-    [SerializeField] InventoryController inventoryController;
     [SerializeField] Transform hotBarPanel;
     [SerializeField] RectTransform selectorFrame;
     [SerializeField] Transform handSlot;
@@ -20,6 +21,15 @@ public class HotBarController : MonoBehaviour
     private GameObject currentPrefab;
     private InputAction dropItem; 
 
+    void Awake()
+    {
+        if(hotBarInstance != null && hotBarInstance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        hotBarInstance = this;
+    }
     void Start()
     {   
         dropItem = InputSystem.actions.FindAction("Drop");
@@ -99,7 +109,6 @@ public class HotBarController : MonoBehaviour
             currentItem.SetActive(true);
             currentItem.transform.localPosition = Vector3.zero;
             currentItem.transform.localRotation = Quaternion.identity;
-            currentItem.transform.localScale = Vector3.one;
             DisablePhysics();
 
             currentItemBehaviour = currentItem.GetComponent<ItemBehaviour>();
@@ -131,7 +140,7 @@ public class HotBarController : MonoBehaviour
             if(rb != null && data != null)
             {
                 print("Se ha dropeado");
-                inventoryController.DropItem(selectedIndex);
+                InventoryController.inventoryInstance.DropItem(selectedIndex);
                 data.SetItemName(null);
                 data.SetItemIcon(null);
                 data.SetItemPrefab(null);

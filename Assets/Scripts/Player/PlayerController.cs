@@ -6,8 +6,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {   
+    public static PlayerController playerInstance;
+
     [Header("References")]
-    [SerializeField] Transform playerCamera;
     private PlayerAttributes playerAttributes;
     private CharacterController controller;
 
@@ -23,6 +24,15 @@ public class PlayerController : MonoBehaviour
     private Vector3 gravity = Vector3.down * 30f;
     private float yVelocity;
 
+    void Awake()
+    {
+        if(playerInstance != null && playerInstance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        playerInstance = this;
+    }
     void Start()
     {   
         //References
@@ -47,8 +57,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 CalculateHorizontalMovement()
     {
         Vector2 playerInput = move.ReadValue<Vector2>();
-        Vector3 cameraForward = playerCamera.forward;
-        Vector3 cameraRight = playerCamera.right;
+        Vector3 cameraForward = CameraController.playerCameraInstance.transform.forward;
+        Vector3 cameraRight = CameraController.playerCameraInstance.transform.right;
 
         cameraForward.y = 0;
         cameraRight.y = 0;

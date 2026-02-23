@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryController : MonoBehaviour
-{
+{   
+    public static InventoryController inventoryInstance;
     [Header("References")]
     [SerializeField] Transform itemsLayer; 
     [SerializeField] InventoryUI inventoryUI;
@@ -10,6 +11,16 @@ public class InventoryController : MonoBehaviour
     private int inventoryMax = 28;
     private GameObject[] items;
 
+    void Awake()
+    {
+        if(inventoryInstance != null && inventoryInstance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        inventoryInstance = this;
+    }
+    
     void Start()
     {
         items = new GameObject[inventoryMax];

@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 
 public class Enemy1 : Enemy
 {  
@@ -17,10 +18,10 @@ public class Enemy1 : Enemy
 
     override protected void Move()
     {   
-        float playerDistance = Vector3.Distance(transform.position, player.position);
+        float playerDistance = Vector3.Distance(transform.position, PlayerController.playerInstance.transform.position);
 
         if(playerDistance <= detectionRange && playerDistance > 5f){
-            Vector3 direction = (player.position - transform.position).normalized;
+            Vector3 direction = (PlayerController.playerInstance.transform.position - transform.position).normalized;
             rb.linearVelocity = direction * speed;
 
             Quaternion targetRotation = Quaternion.LookRotation(direction);

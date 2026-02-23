@@ -7,7 +7,6 @@ public class PlayerInteraction : MonoBehaviour
     [Header("References")]
     [SerializeField] ArmController arm;
     [SerializeField] InventoryController inventory;
-    [SerializeField] private Transform playerCamera;
     private float interactDistance = 10f;
     private LayerMask interactLayer = 1;
 
@@ -29,7 +28,7 @@ public class PlayerInteraction : MonoBehaviour
     private void Interact()
     {
         // Rayo desde el centro de la cámara
-        Ray ray = new Ray(playerCamera.position, playerCamera.forward);
+        Ray ray = new Ray(CameraController.playerCameraInstance.transform.position, CameraController.playerCameraInstance.transform.forward);
         RaycastHit hit;
 
         //Muestra el rayo en el editor

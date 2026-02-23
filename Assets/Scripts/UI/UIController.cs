@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public enum UIState { Gameplay, Inventory, Pause, Crafting }
 public class UIController : MonoBehaviour
 {
     public static UIController instance;
     // Definimos los posibles estados de la interfaz
-    public enum UIState { Gameplay, Inventory, Pause }
     public UIState currentState = UIState.Gameplay;
 
     [Header("Canvas")]
@@ -26,7 +26,7 @@ public class UIController : MonoBehaviour
 
         instance = this;
     }
-    
+
     void Start()
     {
         inventoryAction = InputSystem.actions.FindAction("Inventory");

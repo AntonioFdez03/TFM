@@ -6,7 +6,7 @@ public class PauseMenuManager : MonoBehaviour
 {
     public void Resume()
     {
-        UIController.instance.SetState(UIController.UIState.Gameplay);
+        UIController.instance.SetState(UIState.Gameplay);
     }
 
     public void Settings()

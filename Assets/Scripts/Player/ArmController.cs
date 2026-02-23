@@ -4,8 +4,6 @@ using UnityEditor;
 
 public class ArmController : MonoBehaviour
 {   
-    [SerializeField] HotBarController hotBarController;
-    private Camera playerCamera;
     private bool isMoving = false;
 
     //Swing settings
@@ -30,14 +28,13 @@ public class ArmController : MonoBehaviour
     {
         initialLocalPos = transform.localPosition;
         initialRotation = transform.localRotation;
-        playerCamera = Camera.main;
     }
 
     public void PlayAttackAnimation()
     {
         if (!isMoving)
         {   
-            ItemBehaviour itemBehaviour = hotBarController.GetCurrentItemBehaviour();
+            ItemBehaviour itemBehaviour = HotBarController.hotBarInstance.GetCurrentItemBehaviour();
             print(itemBehaviour);
             if(itemBehaviour == null)
                 StartCoroutine(PunchMovementCoroutine());  
@@ -129,7 +126,7 @@ public class ArmController : MonoBehaviour
 
     private void SwingHit()
     {
-        ItemBehaviour item = hotBarController.GetCurrentItemBehaviour();
+        ItemBehaviour item = HotBarController.hotBarInstance.GetCurrentItemBehaviour();
         if(item != null)
             item.GetComponent<ItemBehaviour>().Use();
         else
@@ -138,7 +135,7 @@ public class ArmController : MonoBehaviour
 
     private void Punch()
     {
-        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+        Ray ray = new Ray(CameraController.playerCameraInstance.transform.position, CameraController.playerCameraInstance.transform.transform.forward);
         RaycastHit hit;
 
         Debug.DrawRay(ray.origin, ray.direction * punchRange, Color.red);

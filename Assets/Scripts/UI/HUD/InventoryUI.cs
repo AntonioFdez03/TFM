@@ -9,9 +9,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] Transform hotBarPanel;
     [SerializeField] Transform hudHotBar;
     [SerializeField] GameObject slotPrefab;
-    [SerializeField] InventoryController inventoryController;
     [SerializeField] Transform DragginLayer;
-    [SerializeField] HotBarController hotBarController;
     
     [Header("Settings")]
     [SerializeField] int gridSize = 21;
@@ -53,9 +51,9 @@ public class InventoryUI : MonoBehaviour
             if (scriptSlot != null)
             {
                 scriptSlot.slotIndex = i;
-                scriptSlot.SetController(inventoryController);
+                scriptSlot.SetController(InventoryController.inventoryInstance);
                 scriptSlot.SetDragginLayer(DragginLayer);
-                scriptSlot.SetHotBarController(hotBarController);
+                scriptSlot.SetHotBarController(HotBarController.hotBarInstance);
             }
 
             inventorySlots.Add(newSlot.GetComponent<Image>());
@@ -89,7 +87,7 @@ public class InventoryUI : MonoBehaviour
 
     public void UpdateUI()
     {
-        GameObject[] items = inventoryController.GetInventoryItems();
+        GameObject[] items = InventoryController.inventoryInstance.GetInventoryItems();
 
         foreach (Image slotImage in inventorySlots)
         {
@@ -129,36 +127,6 @@ public class InventoryUI : MonoBehaviour
 
                         iconGo.SetActive(false);
                     }
-                }
-            }
-        }
-    }
-
-    public void UpdateHUD()
-    {
-        // Obtenemos los items del controlador
-        GameObject[] items = inventoryController.GetInventoryItems();
-
-        // Recorremos solo los slots asignados al HUD (los 7 permanentes)
-        for (int i = 0; i < hotBarSize; i++)
-        {
-            print("i: "+i+", "+inventorySlots.Count);
-            // Buscamos el objeto del icono (el hijo 0 que crea tu función CreateChildIcon)
-            if (inventorySlots[i].transform.childCount > 0)
-            {
-                GameObject iconGo = inventorySlots[i].transform.GetChild(0).gameObject;
-
-                // Si hay un item en esa posición del inventario, mostramos su icono
-                if (i < items.Length && items[i] != null)
-                {
-                    ItemData data = items[i].GetComponent<ItemData>();
-                    iconGo.GetComponent<Image>().sprite = data.GetItemIcon();
-                    iconGo.SetActive(true);
-                }
-                else
-                {
-                    // Si no hay item, ocultamos el icono
-                    iconGo.SetActive(false);
                 }
             }
         }

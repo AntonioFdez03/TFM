@@ -4,7 +4,6 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
 {   
-    [SerializeField] protected Transform player;
     protected Rigidbody rb;
     protected float maxHealth;
     protected float currentHealth;

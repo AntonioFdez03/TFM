@@ -27,7 +27,11 @@ public class TreeNode : HarvestableObject
         rb.isKinematic = false;
         rb.useGravity = true;
 
-        rb.AddTorque(transform.right * Random.Range(30f, 50f), ForceMode.Impulse);
+        // Levantamos un poco el árbol desde el suelo
+        rb.transform.position += Vector3.up * 0.1f; // 10 cm por ejemplo
+
+        // Aplicamos torque para caer hacia adelante
+        rb.AddTorque(CameraController.playerCameraInstance.transform.forward * 500f, ForceMode.Impulse);
     }
 
     protected override void GenerateDropItems()

@@ -1,38 +1,24 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public enum UIState { Gameplay, Inventory, Pause, Crafting }
 public class UIController : MonoBehaviour
 {
     // Definimos los posibles estados de la interfaz
-    public static UIState currentState = UIState.Gameplay;
+    public enum UIState { Gameplay, Inventory, Pause }
+    public UIState currentState = UIState.Gameplay;
 
     [Header("Canvas")]
     [SerializeField] private GameObject hudCanvas;
     [SerializeField] private GameObject inventoryCanvas;
     [SerializeField] private GameObject pauseCanvas;
-    [SerializeField] private GameObject craftingCanvas;
 
     private InputAction inventoryAction;
-    private InputAction interactAction;
-    private InputAction exitAction;
-
-    private static GameObject sHudCanvas;
-    private static GameObject sInventoryCanvas;
-    private static GameObject sPauseCanvas;
-    private static GameObject sCraftingCanvas;
+    private InputAction pauseAction;
 
     void Start()
     {
-        //Canvas
-        sHudCanvas = hudCanvas;
-        sInventoryCanvas = inventoryCanvas;
-        sPauseCanvas = pauseCanvas;
-        sCraftingCanvas = craftingCanvas;
-
         inventoryAction = InputSystem.actions.FindAction("Inventory");
-        interactAction = InputSystem.actions.FindAction("Interact");
-        exitAction = InputSystem.actions.FindAction("Exit");
+        pauseAction = InputSystem.actions.FindAction("Pause");
         SetState(UIState.Gameplay);
     }
 
@@ -44,22 +30,23 @@ public class UIController : MonoBehaviour
             if (currentState == UIState.Inventory) SetState(UIState.Gameplay);
             else if (currentState == UIState.Gameplay) SetState(UIState.Inventory);
         }
-        else if (exitAction.WasPressedThisFrame())
+
+        // Detectar cambio a Pausa
+        if (pauseAction.WasPressedThisFrame())
         {
-            if (currentState == UIState.Gameplay) SetState(UIState.Pause);
-            else SetState(UIState.Gameplay);
+            if (currentState == UIState.Pause) SetState(UIState.Gameplay);
+            else SetState(UIState.Pause);
         }
     }
 
-    public static void SetState(UIState newState)
+    public void SetState(UIState newState)
     {
         currentState = newState;
 
         // Desactivamos todo por defecto y solo activamos el actual
-        sHudCanvas.SetActive(currentState == UIState.Gameplay);
-        sInventoryCanvas.SetActive(currentState == UIState.Inventory);
-        sPauseCanvas.SetActive(currentState == UIState.Pause);
-        sCraftingCanvas.SetActive(currentState == UIState.Crafting);
+        hudCanvas.SetActive(currentState == UIState.Gameplay);
+        inventoryCanvas.SetActive(currentState == UIState.Inventory);
+        pauseCanvas.SetActive(currentState == UIState.Pause);
 
         switch (currentState)
         {
@@ -67,14 +54,12 @@ public class UIController : MonoBehaviour
                 Time.timeScale = 1f;
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
-                PlayerController.SetCanMove(true);
                 break;
 
             case UIState.Inventory:
                 Time.timeScale = 1f;
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                PlayerController.SetCanMove(false);
                 break;
 
             case UIState.Pause:
@@ -82,14 +67,6 @@ public class UIController : MonoBehaviour
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 break;
-
-            case UIState.Crafting:
-                Time.timeScale = 1f;
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                PlayerController.SetCanMove(false);
-                break;
-
         }
     }
 }

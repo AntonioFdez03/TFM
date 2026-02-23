@@ -15,7 +15,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float movementSpeed = 10f; 
     [SerializeField] float sprintSpeed = 20f; 
     [SerializeField] float jumpForce = 10f;
-    private static bool canMove;
     private InputAction move;
     private InputAction sprint;
     private InputAction jump;
@@ -24,13 +23,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 gravity = Vector3.down * 30f;
     private float yVelocity;
 
-    public static bool SetCanMove(bool cM) => canMove = cM;
-    public static bool GetCanMove() => canMove;
-
     void Start()
     {   
-        canMove = true;
-
         //References
         controller = GetComponent<CharacterController>();
         playerAttributes = GetComponent<PlayerAttributes>();
@@ -43,14 +37,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (canMove)
-        {
-            Vector3 finalMovement = Vector3.zero;
+        Vector3 finalMovement = Vector3.zero;
 
-            finalMovement += CalculateHorizontalMovement();
-            finalMovement += CalculateVerticalMovement();
-            controller.Move(finalMovement * Time.deltaTime);
-        }
+        finalMovement += CalculateHorizontalMovement();
+        finalMovement += CalculateVerticalMovement();
+        controller.Move(finalMovement * Time.deltaTime);
     }
 
     private Vector3 CalculateHorizontalMovement()

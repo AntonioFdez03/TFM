@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class UIController : MonoBehaviour
 {
+    public static UIController instance;
     // Definimos los posibles estados de la interfaz
     public enum UIState { Gameplay, Inventory, Pause }
     public UIState currentState = UIState.Gameplay;
@@ -15,6 +16,17 @@ public class UIController : MonoBehaviour
     private InputAction inventoryAction;
     private InputAction pauseAction;
 
+    void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
+    }
+    
     void Start()
     {
         inventoryAction = InputSystem.actions.FindAction("Inventory");

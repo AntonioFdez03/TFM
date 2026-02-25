@@ -21,6 +21,9 @@ public class HotBarController : MonoBehaviour
     private GameObject currentPrefab;
     private InputAction dropItem; 
 
+    public GameObject GetCurrentItem() => currentItem;
+    public ItemBehaviour GetCurrentItemBehaviour() => currentItemBehaviour;
+
     void Awake()
     {
         if(hotBarInstance != null && hotBarInstance != this)
@@ -111,15 +114,15 @@ public class HotBarController : MonoBehaviour
             currentItem.transform.localRotation = Quaternion.identity;
             DisablePhysics();
 
-            currentItemBehaviour = currentItem.GetComponent<ItemBehaviour>();
+            currentItemBehaviour = currentItem.GetComponentInChildren<ItemBehaviour>();
         }
 
     }
 
     private void DisablePhysics()
     {
-        Rigidbody rb = currentItem.GetComponent<Rigidbody>();
-        BoxCollider bc = currentItem.GetComponent<BoxCollider>();
+        Rigidbody rb = currentItem.GetComponentInChildren<Rigidbody>();
+        Collider bc = currentItem.GetComponentInChildren<Collider>();
         if (rb != null && bc != null)
         {
             rb.isKinematic = true;
@@ -133,7 +136,7 @@ public class HotBarController : MonoBehaviour
         if (dropItem.WasPressedThisFrame() && currentItem != null)
         {
             print("Drop");
-            Rigidbody rb = currentItem.GetComponent<Rigidbody>();
+            Rigidbody rb = currentItem.GetComponentInChildren<Rigidbody>(true);
             ItemData data = slots[selectedIndex].GetComponentInChildren<ItemData>(true);
             print(rb);
             print(data);
@@ -141,15 +144,10 @@ public class HotBarController : MonoBehaviour
             {
                 print("Se ha dropeado");
                 InventoryController.inventoryInstance.DropItem(selectedIndex);
-                data.SetItemName(null);
-                data.SetItemIcon(null);
-                data.SetItemPrefab(null);
+                data.Clear();
                 Destroy(currentItem);
             }
             
         }
     }
-
-    public GameObject GetCurrentItem() => currentItem;
-    public ItemBehaviour GetCurrentItemBehaviour() => currentItemBehaviour;
 }

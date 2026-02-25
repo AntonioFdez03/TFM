@@ -87,25 +87,25 @@ public class InventoryUI : MonoBehaviour
     {
         GameObject[] items = InventoryController.inventoryInstance.GetInventoryItems();
 
-        foreach (Image slotImage in inventorySlots)
+        foreach (Image currentSlot in inventorySlots)
         {
-            InventorySlot scriptSlot = slotImage.GetComponent<InventorySlot>();
+            InventorySlot scriptSlot = currentSlot.GetComponent<InventorySlot>();
             
             if (scriptSlot != null)
             {
                 int realIndex = scriptSlot.slotIndex; 
                 
-                if (slotImage.transform.childCount > 0)
+                if (currentSlot.transform.childCount > 0)
                 {
-                    GameObject iconGo = slotImage.transform.GetChild(0).gameObject;
+                    GameObject slotItem = currentSlot.transform.GetChild(0).gameObject;
 
                     if (realIndex < items.Length && items[realIndex] != null)
                     {
                         // 1. Obtenemos los datos del objeto real que está en el controlador
-                        ItemData originalData = items[realIndex].GetComponent<ItemData>();
+                        ItemData originalData = items[realIndex].GetComponentInChildren<ItemData>(true);
                         
                         // 2. Obtenemos el script ItemData que añadimos al Icono en CreateChildIcon
-                        ItemData uiData = iconGo.GetComponent<ItemData>();
+                        ItemData uiData = slotItem.GetComponent<ItemData>();
 
                         if (originalData != null && uiData != null)
                         {
@@ -113,17 +113,17 @@ public class InventoryUI : MonoBehaviour
                             uiData.CopyFrom(originalData);
 
                             // 4. Actualizamos el aspecto visual
-                            iconGo.GetComponent<Image>().sprite = originalData.GetItemIcon();
-                            iconGo.SetActive(true);
+                            slotItem.GetComponent<Image>().sprite = originalData.GetItemIcon();
+                            slotItem.SetActive(true);
                         }
                     }
                     else
                     {
                         // Si el slot está vacío, reseteamos el ItemData de la UI para no dejar basura
-                        ItemData uiData = iconGo.GetComponent<ItemData>();
+                        ItemData uiData = slotItem.GetComponent<ItemData>();
                         if (uiData != null) uiData.SetItemPrefab(null);
 
-                        iconGo.SetActive(false);
+                        slotItem.SetActive(false);
                     }
                 }
             }

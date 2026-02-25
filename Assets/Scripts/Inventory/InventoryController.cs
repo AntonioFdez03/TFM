@@ -28,16 +28,17 @@ public class InventoryController : MonoBehaviour
 
     public GameObject[] GetInventoryItems() => items;
 
-    public void AddItem(GameObject go)
+    public void AddItem(GameObject item)
     {
+        print("Item añadido: "+item);
         // Buscamos el primer hueco vacío (null)
         for (int i = 0; i < items.Length; i++)
         {
             if (items[i] == null)
             {
-                items[i] = go;
-                go.transform.SetParent(this.transform);
-                go.SetActive(false);
+                items[i] = item;
+                item.transform.SetParent(this.transform);
+                item.SetActive(false);
                 
                 if(inventoryUI != null) inventoryUI.UpdateUI();
                 return;
@@ -59,7 +60,7 @@ public class InventoryController : MonoBehaviour
             itemToDrop.SetActive(true);
             itemToDrop.transform.SetParent(itemsLayer);
             itemToDrop.transform.rotation = Random.rotation;
-            Rigidbody rb = itemToDrop.GetComponent<Rigidbody>();
+            Rigidbody rb = itemToDrop.GetComponentInChildren<Rigidbody>();
             Vector3 dropForce = Vector3.forward * 5f + Vector3.down * 4f;
             rb.AddForce(dropForce,ForceMode.Impulse);
 

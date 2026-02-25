@@ -51,9 +51,7 @@ public class InventoryUI : MonoBehaviour
             if (scriptSlot != null)
             {
                 scriptSlot.slotIndex = i;
-                scriptSlot.SetController(InventoryController.inventoryInstance);
                 scriptSlot.SetDragginLayer(DragginLayer);
-                scriptSlot.SetHotBarController(HotBarController.hotBarInstance);
             }
 
             inventorySlots.Add(newSlot.GetComponent<Image>());

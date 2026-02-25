@@ -5,8 +5,6 @@ using UnityEngine.EventSystems;
 public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {   
     [Header("References")]
-    private InventoryController controller;
-    private HotBarController hotBarController;
     private Transform draggingLayer; // Capa en la que mover el icono mientras se arrastra para mostrar por encima del resto
 
     public int slotIndex;
@@ -15,8 +13,6 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private GameObject cloneIcon;
 
     public void SetDragginLayer(Transform layer) => draggingLayer = layer;
-    public void SetController(InventoryController c) => controller = c;
-    public void SetHotBarController(HotBarController hbc ) => hotBarController = hbc;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -62,8 +58,8 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         float margen = Screen.width * 0.26f;
         if (eventData.position.x < margen || eventData.position.x > Screen.width - margen)
         {   
-            controller.DropItem(slotIndex);
-            hotBarController.RefreshHandItem();
+            InventoryController.inventoryInstance.DropItem(slotIndex);
+            HotBarController.hotBarInstance.RefreshHandItem();
         }
     }
 
@@ -74,8 +70,8 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         //Intercambia el slot destino con el actual, aunque esté vacío
         if (slotOrigen != null)
         {
-            controller.SwapItems(slotOrigen.slotIndex, this.slotIndex);
-            hotBarController.RefreshHandItem();
+            InventoryController.inventoryInstance.SwapItems(slotOrigen.slotIndex, this.slotIndex);
+            HotBarController.hotBarInstance.RefreshHandItem();
         }
     }
 }

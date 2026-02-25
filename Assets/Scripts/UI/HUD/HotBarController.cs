@@ -82,7 +82,7 @@ public class HotBarController : MonoBehaviour
     {
         if (slots[selectedIndex] == null) return;
 
-        ItemData data = slots[selectedIndex].GetComponentInChildren<ItemData>(true);
+        ItemData data = slots[selectedIndex].GetComponentInChildren<ItemData>();
         GameObject newPrefab = data != null ? data.GetItemPrefab() : null;
 
         // Caso 1: slot vacío → quitar item
@@ -108,23 +108,25 @@ public class HotBarController : MonoBehaviour
             }
 
             currentPrefab = newPrefab;
-            currentItem = Instantiate(newPrefab, handSlot);
+            currentItem = Instantiate(newPrefab);
+            currentItem.transform.SetParent(handSlot, false);
+            currentItem.transform.localScale = Vector3.one;
             currentItem.SetActive(true);
-            currentItem.transform.localPosition = Vector3.zero;
-            currentItem.transform.localRotation = Quaternion.identity;
+            currentItem.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             DisablePhysics();
 
-            currentItemBehaviour = currentItem.GetComponentInChildren<ItemBehaviour>();
+            currentItemBehaviour = currentItem.GetComponent<ItemBehaviour>();
         }
 
     }
 
     private void DisablePhysics()
     {
-        Rigidbody rb = currentItem.GetComponentInChildren<Rigidbody>();
-        Collider bc = currentItem.GetComponentInChildren<Collider>();
+        Rigidbody rb = currentItem.GetComponent<Rigidbody>();
+        Collider bc = currentItem.GetComponent<Collider>();
         if (rb != null && bc != null)
         {
+            print("Entra");
             rb.isKinematic = true;
             rb.detectCollisions = false;
             bc.enabled = false;
@@ -135,14 +137,12 @@ public class HotBarController : MonoBehaviour
     {
         if (dropItem.WasPressedThisFrame() && currentItem != null)
         {
-            print("Drop");
-            Rigidbody rb = currentItem.GetComponentInChildren<Rigidbody>(true);
-            ItemData data = slots[selectedIndex].GetComponentInChildren<ItemData>(true);
+            Rigidbody rb = currentItem.GetComponent<Rigidbody>();
+            ItemData data = slots[selectedIndex].GetComponentInChildren<ItemData>();
             print(rb);
             print(data);
             if(rb != null && data != null)
             {
-                print("Se ha dropeado");
                 InventoryController.inventoryInstance.DropItem(selectedIndex);
                 data.Clear();
                 Destroy(currentItem);

@@ -102,7 +102,7 @@ public class InventoryUI : MonoBehaviour
                     if (realIndex < items.Length && items[realIndex] != null)
                     {
                         // 1. Obtenemos los datos del objeto real que está en el controlador
-                        ItemData originalData = items[realIndex].GetComponentInChildren<ItemData>(true);
+                        ItemData originalData = items[realIndex].GetComponent<ItemData>();
                         
                         // 2. Obtenemos el script ItemData que añadimos al Icono en CreateChildIcon
                         ItemData uiData = slotItem.GetComponent<ItemData>();
@@ -120,7 +120,7 @@ public class InventoryUI : MonoBehaviour
                     else
                     {
                         // Si el slot está vacío, reseteamos el ItemData de la UI para no dejar basura
-                        ItemData uiData = slotItem.GetComponent<ItemData>();
+                        ItemData uiData = slotItem.GetComponentInChildren<ItemData>();
                         if (uiData != null) uiData.SetItemPrefab(null);
 
                         slotItem.SetActive(false);

@@ -30,7 +30,6 @@ public class InventoryController : MonoBehaviour
 
     public void AddItem(GameObject item)
     {
-        print("Item añadido: "+item);
         // Buscamos el primer hueco vacío (null)
         for (int i = 0; i < items.Length; i++)
         {
@@ -49,6 +48,7 @@ public class InventoryController : MonoBehaviour
 
     public void DropItem(int index)
     {
+        print("DROP");
         // Verificamos que el índice sea válido y que haya algo en ese slot
         if (index >= 0 && index < items.Length && items[index] != null)
         {
@@ -60,8 +60,11 @@ public class InventoryController : MonoBehaviour
             itemToDrop.SetActive(true);
             itemToDrop.transform.SetParent(itemsLayer);
             itemToDrop.transform.rotation = Random.rotation;
-            Rigidbody rb = itemToDrop.GetComponentInChildren<Rigidbody>();
-            Vector3 dropForce = Vector3.forward * 5f + Vector3.down * 4f;
+            Rigidbody rb = itemToDrop.GetComponent<Rigidbody>();
+            rb.isKinematic = false;
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            Vector3 dropForce = CameraController.playerCameraInstance.transform.forward * 2f + CameraController.playerCameraInstance.transform.up * 2f;
             rb.AddForce(dropForce,ForceMode.Impulse);
 
             if(inventoryUI != null) inventoryUI.UpdateUI();

@@ -41,7 +41,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (interact.WasPressedThisFrame() && hit.collider.CompareTag("Item"))
             {   
-                inventory.AddItem(hit.collider.transform.parent.gameObject);
+                inventory.AddItem(hit.collider.gameObject);
             }
         }
     }

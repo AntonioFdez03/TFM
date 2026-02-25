@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8085754876431300514}
   - component: {fileID: 1609258955208522024}
   - component: {fileID: 1935600702226266763}
+  - component: {fileID: 4744777152300238505}
   m_Layer: 0
   m_Name: Log
   m_TagString: Item
@@ -43,7 +44,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 201371129139926570}
   serializedVersion: 5
-  m_Mass: 50
+  m_Mass: 20
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -90,6 +91,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d4a83ace4815448a1110b8a22244c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResourceBehaviour
+--- !u!136 &4744777152300238505
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201371129139926570}
+  m_Material: {fileID: 13400000, guid: bf48303b0b041e8438ee0d43a3567e2d, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2
+  m_Height: 12
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0.79}
 --- !u!1 &1433469275403105075
 GameObject:
   m_ObjectHideFlags: 0

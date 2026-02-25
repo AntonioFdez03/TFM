@@ -39,7 +39,8 @@ public class TreeNode : HarvestableObject
         foreach (Transform spawner in logSpawners)
         {
             // Instanciamos el tronco en la posición y rotación del Empty
-            GameObject log = Instantiate(dropItem, spawner.position, spawner.rotation, transform.parent);
+            Instantiate(dropItem, spawner.position, spawner.rotation, transform.parent.transform.parent);
+            dropItem.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
         }
     }
 

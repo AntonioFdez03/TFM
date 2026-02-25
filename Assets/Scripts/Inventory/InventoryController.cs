@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class InventoryController : MonoBehaviour
 {   
@@ -7,6 +8,7 @@ public class InventoryController : MonoBehaviour
     [Header("References")]
     [SerializeField] Transform itemsLayer; 
     [SerializeField] InventoryUI inventoryUI;
+    [SerializeField] Transform handSlot;
 
     private int inventoryMax = 28;
     private GameObject[] items;
@@ -58,13 +60,20 @@ public class InventoryController : MonoBehaviour
             items[index] = null; 
 
             itemToDrop.SetActive(true);
-            itemToDrop.transform.SetParent(itemsLayer);
-            itemToDrop.transform.rotation = Random.rotation;
+
+            //Posicion, giro y escala al soltarlo
+            itemToDrop.transform.position = handSlot.transform.position;
+            Transform player = PlayerController.playerInstance.transform;
+            itemToDrop.transform.rotation = player.rotation * Quaternion.Euler(0f, 0f, 90f);
+
             Rigidbody rb = itemToDrop.GetComponent<Rigidbody>();
+            rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
             rb.isKinematic = false;
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-            Vector3 dropForce = CameraController.playerCameraInstance.transform.forward * 2f + CameraController.playerCameraInstance.transform.up * 2f;
+
+            itemToDrop.transform.SetParent(itemsLayer, true);
+            itemToDrop.transform.localScale = Vector3.one;
+
+            Vector3 dropForce = CameraController.playerCameraInstance.transform.forward * 50f + CameraController.playerCameraInstance.transform.up * 40f;
             rb.AddForce(dropForce,ForceMode.Impulse);
 
             if(inventoryUI != null) inventoryUI.UpdateUI();

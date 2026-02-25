@@ -27,9 +27,6 @@ public class TreeNode : HarvestableObject
         rb.isKinematic = false;
         rb.useGravity = true;
 
-        // Levantamos un poco el árbol desde el suelo
-        rb.transform.position += Vector3.up * 0.1f; // 10 cm por ejemplo
-
         // Aplicamos torque para caer hacia adelante
         rb.AddTorque(CameraController.playerCameraInstance.transform.forward * 500f, ForceMode.Impulse);
     }
@@ -40,7 +37,9 @@ public class TreeNode : HarvestableObject
         {
             // Instanciamos el tronco en la posición y rotación del Empty
             Instantiate(dropItem, spawner.position, spawner.rotation, transform.parent.transform.parent);
-            dropItem.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+            Rigidbody itemRB =  dropItem.GetComponent<Rigidbody>();
+            itemRB.linearVelocity = Vector3.zero;
+            itemRB.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
     }
 

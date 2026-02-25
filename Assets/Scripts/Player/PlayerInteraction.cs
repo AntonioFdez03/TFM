@@ -20,9 +20,12 @@ public class PlayerInteraction : MonoBehaviour
     }
 
     void Update()
-    {   
-        Interact();
-        Attack();
+    {
+        if (PlayerController.playerInstance.GetCanMove())
+        {
+            Interact();
+            Attack();
+        }
     }
 
     private void Interact()

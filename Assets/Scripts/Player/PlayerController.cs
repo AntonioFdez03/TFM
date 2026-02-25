@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float movementSpeed = 10f; 
     [SerializeField] float sprintSpeed = 20f; 
     [SerializeField] float jumpForce = 10f;
+    private bool canMove;
     private InputAction move;
     private InputAction sprint;
     private InputAction jump;
@@ -23,6 +24,9 @@ public class PlayerController : MonoBehaviour
     [Header("Gravity")]
     private Vector3 gravity = Vector3.down * 30f;
     private float yVelocity;
+
+    public void SetCanMove(bool cM) => canMove = cM;
+    public bool GetCanMove() => canMove;
 
     void Awake()
     {
@@ -35,6 +39,8 @@ public class PlayerController : MonoBehaviour
     }
     void Start()
     {   
+        canMove = true;
+        
         //References
         controller = GetComponent<CharacterController>();
         playerAttributes = GetComponent<PlayerAttributes>();

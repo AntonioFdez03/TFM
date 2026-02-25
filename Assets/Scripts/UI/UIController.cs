@@ -23,7 +23,6 @@ public class UIController : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         instance = this;
     }
 
@@ -66,12 +65,14 @@ public class UIController : MonoBehaviour
                 Time.timeScale = 1f;
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
+                PlayerController.playerInstance.SetCanMove(true);
                 break;
 
             case UIState.Inventory:
                 Time.timeScale = 1f;
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+                PlayerController.playerInstance.SetCanMove(false);
                 break;
 
             case UIState.Pause:

@@ -27,7 +27,7 @@ public class TreeNode : HarvestableObject
         rb.isKinematic = false;
         rb.useGravity = true;
 
-        //transform.position += Vector3.up * 0.5f;
+        transform.position += Vector3.up * 0.5f;
 
         Vector3 fallDirection = PlayerController.playerInstance.transform.forward;
         rb.AddForce(fallDirection * 400f, ForceMode.Impulse);
@@ -59,7 +59,7 @@ public class TreeNode : HarvestableObject
         if (other.CompareTag("Terrain"))
         {
             GenerateDropItems();
-            Destroy(transform.parent.gameObject);
+            Destroy(gameObject);
         }
     }
 }

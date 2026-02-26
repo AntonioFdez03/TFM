@@ -28,18 +28,25 @@ public class TreeNode : HarvestableObject
         rb.useGravity = true;
 
         // Aplicamos torque para caer hacia adelante
-        rb.AddTorque(CameraController.playerCameraInstance.transform.forward * 500f, ForceMode.Impulse);
+        rb.AddTorque(CameraController.playerCameraInstance.transform.forward * 1500f, ForceMode.Impulse);
     }
 
     protected override void GenerateDropItems()
     {
         foreach (Transform spawner in logSpawners)
         {
-            // Instanciamos el tronco en la posición y rotación del Empty
-            Instantiate(dropItem, spawner.position, spawner.rotation, transform.parent.transform.parent);
-            Rigidbody itemRB =  dropItem.GetComponent<Rigidbody>();
+            GameObject newItem = Instantiate(
+            dropItem,
+            spawner.position + Vector3.up * 0.8f,
+            spawner.rotation,
+            transform.parent.transform.parent
+            );
+
+            Rigidbody itemRB = newItem.GetComponent<Rigidbody>();
+
             itemRB.linearVelocity = Vector3.zero;
-            itemRB.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            itemRB.angularVelocity = Vector3.zero;
+            itemRB.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         }
     }
 
@@ -49,7 +56,7 @@ public class TreeNode : HarvestableObject
         if (other.CompareTag("Terrain"))
         {
             GenerateDropItems();
-            Destroy(gameObject);
+            Destroy(transform.parent.gameObject);
         }
     }
 }

@@ -12,6 +12,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject hudCanvas;
     [SerializeField] private GameObject inventoryCanvas;
     [SerializeField] private GameObject pauseCanvas;
+    [SerializeField] private GameObject craftingCanvas;
 
     private InputAction inventoryAction;
     private InputAction pauseAction;
@@ -45,8 +46,8 @@ public class UIController : MonoBehaviour
         // Detectar cambio a Pausa
         if (pauseAction.WasPressedThisFrame())
         {
-            if (currentState == UIState.Pause) SetState(UIState.Gameplay);
-            else SetState(UIState.Pause);
+            if (currentState == UIState.Gameplay) SetState(UIState.Pause);
+            else SetState(UIState.Gameplay);
         }
     }
 
@@ -58,6 +59,7 @@ public class UIController : MonoBehaviour
         hudCanvas.SetActive(currentState == UIState.Gameplay);
         inventoryCanvas.SetActive(currentState == UIState.Inventory);
         pauseCanvas.SetActive(currentState == UIState.Pause);
+        craftingCanvas.SetActive(currentState == UIState.Crafting);
 
         switch (currentState)
         {
@@ -79,6 +81,13 @@ public class UIController : MonoBehaviour
                 Time.timeScale = 0f;
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+                break;
+                
+            case UIState.Crafting:
+                Time.timeScale = 1f;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                PlayerController.playerInstance.SetCanMove(false);
                 break;
         }
     }

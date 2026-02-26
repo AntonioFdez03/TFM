@@ -37,12 +37,12 @@ public class PlayerInteraction : MonoBehaviour
         //Muestra el rayo en el editor
         //Debug.DrawRay(ray.origin, ray.direction * interactDistance, Color.blue);
 
-        if (Physics.Raycast(ray, out hit, interactDistance, interactLayer))
+        if (Physics.Raycast(ray, out hit, interactDistance, interactLayer) && interact.WasPressedThisFrame())
         {
-            if (interact.WasPressedThisFrame() && hit.collider.CompareTag("Item"))
-            {   
+            if (hit.collider.CompareTag("Item"))  
                 inventory.AddItem(hit.collider.gameObject);
-            }
+            else if(hit.collider.CompareTag("Interactive"))
+                hit.collider.gameObject.GetComponent<InteractiveObject>().Interact();
         }
     }
 

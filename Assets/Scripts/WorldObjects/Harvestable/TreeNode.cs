@@ -27,8 +27,11 @@ public class TreeNode : HarvestableObject
         rb.isKinematic = false;
         rb.useGravity = true;
 
-        // Aplicamos torque para caer hacia adelante
-        rb.AddTorque(CameraController.playerCameraInstance.transform.forward * 1500f, ForceMode.Impulse);
+        //transform.position += Vector3.up * 0.5f;
+
+        Vector3 fallDirection = PlayerController.playerInstance.transform.forward;
+        rb.AddForce(fallDirection * 400f, ForceMode.Impulse);
+        rb.AddTorque(fallDirection * 6000f, ForceMode.Impulse);
     }
 
     protected override void GenerateDropItems()

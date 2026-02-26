@@ -7,7 +7,6 @@ public class InventoryController : MonoBehaviour
     public static InventoryController inventoryInstance;
     [Header("References")]
     [SerializeField] Transform itemsLayer; 
-    [SerializeField] InventoryUI inventoryUI;
     [SerializeField] Transform handSlot;
 
     private int inventoryMax = 28;
@@ -41,13 +40,25 @@ public class InventoryController : MonoBehaviour
                 item.transform.SetParent(this.transform);
                 item.SetActive(false);
                 
-                if(inventoryUI != null) inventoryUI.UpdateUI();
+                InventoryUI.instance.UpdateUI();
                 return;
             }
         }
         Debug.Log("Inventario lleno");
     }
 
+    public void RemoveItem(GameObject item)
+    {
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (items[i] == item)
+            {
+                items[i] = null;
+                InventoryUI.instance.UpdateUI();
+                return;
+            }
+        }
+    }
     public void DropItem(int index)
     {
         print("DROP");
@@ -76,7 +87,7 @@ public class InventoryController : MonoBehaviour
             Vector3 dropForce = CameraController.playerCameraInstance.transform.forward * 50f + CameraController.playerCameraInstance.transform.up * 40f;
             rb.AddForce(dropForce,ForceMode.Impulse);
 
-            if(inventoryUI != null) inventoryUI.UpdateUI();
+            InventoryUI.instance.UpdateUI();
         }
     }
 
@@ -86,6 +97,6 @@ public class InventoryController : MonoBehaviour
 
         //Intercambio
         (items[targetIndex], items[originIndex]) = (items[originIndex], items[targetIndex]);
-        inventoryUI.UpdateUI();
+        InventoryUI.instance.UpdateUI();
     }
 }

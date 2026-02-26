@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 4418457840785516340}
   - component: {fileID: 4636621888487970992}
   - component: {fileID: 2080514114359495416}
+  - component: {fileID: 3754812111224304340}
+  - component: {fileID: 2256824597123595549}
   m_Layer: 0
   m_Name: Stone
   m_TagString: Item
@@ -80,8 +82,36 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3754812111224304340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5751404862281763555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b866a28731e74644491ee60557d48567, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemData
+  itemName: Stone
+  itemType: 1
+  itemIcon: {fileID: 21300000, guid: 3dffa9291e3fc3543a6dc112a4c029cc, type: 3}
+  itemPrefab: {fileID: 5751404862281763555}
+--- !u!114 &2256824597123595549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5751404862281763555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 863d4a83ace4815448a1110b8a22244c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ResourceBehaviour
 --- !u!1 &7273772063326437585
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,7 +141,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4418457840785516340}

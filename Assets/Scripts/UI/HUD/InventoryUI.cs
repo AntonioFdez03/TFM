@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class InventoryUI : MonoBehaviour
 {
+    public static InventoryUI instance;
+
     [Header("References")]
     [SerializeField] Transform gridPanel; 
     [SerializeField] Transform hotBarPanel;
@@ -19,6 +21,13 @@ public class InventoryUI : MonoBehaviour
 
     void Awake()
     {   
+        if(instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+        
         CleanPanel(hudHotBar);
         CleanPanel(hotBarPanel);
         CleanPanel(gridPanel);

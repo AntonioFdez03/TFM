@@ -37,9 +37,4 @@ public class ItemData : MonoBehaviour
         itemIcon = null;
         itemPrefab = null;
     }
-
-    public bool IsEmpty()
-    {
-        return itemPrefab == null && itemIcon == null && string.IsNullOrEmpty(itemName);
-    }
 }

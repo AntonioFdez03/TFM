@@ -15,8 +15,6 @@ public class ToolBehaviour : ItemBehaviour
     protected override void Awake()
     {
         base.Awake(); 
-        toolType = ToolType.Axe;
-        toolDamage = 20;
     }
 
     public override void Use()

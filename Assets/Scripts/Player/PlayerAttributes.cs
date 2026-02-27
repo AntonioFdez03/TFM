@@ -1,30 +1,32 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerAttributes : MonoBehaviour
 {   
-    [Header("Health attributes")]
+    //Health 
     [SerializeField] UnityEngine.UI.Image healthBar;
-    [SerializeField] float currentHealth;
-    [SerializeField] float maxHealth = 100f;
+    private float currentHealth;
+    private float maxHealth = 100f;
     private float invulnerabilityDuration = 1f;
     private bool isInvulnerable = false;
 
-    [Header("Stamina attributes")]
+    //Stamina
     [SerializeField] UnityEngine.UI.Image staminaBar;
-    [SerializeField] float currentStamina;
-    [SerializeField] float maxStamina = 100f;
-    [SerializeField] float burnRate = 10f; //Consumo por segundo
-    [SerializeField] float recoveryRate = 15f; //Recuperación por segundo
-    [SerializeField] float recoveryDelay = 1f;
-    [SerializeField] float timeSinceLastSprint = 0f;
+    private float currentStamina;
+    private float maxStamina = 100f;
+    private float staminaBurnRate = 10f; //Consumo por segundo
+    private float recoveryRate = 15f; //Recuperación por segundo
+    private float recoveryDelay = 1f;
+    private float timeSinceLastSprint = 0f;
     public bool canSprint;
 
-    void Awake()
-    {
-        
-    }
-    
+    //Hunger
+    [SerializeField] UnityEngine.UI.Image hungerBar;
+    private float currentHunger;
+    private float maxHunger = 100f;
+    private float hungerBurnRate = 1f;
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -37,9 +39,25 @@ public class PlayerAttributes : MonoBehaviour
         HandleStamina();
         UpdateUI();
     }
+
+    public void TakeDamage(float damage)
+    {
+        if (isInvulnerable)
+            return;
+        currentHealth -= damage;
+        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
+        StartCoroutine(InvulnerabilityCooldown());
+        if(currentHealth == 0)
+            PlayerController.playerInstance.SetIsDead(true);
+    }
+    public void HandleHunger()
+    {
+        
+    }
+
     public void UseStamina()
     {
-        currentStamina -= burnRate * Time.deltaTime;
+        currentStamina -= staminaBurnRate * Time.deltaTime;
         timeSinceLastSprint = 0f;
     }
 
@@ -56,16 +74,6 @@ public class PlayerAttributes : MonoBehaviour
         currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
     }
 
-    public void TakeDamage(float damage)
-    {
-        if (isInvulnerable)
-            return;
-        currentHealth -= damage;
-        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
-        StartCoroutine(InvulnerabilityCooldown());
-        if(currentHealth == 0)
-            PlayerController.playerInstance.SetIsDead(true);
-    }
     IEnumerator InvulnerabilityCooldown()
     {
         isInvulnerable = true;

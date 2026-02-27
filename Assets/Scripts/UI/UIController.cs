@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public enum UIState { Gameplay, Inventory, Pause, Crafting }
 public class UIController : MonoBehaviour
@@ -35,7 +36,10 @@ public class UIController : MonoBehaviour
     }
 
     void Update()
-    {
+    {   
+        if(PlayerController.playerInstance.IsDead())
+            SceneManager.LoadScene("MainMenuScene");
+
         // Detectar cambio a Inventario
         if (inventoryAction.WasPressedThisFrame())
         {

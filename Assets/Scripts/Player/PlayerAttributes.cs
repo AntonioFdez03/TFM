@@ -20,6 +20,11 @@ public class PlayerAttributes : MonoBehaviour
     [SerializeField] float timeSinceLastSprint = 0f;
     public bool canSprint;
 
+    void Awake()
+    {
+        
+    }
+    
     void Start()
     {
         currentHealth = maxHealth;
@@ -58,6 +63,8 @@ public class PlayerAttributes : MonoBehaviour
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
         StartCoroutine(InvulnerabilityCooldown());
+        if(currentHealth == 0)
+            PlayerController.playerInstance.SetIsDead(true);
     }
     IEnumerator InvulnerabilityCooldown()
     {

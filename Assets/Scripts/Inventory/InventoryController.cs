@@ -4,22 +4,28 @@ using UnityEngine.XR;
 
 public class InventoryController : MonoBehaviour
 {   
-    public static InventoryController inventoryInstance;
+    public static InventoryController instance;
+    [SerializeField] InventoryUI inventoryUI;
+    [SerializeField] InventoryUI inventoryUI2;
+
     [Header("References")]
     [SerializeField] Transform itemsLayer; 
     [SerializeField] Transform handSlot;
 
     private int inventoryMax = 28;
+    private int hotBarSize = 7;
+    private int inventoryGridSize = 21;
+
     private GameObject[] items;
 
     void Awake()
     {
-        if(inventoryInstance != null && inventoryInstance != this)
+        if(instance != null && instance != this)
         {
             Destroy(gameObject);
             return;
         }
-        inventoryInstance = this;
+        instance = this;
     }
     
     void Start()
@@ -28,6 +34,8 @@ public class InventoryController : MonoBehaviour
     }
 
     public GameObject[] GetInventoryItems() => items;
+    public int GetHotBarSize() => hotBarSize;
+    public int GetInventoryGridSize() => inventoryGridSize;
 
     public void AddItem(GameObject item)
     {
@@ -40,7 +48,8 @@ public class InventoryController : MonoBehaviour
                 item.transform.SetParent(this.transform);
                 item.SetActive(false);
                 
-                InventoryUI.instance.UpdateUI();
+                if(inventoryUI != null) inventoryUI.UpdateUI();
+                if(inventoryUI2 != null) inventoryUI2.UpdateUI();
                 return;
             }
         }
@@ -54,7 +63,8 @@ public class InventoryController : MonoBehaviour
             if (items[i] == item)
             {
                 items[i] = null;
-                InventoryUI.instance.UpdateUI();
+                if(inventoryUI != null) inventoryUI.UpdateUI();
+                if(inventoryUI2 != null) inventoryUI2.UpdateUI();
                 return;
             }
         }
@@ -87,7 +97,8 @@ public class InventoryController : MonoBehaviour
             Vector3 dropForce = CameraController.playerCameraInstance.transform.forward * 50f + CameraController.playerCameraInstance.transform.up * 40f;
             rb.AddForce(dropForce,ForceMode.Impulse);
 
-            InventoryUI.instance.UpdateUI();
+            if(inventoryUI != null) inventoryUI.UpdateUI();
+            if(inventoryUI2 != null) inventoryUI2.UpdateUI();
         }
     }
 
@@ -97,6 +108,7 @@ public class InventoryController : MonoBehaviour
 
         //Intercambio
         (items[targetIndex], items[originIndex]) = (items[originIndex], items[targetIndex]);
-        InventoryUI.instance.UpdateUI();
+        if(inventoryUI != null) inventoryUI.UpdateUI();
+        if(inventoryUI2 != null) inventoryUI2.UpdateUI();
     }
 }

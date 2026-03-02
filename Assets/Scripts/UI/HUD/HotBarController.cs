@@ -8,6 +8,7 @@ public class HotBarController : MonoBehaviour
     public static HotBarController hotBarInstance;
 
     [Header("References")]
+    [SerializeField] InventoryUI inventoryUI;
     [SerializeField] Transform hotBarPanel;
     [SerializeField] RectTransform selectorFrame;
     [SerializeField] Transform handSlot;
@@ -32,6 +33,8 @@ public class HotBarController : MonoBehaviour
             return;
         }
         hotBarInstance = this;
+
+        if(inventoryUI!=null) inventoryUI.GenerateSlots(hotBarPanel,InventoryController.instance.GetHotBarSize(),0);
     }
     void Start()
     {   
@@ -143,7 +146,7 @@ public class HotBarController : MonoBehaviour
             print(data);
             if(rb != null && data != null)
             {
-                InventoryController.inventoryInstance.DropItem(selectedIndex);
+                InventoryController.instance.DropItem(selectedIndex);
                 data.Clear();
                 Destroy(currentItem);
             }

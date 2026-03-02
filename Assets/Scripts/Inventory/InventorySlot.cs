@@ -58,7 +58,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         float margen = Screen.width * 0.26f;
         if (eventData.position.x < margen || eventData.position.x > Screen.width - margen)
         {   
-            InventoryController.inventoryInstance.DropItem(slotIndex);
+            InventoryController.instance.DropItem(slotIndex);
             HotBarController.hotBarInstance.RefreshHandItem();
         }
     }
@@ -70,7 +70,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         //Intercambia el slot destino con el actual, aunque esté vacío
         if (slotOrigen != null)
         {
-            InventoryController.inventoryInstance.SwapItems(slotOrigen.slotIndex, this.slotIndex);
+            InventoryController.instance.SwapItems(slotOrigen.slotIndex, this.slotIndex);
             HotBarController.hotBarInstance.RefreshHandItem();
         }
     }

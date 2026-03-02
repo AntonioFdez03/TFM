@@ -1,40 +1,25 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 public class InventoryUI : MonoBehaviour
 {
-    public static InventoryUI instance;
-
     [Header("References")]
     [SerializeField] Transform gridPanel; 
     [SerializeField] Transform hotBarPanel;
-    [SerializeField] Transform hudHotBar;
     [SerializeField] GameObject slotPrefab;
     [SerializeField] Transform DragginLayer;
-    
-    [Header("Settings")]
-    [SerializeField] int gridSize = 21;
-    [SerializeField] int hotBarSize = 7;
 
     private List<Image> inventorySlots = new List<Image>();
 
-    void Awake()
+    void Start()
     {   
-        if(instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        instance = this;
-        
-        CleanPanel(hudHotBar);
         CleanPanel(hotBarPanel);
         CleanPanel(gridPanel);
 
-        GenerateSlots(hudHotBar, hotBarSize, 0);
-        GenerateSlots(hotBarPanel, hotBarSize, 0); // Barra de equipamiento del inventario
-        GenerateSlots(gridPanel, gridSize, hotBarSize); // Grid del inventario
+        GenerateSlots(hotBarPanel, InventoryController.instance.GetHotBarSize(), 0); // Barra de equipamiento del inventario
+        GenerateSlots(gridPanel, InventoryController.instance.GetInventoryGridSize(), InventoryController.instance.GetHotBarSize()); // Grid del inventario
     }
 
     void CleanPanel(Transform panel)
@@ -45,7 +30,7 @@ public class InventoryUI : MonoBehaviour
         }
     }
     
-    void GenerateSlots(Transform parent, int count, int startIndex)
+    public void GenerateSlots(Transform parent, int count, int startIndex)
     {
         for (int i = startIndex; i < count + startIndex; i++)
         {
@@ -94,7 +79,7 @@ public class InventoryUI : MonoBehaviour
 
     public void UpdateUI()
     {
-        GameObject[] items = InventoryController.inventoryInstance.GetInventoryItems();
+        GameObject[] items = InventoryController.instance.GetInventoryItems();
 
         foreach (Image currentSlot in inventorySlots)
         {

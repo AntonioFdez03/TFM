@@ -13,6 +13,12 @@ public class InventoryUI : MonoBehaviour
 
     private List<Image> inventorySlots = new List<Image>();
 
+    void OnEnable()
+    {
+        InventoryController.instance.SetInventoryUI(this);
+        UpdateUI();
+    }
+
     void Start()
     {   
         CleanPanel(hotBarPanel);
@@ -20,6 +26,7 @@ public class InventoryUI : MonoBehaviour
 
         GenerateSlots(hotBarPanel, InventoryController.instance.GetHotBarSize(), 0); // Barra de equipamiento del inventario
         GenerateSlots(gridPanel, InventoryController.instance.GetInventoryGridSize(), InventoryController.instance.GetHotBarSize()); // Grid del inventario
+        UpdateUI();
     }
 
     void CleanPanel(Transform panel)

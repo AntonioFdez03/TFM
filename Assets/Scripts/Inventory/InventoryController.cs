@@ -6,7 +6,6 @@ public class InventoryController : MonoBehaviour
 {   
     public static InventoryController instance;
     [SerializeField] InventoryUI inventoryUI;
-    [SerializeField] InventoryUI inventoryUI2;
 
     [Header("References")]
     [SerializeField] Transform itemsLayer; 
@@ -33,6 +32,7 @@ public class InventoryController : MonoBehaviour
         items = new GameObject[inventoryMax];
     }
 
+    public void SetInventoryUI(InventoryUI invUI) => inventoryUI = invUI;
     public GameObject[] GetInventoryItems() => items;
     public int GetHotBarSize() => hotBarSize;
     public int GetInventoryGridSize() => inventoryGridSize;
@@ -48,8 +48,7 @@ public class InventoryController : MonoBehaviour
                 item.transform.SetParent(this.transform);
                 item.SetActive(false);
                 
-                if(inventoryUI != null) inventoryUI.UpdateUI();
-                if(inventoryUI2 != null) inventoryUI2.UpdateUI();
+                inventoryUI.UpdateUI();
                 return;
             }
         }
@@ -63,8 +62,7 @@ public class InventoryController : MonoBehaviour
             if (items[i] == item)
             {
                 items[i] = null;
-                if(inventoryUI != null) inventoryUI.UpdateUI();
-                if(inventoryUI2 != null) inventoryUI2.UpdateUI();
+                inventoryUI.UpdateUI();
                 return;
             }
         }
@@ -97,8 +95,7 @@ public class InventoryController : MonoBehaviour
             Vector3 dropForce = CameraController.playerCameraInstance.transform.forward * 50f + CameraController.playerCameraInstance.transform.up * 40f;
             rb.AddForce(dropForce,ForceMode.Impulse);
 
-            if(inventoryUI != null) inventoryUI.UpdateUI();
-            if(inventoryUI2 != null) inventoryUI2.UpdateUI();
+            inventoryUI.UpdateUI();
         }
     }
 
@@ -108,7 +105,6 @@ public class InventoryController : MonoBehaviour
 
         //Intercambio
         (items[targetIndex], items[originIndex]) = (items[originIndex], items[targetIndex]);
-        if(inventoryUI != null) inventoryUI.UpdateUI();
-        if(inventoryUI2 != null) inventoryUI2.UpdateUI();
+        inventoryUI.UpdateUI();
     }
 }

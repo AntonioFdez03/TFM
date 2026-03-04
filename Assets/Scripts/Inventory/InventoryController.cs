@@ -25,10 +25,6 @@ public class InventoryController : MonoBehaviour
             return;
         }
         instance = this;
-    }
-    
-    void Start()
-    {
         items = new GameObject[inventoryMax];
     }
 

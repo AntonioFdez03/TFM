@@ -13,7 +13,13 @@ public class CraftingMenuManager : MonoBehaviour
     void Start()
     {   
         CleanRecipes();
-        ShowRecipes(RecipeType.Consumable);
+        ShowRecipes(RecipeType.None);
+    }
+
+    void OnEnable()
+    {
+        CleanRecipes();
+        ShowRecipes(RecipeType.None);
     }
 
     private void CleanRecipes()

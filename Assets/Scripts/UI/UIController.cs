@@ -12,7 +12,7 @@ public class UIController : MonoBehaviour
     [Header("Canvas")]
     [SerializeField] private GameObject hudCanvas;
     [SerializeField] private GameObject inventoryCanvas;
-    [SerializeField] private GameObject pauseCanvasPrefab;
+    [SerializeField] private GameObject pauseCanvas;
     [SerializeField] private GameObject craftingCanvas;
 
     private InputAction inventoryAction;
@@ -62,7 +62,7 @@ public class UIController : MonoBehaviour
         // Desactivamos todo por defecto y solo activamos el actual
         hudCanvas.SetActive(currentState == UIState.Gameplay);
         inventoryCanvas.SetActive(currentState == UIState.Inventory);
-        //pauseCanvas.SetActive(currentState == UIState.Pause);
+        pauseCanvas.SetActive(currentState == UIState.Pause);
         craftingCanvas.SetActive(currentState == UIState.Crafting);
 
         switch (currentState)

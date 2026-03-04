@@ -23,7 +23,8 @@ public class CraftingController : MonoBehaviour
         if (CanCraft(recipe))
         {
             foreach(RecipeIngredient ingredient in recipe.ingredients)
-                InventoryController.instance.RemoveItem(InventoryController.instance.FindItemByName(ingredient.ingredientData.GetItemName()));
+                for(int i = 0 ; i < ingredient.ingredientAmount ; i++)
+                    InventoryController.instance.RemoveItem(InventoryController.instance.FindItemByName(ingredient.ingredientData.GetItemName()));
             
             InventoryController.instance.AddItem(recipe.recipeItem);
         }else

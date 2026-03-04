@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum RecipeType {None, Tool, Weapon, Consumable}
+public enum RecipeType {None, Tool, Weapon, Consumable, Placeable}
 
 [CreateAssetMenu(fileName = "NewRecipe", menuName = "Crafting/Recipe")]
 public class CraftingRecipe : ScriptableObject

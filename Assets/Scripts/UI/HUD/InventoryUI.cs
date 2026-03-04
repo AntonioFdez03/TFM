@@ -53,8 +53,6 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-
-
     public void UpdateUI()
     {
         GameObject[] items = InventoryController.instance.GetInventoryItems();

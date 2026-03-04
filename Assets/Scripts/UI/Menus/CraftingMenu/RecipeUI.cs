@@ -14,10 +14,15 @@ public class RecipeUI : MonoBehaviour
          if (recipe == null)
             return;
 
-        if (buttonName != null && recipe.recipeData != null)
-            buttonName.text = recipe.recipeData.GetItemName();
+        if (buttonName != null && recipe.recipeItem != null)
+            buttonName.text = recipe.recipeItem.GetComponent<ItemData>().GetItemName();
 
-        if (buttonImage != null && recipe.recipeData != null)
-            buttonImage.sprite = recipe.recipeData.GetItemIcon();
+        if (buttonImage != null && recipe.recipeItem != null)
+            buttonImage.sprite = recipe.recipeItem.GetComponent<ItemData>().GetItemIcon();
+    }
+
+    public void OnClickCraft()
+    {
+        CraftingController.instance.CraftRecipe(recipe);
     }
 }

@@ -11,7 +11,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] GameObject slotPrefab;
     [SerializeField] Transform DragginLayer;
 
-    private List<Image> inventorySlots = new List<Image>();
+    private List<Image> inventorySlots = new();
 
     void OnEnable()
     {
@@ -86,7 +86,7 @@ public class InventoryUI : MonoBehaviour
 
     public void UpdateUI()
     {
-        GameObject[] items = InventoryController.instance.GetInventoryItems();
+        List<GameObject> items = InventoryController.instance.GetInventoryItems();
 
         foreach (Image currentSlot in inventorySlots)
         {
@@ -100,7 +100,7 @@ public class InventoryUI : MonoBehaviour
                 {
                     GameObject slotItem = currentSlot.transform.GetChild(0).gameObject;
 
-                    if (realIndex < items.Length && items[realIndex] != null)
+                    if (realIndex < items.Count && items[realIndex] != null)
                     {
                         // 1. Obtenemos los datos del objeto real que está en el controlador
                         ItemData originalData = items[realIndex].GetComponent<ItemData>();

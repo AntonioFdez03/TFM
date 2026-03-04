@@ -13,7 +13,7 @@ public class CraftingMenuManager : MonoBehaviour
     void Start()
     {   
         CleanRecipes();
-        ShowAllRecipes();
+        ShowRecipes(RecipeType.Consumable);
     }
 
     private void CleanRecipes()
@@ -22,15 +22,15 @@ public class CraftingMenuManager : MonoBehaviour
             Destroy(child.gameObject);
         
     }
-    public void ShowRecipesByType(RecipeType recipeType)
-    {
-        
-    }
 
-    public void ShowAllRecipes()
+    public void ShowRecipes(RecipeType recipeType)
     {
-        for(int i = 0; i < CraftingController.instance.GetAllRecipeList().Count ; i++)
-            ShowRecipe(CraftingController.instance.GetAllRecipeList()[i]);
+        CleanRecipes();
+        foreach(CraftingRecipe recipe in CraftingController.instance.GetAllRecipeList())
+        {
+            if(recipeType == RecipeType.None || recipe.recipeType == recipeType)
+                ShowRecipe(recipe);
+        }
     }
 
     public void ShowRecipe(CraftingRecipe recipe)
@@ -49,4 +49,6 @@ public class CraftingMenuManager : MonoBehaviour
             ingredientInstance.GetComponent<IngredientUI>().SetIngredient(ingredient);
         }
     }
+
+    public void ShowTools() => ShowRecipes(RecipeType.Tool);
 }

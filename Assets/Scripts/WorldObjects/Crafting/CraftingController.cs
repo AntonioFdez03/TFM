@@ -18,25 +18,25 @@ public class CraftingController : MonoBehaviour
 
     public List<CraftingRecipe> GetAllRecipeList() => allRecipes;
 
-    public List<CraftingRecipe> GetRecipeListByType(RecipeType recipeType)
+    public void CraftRecipe(CraftingRecipe recipe)
     {
-        List<CraftingRecipe> recipes = new();
-
-        for(int i = 0; i < allRecipes.Count ; i++)
+        if (CanCraft(recipe))
         {
-            if(allRecipes[i].recipeType == recipeType)
-                recipes.Add(allRecipes[i]);
+            foreach(RecipeIngredient ingredient in recipe.ingredients)
+                InventoryController.instance.RemoveItem(InventoryController.instance.FindItemByName(ingredient.ingredientData.GetItemName()));
+            
+            InventoryController.instance.AddItem(recipe.recipeItem);
+        }else
+            print("NO SE PUEDE CRAFTEAR");
+    }
+
+    public bool CanCraft(CraftingRecipe recipe)
+    {
+       foreach(RecipeIngredient ingredient in recipe.ingredients)
+        {
+            if(InventoryController.instance.FindItemByName(ingredient.ingredientData.GetItemName()) == null)
+                return false;
         }
-        return recipes;
-    }
-
-    public void CraftItem()
-    {
-        
-    }
-
-    public bool CanCraft()
-    {
-       return true; 
+        return true;
     }
 }

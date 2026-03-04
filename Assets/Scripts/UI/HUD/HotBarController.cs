@@ -81,31 +81,7 @@ public class HotBarController : MonoBehaviour
             }
 
             inventorySlots.Add(newSlot.GetComponent<Image>());
-            CreateChildIcon(newSlot.transform, i);
         }
-    }
-
-    void CreateChildIcon(Transform slot, int index)
-    {
-        GameObject itemIcon = new GameObject("Icon_" + index);
-        itemIcon.transform.SetParent(slot);
-        
-        // Añadimos la imagen para el sprite
-        Image iconImage = itemIcon.AddComponent<Image>();
-        iconImage.raycastTarget = false; 
-
-        // --- EL CAMBIO CLAVE: Añadir ItemData ---
-        itemIcon.AddComponent<ItemData>(); 
-        // ----------------------------------------
-        
-        RectTransform rect = itemIcon.GetComponent<RectTransform>();
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.one;
-        rect.offsetMin = Vector2.zero;
-        rect.offsetMax = Vector2.zero;
-        rect.localScale = Vector3.one;
-
-        itemIcon.SetActive(false);
     }
 
     private void LoadSlots()
@@ -203,7 +179,7 @@ public class HotBarController : MonoBehaviour
 
     public void UpdateHotBarUI()
     {
-        List<GameObject> items = InventoryController.instance.GetInventoryItems();
+        GameObject[] items = InventoryController.instance.GetInventoryItems();
 
         for (int i = 0; i < slots.Length; i++)
         {
@@ -215,7 +191,7 @@ public class HotBarController : MonoBehaviour
             {
                 GameObject slotItem = slots[i].GetChild(0).gameObject;
 
-                if (i < items.Count && items[i] != null)
+                if (i < items.Length && items[i] != null)
                 {
                     ItemData originalData = items[i].GetComponent<ItemData>();
                     ItemData uiData = slotItem.GetComponent<ItemData>();

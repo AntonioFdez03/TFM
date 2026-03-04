@@ -6,6 +6,7 @@ public class InventoryController : MonoBehaviour
 {   
     public static InventoryController instance;
     public static System.Action OnInventoryChanged;
+    [SerializeField] InventoryUI inventoryUI;
 
     [Header("References")]
     [SerializeField] Transform itemsLayer; 
@@ -15,7 +16,7 @@ public class InventoryController : MonoBehaviour
     private int hotBarSize = 7;
     private int inventoryGridSize = 21;
 
-    private List<GameObject> items = new();
+    private GameObject[] items;
 
     void Awake()
     {
@@ -29,41 +30,54 @@ public class InventoryController : MonoBehaviour
     
     void Start()
     {
-
+        items = new GameObject[inventoryMax];
     }
 
-    public List<GameObject> GetInventoryItems() => items;
+    public void SetInventoryUI(InventoryUI invUI) => inventoryUI = invUI;
+    public GameObject[] GetInventoryItems() => items;
     public int GetHotBarSize() => hotBarSize;
     public int GetInventoryGridSize() => inventoryGridSize;
 
     public void AddItem(GameObject item)
     {
-        if(items.Count < inventoryMax)
+        // Buscamos el primer hueco vacío (null)
+        for (int i = 0; i < items.Length; i++)
         {
-            items.Add(item);
-            item.transform.SetParent(this.transform);
-            item.SetActive(false);
+            if (items[i] == null)
+            {
+                items[i] = item;
+                item.transform.SetParent(this.transform);
+                item.SetActive(false);
                 
-            OnInventoryChanged?.Invoke();
+                OnInventoryChanged?.Invoke();
+                return;
+            }
         }
+        Debug.Log("Inventario lleno");
     }
 
     public void RemoveItem(GameObject item)
     {
-        items.Remove(item);
-        OnInventoryChanged?.Invoke();
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (items[i] == item)
+            {
+                items[i] = null;
+                OnInventoryChanged?.Invoke();
+                return;
+            }
+        }
     }
-
     public void DropItem(int index)
     {
         print("DROP");
         // Verificamos que el índice sea válido y que haya algo en ese slot
-        if (items[index] != null)
+        if (index >= 0 && index < items.Length && items[index] != null)
         {
             GameObject itemToDrop = items[index];
             
             // Vaciamos el slot
-            items.RemoveAt(index); 
+            items[index] = null; 
 
             itemToDrop.SetActive(true);
 

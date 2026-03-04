@@ -50,37 +50,14 @@ public class InventoryUI : MonoBehaviour
             }
 
             inventorySlots.Add(newSlot.GetComponent<Image>());
-            CreateChildIcon(newSlot.transform, i);
         }
     }
 
-    //Función para crear un hijo imagen para cada slot, que contiene el icono del objeto
-    void CreateChildIcon(Transform slot, int index)
-    {
-        GameObject itemIcon = new GameObject("Icon_" + index);
-        itemIcon.transform.SetParent(slot);
-        
-        // Añadimos la imagen para el sprite
-        Image iconImage = itemIcon.AddComponent<Image>();
-        iconImage.raycastTarget = false; 
 
-        // --- EL CAMBIO CLAVE: Añadir ItemData ---
-        itemIcon.AddComponent<ItemData>(); 
-        // ----------------------------------------
-        
-        RectTransform rect = itemIcon.GetComponent<RectTransform>();
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.one;
-        rect.offsetMin = Vector2.zero;
-        rect.offsetMax = Vector2.zero;
-        rect.localScale = Vector3.one;
-
-        itemIcon.SetActive(false);
-    }
 
     public void UpdateUI()
     {
-        List<GameObject> items = InventoryController.instance.GetInventoryItems();
+        GameObject[] items = InventoryController.instance.GetInventoryItems();
 
         foreach (Image currentSlot in inventorySlots)
         {
@@ -94,7 +71,7 @@ public class InventoryUI : MonoBehaviour
                 {
                     GameObject slotItem = currentSlot.transform.GetChild(0).gameObject;
 
-                    if (realIndex < items.Count && items[realIndex] != null)
+                    if (realIndex < items.Length && items[realIndex] != null)
                     {
                         // 1. Obtenemos los datos del objeto real que está en el controlador
                         ItemData originalData = items[realIndex].GetComponent<ItemData>();

@@ -5,7 +5,7 @@ using UnityEngine.XR;
 public class InventoryController : MonoBehaviour
 {   
     public static InventoryController instance;
-    [SerializeField] InventoryUI inventoryUI;
+    public static System.Action OnInventoryChanged;
 
     [Header("References")]
     [SerializeField] Transform itemsLayer; 
@@ -32,7 +32,6 @@ public class InventoryController : MonoBehaviour
 
     }
 
-    public void SetInventoryUI(InventoryUI invUI) => inventoryUI = invUI;
     public List<GameObject> GetInventoryItems() => items;
     public int GetHotBarSize() => hotBarSize;
     public int GetInventoryGridSize() => inventoryGridSize;
@@ -45,14 +44,14 @@ public class InventoryController : MonoBehaviour
             item.transform.SetParent(this.transform);
             item.SetActive(false);
                 
-            inventoryUI.UpdateUI();
+            OnInventoryChanged?.Invoke();
         }
     }
 
     public void RemoveItem(GameObject item)
     {
         items.Remove(item);
-        inventoryUI.UpdateUI();
+        OnInventoryChanged?.Invoke();
     }
 
     public void DropItem(int index)
@@ -83,7 +82,7 @@ public class InventoryController : MonoBehaviour
             Vector3 dropForce = CameraController.playerCameraInstance.transform.forward * 50f + CameraController.playerCameraInstance.transform.up * 40f;
             rb.AddForce(dropForce,ForceMode.Impulse);
 
-            inventoryUI.UpdateUI();
+            OnInventoryChanged?.Invoke();
         }
     }
 
@@ -93,7 +92,7 @@ public class InventoryController : MonoBehaviour
 
         //Intercambio
         (items[targetIndex], items[originIndex]) = (items[originIndex], items[targetIndex]);
-        inventoryUI.UpdateUI();
+        OnInventoryChanged?.Invoke();
     }
 
     public GameObject FindItemByName(string name)

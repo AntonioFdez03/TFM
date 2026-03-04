@@ -18,4 +18,4 @@ MonoBehaviour:
     ingredientAmount: 1
   - ingredientData: {fileID: 3754812111224304340, guid: 200b9b53a5a020c41bb8385f8889899f, type: 3}
     ingredientAmount: 1
-  recipeData: {fileID: 3757441149599570577, guid: 79be5dcc78a1afc45be9ce2805926df9, type: 3}
+  recipeItem: {fileID: 2323832488127001772, guid: 79be5dcc78a1afc45be9ce2805926df9, type: 3}

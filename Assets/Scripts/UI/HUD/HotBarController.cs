@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using UnityEngine.XR;
 
 public class HotBarController : MonoBehaviour
@@ -8,7 +10,6 @@ public class HotBarController : MonoBehaviour
     public static HotBarController hotBarInstance;
 
     [Header("References")]
-    [SerializeField] InventoryUI inventoryUI;
     [SerializeField] Transform hotBarPanel;
     [SerializeField] RectTransform selectorFrame;
     [SerializeField] Transform handSlot;
@@ -21,7 +22,8 @@ public class HotBarController : MonoBehaviour
     private ItemBehaviour currentItemBehaviour;
     private GameObject currentPrefab;
     private InputAction dropItem; 
-
+    [SerializeField] GameObject slotPrefab;
+    private List<Image> inventorySlots = new();
     public GameObject GetCurrentItem() => currentItem;
     public ItemBehaviour GetCurrentItemBehaviour() => currentItemBehaviour;
 
@@ -33,12 +35,11 @@ public class HotBarController : MonoBehaviour
             return;
         }
         hotBarInstance = this;
-
-        if(inventoryUI!=null) inventoryUI.GenerateSlots(hotBarPanel,InventoryController.instance.GetHotBarSize(),0);
     }
     void Start()
     {   
         dropItem = InputSystem.actions.FindAction("Drop");
+        GenerateSlots(hotBarPanel, InventoryController.instance.GetHotBarSize(), 0);
         LoadSlots();
         MoveSelectorFrame(selectedIndex);
     }
@@ -57,8 +58,54 @@ public class HotBarController : MonoBehaviour
             }
         }
 
+        InventoryController.OnInventoryChanged += UpdateHotBarUI;
         RefreshHandItem();
         DropCurrentItem();
+    }
+
+     public void GenerateSlots(Transform parent, int count, int startIndex)
+    {
+        for (int i = startIndex; i < count + startIndex; i++)
+        {
+            GameObject newSlot = Instantiate(slotPrefab, parent);
+            newSlot.name = "Slot_" + i;
+
+            RectTransform rect = newSlot.GetComponent<RectTransform>();
+            if (rect != null) rect.sizeDelta = new Vector2(110f,110f);
+        
+
+            InventorySlot scriptSlot = newSlot.GetComponent<InventorySlot>();
+            if (scriptSlot != null)
+            {
+                scriptSlot.slotIndex = i;
+            }
+
+            inventorySlots.Add(newSlot.GetComponent<Image>());
+            CreateChildIcon(newSlot.transform, i);
+        }
+    }
+
+    void CreateChildIcon(Transform slot, int index)
+    {
+        GameObject itemIcon = new GameObject("Icon_" + index);
+        itemIcon.transform.SetParent(slot);
+        
+        // Añadimos la imagen para el sprite
+        Image iconImage = itemIcon.AddComponent<Image>();
+        iconImage.raycastTarget = false; 
+
+        // --- EL CAMBIO CLAVE: Añadir ItemData ---
+        itemIcon.AddComponent<ItemData>(); 
+        // ----------------------------------------
+        
+        RectTransform rect = itemIcon.GetComponent<RectTransform>();
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+        rect.localScale = Vector3.one;
+
+        itemIcon.SetActive(false);
     }
 
     private void LoadSlots()
@@ -152,5 +199,46 @@ public class HotBarController : MonoBehaviour
             }
             
         }
+    }
+
+    public void UpdateHotBarUI()
+    {
+        List<GameObject> items = InventoryController.instance.GetInventoryItems();
+
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i] == null)
+                continue;
+
+            // Si el slot tiene hijo (Icon)
+            if (slots[i].childCount > 0)
+            {
+                GameObject slotItem = slots[i].GetChild(0).gameObject;
+
+                if (i < items.Count && items[i] != null)
+                {
+                    ItemData originalData = items[i].GetComponent<ItemData>();
+                    ItemData uiData = slotItem.GetComponent<ItemData>();
+
+                    if (originalData != null && uiData != null)
+                    {
+                        uiData.CopyFrom(originalData);
+                        slotItem.GetComponent<Image>().sprite = originalData.GetItemIcon();
+                        slotItem.SetActive(true);
+                    }
+                }
+                else
+                {
+                    ItemData uiData = slotItem.GetComponent<ItemData>();
+                    if (uiData != null)
+                        uiData.SetItemPrefab(null);
+
+                    slotItem.SetActive(false);
+                }
+            }
+        }
+
+        // Opcional: actualizar mano también
+        RefreshHandItem();
     }
 }

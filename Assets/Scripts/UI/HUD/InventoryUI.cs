@@ -13,12 +13,6 @@ public class InventoryUI : MonoBehaviour
 
     private List<Image> inventorySlots = new();
 
-    void OnEnable()
-    {
-        InventoryController.instance.SetInventoryUI(this);
-        UpdateUI();
-    }
-
     void Start()
     {   
         CleanPanel(hotBarPanel);
@@ -129,5 +123,16 @@ public class InventoryUI : MonoBehaviour
                 }
             }
         }
+    }
+
+    void OnEnable()
+    {
+        InventoryController.OnInventoryChanged += UpdateUI;
+        UpdateUI();
+    }
+
+    void OnDisable()
+    {
+        InventoryController.OnInventoryChanged -= UpdateUI;
     }
 }

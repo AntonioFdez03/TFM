@@ -6,7 +6,6 @@ public class InventoryController : MonoBehaviour
 {   
     public static InventoryController instance;
     public static System.Action OnInventoryChanged;
-    [SerializeField] InventoryUI inventoryUI;
 
     [Header("References")]
     [SerializeField] Transform itemsLayer; 
@@ -33,7 +32,6 @@ public class InventoryController : MonoBehaviour
         items = new GameObject[inventoryMax];
     }
 
-    public void SetInventoryUI(InventoryUI invUI) => inventoryUI = invUI;
     public GameObject[] GetInventoryItems() => items;
     public int GetHotBarSize() => hotBarSize;
     public int GetInventoryGridSize() => inventoryGridSize;
@@ -112,9 +110,10 @@ public class InventoryController : MonoBehaviour
     public GameObject FindItemByName(string name)
     {
         foreach (GameObject item in items)
-        {
-            if(item.GetComponent<ItemData>().GetItemName() == name)
-                return item;
+        {   
+            if(item != null)
+                if(item.GetComponent<ItemData>().GetItemName() == name)
+                    return item;
         }
 
         return null;

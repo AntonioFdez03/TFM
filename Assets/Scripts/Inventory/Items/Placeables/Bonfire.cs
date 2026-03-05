@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Bonfire : PlaceableObject
+public class Bonfire : PlaceableBehaviour
 {
     private bool burnPlayer;
     private float fireDamage;
@@ -17,13 +17,8 @@ public class Bonfire : PlaceableObject
     {
         if (burnPlayer)
         {
-            PlayerController.playerInstance.GetPlayerAttributes().TakeDamage(fireDamage);
+            PlayerController.instance.GetPlayerAttributes().TakeDamage(fireDamage);
         }
-    }
-
-    public override void Place()
-    {
-        
     }
 
     protected void OnTriggerEnter(Collider other)

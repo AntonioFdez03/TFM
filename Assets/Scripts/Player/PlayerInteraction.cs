@@ -8,7 +8,6 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] ArmController arm;
     [SerializeField] InventoryController inventory;
     private float interactDistance = 10f;
-    private LayerMask interactLayer = 1;
 
     private InputAction interact;
     private InputAction attack;
@@ -21,7 +20,7 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
-        if (PlayerController.playerInstance.GetCanMove())
+        if (PlayerController.instance.GetCanMove())
         {
             Interact();
             Attack();
@@ -30,14 +29,10 @@ public class PlayerInteraction : MonoBehaviour
 
     private void Interact()
     {
-        // Rayo desde el centro de la cámara
-        Ray ray = new Ray(CameraController.playerCameraInstance.transform.position, CameraController.playerCameraInstance.transform.forward);
+        Ray ray = new Ray(CameraController.instance.transform.position, CameraController.instance.transform.forward);
         RaycastHit hit;
 
-        //Muestra el rayo en el editor
-        //Debug.DrawRay(ray.origin, ray.direction * interactDistance, Color.blue);
-
-        if (Physics.Raycast(ray, out hit, interactDistance, interactLayer) && interact.WasPressedThisFrame())
+        if (Physics.Raycast(ray, out hit, interactDistance) && interact.WasPressedThisFrame())
         {
             if (hit.collider.CompareTag("Item"))  
                 inventory.AddItem(hit.collider.gameObject);

@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {   
-    public static CameraController playerCameraInstance;
+    public static CameraController instance;
 
     [SerializeField] float sensibility = 10f;
     
@@ -15,12 +15,12 @@ public class CameraController : MonoBehaviour
 
     void Awake()
     {
-        if(playerCameraInstance != null && playerCameraInstance != this)
+        if(instance != null && instance != this)
         {
             Destroy(gameObject);
             return;
         }
-        playerCameraInstance = this;
+        instance = this;
     }
 
     void Start()
@@ -41,7 +41,7 @@ public class CameraController : MonoBehaviour
 
             transform.localRotation = Quaternion.Euler(rotationV,0,0);
             
-            PlayerController.playerInstance.transform.Rotate(Vector3.up * valueX);         
+            PlayerController.instance.transform.Rotate(Vector3.up * valueX);         
         }
     }
 }

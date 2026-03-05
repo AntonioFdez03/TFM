@@ -34,7 +34,7 @@ public class CraftingMenuManager : MonoBehaviour
         CleanRecipes();
         foreach(CraftingRecipe recipe in CraftingController.instance.GetAllRecipeList())
         {
-            if(recipeType == RecipeType.None || recipe.recipeType == recipeType)
+            if((recipeType == RecipeType.None || recipe.recipeType == recipeType) && (recipe.stationType == CraftingController.instance.GetStationType()))
                 ShowRecipe(recipe);
         }
     }
@@ -57,4 +57,5 @@ public class CraftingMenuManager : MonoBehaviour
     }
 
     public void ShowTools() => ShowRecipes(RecipeType.Tool);
+    public void ShowPlaceables() => ShowRecipes(RecipeType.Placeable);
 }

@@ -5,6 +5,7 @@ public class CraftingController : MonoBehaviour
 {   
     public static CraftingController instance;
     [SerializeField] private List<CraftingRecipe> allRecipes = new();
+    private CraftingStationType stationType;
 
     void Awake()
     {
@@ -17,6 +18,8 @@ public class CraftingController : MonoBehaviour
     }
 
     public List<CraftingRecipe> GetAllRecipeList() => allRecipes;
+    public void SetStationType(CraftingStationType craftingStationType) => stationType = craftingStationType;
+    public CraftingStationType GetStationType() => stationType;
 
     public void CraftRecipe(CraftingRecipe recipe)
     {

@@ -26,7 +26,7 @@ public class ToolBehaviour : ItemBehaviour
             return;
         }
 
-        canUse = false;          // 🔒 BLOQUEAS AQUÍ
+        canUse = false;      
         print("Herramienta usada.");
         UseTool();
         StartCoroutine(UseCooldown());
@@ -34,7 +34,7 @@ public class ToolBehaviour : ItemBehaviour
 
     protected void UseTool()
     {
-        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+        Ray ray = new Ray(CameraController.instance.transform.position, CameraController.instance.transform.forward);
         RaycastHit hit;
 
         Debug.DrawRay(ray.origin, ray.direction * toolRange, Color.red);
@@ -46,9 +46,8 @@ public class ToolBehaviour : ItemBehaviour
 
             HarvestableObject harvestableObject = hit.collider.CompareTag("Harvestable") ? hit.collider.GetComponent<HarvestableObject>() : null;
             if(harvestableObject != null)
-            {
                 harvestableObject.TakeHit(this);
-            }
+            
         }
     }
 }

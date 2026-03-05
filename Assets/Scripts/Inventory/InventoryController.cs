@@ -77,7 +77,7 @@ public class InventoryController : MonoBehaviour
 
             //Posicion, giro y escala al soltarlo
             itemToDrop.transform.position = handSlot.transform.position;
-            Transform player = PlayerController.playerInstance.transform;
+            Transform player = PlayerController.instance.transform;
             itemToDrop.transform.rotation = player.rotation * Quaternion.Euler(0f, 0f, 90f);
 
             Rigidbody rb = itemToDrop.GetComponent<Rigidbody>();
@@ -87,7 +87,7 @@ public class InventoryController : MonoBehaviour
             itemToDrop.transform.SetParent(itemsLayer, true);
             itemToDrop.transform.localScale = Vector3.one;
 
-            Vector3 dropForce = CameraController.playerCameraInstance.transform.forward * 50f + CameraController.playerCameraInstance.transform.up * 40f;
+            Vector3 dropForce = CameraController.instance.transform.forward * 50f + CameraController.instance.transform.up * 40f;
             rb.AddForce(dropForce,ForceMode.Impulse);
 
             OnInventoryChanged?.Invoke();

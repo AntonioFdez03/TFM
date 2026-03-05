@@ -29,7 +29,7 @@ public class TreeNode : HarvestableObject
 
         transform.position += Vector3.up * 0.5f;
 
-        Vector3 fallDirection = PlayerController.playerInstance.transform.forward;
+        Vector3 fallDirection = PlayerController.instance.transform.forward;
         rb.AddForce(fallDirection * 400f, ForceMode.Impulse);
         rb.AddTorque(fallDirection * 6000f, ForceMode.Impulse);
     }

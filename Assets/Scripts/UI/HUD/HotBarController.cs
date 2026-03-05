@@ -7,7 +7,7 @@ using UnityEngine.XR;
 
 public class HotBarController : MonoBehaviour
 {   
-    public static HotBarController hotBarInstance;
+    public static HotBarController instance;
 
     [Header("References")]
     [SerializeField] Transform hotBarPanel;
@@ -24,17 +24,15 @@ public class HotBarController : MonoBehaviour
     private InputAction dropItem; 
     [SerializeField] GameObject slotPrefab;
     private List<Image> inventorySlots = new();
-    public GameObject GetCurrentItem() => currentItem;
-    public ItemBehaviour GetCurrentItemBehaviour() => currentItemBehaviour;
 
     void Awake()
     {
-        if(hotBarInstance != null && hotBarInstance != this)
+        if(instance != null && instance != this)
         {
             Destroy(gameObject);
             return;
         }
-        hotBarInstance = this;
+        instance = this;
     }
     void Start()
     {   
@@ -43,6 +41,9 @@ public class HotBarController : MonoBehaviour
         LoadSlots();
         MoveSelectorFrame(selectedIndex);
     }
+
+    public GameObject GetCurrentItem() => currentItem;
+    public ItemBehaviour GetCurrentItemBehaviour() => currentItemBehaviour;
 
     void Update()
     {

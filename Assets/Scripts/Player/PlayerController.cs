@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {   
-    public static PlayerController playerInstance;
+    public static PlayerController instance;
 
     [Header("References")]
     private PlayerAttributes playerAttributes;
@@ -28,12 +28,12 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        if(playerInstance != null && playerInstance != this)
+        if(instance != null && instance != this)
         {
             Destroy(gameObject);
             return;
         }
-        playerInstance = this;
+        instance = this;
     }
 
     void Start()
@@ -73,8 +73,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 CalculateHorizontalMovement()
     {
         Vector2 playerInput = move.ReadValue<Vector2>();
-        Vector3 cameraForward = CameraController.playerCameraInstance.transform.forward;
-        Vector3 cameraRight = CameraController.playerCameraInstance.transform.right;
+        Vector3 cameraForward = CameraController.instance.transform.forward;
+        Vector3 cameraRight = CameraController.instance.transform.right;
 
         cameraForward.y = 0;
         cameraRight.y = 0;

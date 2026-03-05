@@ -37,7 +37,7 @@ public class UIController : MonoBehaviour
 
     void Update()
     {   
-        if(PlayerController.playerInstance.IsDead())
+        if(PlayerController.instance.IsDead())
             SceneManager.LoadScene("MainMenuScene");
 
         // Detectar cambio a Inventario
@@ -71,14 +71,14 @@ public class UIController : MonoBehaviour
                 Time.timeScale = 1f;
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
-                PlayerController.playerInstance.SetCanMove(true);
+                PlayerController.instance.SetCanMove(true);
                 break;
 
             case UIState.Inventory:
                 Time.timeScale = 1f;
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                PlayerController.playerInstance.SetCanMove(false);
+                PlayerController.instance.SetCanMove(false);
                 break;
 
             case UIState.Pause:
@@ -91,8 +91,10 @@ public class UIController : MonoBehaviour
                 Time.timeScale = 1f;
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                PlayerController.playerInstance.SetCanMove(false);
+                PlayerController.instance.SetCanMove(false);
                 break;
         }
     }
+
+    public void SetCraftingState() => SetState(UIState.Crafting);
 }

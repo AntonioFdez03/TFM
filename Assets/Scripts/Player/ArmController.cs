@@ -34,7 +34,7 @@ public class ArmController : MonoBehaviour
     {
         if (!isMoving)
         {   
-            ItemBehaviour itemBehaviour = HotBarController.hotBarInstance.GetCurrentItemBehaviour();
+            ItemBehaviour itemBehaviour = HotBarController.instance.GetCurrentItemBehaviour();
             print(itemBehaviour);
             if(itemBehaviour == null)
                 StartCoroutine(PunchMovementCoroutine());  
@@ -126,7 +126,7 @@ public class ArmController : MonoBehaviour
 
     private void SwingHit()
     {
-        ItemBehaviour item = HotBarController.hotBarInstance.GetCurrentItemBehaviour();
+        ItemBehaviour item = HotBarController.instance.GetCurrentItemBehaviour();
         if(item != null)
             item.GetComponent<ItemBehaviour>().Use();
         else
@@ -135,7 +135,7 @@ public class ArmController : MonoBehaviour
 
     private void Punch()
     {
-        Ray ray = new Ray(CameraController.playerCameraInstance.transform.position, CameraController.playerCameraInstance.transform.transform.forward);
+        Ray ray = new Ray(CameraController.instance.transform.position, CameraController.instance.transform.transform.forward);
         RaycastHit hit;
 
         Debug.DrawRay(ray.origin, ray.direction * punchRange, Color.red);

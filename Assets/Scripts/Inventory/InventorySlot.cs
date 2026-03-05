@@ -59,7 +59,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         if (eventData.position.x < margen || eventData.position.x > Screen.width - margen)
         {   
             InventoryController.instance.DropItem(slotIndex);
-            HotBarController.hotBarInstance.RefreshHandItem();
+            HotBarController.instance.RefreshHandItem();
         }
     }
 
@@ -71,7 +71,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         if (slotOrigen != null)
         {
             InventoryController.instance.SwapItems(slotOrigen.slotIndex, this.slotIndex);
-            HotBarController.hotBarInstance.RefreshHandItem();
+            HotBarController.instance.RefreshHandItem();
         }
     }
 }

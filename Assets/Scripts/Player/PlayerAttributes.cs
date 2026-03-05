@@ -48,7 +48,7 @@ public class PlayerAttributes : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
         StartCoroutine(InvulnerabilityCooldown());
         if(currentHealth == 0)
-            PlayerController.playerInstance.SetIsDead(true);
+            PlayerController.instance.SetIsDead(true);
     }
     public void HandleHunger()
     {

@@ -44,6 +44,7 @@ public class InventoryController : MonoBehaviour
                 item.SetActive(false);
                 
                 OnInventoryChanged?.Invoke();
+                HotBarController.instance.UpdateHotBarUI();
                 return;
             }
         }
@@ -58,6 +59,7 @@ public class InventoryController : MonoBehaviour
             {
                 items[i] = null;
                 OnInventoryChanged?.Invoke();
+                HotBarController.instance.UpdateHotBarUI();
                 return;
             }
         }
@@ -91,6 +93,7 @@ public class InventoryController : MonoBehaviour
             rb.AddForce(dropForce,ForceMode.Impulse);
 
             OnInventoryChanged?.Invoke();
+            HotBarController.instance.UpdateHotBarUI();
         }
     }
 

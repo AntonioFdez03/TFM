@@ -58,9 +58,6 @@ public class HotBarController : MonoBehaviour
                 MoveSelectorFrame(i);
             }
         }
-
-        InventoryController.OnInventoryChanged += UpdateHotBarUI;
-        RefreshHandItem();
         DropCurrentItem();
     }
 
@@ -102,6 +99,7 @@ public class HotBarController : MonoBehaviour
             selectorFrame.anchoredPosition = Vector2.zero;
             selectorFrame.localScale = Vector3.one;
             selectedIndex = index;
+            RefreshHandItem();
         }
     }
 
@@ -187,7 +185,6 @@ public class HotBarController : MonoBehaviour
             if (slots[i] == null)
                 continue;
 
-            // Si el slot tiene hijo (Icon)
             if (slots[i].childCount > 0)
             {
                 GameObject slotItem = slots[i].GetChild(0).gameObject;
@@ -214,8 +211,6 @@ public class HotBarController : MonoBehaviour
                 }
             }
         }
-
-        // Opcional: actualizar mano también
         RefreshHandItem();
     }
 }

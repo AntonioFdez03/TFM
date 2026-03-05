@@ -61,6 +61,8 @@ public class HotBarController : MonoBehaviour
             }
         }
         DropCurrentItem();
+
+        print("Current Item behaviour: " + currentItemBehaviour);
     }
 
      public void GenerateSlots(Transform parent, int count, int startIndex)
@@ -124,8 +126,6 @@ public class HotBarController : MonoBehaviour
             return;
         }
 
-        currentItemBehaviour = newPrefab.GetComponent<ItemBehaviour>();
-
         // Si es el mismo item no hacer nada
         if (currentPrefab == newPrefab)
             return;
@@ -134,8 +134,9 @@ public class HotBarController : MonoBehaviour
             Destroy(currentItem);
 
         currentPrefab = newPrefab;
+        ItemBehaviour prefabBehaviour = newPrefab.GetComponent<ItemBehaviour>();
 
-        if (currentItemBehaviour is not PlaceableBehaviour)
+        if (prefabBehaviour is not PlaceableBehaviour)
         {
             currentItem = Instantiate(newPrefab);
             currentItem.transform.SetParent(handSlot, false);

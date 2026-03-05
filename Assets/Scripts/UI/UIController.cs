@@ -78,6 +78,7 @@ public class UIController : MonoBehaviour
                 Time.timeScale = 1f;
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+                CraftingController.instance.SetStationType(CraftingStationType.None);
                 PlayerController.instance.SetCanMove(false);
                 break;
 
@@ -97,4 +98,5 @@ public class UIController : MonoBehaviour
     }
 
     public void SetCraftingState() => SetState(UIState.Crafting);
+    public void SetInventoryState() => SetState(UIState.Inventory);
 }

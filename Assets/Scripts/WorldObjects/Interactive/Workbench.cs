@@ -9,7 +9,7 @@ public class Workbench : InteractiveObject
 
     public override void Interact()
     {
-        UIController.instance.SetState(UIState.Crafting);    
         CraftingController.instance.SetStationType(CraftingStationType.Workbench);
+        UIController.instance.SetState(UIState.Crafting);    
     }
 }

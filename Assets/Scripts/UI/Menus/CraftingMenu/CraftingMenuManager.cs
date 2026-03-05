@@ -3,12 +3,17 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
 using Unity.VisualScripting;
+using TMPro;
+using UnityEditor;
 
 public class CraftingMenuManager : MonoBehaviour
 {   
+    [SerializeField] private TMP_Text stationType;
     [SerializeField] private GameObject recipesPanel;
     [SerializeField] private GameObject recipePrefab;
     [SerializeField] private GameObject ingredientPrefab;
+    [SerializeField] private Button toolsButton;
+    [SerializeField] private Button placeablesButton;
 
     void Start()
     {   
@@ -17,9 +22,15 @@ public class CraftingMenuManager : MonoBehaviour
     }
 
     void OnEnable()
-    {
+    {   
+        EnableButtons();
         CleanRecipes();
         ShowRecipes(RecipeType.None);
+
+        if(CraftingController.instance.GetStationType() != CraftingStationType.None)
+            stationType.text = "(" + CraftingController.instance.GetStationType().ToString().ToUpper() + ")";
+        else
+            stationType.text = "";
     }
 
     private void CleanRecipes()
@@ -56,6 +67,21 @@ public class CraftingMenuManager : MonoBehaviour
         }
     }
 
-    public void ShowTools() => ShowRecipes(RecipeType.Tool);
-    public void ShowPlaceables() => ShowRecipes(RecipeType.Placeable);
+    public void ToolsButtonPressed() {
+        EnableButtons();
+        toolsButton.interactable = false;
+        ShowRecipes(RecipeType.Tool);
+    }
+    public void PlaceablesButtonPressed() 
+    {
+        EnableButtons();
+        placeablesButton.interactable = false;
+        ShowRecipes(RecipeType.Placeable);
+    }
+
+    private void EnableButtons()
+    {
+        toolsButton.interactable = true;
+        placeablesButton.interactable = true;
+    }
 }

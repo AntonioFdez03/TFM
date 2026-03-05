@@ -15,6 +15,8 @@ public class CraftingController : MonoBehaviour
             return;
         }
         instance = this;
+
+        print(allRecipes[2]);
     }
 
     public List<CraftingRecipe> GetAllRecipeList() => allRecipes;

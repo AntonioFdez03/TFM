@@ -104,6 +104,7 @@ public class InventoryController : MonoBehaviour
         //Intercambio
         (items[targetIndex], items[originIndex]) = (items[originIndex], items[targetIndex]);
         OnInventoryChanged?.Invoke();
+        HotBarController.instance.UpdateHotBarUI();
     }
 
     public GameObject FindItemByName(string name)

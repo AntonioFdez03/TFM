@@ -7971,6 +7971,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 631565644}
     m_Modifications:
+    - target: {fileID: 2756443570146996382, guid: f5716f7b7c7133743b64adf49ab432b3, type: 3}
+      propertyPath: itemsLayer
+      value: 
+      objectReference: {fileID: 631565644}
     - target: {fileID: 3932009009019475427, guid: f5716f7b7c7133743b64adf49ab432b3, type: 3}
       propertyPath: craftingCanvas
       value: 

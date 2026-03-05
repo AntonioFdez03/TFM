@@ -47,7 +47,6 @@ public class ToolBehaviour : ItemBehaviour
             HarvestableObject harvestableObject = hit.collider.CompareTag("Harvestable") ? hit.collider.GetComponent<HarvestableObject>() : null;
             if(harvestableObject != null)
                 harvestableObject.TakeHit(this);
-            
         }
     }
 }

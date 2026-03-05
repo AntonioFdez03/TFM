@@ -17,7 +17,7 @@ public class HotBarController : MonoBehaviour
     [Header("Settings")]
     [Range(0, 6)] private int selectedIndex = 0;
     
-    private Transform[] slots = new Transform[7];
+    private Transform[] slots;
     private GameObject currentItem;
     private ItemBehaviour currentItemBehaviour;
     private GameObject currentPrefab;
@@ -33,6 +33,8 @@ public class HotBarController : MonoBehaviour
             return;
         }
         instance = this;
+
+        slots = new Transform[InventoryController.instance.GetHotBarSize()];
     }
     void Start()
     {   
@@ -110,39 +112,40 @@ public class HotBarController : MonoBehaviour
         ItemData data = slots[selectedIndex].GetComponentInChildren<ItemData>();
         GameObject newPrefab = data != null ? data.GetItemPrefab() : null;
 
-        // Caso 1: slot vacío → quitar item
+        // SLOT VACÍO
         if (newPrefab == null)
         {
             if (currentItem != null)
-            {
                 Destroy(currentItem);
-                currentItem = null;
-                currentPrefab = null;
-                currentItemBehaviour = null;
-            }
+
+            currentItem = null;
+            currentPrefab = null;
+            currentItemBehaviour = null;
             return;
         }
 
-        // Caso 2: hay item distinto → reemplazar
-        if (currentItem == null || currentPrefab != newPrefab)
-        {
-            if (currentItem != null)
-            {
-                print("Se destruye el item");
-                Destroy(currentItem);
-            }
+        currentItemBehaviour = newPrefab.GetComponent<ItemBehaviour>();
 
-            currentPrefab = newPrefab;
+        // Si es el mismo item no hacer nada
+        if (currentPrefab == newPrefab)
+            return;
+
+        if (currentItem != null)
+            Destroy(currentItem);
+
+        currentPrefab = newPrefab;
+
+        if (currentItemBehaviour is not PlaceableBehaviour)
+        {
             currentItem = Instantiate(newPrefab);
             currentItem.transform.SetParent(handSlot, false);
             currentItem.transform.localScale = Vector3.one;
-            currentItem.SetActive(true);
             currentItem.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-            DisablePhysics();
+            currentItem.SetActive(true);
 
+            DisablePhysics();
             currentItemBehaviour = currentItem.GetComponent<ItemBehaviour>();
         }
-
     }
 
     private void DisablePhysics()
@@ -151,7 +154,6 @@ public class HotBarController : MonoBehaviour
         Collider bc = currentItem.GetComponent<Collider>();
         if (rb != null && bc != null)
         {
-            print("Entra");
             rb.isKinematic = true;
             rb.detectCollisions = false;
             bc.enabled = false;
@@ -164,15 +166,12 @@ public class HotBarController : MonoBehaviour
         {
             Rigidbody rb = currentItem.GetComponent<Rigidbody>();
             ItemData data = slots[selectedIndex].GetComponentInChildren<ItemData>();
-            print(rb);
-            print(data);
             if(rb != null && data != null)
             {
                 InventoryController.instance.DropItem(selectedIndex);
                 data.Clear();
                 Destroy(currentItem);
             }
-            
         }
     }
 
@@ -189,13 +188,14 @@ public class HotBarController : MonoBehaviour
             {
                 GameObject slotItem = slots[i].GetChild(0).gameObject;
 
-                if (i < items.Length && items[i] != null)
+                if (i < InventoryController.instance.GetHotBarSize() && items[i] != null)
                 {
                     ItemData originalData = items[i].GetComponent<ItemData>();
                     ItemData uiData = slotItem.GetComponent<ItemData>();
 
                     if (originalData != null && uiData != null)
                     {
+                        print("ITEM "+ i + ": " + items[i]);
                         uiData.CopyFrom(originalData);
                         slotItem.GetComponent<Image>().sprite = originalData.GetItemIcon();
                         slotItem.SetActive(true);

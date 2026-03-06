@@ -32,19 +32,25 @@ public class PlayerInteraction : MonoBehaviour
         Ray ray = new Ray(CameraController.instance.transform.position, CameraController.instance.transform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, interactDistance))
-        {
-            if(interact.WasPressedThisFrame())
-            {
-                if (hit.collider.CompareTag("Item"))  
-                    inventory.AddItem(hit.collider.gameObject);
-                else if(hit.collider.CompareTag("Interactive"))
-                    hit.collider.gameObject.GetComponent<InteractiveObject>().Interact();
-            }
+        bool hasHit = Physics.Raycast(ray, out hit, interactDistance);
 
-            if(hit.collider.CompareTag("Terrain") && HotBarController.instance.GetCurrentItemBehaviour() is PlaceableBehaviour)
-                HotBarController.instance.GetCurrentItem().GetComponent<PlaceableBehaviour>().ShowSilhouette(hit);
-                
+        if (HotBarController.instance.GetCurrentItemBehaviour() is PlaceableBehaviour placeable)
+        {
+            if (hasHit && hit.collider.CompareTag("Terrain"))
+                placeable.ShowSilhouette(hit);
+            else if (hasHit == false)
+                placeable.HideSilhouette();
+        }
+
+        if (!hasHit)
+            return;
+
+        if (interact.WasPressedThisFrame())
+        {
+            if (hit.collider.CompareTag("Item"))
+                inventory.AddItem(hit.collider.gameObject);
+            else if (hit.collider.CompareTag("Interactive"))
+                hit.collider.gameObject.GetComponent<InteractiveObject>().Interact();
         }
     }
 
@@ -52,13 +58,12 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (attack.triggered)
         {   
-
             print("Current behaviour: " + HotBarController.instance.GetCurrentItemBehaviour());
             if (arm != null) 
                 arm.PlayAttackAnimation();
 
-            if(HotBarController.instance.GetCurrentItemBehaviour() is PlaceableBehaviour)
-                HotBarController.instance.GetCurrentItem().GetComponent<PlaceableBehaviour>().Use();
+            if(HotBarController.instance.GetCurrentItemBehaviour() is PlaceableBehaviour placeable)
+                placeable.Use();
         }
     }
 }

@@ -11,6 +11,8 @@ public class PlaceableBehaviour : ItemBehaviour
     [SerializeField] LayerMask placementMask;
     private Vector3 checkBoxSize = new Vector3(3f,3f,3f);
     private GameObject silhouette;
+    private Vector3 lastValidPosition;
+    private Quaternion lastValidRotation;
     private bool canPlace;
 
     void Start()
@@ -20,26 +22,30 @@ public class PlaceableBehaviour : ItemBehaviour
 
     public override void Use()
     {   
-        if(itemData != null && silhouette != null)
-        {
-            if(!canPlace)
-                return;
+        print("Use en: " + gameObject.GetInstanceID());
+        if(!canPlace || itemData == null)
+            return;
 
-            GameObject newObject = Instantiate( itemData.GetItemPrefab(),silhouette.transform.position, silhouette.transform.rotation, InventoryController.instance.GetItemsParent());
-            newObject.transform.localScale = Vector3.one;
-            newObject.SetActive(true);
-            newObject.GetComponent<Rigidbody>().isKinematic = true;
-            Destroy(silhouette.gameObject);
+        print("Colocando item");
+        GameObject newObject = Instantiate( itemData.GetItemPrefab(),lastValidPosition, lastValidRotation, InventoryController.instance.GetItemsParent());
+        newObject.transform.localScale = Vector3.one;
+        newObject.SetActive(true);
+        newObject.GetComponent<Rigidbody>().isKinematic = true;
+
+        if (silhouette != null)
+        {
+            Destroy(silhouette);
             silhouette = null;
-            InventoryController.instance.RemoveItem(HotBarController.instance.GetCurrentItem());
         }
+        
+        InventoryController.instance.RemoveItem(HotBarController.instance.GetCurrentItem());
     }
 
     public void ShowSilhouette(RaycastHit hit)
     {   
+         print("Show en: " + gameObject.GetInstanceID());
         if(silhouette == null)
         {   
-            print("Parent: " + InventoryController.instance.GetItemsParent());
             itemData = GetComponent<ItemData>();
             silhouette = Instantiate(itemData.GetItemPrefab(), InventoryController.instance.GetItemsParent());
             silhouette.SetActive(true);
@@ -60,11 +66,24 @@ public class PlaceableBehaviour : ItemBehaviour
         silhouette.transform.localScale = Vector3.one;
         silhouette.transform.rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90f, 0f, 0f);
         Renderer[] renderers = silhouette.GetComponentsInChildren<Renderer>();
+        silhouette.SetActive(true);
 
         canPlace = CanPlace(silhouette.transform.position, silhouette.transform.rotation);
 
+        if(canPlace)
+        {
+            lastValidPosition = silhouette.transform.position;
+            lastValidRotation = silhouette.transform.rotation;
+        }
+
         foreach (Renderer r in renderers)
             r.material = canPlace ? greenMaterial : redMaterial;
+    }
+
+    public void HideSilhouette()
+    {
+        if(silhouette != null)
+            silhouette.SetActive(false);
     }
 
     private bool CanPlace(Vector3 position, Quaternion rotation)

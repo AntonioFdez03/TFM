@@ -360,7 +360,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48fe84c3080f9fe4f93af58864cdc770, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bonfire
-  itemsLayer: {fileID: 0}
   greenMaterial: {fileID: 2100000, guid: c289674975e48194ba656debbe498968, type: 2}
   redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
   placementMask:

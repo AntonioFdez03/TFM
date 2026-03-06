@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float jumpForce = 10f;
     private bool canMove;
     private bool isDead;
+    private bool isMoving;
+    private bool isSprinting;
     private InputAction move;
     private InputAction sprint;
     private InputAction jump;
@@ -53,6 +55,7 @@ public class PlayerController : MonoBehaviour
     public PlayerAttributes GetPlayerAttributes() => playerAttributes;
     public void SetCanMove(bool cM) => canMove = cM;
     public bool GetCanMove() => canMove;
+    public bool IsSprinting() => isSprinting;
     public void SetIsDead(bool iD) => isDead = iD;
     public bool IsDead() => isDead;
 
@@ -84,8 +87,8 @@ public class PlayerController : MonoBehaviour
         Vector3 direction = cameraRight * playerInput.x + cameraForward * playerInput.y;
         direction.Normalize();
 
-        bool isMoving = direction.sqrMagnitude > 0.0001f;
-        bool isSprinting = isMoving && playerAttributes.canSprint && sprint.IsPressed() && controller.isGrounded;
+        isMoving = direction.sqrMagnitude > 0.0001f;
+        isSprinting = isMoving && playerAttributes.canSprint && sprint.IsPressed() && controller.isGrounded;
 
         if (isSprinting) playerAttributes.UseStamina();
 

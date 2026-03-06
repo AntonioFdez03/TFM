@@ -41,7 +41,7 @@ public class CraftingController : MonoBehaviour
     {
        foreach(RecipeIngredient ingredient in recipe.ingredients)
         {
-            if(InventoryController.instance.FindItemByName(ingredient.ingredientData.GetItemName()) == null)
+            if(InventoryController.instance.GetItemAmount(ingredient.ingredientData.GetItemName()) < ingredient.ingredientAmount)
                 return false;
         }
         return true;

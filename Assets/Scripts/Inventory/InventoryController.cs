@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
@@ -120,5 +121,16 @@ public class InventoryController : MonoBehaviour
         }
 
         return null;
+    }
+
+    public int GetItemAmount(String name)
+    {
+        int amount = 0;
+        foreach (GameObject item in items)
+        {   if(item != null)
+                if(item.GetComponent<ItemData>().GetItemName() == name)
+                    amount ++;
+        }
+        return amount;
     }
 }

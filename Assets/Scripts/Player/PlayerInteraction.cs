@@ -7,7 +7,7 @@ public class PlayerInteraction : MonoBehaviour
     [Header("References")]
     [SerializeField] ArmController arm;
     [SerializeField] InventoryController inventory;
-    private float interactDistance = 10f;
+    private float interactDistance = 9f;
 
     private InputAction interact;
     private InputAction attack;
@@ -32,12 +32,19 @@ public class PlayerInteraction : MonoBehaviour
         Ray ray = new Ray(CameraController.instance.transform.position, CameraController.instance.transform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, interactDistance) && interact.WasPressedThisFrame())
+        if (Physics.Raycast(ray, out hit, interactDistance))
         {
-            if (hit.collider.CompareTag("Item"))  
-                inventory.AddItem(hit.collider.gameObject);
-            else if(hit.collider.CompareTag("Interactive"))
-                hit.collider.gameObject.GetComponent<InteractiveObject>().Interact();
+            if(interact.WasPressedThisFrame())
+            {
+                if (hit.collider.CompareTag("Item"))  
+                    inventory.AddItem(hit.collider.gameObject);
+                else if(hit.collider.CompareTag("Interactive"))
+                    hit.collider.gameObject.GetComponent<InteractiveObject>().Interact();
+            }
+
+            if(hit.collider.CompareTag("Terrain") && HotBarController.instance.GetCurrentItemBehaviour() is PlaceableBehaviour)
+                HotBarController.instance.GetCurrentItem().GetComponent<PlaceableBehaviour>().ShowSilhouette(hit);
+                
         }
     }
 

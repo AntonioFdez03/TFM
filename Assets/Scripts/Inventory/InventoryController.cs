@@ -56,7 +56,8 @@ public class InventoryController : MonoBehaviour
         for (int i = 0; i < items.Length; i++)
         {
             if (items[i] == item)
-            {
+            {   
+                print("Se eliminço el item: " + item);
                 items[i] = null;
                 OnInventoryChanged?.Invoke();
                 HotBarController.instance.UpdateHotBarUI();
@@ -64,6 +65,7 @@ public class InventoryController : MonoBehaviour
             }
         }
     }
+
     public void DropItem(int index)
     {
         print("DROP");

@@ -1,16 +1,82 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class PlaceableBehaviour : ItemBehaviour
 {
     [SerializeField] Transform itemsLayer;
-    private RaycastHit hit;
+    [SerializeField] Material greenMaterial;
+    [SerializeField] Material redMaterial;
+    [SerializeField] LayerMask placementMask;
+    private Vector3 checkBoxSize = new Vector3(3f,3f,3f);
+    private GameObject silhouette;
+    private bool canPlace;
 
-    public void SetRayHit(RaycastHit h) => hit = h;
-    public override void Use()
+    void Start()
     {
-        print("Objeto colocado");
+        gameObject.GetComponent<Rigidbody>().isKinematic = true;
+    }
+
+    public override void Use()
+    {   
+        if(itemData != null && silhouette != null)
+        {
+            if(!canPlace)
+                return;
+
+            GameObject newObject = Instantiate(itemData.GetItemPrefab(),itemsLayer);
+            newObject.layer = LayerMask.NameToLayer("PlacedObject");
+            newObject.SetActive(true);
+            newObject.GetComponent<Rigidbody>().isKinematic = true;
+            newObject.transform.position = silhouette.transform.position;
+            newObject.transform.localScale = Vector3.one;
+            newObject.transform.rotation = silhouette.transform.rotation;
+            Destroy(silhouette.gameObject);
+            silhouette = null;
+            InventoryController.instance.RemoveItem(HotBarController.instance.GetCurrentItem());
+        }
+    }
+
+    public void ShowSilhouette(RaycastHit hit)
+    {   
+        if(silhouette == null)
+        {
+            itemData = GetComponent<ItemData>();
+            silhouette = Instantiate(itemData.GetItemPrefab(),itemsLayer);
+            silhouette.SetActive(true);
+            Collider[] colliders = silhouette.GetComponentsInChildren<Collider>();
+            Light[] lights = silhouette.GetComponentsInChildren<Light>();
+            ParticleSystem[] particles = silhouette.GetComponentsInChildren<ParticleSystem>();
+
+            foreach (Collider c in colliders)
+                c.enabled = false;
+
+            foreach (Light l in lights)
+                l.enabled = false;
+            
+            foreach (ParticleSystem p in particles)
+                p.Stop();
+        }
+        silhouette.transform.position = hit.point;
+        silhouette.transform.localScale = Vector3.one;
+        silhouette.transform.rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90f, 0f, 0f);
+        Renderer[] renderers = silhouette.GetComponentsInChildren<Renderer>();
+
+        canPlace = CanPlace(silhouette.transform.position, silhouette.transform.rotation);
+
+        foreach (Renderer r in renderers)
+            r.material = canPlace ? greenMaterial : redMaterial;
+    }
+
+    private bool CanPlace(Vector3 position, Quaternion rotation)
+    {
+        return !Physics.CheckBox(
+            position,
+            checkBoxSize / 2f,
+            rotation,
+            placementMask
+        );
     }
 }

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4262345895843164336}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CraftingTableModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,7 +48,7 @@ GameObject:
   - component: {fileID: 539479244434655813}
   - component: {fileID: 1624844770999679110}
   - component: {fileID: 4424001938257619161}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Leg (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 7926989749472821435}
   - component: {fileID: 5735776145771328465}
   - component: {fileID: 2538983716025498808}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -276,7 +276,7 @@ GameObject:
   - component: {fileID: 3436452905738346080}
   - component: {fileID: 2315156888023412255}
   - component: {fileID: 5703910100431195167}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Leg (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -392,7 +392,7 @@ GameObject:
   - component: {fileID: 3096068539149192954}
   - component: {fileID: 5267862427402882369}
   - component: {fileID: 2756443570146996382}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Workbench
   m_TagString: Interactive
   m_Icon: {fileID: 0}
@@ -489,7 +489,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   itemName: Workbench
-  itemType: 5
   itemIcon: {fileID: 21300000, guid: 7a23b04c5019ec547a7474b759f9a779, type: 3}
   itemPrefab: {fileID: 5282416814275813928}
 --- !u!114 &2756443570146996382
@@ -505,6 +504,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlaceableBehaviour
   itemsLayer: {fileID: 0}
+  greenMaterial: {fileID: 2100000, guid: c289674975e48194ba656debbe498968, type: 2}
+  redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
+  placementMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &6285307332729291258
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,7 +521,7 @@ GameObject:
   - component: {fileID: 4743738038974635597}
   - component: {fileID: 7364919039623957325}
   - component: {fileID: 2077620251133632637}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Leg (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -631,7 +635,7 @@ GameObject:
   - component: {fileID: 5486146264563082625}
   - component: {fileID: 6277017687329181012}
   - component: {fileID: 559888354736423018}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Table
   m_TagString: Interactive
   m_Icon: {fileID: 0}

@@ -12,6 +12,7 @@ public abstract class ItemBehaviour : MonoBehaviour
     {
         itemData = GetComponent<ItemData>();
     }
+
     public abstract void Use();
 
     protected IEnumerator UseCooldown()
@@ -19,6 +20,4 @@ public abstract class ItemBehaviour : MonoBehaviour
         yield return new WaitForSeconds(useCooldown);
         canUse = true;
     }
-
-    public ItemData GetItemData() => itemData;
 }

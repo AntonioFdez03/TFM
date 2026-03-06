@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class PlaceableBehaviour : ItemBehaviour
 {
-    [SerializeField] Transform itemsLayer;
     [SerializeField] Material greenMaterial;
     [SerializeField] Material redMaterial;
     [SerializeField] LayerMask placementMask;
@@ -26,13 +25,10 @@ public class PlaceableBehaviour : ItemBehaviour
             if(!canPlace)
                 return;
 
-            GameObject newObject = Instantiate(itemData.GetItemPrefab(),itemsLayer);
-            newObject.layer = LayerMask.NameToLayer("PlacedObject");
+            GameObject newObject = Instantiate( itemData.GetItemPrefab(),silhouette.transform.position, silhouette.transform.rotation, InventoryController.instance.GetItemsParent());
+            newObject.transform.localScale = Vector3.one;
             newObject.SetActive(true);
             newObject.GetComponent<Rigidbody>().isKinematic = true;
-            newObject.transform.position = silhouette.transform.position;
-            newObject.transform.localScale = Vector3.one;
-            newObject.transform.rotation = silhouette.transform.rotation;
             Destroy(silhouette.gameObject);
             silhouette = null;
             InventoryController.instance.RemoveItem(HotBarController.instance.GetCurrentItem());
@@ -42,9 +38,10 @@ public class PlaceableBehaviour : ItemBehaviour
     public void ShowSilhouette(RaycastHit hit)
     {   
         if(silhouette == null)
-        {
+        {   
+            print("Parent: " + InventoryController.instance.GetItemsParent());
             itemData = GetComponent<ItemData>();
-            silhouette = Instantiate(itemData.GetItemPrefab(),itemsLayer);
+            silhouette = Instantiate(itemData.GetItemPrefab(), InventoryController.instance.GetItemsParent());
             silhouette.SetActive(true);
             Collider[] colliders = silhouette.GetComponentsInChildren<Collider>();
             Light[] lights = silhouette.GetComponentsInChildren<Light>();

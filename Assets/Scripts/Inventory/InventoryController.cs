@@ -8,7 +8,7 @@ public class InventoryController : MonoBehaviour
     public static System.Action OnInventoryChanged;
 
     [Header("References")]
-    [SerializeField] Transform itemsLayer; 
+    [SerializeField] Transform itemsParent; 
     [SerializeField] Transform handSlot;
 
     private int inventoryMax = 28;
@@ -31,6 +31,7 @@ public class InventoryController : MonoBehaviour
     public GameObject[] GetInventoryItems() => items;
     public int GetHotBarSize() => hotBarSize;
     public int GetInventoryGridSize() => inventoryGridSize;
+    public Transform GetItemsParent() => itemsParent;
 
     public void AddItem(GameObject item)
     {
@@ -88,7 +89,7 @@ public class InventoryController : MonoBehaviour
             rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
             rb.isKinematic = false;
 
-            itemToDrop.transform.SetParent(itemsLayer, true);
+            itemToDrop.transform.SetParent(itemsParent, true);
             itemToDrop.transform.localScale = Vector3.one;
 
             Vector3 dropForce = CameraController.instance.transform.forward * 50f + CameraController.instance.transform.up * 40f;

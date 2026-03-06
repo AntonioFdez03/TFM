@@ -2936,7 +2936,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10f2c177f5826c6468dbf8a4c3468625, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Inventory
-  itemsLayer: {fileID: 631565644}
+  itemsParent: {fileID: 631565644}
   handSlot: {fileID: 1741390092}
 --- !u!1 &837951226
 GameObject:

@@ -134,18 +134,17 @@ public class HotBarController : MonoBehaviour
             Destroy(currentItem);
 
         currentPrefab = newPrefab;
-        ItemBehaviour prefabBehaviour = newPrefab.GetComponent<ItemBehaviour>();
+        currentItem = Instantiate(newPrefab);
+        currentItemBehaviour = currentItem.GetComponent<ItemBehaviour>();
 
-        if (prefabBehaviour is not PlaceableBehaviour)
+        if (currentItemBehaviour is not PlaceableBehaviour)
         {
-            currentItem = Instantiate(newPrefab);
             currentItem.transform.SetParent(handSlot, false);
             currentItem.transform.localScale = Vector3.one;
             currentItem.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             currentItem.SetActive(true);
 
             DisablePhysics();
-            currentItemBehaviour = currentItem.GetComponent<ItemBehaviour>();
         }
     }
 
@@ -196,7 +195,6 @@ public class HotBarController : MonoBehaviour
 
                     if (originalData != null && uiData != null)
                     {
-                        print("ITEM "+ i + ": " + items[i]);
                         uiData.CopyFrom(originalData);
                         slotItem.GetComponent<Image>().sprite = originalData.GetItemIcon();
                         slotItem.SetActive(true);

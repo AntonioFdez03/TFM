@@ -21,7 +21,7 @@ public class ToolBehaviour : ItemBehaviour
     {
         if (!canUse) 
             return;
-
+        
         canUse = false;      
         UseTool();
         StartCoroutine(UseCooldown());

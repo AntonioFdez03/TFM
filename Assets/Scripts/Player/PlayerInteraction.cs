@@ -45,8 +45,13 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (attack.triggered)
         {   
+
+            print("Current behaviour: " + HotBarController.instance.GetCurrentItemBehaviour());
             if (arm != null) 
                 arm.PlayAttackAnimation();
+
+            if(HotBarController.instance.GetCurrentItemBehaviour() is PlaceableBehaviour)
+                HotBarController.instance.GetCurrentItem().GetComponent<PlaceableBehaviour>().Use();
         }
     }
 }

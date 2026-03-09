@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,7 +7,8 @@ public class PlayerInteraction : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] ArmController arm;
-    [SerializeField] InventoryController inventory;
+    [SerializeField] TMP_Text itemInfo;
+
     private float interactDistance = 9f;
 
     private InputAction interact;
@@ -34,14 +36,22 @@ public class PlayerInteraction : MonoBehaviour
         RaycastHit hit;
 
         if(lastHit.collider != null)
-            SetChildrenLayer(lastHit.collider.gameObject, LayerMask.NameToLayer("Default"));
+            HandleItemSelection(lastHit.collider.gameObject, false);
 
         bool hasHit = Physics.Raycast(ray, out hit, interactDistance);
 
         if(hasHit)
         {
-            if(hit.collider.CompareTag("Item"))
-                SetChildrenLayer(hit.collider.gameObject, LayerMask.NameToLayer("Outline"));
+            switch (hit.collider.tag)
+            {
+                case "Item":
+                    HandleItemSelection(hit.collider.gameObject, true);
+                    break;
+
+                case "Harvestable":
+                    HandleHarvestableInfo(hit.collider.gameObject);
+                    break;
+            }
         }
 
         if (HotBarController.instance.GetCurrentItemBehaviour() is PlaceableBehaviour placeable)
@@ -57,12 +67,18 @@ public class PlayerInteraction : MonoBehaviour
 
         if (interact.WasPressedThisFrame())
         {
-            if (hit.collider.CompareTag("Item"))
-                inventory.AddItem(hit.collider.gameObject);
-            else if (hit.collider.CompareTag("Interactive"))
-                hit.collider.gameObject.GetComponent<InteractiveObject>().Interact();
-        }
+            switch (hit.collider.tag)
+            {
+                case "Item":
+                    HandleItemSelection(hit.collider.gameObject, false);
+                    InventoryController.instance.AddItem(hit.collider.gameObject);
+                    break;
 
+                case "Interactive":
+                    hit.collider.gameObject.GetComponent<InteractiveObject>().Interact();
+                    break;
+            }
+        }
         lastHit = hit;
     }
 
@@ -78,12 +94,31 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    private void SetChildrenLayer(GameObject item, LayerMask layer)
+    private void HandleItemSelection(GameObject item, bool selected)
     {   
-        print("Layer");
-        item.layer = layer;
+        item.layer = selected ? LayerMask.NameToLayer("Outline") : LayerMask.NameToLayer("Default");
+        
+        if(selected){
+            if(item.TryGetComponent(out ItemData data))
+                itemInfo.text = data.GetItemName();
+        }
+        else
+            itemInfo.text = "";
 
         foreach (Transform child in item.transform)
-            SetChildrenLayer(child.gameObject, layer);
+            HandleItemSelection(child.gameObject, selected);
+    }
+
+    private void HandleHarvestableInfo(GameObject harvestableObject)
+    {
+        if(harvestableObject.TryGetComponent(out HarvestableObject harvestable))
+        {
+            if(HotBarController.instance.GetCurrentItemBehaviour() is ToolBehaviour toolBehaviour)
+            {   
+                if(!harvestable.CanHarvest(toolBehaviour.GetToolType()))
+                    itemInfo.text = "You need an " + harvestable.GetToolsAccepted(); 
+            }else
+                itemInfo.text = "You need an " + harvestable.GetToolsAccepted()[0].ToString(); 
+        }
     }
 }

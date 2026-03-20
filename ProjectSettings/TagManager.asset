@@ -13,13 +13,13 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Enemy
+  - Terrain
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Enemy
+  - PlacedObjects
+  - Items
+  - Outline
   - 
   - 
   - 

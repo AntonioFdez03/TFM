@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3353842516571312524}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AxeModel
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 6246201670260828148}
   - component: {fileID: 6694047048869170565}
   - component: {fileID: 3232267495705284849}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Stick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 2266141189708555377}
   - component: {fileID: 3757441149599570577}
   - component: {fileID: 1329955534427840528}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Axe
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -174,14 +174,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2323832488127001772}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.30360055, y: 0.30360055, z: -0.6386131, w: -0.6386131}
+  m_LocalRotation: {x: -0.3035984, y: -0.3035984, z: 0.6386141, w: 0.6386141}
   m_LocalPosition: {x: 24.345407, y: 9.636246, z: 14.161799}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3353842516571312524}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -50.853, z: 90}
 --- !u!54 &3673013443101633182
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -245,7 +245,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   itemName: Axe
-  itemType: 4
   itemIcon: {fileID: 21300000, guid: 0d934b2ae90ec9549a408483c7f2b9b9, type: 3}
   itemPrefab: {fileID: 2323832488127001772}
 --- !u!114 &1329955534427840528
@@ -272,7 +271,7 @@ GameObject:
   - component: {fileID: 7856015408928920536}
   - component: {fileID: 7741685968057806312}
   - component: {fileID: 3787344313020724748}
-  m_Layer: 2
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3362162068316792851}
   - component: {fileID: 3659081126940280594}
   - component: {fileID: 2249593143068596943}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: StoneModel (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +122,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8156805435436417176}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Branchs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 4543631566515089228}
   - component: {fileID: 4935436261544834147}
   - component: {fileID: 3670569638662585086}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: StoneModel (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -273,7 +273,7 @@ GameObject:
   - component: {fileID: 5414255455870143931}
   - component: {fileID: 488875346582134553}
   - component: {fileID: 2867880503641927543}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bonfire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -360,7 +360,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48fe84c3080f9fe4f93af58864cdc770, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bonfire
-  itemsLayer: {fileID: 0}
+  greenMaterial: {fileID: 2100000, guid: c289674975e48194ba656debbe498968, type: 2}
+  redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
+  placementMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!114 &2867880503641927543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374,7 +378,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   itemName: Bonfire
-  itemType: 5
   itemIcon: {fileID: 21300000, guid: b16fd339cd2f70d439c4a6314bba40ad, type: 3}
   itemPrefab: {fileID: 2497555479857757306}
 --- !u!1 &2686258295672949998
@@ -386,7 +389,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 755692986981059979}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BonfireModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -422,7 +425,7 @@ GameObject:
   - component: {fileID: 5724561307019128516}
   - component: {fileID: 862622024374281952}
   - component: {fileID: 7540030005173630601}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: StoneModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -535,7 +538,7 @@ GameObject:
   - component: {fileID: 6307944845518047894}
   - component: {fileID: 7976470681053340954}
   - component: {fileID: 4907980496995589357}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: StoneModel (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -648,7 +651,7 @@ GameObject:
   - component: {fileID: 6993453938249953790}
   - component: {fileID: 3622980268747537770}
   - component: {fileID: 7356931999042826640}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: StoneModel (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -760,7 +763,7 @@ GameObject:
   - component: {fileID: 7424994580466012469}
   - component: {fileID: 5261724026786592600}
   - component: {fileID: 5977280570874780496}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5597,7 +5600,7 @@ GameObject:
   - component: {fileID: 4912776880892695696}
   - component: {fileID: 6507965310532801543}
   - component: {fileID: 711306503936224256}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BranchModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5709,7 +5712,7 @@ GameObject:
   - component: {fileID: 9211971860864353357}
   - component: {fileID: 3455254677335789119}
   - component: {fileID: 5148954072614298237}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5834,7 +5837,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1467376201071571059}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Stones
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5874,7 +5877,7 @@ GameObject:
   - component: {fileID: 2159029031278999880}
   - component: {fileID: 3251334664829612283}
   - component: {fileID: 1226751232416487790}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BranchModel (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5987,7 +5990,7 @@ GameObject:
   - component: {fileID: 2190287703807540469}
   - component: {fileID: 4815004908843763458}
   - component: {fileID: 3066343239573863006}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BranchModel (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6100,7 +6103,7 @@ GameObject:
   - component: {fileID: 4668728185545710849}
   - component: {fileID: 7937832866712613952}
   - component: {fileID: 554038759723148531}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: StoneModel (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

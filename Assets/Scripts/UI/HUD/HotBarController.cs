@@ -19,8 +19,10 @@ public class HotBarController : MonoBehaviour
     
     private Transform[] slots;
     private GameObject currentItem;
+    private GameObject handItemInstance;
     private ItemBehaviour currentItemBehaviour;
     private GameObject currentPrefab;
+    private PlaceableBehaviour lastPlaceableItem;
     private InputAction dropItem; 
     [SerializeField] GameObject slotPrefab;
     private List<Image> inventorySlots = new();
@@ -48,7 +50,7 @@ public class HotBarController : MonoBehaviour
     public ItemBehaviour GetCurrentItemBehaviour() => currentItemBehaviour;
 
     void Update()
-    {
+    {   
         if (Keyboard.current == null) return;
 
         // Cambio de slot mediante teclado numérico
@@ -94,8 +96,8 @@ public class HotBarController : MonoBehaviour
     }
 
     private void MoveSelectorFrame(int index)
-    {
-        if (index >= 0 && index < slots.Length && slots[index] != null)
+    {   
+        if (index >= 0 && index < slots.Length && slots[index] != null && index != selectedIndex)
         {
             selectorFrame.SetParent(slots[index]);
             selectorFrame.anchoredPosition = Vector2.zero;
@@ -107,51 +109,63 @@ public class HotBarController : MonoBehaviour
 
     public void RefreshHandItem()
     {
-        if (slots[selectedIndex] == null) return;
+        GameObject[] items = InventoryController.instance.GetInventoryItems();
 
-        ItemData data = slots[selectedIndex].GetComponentInChildren<ItemData>();
-        GameObject newPrefab = data != null ? data.GetItemPrefab() : null;
+        if (selectedIndex < 0 || selectedIndex >= items.Length)
+            return;
 
-        // SLOT VACÍO
-        if (newPrefab == null)
+        // objeto real del inventario
+        currentItem = items[selectedIndex];
+
+        if (lastPlaceableItem != null)
         {
-            if (currentItem != null)
-                Destroy(currentItem);
+            lastPlaceableItem.DeleteSilhouette();
+            lastPlaceableItem = null;
+        }
+        // destruir instancia visual anterior
+        if (handItemInstance != null)
+            Destroy(handItemInstance);
 
-            currentItem = null;
-            currentPrefab = null;
+        // slot vacío
+        if (currentItem == null)
+        {
+            handItemInstance = null;
             currentItemBehaviour = null;
+            currentPrefab = null;
             return;
         }
 
-        currentItemBehaviour = newPrefab.GetComponent<ItemBehaviour>();
+        ItemData data = currentItem.GetComponent<ItemData>();
+        currentPrefab = data.GetItemPrefab();
 
-        // Si es el mismo item no hacer nada
-        if (currentPrefab == newPrefab)
-            return;
+        // crear instancia visual
+        handItemInstance = Instantiate(currentPrefab);
+        currentItemBehaviour = handItemInstance.GetComponent<ItemBehaviour>();
 
-        if (currentItem != null)
-            Destroy(currentItem);
-
-        currentPrefab = newPrefab;
-
+        print("LastPlaceable: " + lastPlaceableItem);
         if (currentItemBehaviour is not PlaceableBehaviour)
-        {
-            currentItem = Instantiate(newPrefab);
-            currentItem.transform.SetParent(handSlot, false);
-            currentItem.transform.localScale = Vector3.one;
-            currentItem.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-            currentItem.SetActive(true);
+        {   
+            handItemInstance.transform.SetParent(handSlot, false);
+            handItemInstance.transform.localScale = Vector3.one;
+            handItemInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+            handItemInstance.SetActive(true);
 
             DisablePhysics();
-            currentItemBehaviour = currentItem.GetComponent<ItemBehaviour>();
+        }
+        else
+        {   
+            print("last placeable asignado");
+            lastPlaceableItem = currentItemBehaviour as PlaceableBehaviour;
         }
     }
 
     private void DisablePhysics()
     {
-        Rigidbody rb = currentItem.GetComponent<Rigidbody>();
-        Collider bc = currentItem.GetComponent<Collider>();
+        if (handItemInstance == null) return;
+
+        Rigidbody rb = handItemInstance.GetComponent<Rigidbody>();
+        Collider bc = handItemInstance.GetComponent<Collider>();
+
         if (rb != null && bc != null)
         {
             rb.isKinematic = true;
@@ -164,14 +178,10 @@ public class HotBarController : MonoBehaviour
     {
         if (dropItem.WasPressedThisFrame() && currentItem != null)
         {
-            Rigidbody rb = currentItem.GetComponent<Rigidbody>();
-            ItemData data = slots[selectedIndex].GetComponentInChildren<ItemData>();
-            if(rb != null && data != null)
-            {
-                InventoryController.instance.DropItem(selectedIndex);
-                data.Clear();
-                Destroy(currentItem);
-            }
+            InventoryController.instance.DropItem(selectedIndex);
+
+            if (handItemInstance != null)
+                Destroy(handItemInstance);
         }
     }
 
@@ -195,7 +205,6 @@ public class HotBarController : MonoBehaviour
 
                     if (originalData != null && uiData != null)
                     {
-                        print("ITEM "+ i + ": " + items[i]);
                         uiData.CopyFrom(originalData);
                         slotItem.GetComponent<Image>().sprite = originalData.GetItemIcon();
                         slotItem.SetActive(true);

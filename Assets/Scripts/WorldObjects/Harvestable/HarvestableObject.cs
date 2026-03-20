@@ -16,7 +16,7 @@ public abstract class HarvestableObject : MonoBehaviour
 
     public void TakeHit(ToolBehaviour tool)
     {
-        if (toolsAccepted.Contains(tool.GetToolType()))
+        if (CanHarvest(tool.GetToolType()))
         {
             currentHealth -= tool.GetToolDamage();
             print($"{gameObject.name} golpeado. Vida: {currentHealth}");
@@ -32,4 +32,6 @@ public abstract class HarvestableObject : MonoBehaviour
 
     public abstract void Harvest();
     protected abstract void GenerateDropItems();
+    public bool CanHarvest(ToolType tool) => toolsAccepted.Contains(tool);
+    public List<ToolType> GetToolsAccepted() => toolsAccepted;
 }

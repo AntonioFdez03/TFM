@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
@@ -8,7 +9,7 @@ public class InventoryController : MonoBehaviour
     public static System.Action OnInventoryChanged;
 
     [Header("References")]
-    [SerializeField] Transform itemsLayer; 
+    [SerializeField] Transform itemsParent; 
     [SerializeField] Transform handSlot;
 
     private int inventoryMax = 28;
@@ -31,6 +32,7 @@ public class InventoryController : MonoBehaviour
     public GameObject[] GetInventoryItems() => items;
     public int GetHotBarSize() => hotBarSize;
     public int GetInventoryGridSize() => inventoryGridSize;
+    public Transform GetItemsParent() => itemsParent;
 
     public void AddItem(GameObject item)
     {
@@ -56,7 +58,7 @@ public class InventoryController : MonoBehaviour
         for (int i = 0; i < items.Length; i++)
         {
             if (items[i] == item)
-            {
+            {   
                 items[i] = null;
                 OnInventoryChanged?.Invoke();
                 HotBarController.instance.UpdateHotBarUI();
@@ -64,9 +66,9 @@ public class InventoryController : MonoBehaviour
             }
         }
     }
+
     public void DropItem(int index)
     {
-        print("DROP");
         // Verificamos que el índice sea válido y que haya algo en ese slot
         if (index >= 0 && index < items.Length && items[index] != null)
         {
@@ -86,7 +88,7 @@ public class InventoryController : MonoBehaviour
             rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
             rb.isKinematic = false;
 
-            itemToDrop.transform.SetParent(itemsLayer, true);
+            itemToDrop.transform.SetParent(itemsParent, true);
             itemToDrop.transform.localScale = Vector3.one;
 
             Vector3 dropForce = CameraController.instance.transform.forward * 50f + CameraController.instance.transform.up * 40f;
@@ -101,7 +103,6 @@ public class InventoryController : MonoBehaviour
     {
         if (originIndex == targetIndex) return;
 
-        //Intercambio
         (items[targetIndex], items[originIndex]) = (items[originIndex], items[targetIndex]);
         OnInventoryChanged?.Invoke();
         HotBarController.instance.UpdateHotBarUI();
@@ -117,5 +118,16 @@ public class InventoryController : MonoBehaviour
         }
 
         return null;
+    }
+
+    public int GetItemAmount(String name)
+    {
+        int amount = 0;
+        foreach (GameObject item in items)
+        {   if(item != null)
+                if(item.GetComponent<ItemData>().GetItemName() == name)
+                    amount ++;
+        }
+        return amount;
     }
 }

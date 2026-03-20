@@ -15,8 +15,6 @@ public class CraftingController : MonoBehaviour
             return;
         }
         instance = this;
-
-        print(allRecipes[2]);
     }
 
     public List<CraftingRecipe> GetAllRecipeList() => allRecipes;
@@ -41,7 +39,7 @@ public class CraftingController : MonoBehaviour
     {
        foreach(RecipeIngredient ingredient in recipe.ingredients)
         {
-            if(InventoryController.instance.FindItemByName(ingredient.ingredientData.GetItemName()) == null)
+            if(InventoryController.instance.GetItemAmount(ingredient.ingredientData.GetItemName()) < ingredient.ingredientAmount)
                 return false;
         }
         return true;

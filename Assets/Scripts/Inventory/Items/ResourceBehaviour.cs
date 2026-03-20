@@ -11,6 +11,6 @@ public class ResourceBehaviour : ItemBehaviour
 
     public override void Use()
     {
-        print("Usando resource behaviour");
+        
     }
 }

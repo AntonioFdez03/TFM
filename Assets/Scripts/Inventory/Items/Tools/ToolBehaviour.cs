@@ -19,15 +19,10 @@ public class ToolBehaviour : ItemBehaviour
 
     public override void Use()
     {
-        Debug.Log($"ToolBehaviour instance ID: {GetInstanceID()}");
         if (!canUse) 
-        {
-            print("Herramienta en cooldown.");
             return;
-        }
-
+        
         canUse = false;      
-        print("Herramienta usada.");
         UseTool();
         StartCoroutine(UseCooldown());
     }

@@ -35,7 +35,6 @@ public class ArmController : MonoBehaviour
         if (!isMoving)
         {   
             ItemBehaviour itemBehaviour = HotBarController.instance.GetCurrentItemBehaviour();
-            print(itemBehaviour);
             if(itemBehaviour == null)
                 StartCoroutine(PunchMovementCoroutine());  
             else if(itemBehaviour is ToolBehaviour)

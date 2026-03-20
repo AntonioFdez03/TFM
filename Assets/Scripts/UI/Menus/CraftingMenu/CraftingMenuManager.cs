@@ -37,7 +37,6 @@ public class CraftingMenuManager : MonoBehaviour
     {
         foreach (Transform child in recipesPanel.transform)
             Destroy(child.gameObject);
-        
     }
 
     public void ShowRecipes(RecipeType recipeType)
@@ -45,7 +44,7 @@ public class CraftingMenuManager : MonoBehaviour
         CleanRecipes();
         foreach(CraftingRecipe recipe in CraftingController.instance.GetAllRecipeList())
         {
-            if((recipeType == RecipeType.None || recipe.recipeType == recipeType) && (recipe.stationType == CraftingController.instance.GetStationType()))
+            if((recipeType == RecipeType.None || recipe.recipeType == recipeType) && (recipe.stationType == CraftingController.instance.GetStationType() || recipe.stationType == CraftingStationType.None))
                 ShowRecipe(recipe);
         }
     }

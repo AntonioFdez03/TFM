@@ -59,7 +59,9 @@ public class InventoryController : MonoBehaviour
         {
             if (items[i] == item)
             {   
+                print("Objeto eliminado");
                 items[i] = null;
+                Destroy(item);
                 OnInventoryChanged?.Invoke();
                 HotBarController.instance.UpdateHotBarUI();
                 return;

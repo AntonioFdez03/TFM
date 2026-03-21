@@ -46,22 +46,9 @@ public class PlaceableBehaviour : ItemBehaviour
             itemData = GetComponent<ItemData>();
             silhouette = Instantiate(itemData.GetItemPrefab(), InventoryController.instance.GetItemsParent());
             silhouette.SetActive(true);
-            Collider[] colliders = silhouette.GetComponentsInChildren<Collider>();
-            Light[] lights = silhouette.GetComponentsInChildren<Light>();
-            ParticleSystem[] particles = silhouette.GetComponentsInChildren<ParticleSystem>();
-
-            foreach (Collider c in colliders)
-                c.enabled = false;
-
-            foreach (Light l in lights)
-                l.enabled = false;
-            
-            foreach (ParticleSystem p in particles)
-                p.Stop();
         }
-        silhouette.transform.position = hit.point;
-        silhouette.transform.localScale = Vector3.one;
-        silhouette.transform.rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90f, 0f, 0f);
+        DisableSilhouetteComponents();
+        AdjustSilhouette(hit);
         Renderer[] renderers = silhouette.GetComponentsInChildren<Renderer>();
         silhouette.SetActive(true);
 
@@ -79,7 +66,6 @@ public class PlaceableBehaviour : ItemBehaviour
 
     public void HideSilhouette()
     {   
-        print("Silueta ocultada");
         if(silhouette != null)
             silhouette.SetActive(false);
     }
@@ -98,5 +84,40 @@ public class PlaceableBehaviour : ItemBehaviour
             rotation,
             placementMask
         );
+    }
+
+    private void DisableSilhouetteComponents()
+    {
+        Collider[] colliders = silhouette.GetComponentsInChildren<Collider>();
+        Light[] lights = silhouette.GetComponentsInChildren<Light>();
+        ParticleSystem[] particles = silhouette.GetComponentsInChildren<ParticleSystem>();
+
+        foreach (Collider c in colliders)
+            c.enabled = false;
+
+        foreach (Light l in lights)
+            l.enabled = false;
+            
+        foreach (ParticleSystem p in particles)
+            p.Stop();
+    }
+
+    private void AdjustSilhouette(RaycastHit hit)
+    {   
+        silhouette.transform.position = hit.point;
+        silhouette.transform.localScale = Vector3.one;
+
+        Quaternion alignToGround = Quaternion.FromToRotation(Vector3.up, hit.normal);
+
+        // 2. Obtener dirección de la cámara en plano horizontal
+        Vector3 camForward = Camera.main.transform.forward;
+        camForward.y = 0f;
+        camForward.Normalize();
+
+        // 3. Rotación mirando a la cámara (solo en Y)
+        Quaternion lookRotation = Quaternion.LookRotation(camForward);
+
+        // 4. Combinar ambas
+        silhouette.transform.rotation = alignToGround * lookRotation;
     }
 }

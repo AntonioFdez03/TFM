@@ -8,8 +8,8 @@ using UnityEngine.Video;
 public abstract class Enemy : MonoBehaviour
 {   
     protected NavMeshAgent agent;
-    [SerializeField] protected Transform player;
     protected Rigidbody rb;
+    protected Transform target;
     protected float maxHealth;
     protected float currentHealth;
     protected float speed;
@@ -34,6 +34,8 @@ public abstract class Enemy : MonoBehaviour
             StartCoroutine(AttackCooldownCR());
         }
     }
+
+    public void SetTarget(Transform t) => target = t;
 
     protected abstract void Move();
     protected abstract void Attack();
@@ -61,7 +63,6 @@ public abstract class Enemy : MonoBehaviour
         StartCoroutine(FlinchCooldownCR());
     }
 
-
     protected void Die()
     {
         Destroy(gameObject);
@@ -77,7 +78,7 @@ public abstract class Enemy : MonoBehaviour
     protected IEnumerator FlinchCooldownCR()
     {
         agent.enabled = false;
-        Vector3 direction = (transform.position - player.position).normalized;
+        Vector3 direction = (transform.position - target.position).normalized;
 
         rb.linearVelocity = Vector3.zero; // limpia velocidad previa
         rb.AddForce(direction * KnockbackForce, ForceMode.Impulse);

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Diagnostics;
 
-public class Enemy1 : Enemy
+public class WalkingEnemy : Enemy
 {  
     override protected void Awake()
     {
@@ -26,7 +26,7 @@ public class Enemy1 : Enemy
         float playerDistance = Vector3.Distance(transform.position, PlayerController.instance.transform.position);
         if(playerDistance < detectionRange && playerDistance > 5f){
             agent.isStopped = false;
-            agent.SetDestination(player.position);
+            agent.SetDestination(target.position);
         }
         else{
             agent.isStopped = true;
@@ -35,7 +35,7 @@ public class Enemy1 : Enemy
 
     override protected void Attack()
     {
-        PlayerAttributes playerAttributes = player.GetComponent<PlayerAttributes>();
+        PlayerAttributes playerAttributes = target.GetComponent<PlayerAttributes>();
         if(playerAttributes != null)
         {  
             playerAttributes.TakeDamage(10);

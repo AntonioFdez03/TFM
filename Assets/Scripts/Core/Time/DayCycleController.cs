@@ -1,12 +1,23 @@
 using UnityEngine;
 
 public class DayCycleController : MonoBehaviour
-{
+{   
+    public static DayCycleController instance;
     [SerializeField] [Range(0.0f,24f)] float currentHour;
     [SerializeField] Transform sun;
     [SerializeField] float dayDuration = 24; //En minutos
     [SerializeField] float intensity = 1;
     private float sunRotationX;
+
+    void Awake()
+    {
+        if(instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+    }
 
     void Start()
     {
@@ -20,13 +31,11 @@ public class DayCycleController : MonoBehaviour
         sunRotationX = 15 * currentHour;
         sun.localEulerAngles = new Vector3(sunRotationX,0,0);
 
-        if(currentHour < 6 || currentHour > 18)
-        {
+        if(IsNight())
             sun.GetComponent<Light>().intensity = 0;
-        }
         else
-        {
             sun.GetComponent<Light>().intensity = intensity;
-        }
     }
+
+    public bool IsNight() => currentHour < 6 || currentHour > 18;
 }

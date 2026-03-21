@@ -1,11 +1,13 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Diagnostics;
 
 public class Enemy1 : Enemy
 {  
     override protected void Awake()
     {
+        agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
         maxHealth = 100;
         currentHealth = maxHealth;
@@ -14,29 +16,28 @@ public class Enemy1 : Enemy
         damage = 10;
         attackCooldown = 1.2f;
         flinchCooldown = 1f;
+        KnockbackForce = 3f;
+        attackRange = 5f;
+        agent.stoppingDistance = attackRange;
     }
 
     override protected void Move()
     {   
         float playerDistance = Vector3.Distance(transform.position, PlayerController.instance.transform.position);
-
-        if(playerDistance <= detectionRange && playerDistance > 5f){
-            Vector3 direction = (PlayerController.instance.transform.position - transform.position).normalized;
-            rb.linearVelocity = direction * speed;
-
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+        if(playerDistance < detectionRange && playerDistance > 5f){
+            agent.isStopped = false;
+            agent.SetDestination(player.position);
         }
         else{
-            rb.linearVelocity = Vector3.zero;
+            agent.isStopped = true;
         }
     }
 
     override protected void Attack()
     {
+        PlayerAttributes playerAttributes = player.GetComponent<PlayerAttributes>();
         if(playerAttributes != null)
-        {   
-            print("Ataca");
+        {  
             playerAttributes.TakeDamage(10);
         }
     }

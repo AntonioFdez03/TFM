@@ -102,7 +102,7 @@ public class ArmController : MonoBehaviour
             time += Time.deltaTime;
             yield return null;
         }
-        // 💥 Aquí es donde debe pegar
+       
         Punch();
         yield return new WaitForSeconds(punchReturnCooldown);
         // 3. Cooldown antes de retroceder
@@ -128,8 +128,6 @@ public class ArmController : MonoBehaviour
         ItemBehaviour item = HotBarController.instance.GetCurrentItemBehaviour();
         if(item != null)
             item.GetComponent<ItemBehaviour>().Use();
-        else
-            Punch();
     }
 
     private void Punch()
@@ -137,12 +135,15 @@ public class ArmController : MonoBehaviour
         Ray ray = new Ray(CameraController.instance.transform.position, CameraController.instance.transform.transform.forward);
         RaycastHit hit;
 
-        Debug.DrawRay(ray.origin, ray.direction * punchRange, Color.red);
+        print("Puñetazo");
         if (Physics.Raycast(ray, out hit, punchRange))
         {
             Enemy enemy = hit.collider.CompareTag("Enemy") ? hit.collider.GetComponent<Enemy>() : null;
             if (enemy != null)
+            {
+                print("Enemy golpeado");
                 enemy.TakeDamage(punchDamage);
+            }        
         }
     }
 

@@ -15,7 +15,9 @@ public class ToolBehaviour : ItemBehaviour
 
     public ToolType GetToolType() => toolType;
     public float GetToolDamage() => toolDamage;
+    public float GetToolMaxHealth() => maxhealth;
     public float GetToolCurrentHealth() => currentHealth;
+    public void SetToolCurrentHealth(float health) => currentHealth = health;
 
     protected override void Awake()
     {
@@ -59,10 +61,17 @@ public class ToolBehaviour : ItemBehaviour
     protected void TakeDamage(float amount)
     {   
         currentHealth = Math.Clamp(currentHealth - amount, 0 ,maxhealth);
+        print("Vida: " + currentHealth);
         if(currentHealth == 0)
         {
             print("Herramienta destruida");
             InventoryController.instance.RemoveItem(HotBarController.instance.GetCurrentItem());
         }
+        
+        ToolBehaviour originalItem = HotBarController.instance.GetCurrentItem().GetComponent<ToolBehaviour>();
+        if(originalItem != null)
+            originalItem.SetToolCurrentHealth(currentHealth);
+        
+        HotBarController.instance.UpdateToolHealthBar(HotBarController.instance.GetSelectedIndex());
     }
 }

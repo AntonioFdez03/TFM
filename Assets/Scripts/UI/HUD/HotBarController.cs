@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -49,6 +50,7 @@ public class HotBarController : MonoBehaviour
 
     public GameObject GetCurrentItem() => currentItem;
     public ItemBehaviour GetCurrentItemBehaviour() => currentItemBehaviour;
+    public int GetSelectedIndex() => selectedIndex;
 
     void Update()
     {   
@@ -208,12 +210,6 @@ public class HotBarController : MonoBehaviour
                         uiData.CopyFrom(originalData);
                         slotItem.GetComponent<Image>().sprite = originalData.GetItemIcon();
                         slotItem.SetActive(true);
-
-                        if(uiData.GetItemType() == ItemType.Tool)
-                        {
-                            print("Se muestra la barra");
-                            Instantiate(itemHealthBar, slots[i]);
-                        }
                     }
                 }
                 else
@@ -225,7 +221,51 @@ public class HotBarController : MonoBehaviour
                     slotItem.SetActive(false);
                 }
             }
+            UpdateToolHealthBar(i);
         }
         RefreshHandItem();
+    }
+
+
+    public void UpdateToolHealthBar(int index)
+    {   
+        GameObject[] items = InventoryController.instance.GetInventoryItems();
+
+        // Si no hay item en ese slot
+        if (items[index] == null)
+        {
+            Transform existingBar = slots[index].Find("HealthBar");
+            if (existingBar != null)
+                Destroy(existingBar.gameObject);
+
+            return;
+        }
+
+        ItemBehaviour itemBehaviour = items[index].GetComponent<ItemBehaviour>();
+
+        // Si es herramienta
+        if (itemBehaviour is ToolBehaviour toolBehaviour)
+        {  
+            Transform healthBarInstance = slots[index].Find("HealthBar");
+
+            if (healthBarInstance == null)
+            {
+                healthBarInstance = Instantiate(itemHealthBar, slots[index]);
+                healthBarInstance.name = "HealthBar";
+            }
+
+            Transform fill = healthBarInstance.Find("Fill");
+            if (fill == null) return;
+
+            if (!fill.TryGetComponent<Image>(out var fillImage)) return;
+            fillImage.fillAmount = toolBehaviour.GetToolCurrentHealth() / toolBehaviour.GetToolMaxHealth();
+        }
+        // Si NO es herramienta, eliminar barra si existe
+        else
+        {
+            Transform existingBar = slots[index].Find("HealthBar");
+            if (existingBar != null)
+                Destroy(existingBar.gameObject);
+        }
     }
 }

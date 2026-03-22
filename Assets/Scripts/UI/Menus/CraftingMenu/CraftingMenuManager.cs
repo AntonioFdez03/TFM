@@ -18,14 +18,14 @@ public class CraftingMenuManager : MonoBehaviour
     void Start()
     {   
         CleanRecipes();
-        ShowRecipes(RecipeType.None);
+        ShowRecipes(ItemType.None);
     }
 
     void OnEnable()
     {   
         EnableButtons();
         CleanRecipes();
-        ShowRecipes(RecipeType.None);
+        ShowRecipes(ItemType.None);
 
         if(CraftingController.instance.GetStationType() != CraftingStationType.None)
             stationType.text = "(" + CraftingController.instance.GetStationType().ToString().ToUpper() + ")";
@@ -39,12 +39,12 @@ public class CraftingMenuManager : MonoBehaviour
             Destroy(child.gameObject);
     }
 
-    public void ShowRecipes(RecipeType recipeType)
+    public void ShowRecipes(ItemType recipeType)
     {
         CleanRecipes();
         foreach(CraftingRecipe recipe in CraftingController.instance.GetAllRecipeList())
         {
-            if((recipeType == RecipeType.None || recipe.recipeType == recipeType) && (recipe.stationType == CraftingController.instance.GetStationType() || recipe.stationType == CraftingStationType.None))
+            if((recipeType == ItemType.None || recipe.recipeType == recipeType) && (recipe.stationType == CraftingController.instance.GetStationType() || recipe.stationType == CraftingStationType.None))
                 ShowRecipe(recipe);
         }
     }
@@ -69,13 +69,13 @@ public class CraftingMenuManager : MonoBehaviour
     public void ToolsButtonPressed() {
         EnableButtons();
         toolsButton.interactable = false;
-        ShowRecipes(RecipeType.Tool);
+        ShowRecipes(ItemType.Tool);
     }
     public void PlaceablesButtonPressed() 
     {
         EnableButtons();
         placeablesButton.interactable = false;
-        ShowRecipes(RecipeType.Placeable);
+        ShowRecipes(ItemType.Placeable);
     }
 
     private void EnableButtons()

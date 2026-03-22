@@ -27,7 +27,7 @@ public class CraftingController : MonoBehaviour
         {
             foreach(RecipeIngredient ingredient in recipe.ingredients)
                 for(int i = 0 ; i < ingredient.ingredientAmount ; i++)
-                    InventoryController.instance.RemoveItem(InventoryController.instance.FindItemByName(ingredient.ingredientData.GetItemName()));
+                    InventoryController.instance.RemoveItem(InventoryController.instance.GetItemsByName(ingredient.ingredientData.GetItemName())[0]);
             
             GameObject itemInstance = Instantiate(recipe.recipeItem);
             InventoryController.instance.AddItem(itemInstance);
@@ -39,7 +39,7 @@ public class CraftingController : MonoBehaviour
     {
        foreach(RecipeIngredient ingredient in recipe.ingredients)
         {
-            if(InventoryController.instance.GetItemAmount(ingredient.ingredientData.GetItemName()) < ingredient.ingredientAmount)
+            if(InventoryController.instance.GetItemsByName(ingredient.ingredientData.GetItemName()).Count < ingredient.ingredientAmount)
                 return false;
         }
         return true;

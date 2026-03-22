@@ -6,9 +6,8 @@ using UnityEngine.XR;
 public class InventoryController : MonoBehaviour
 {   
     public static InventoryController instance;
-    public static System.Action OnInventoryChanged;
+    public static Action OnInventoryChanged;
 
-    [Header("References")]
     [SerializeField] Transform itemsParent; 
     [SerializeField] Transform handSlot;
 
@@ -42,7 +41,7 @@ public class InventoryController : MonoBehaviour
             if (items[i] == null)
             {
                 items[i] = item;
-                item.transform.SetParent(this.transform);
+                item.transform.SetParent(transform);
                 item.SetActive(false);
                 
                 OnInventoryChanged?.Invoke();
@@ -50,7 +49,6 @@ public class InventoryController : MonoBehaviour
                 return;
             }
         }
-        Debug.Log("Inventario lleno");
     }
 
     public void RemoveItem(GameObject item)
@@ -70,14 +68,12 @@ public class InventoryController : MonoBehaviour
 
     public void DropItem(int index)
     {
-        // Verificamos que el índice sea válido y que haya algo en ese slot
         if (index >= 0 && index < items.Length && items[index] != null)
         {
             GameObject itemToDrop = items[index];
             
             // Vaciamos el slot
             items[index] = null; 
-
             itemToDrop.SetActive(true);
 
             //Posicion, giro y escala al soltarlo
@@ -109,26 +105,21 @@ public class InventoryController : MonoBehaviour
         HotBarController.instance.UpdateHotBarUI();
     }
 
-    public GameObject FindItemByName(string name)
+    public List<GameObject> GetItemsByName(string name)
     {
+        List<GameObject> result = new List<GameObject>();
+
         foreach (GameObject item in items)
-        {   
-            if(item != null)
-                if(item.GetComponent<ItemData>().GetItemName() == name)
-                    return item;
+        {
+            if (item == null) continue;
+
+            ItemData data = item.GetComponent<ItemData>();
+            if (data != null && data.GetItemName() == name)
+            {
+                result.Add(item);
+            }
         }
 
-        return null;
-    }
-
-    public int GetItemAmount(String name)
-    {
-        int amount = 0;
-        foreach (GameObject item in items)
-        {   if(item != null)
-                if(item.GetComponent<ItemData>().GetItemName() == name)
-                    amount ++;
-        }
-        return amount;
+        return result;
     }
 }

@@ -30,8 +30,16 @@ public class PlayerInteraction : MonoBehaviour
         if (PlayerController.instance.GetCanMove())
         {
             Interact();
-            Attack();
+            Use();
         }
+    }
+
+    private void Use()
+    {
+        var currentItem = HotBarController.instance.GetCurrentItemBehaviour();
+
+        HandleAttackStart(currentItem);
+        HandleConsumable(currentItem);
     }
 
     private void Interact()
@@ -39,87 +47,100 @@ public class PlayerInteraction : MonoBehaviour
         Ray ray = new Ray(CameraController.instance.transform.position, CameraController.instance.transform.forward);
         RaycastHit hit;
 
-        if(lastHit.collider != null)
+        // Limpiar selección anterior
+        if (lastHit.collider != null)
             HandleItemSelection(lastHit.collider.gameObject, false);
 
         bool hasHit = Physics.Raycast(ray, out hit, interactDistance);
 
-        if(hasHit)
-        {
-            switch (hit.collider.tag)
-            {
-                case "Item":
-                    HandleItemSelection(hit.collider.gameObject, true);
-                    break;
+        GameObject hitObject = hasHit ? hit.collider.gameObject : null;
+        string tag = hasHit ? hit.collider.tag : null;
 
-                case "Harvestable":
-                    HandleHarvestableInfo(hit.collider.gameObject);
-                    break;
-            }
-        }
-
-        if (HotBarController.instance.GetCurrentItemBehaviour() is PlaceableBehaviour placeable)
-        {
-            if (hasHit && hit.collider.CompareTag("Terrain"))
-                placeable.ShowSilhouette(hit);
-            else if (hasHit == false)
-                placeable.HideSilhouette();
-        }
+        HandleHover(hasHit,hitObject,tag);
+        HandlePlaceable(hasHit, hit);
 
         if (!hasHit)
             return;
 
         if (interact.WasPressedThisFrame())
-        {
-            switch (hit.collider.tag)
-            {
-                case "Item":
-                    HandleItemSelection(hit.collider.gameObject, false);
-                    InventoryController.instance.AddItem(hit.collider.gameObject);
-                    break;
-
-                case "Interactive":
-                    hit.collider.gameObject.GetComponent<IInteractiveObject>().Interact();
-                    break;
-            }
-        }
+            HandleInteraction(tag, hitObject);
+        
         lastHit = hit;
     }
 
-    private void Attack()
+    void HandleAttackStart(object currentItem)
     {
-        if (attack.triggered)
-        {   
-            if (arm != null) 
-                arm.PlayAttackAnimation();
+        if (!attack.triggered)
+            return;
 
-            if(HotBarController.instance.GetCurrentItemBehaviour() is PlaceableBehaviour placeable)
-                placeable.Use();
-        }
+        if (arm != null)
+            arm.PlayAttackAnimation();
 
-        ConsumableBehaviour consumable = HotBarController.instance.GetCurrentItemBehaviour() as ConsumableBehaviour;
+        if (currentItem is PlaceableBehaviour placeable)
+            placeable.Use();
+    }
 
-        if (attack.IsPressed())
-        {   
-            if(consumable != null)
-            {
-                consumable.Use();
-                ShowCircularSlider(consumable.GetCurrentTime()/consumable.GetConsumeTime());
-            }
-            else
-            {   
-                if(consumable != null)
-                    consumable.SetCurrentTime(0f);
+    void HandleConsumable(object currentItem)
+    {
+        ConsumableBehaviour consumable = currentItem as ConsumableBehaviour;
 
-                circularSlider.transform.parent.gameObject.SetActive(false);
-            }
+        if (attack.IsPressed() && consumable != null)
+        {
+            consumable.Use();
+            ShowCircularSlider(consumable.GetCurrentTime() / consumable.GetConsumeTime());
         }
         else
-        {   
-            if(consumable != null)
-                consumable.SetCurrentTime(0f);
-            circularSlider.transform.parent.gameObject.SetActive(false);
+            ResetConsumable(consumable);
+    }
+
+    void ResetConsumable(ConsumableBehaviour consumable)
+    {
+        if (consumable != null)
+            consumable.SetCurrentTime(0f);
+
+        circularSlider.transform.parent.gameObject.SetActive(false);
+    }
+    private void HandleHover(bool hasHit, GameObject hitObject, string tag)
+    {
+        if (hasHit)
+        {
+            switch (tag)
+            {
+                case "Item":
+                    HandleItemSelection(hitObject, true);
+                    break;
+
+                case "Harvestable":
+                    HandleHarvestableInfo(hitObject);
+                    break;
+            }
         }
+    }
+
+    private void HandleInteraction(string tag, GameObject obj)
+    {
+        switch (tag)
+        {
+            case "Item":
+                HandleItemSelection(obj, false);
+                InventoryController.instance.AddItem(obj);
+                break;
+
+            case "Interactive":
+                obj.GetComponent<IInteractiveObject>()?.Interact();
+                break;
+        }
+    }
+
+    private void HandlePlaceable(bool hasHit, RaycastHit hit)
+    {
+        if (HotBarController.instance.GetCurrentItemBehaviour() is not PlaceableBehaviour placeable)
+            return;
+
+        if (hasHit && hit.collider.CompareTag("Terrain"))
+            placeable.ShowSilhouette(hit);
+        else
+            placeable.HideSilhouette();
     }
 
     private void HandleItemSelection(GameObject item, bool selected)

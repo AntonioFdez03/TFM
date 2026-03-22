@@ -13,6 +13,7 @@ public class TreeNode : HarvestableObject
     
     protected override void Awake()
     {
+        base.Awake();
         maxHealth = 20;
         currentHealth = maxHealth;
         toolsAccepted.Add(ToolType.Axe);
@@ -34,7 +35,7 @@ public class TreeNode : HarvestableObject
         rb.AddTorque(fallDirection * 6000f, ForceMode.Impulse);
     }
 
-    protected override void GenerateDropItems()
+    protected void GenerateDropItems()
     {
         foreach (Transform spawner in logSpawners)
         {
@@ -42,7 +43,7 @@ public class TreeNode : HarvestableObject
             dropItem,
             spawner.position + Vector3.up * 0.8f,
             spawner.rotation,
-            transform.parent.transform.parent
+            InventoryController.instance.GetItemsParent()
             );
 
             Rigidbody itemRB = newItem.GetComponent<Rigidbody>();

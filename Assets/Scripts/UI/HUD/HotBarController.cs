@@ -251,13 +251,18 @@ public class HotBarController : MonoBehaviour
             if (healthBarInstance == null)
             {
                 healthBarInstance = Instantiate(itemHealthBar, slots[index]);
+                healthBarInstance.gameObject.SetActive(false);
                 healthBarInstance.name = "HealthBar";
             }
+
+            if(toolBehaviour.GetToolCurrentHealth() < toolBehaviour.GetToolMaxHealth()) 
+                healthBarInstance.gameObject.SetActive(true);
 
             Transform fill = healthBarInstance.Find("Fill");
             if (fill == null) return;
 
             if (!fill.TryGetComponent<Image>(out var fillImage)) return;
+
             fillImage.fillAmount = toolBehaviour.GetToolCurrentHealth() / toolBehaviour.GetToolMaxHealth();
         }
         // Si NO es herramienta, eliminar barra si existe

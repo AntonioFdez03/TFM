@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -12,16 +13,16 @@ public abstract class HarvestableObject : MonoBehaviour
     protected int dropItemsCount;
     protected float cooldownToDrop;
 
-    protected abstract void Awake();
+    protected virtual void Awake(){}
 
-    public void TakeHit(ToolBehaviour tool)
+    public virtual void TakeHit(ToolBehaviour tool)
     {
         if (CanHarvest(tool.GetToolType()))
         {
-            currentHealth -= tool.GetToolDamage();
+            currentHealth = Math.Clamp(currentHealth - tool.GetToolDamage(), 0 ,maxHealth);
             print($"{gameObject.name} golpeado. Vida: {currentHealth}");
             
-            if (currentHealth <= 0)
+            if (currentHealth == 0)
                 Harvest();
         }
         else
@@ -31,7 +32,6 @@ public abstract class HarvestableObject : MonoBehaviour
     }
 
     public abstract void Harvest();
-    protected abstract void GenerateDropItems();
     public bool CanHarvest(ToolType tool) => toolsAccepted.Contains(tool);
     public List<ToolType> GetToolsAccepted() => toolsAccepted;
 }

@@ -4,6 +4,7 @@ using UnityEditor;
 
 public class ArmController : MonoBehaviour
 {   
+    public static ArmController instance;
     private bool isMoving = false;
 
     //Swing settings
@@ -24,6 +25,16 @@ public class ArmController : MonoBehaviour
     private float punchCooldown = 0.2f;
     private Vector3 initialLocalPos;
 
+    void Awake()
+    {
+        if(instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+    }
+    
     void Start()
     {
         initialLocalPos = transform.localPosition;

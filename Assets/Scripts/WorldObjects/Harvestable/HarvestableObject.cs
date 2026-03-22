@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class HarvestableObject : MonoBehaviour
 {
     protected int maxHealth;
-    protected int currentHealth;
+    protected float currentHealth;
     protected List<ToolType> toolsAccepted = new();
     [SerializeField] protected GameObject dropItem;
     protected int dropItemsCount;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
@@ -6,11 +7,15 @@ public enum ToolType { Axe, Pickaxe}
 public class ToolBehaviour : ItemBehaviour
 {
     protected ToolType toolType;
-    protected int toolDamage;
-    protected float toolRange = 5f;
+    protected float toolDamage;
+    protected float toolRange;
+
+    protected float maxhealth;
+    protected float currentHealth;
 
     public ToolType GetToolType() => toolType;
-    public int GetToolDamage() => toolDamage;
+    public float GetToolDamage() => toolDamage;
+    public float GetToolCurrentHealth() => currentHealth;
 
     protected override void Awake()
     {
@@ -37,11 +42,27 @@ public class ToolBehaviour : ItemBehaviour
         {
             Enemy enemy = hit.collider.CompareTag("Enemy") ? hit.collider.GetComponent<Enemy>() : null;
             if (enemy != null)
+            {
                 enemy.TakeDamage(toolDamage);
+                TakeDamage(5);
+            }
 
             HarvestableObject harvestableObject = hit.collider.CompareTag("Harvestable") ? hit.collider.GetComponent<HarvestableObject>() : null;
             if(harvestableObject != null)
+            {
                 harvestableObject.TakeHit(this);
+                TakeDamage(2f);
+            }
+        }
+    }
+
+    protected void TakeDamage(float amount)
+    {   
+        currentHealth = Math.Clamp(currentHealth - amount, 0 ,maxhealth);
+        if(currentHealth == 0)
+        {
+            print("Herramienta destruida");
+            InventoryController.instance.RemoveItem(HotBarController.instance.GetCurrentItem());
         }
     }
 }

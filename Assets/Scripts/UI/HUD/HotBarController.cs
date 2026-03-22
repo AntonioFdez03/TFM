@@ -13,6 +13,7 @@ public class HotBarController : MonoBehaviour
     [SerializeField] Transform hotBarPanel;
     [SerializeField] RectTransform selectorFrame;
     [SerializeField] Transform handSlot;
+    [SerializeField] Transform itemHealthBar;
 
     [Header("Settings")]
     [Range(0, 6)] private int selectedIndex = 0;
@@ -53,7 +54,6 @@ public class HotBarController : MonoBehaviour
     {   
         if (Keyboard.current == null) return;
 
-        // Cambio de slot mediante teclado numérico
         for (int i = 0; i < slots.Length; i++)
         {
             Key targetKey = (Key)((int)Key.Digit1 + i);
@@ -208,6 +208,12 @@ public class HotBarController : MonoBehaviour
                         uiData.CopyFrom(originalData);
                         slotItem.GetComponent<Image>().sprite = originalData.GetItemIcon();
                         slotItem.SetActive(true);
+
+                        if(uiData.GetItemType() == ItemType.Tool)
+                        {
+                            print("Se muestra la barra");
+                            Instantiate(itemHealthBar, slots[i]);
+                        }
                     }
                 }
                 else

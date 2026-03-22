@@ -380,6 +380,7 @@ MonoBehaviour:
   itemName: Bonfire
   itemIcon: {fileID: 21300000, guid: b16fd339cd2f70d439c4a6314bba40ad, type: 3}
   itemPrefab: {fileID: 2497555479857757306}
+  itemType: 4
 --- !u!1 &2686258295672949998
 GameObject:
   m_ObjectHideFlags: 0

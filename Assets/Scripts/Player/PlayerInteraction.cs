@@ -117,13 +117,18 @@ public class PlayerInteraction : MonoBehaviour
     private void HandleHarvestableInfo(GameObject harvestableObject)
     {
         if(harvestableObject.TryGetComponent(out HarvestableObject harvestable))
-        {
+        {   
+            string toolName = harvestable.GetToolsAccepted()[0].ToString();
+            char firstLetter = char.ToUpper(toolName[0]);
+            string article = "a";
+            if ("AEIOU".IndexOf(firstLetter) >= 0)
+                article = "an";
             if(HotBarController.instance.GetCurrentItemBehaviour() is ToolBehaviour toolBehaviour)
             {   
                 if(!harvestable.CanHarvest(toolBehaviour.GetToolType()))
-                    itemInfo.text = "You need an " + harvestable.GetToolsAccepted(); 
+                    itemInfo.text = $"You need {article} {toolName}";
             }else
-                itemInfo.text = "You need an " + harvestable.GetToolsAccepted()[0].ToString(); 
+                itemInfo.text = $"You need {article} {toolName}";
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -70,6 +71,11 @@ public class PlayerAttributes : MonoBehaviour
         }
 
         currentHunger = Mathf.Clamp(currentHunger, 0f, maxHunger);
+    }
+
+    public void Eat(float amount)
+    {
+        currentHunger = Math.Clamp(currentHunger + amount, 0, maxHunger);
     }
 
     public void UseStamina()

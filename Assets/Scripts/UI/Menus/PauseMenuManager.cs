@@ -14,6 +14,10 @@ public class PauseMenuManager : MonoBehaviour
         
     }
 
+    public void Save()
+    {
+        
+    }
     public void Quit()
     {
         SceneManager.LoadScene("MainMenuScene");

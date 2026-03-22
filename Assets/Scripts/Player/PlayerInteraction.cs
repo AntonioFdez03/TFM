@@ -3,6 +3,7 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] ArmController arm;
     [SerializeField] TMP_Text itemInfo;
     [SerializeField] Material outlineMaterial;
+    [SerializeField] Slider circularSlider;
 
     private float interactDistance = 9f;
 
@@ -94,6 +96,30 @@ public class PlayerInteraction : MonoBehaviour
             if(HotBarController.instance.GetCurrentItemBehaviour() is PlaceableBehaviour placeable)
                 placeable.Use();
         }
+
+        ConsumableBehaviour consumable = HotBarController.instance.GetCurrentItemBehaviour() as ConsumableBehaviour;
+
+        if (attack.IsPressed())
+        {   
+            if(consumable != null)
+            {
+                consumable.Use();
+                ShowCircularSlider(consumable.GetCurrentTime()/consumable.GetConsumeTime());
+            }
+            else
+            {   
+                if(consumable != null)
+                    consumable.SetCurrentTime(0f);
+
+                circularSlider.transform.parent.gameObject.SetActive(false);
+            }
+        }
+        else
+        {   
+            if(consumable != null)
+                consumable.SetCurrentTime(0f);
+            circularSlider.transform.parent.gameObject.SetActive(false);
+        }
     }
 
     private void HandleItemSelection(GameObject item, bool selected)
@@ -130,5 +156,11 @@ public class PlayerInteraction : MonoBehaviour
             }else
                 itemInfo.text = $"You need {article} {toolName}";
         }
+    }
+
+    private void ShowCircularSlider(float currentValue)
+    {   
+        circularSlider.transform.parent.gameObject.SetActive(true);
+        circularSlider.value = currentValue;
     }
 }

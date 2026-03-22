@@ -8,8 +8,9 @@ public class Bonfire : PlaceableBehaviour
     private bool burnPlayer;
     private float fireDamage;
 
-    void Start()
-    {
+    protected override void Start()
+    {   
+        base.Start();
         fireDamage = 20;
     }
 

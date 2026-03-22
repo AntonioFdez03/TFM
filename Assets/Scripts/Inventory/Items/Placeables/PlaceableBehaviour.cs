@@ -14,8 +14,9 @@ public class PlaceableBehaviour : ItemBehaviour
     private Vector3 lastValidPosition;
     private Quaternion lastValidRotation;
     private bool canPlace;
+    protected bool straight = false;
 
-    void Start()
+    protected virtual void Start()
     {
         gameObject.GetComponent<Rigidbody>().isKinematic = true;
     }
@@ -67,7 +68,10 @@ public class PlaceableBehaviour : ItemBehaviour
     public void HideSilhouette()
     {   
         if(silhouette != null)
+        {
+            canPlace = false;
             silhouette.SetActive(false);
+        }
     }
 
     public void DeleteSilhouette()
@@ -107,17 +111,28 @@ public class PlaceableBehaviour : ItemBehaviour
         silhouette.transform.position = hit.point;
         silhouette.transform.localScale = Vector3.one;
 
-        Quaternion alignToGround = Quaternion.FromToRotation(Vector3.up, hit.normal);
-
-        // 2. Obtener dirección de la cámara en plano horizontal
+        // Dirección de la cámara en plano horizontal
         Vector3 camForward = Camera.main.transform.forward;
         camForward.y = 0f;
+
+        // Evitar vector cero
+        if (camForward.sqrMagnitude < 0.001f)
+            camForward = Vector3.forward;
+
         camForward.Normalize();
 
-        // 3. Rotación mirando a la cámara (solo en Y)
         Quaternion lookRotation = Quaternion.LookRotation(camForward);
 
-        // 4. Combinar ambas
-        silhouette.transform.rotation = alignToGround * lookRotation;
+        if (straight)
+        {
+            print("Recto");
+            silhouette.transform.rotation = Quaternion.Euler(0f, lookRotation.eulerAngles.y, 0f);
+        }
+        else
+        {
+            print("Torcido");
+            Quaternion alignToGround = Quaternion.FromToRotation(Vector3.up, hit.normal);
+            silhouette.transform.rotation = alignToGround * lookRotation;
+        }
     }
 }

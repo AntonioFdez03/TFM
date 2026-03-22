@@ -8,8 +8,10 @@ public class Wall : PlaceableBehaviour
     private float currentHealth;
     private float maxHealth;
 
-    void Start()
-    {
+    protected override void Start()
+    {   
+        base.Start();
+
         maxHealth = 100;
         currentHealth = maxHealth;
     }

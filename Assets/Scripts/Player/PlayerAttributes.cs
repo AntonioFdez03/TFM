@@ -12,7 +12,8 @@ public class PlayerAttributes : MonoBehaviour
     private bool isInvulnerable = false;
     private float invulnerabilityDuration = 1f;
     private bool canHeal = true;
-    private float healingCooldown = 1;
+    private float healingCooldown = 5;
+    private float timeSinceLastDamage = 0f;
 
     //Stamina
     [SerializeField] UnityEngine.UI.Image staminaBar;
@@ -56,20 +57,22 @@ public class PlayerAttributes : MonoBehaviour
     public float GetMaxHunger() => maxHunger;
 
     public void TakeDamage(float damage)
-    {
+    {   
         if (isInvulnerable)
             return;
         currentHealth = Mathf.Clamp(currentHealth-damage, 0f, maxHealth);
         StartCoroutine(DamageCooldownCR());
+        timeSinceLastDamage = 0f;
         if(currentHealth == 0)
             PlayerController.instance.SetIsDead(true);
     }
 
     private void HandleHealth()
-    {
+    {   
+        timeSinceLastDamage += Time.deltaTime;
         if(currentHunger == 0)
             TakeDamage(hungerDamage);
-        else if(canHeal && currentHunger > 0.75 * maxHunger && currentHealth < maxHealth)
+        else if(canHeal && currentHunger > 0.75 * maxHunger && currentHealth < maxHealth && timeSinceLastDamage > 10f)
         {
             currentHealth = Math.Clamp(currentHealth+hungerHeal,0,maxHealth);
             StartCoroutine(HealingCooldownCR());
@@ -96,6 +99,7 @@ public class PlayerAttributes : MonoBehaviour
     public void Eat(float amount)
     {
         currentHunger = Math.Clamp(currentHunger + amount, 0, maxHunger);
+        timeSinceLastHungerDecrase = 0f;
     }
 
     public void UseStamina()

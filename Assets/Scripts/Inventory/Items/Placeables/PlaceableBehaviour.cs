@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlaceableBehaviour : ItemBehaviour
 {
@@ -16,9 +17,15 @@ public class PlaceableBehaviour : ItemBehaviour
     private bool canPlace;
     protected bool straight = false;
 
+    //Unplace logic
+    private InputAction interact;
+    protected float unplaceTime;
+    private float timer;
+
     protected virtual void Start()
     {
         gameObject.GetComponent<Rigidbody>().isKinematic = true;
+        interact = InputSystem.actions.FindAction("Interact");
     }
 
     public override void Use()
@@ -135,4 +142,20 @@ public class PlaceableBehaviour : ItemBehaviour
             silhouette.transform.rotation = alignToGround * lookRotation;
         }
     }
+
+    public void Unplace()
+    {   
+        if (interact.IsPressed())
+            timer += Time.deltaTime;
+
+        if(timer > unplaceTime)
+        {   
+            timer = 0;
+            InventoryController.instance.AddItem(gameObject);
+        }
+    }
+
+    public float GetCurrentTime() => timer;
+    public float SetCurrentTime(float time) => timer = time;
+    public float GetUnplaceTime() => unplaceTime;
 }

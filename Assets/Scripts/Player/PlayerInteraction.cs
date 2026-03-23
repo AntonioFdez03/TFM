@@ -57,18 +57,17 @@ public class PlayerInteraction : MonoBehaviour
         string tag = hasHit ? hit.collider.tag : null;
 
         HandleHover(hasHit,hitObject,tag);
-        HandlePlaceable(hasHit, hit);
+        HandlePlaceableSilhouette(hasHit, hit);
 
         if (!hasHit)
             return;
-
-        if (interact.WasPressedThisFrame())
-            HandleInteraction(tag, hitObject);
+        
+        HandleInteraction(tag,hitObject);
         
         lastHit = hit;
     }
 
-    void HandleAttackStart(object currentItem)
+    private void HandleAttackStart(object currentItem)
     {
         if (!attack.triggered)
             return;
@@ -80,26 +79,37 @@ public class PlayerInteraction : MonoBehaviour
             placeable.Use();
     }
 
-    void HandleConsumable(object currentItem)
+    private void HandleConsumable(object currentItem)
     {
-        ConsumableBehaviour consumable = currentItem as ConsumableBehaviour;
-
-        if (attack.IsPressed() && consumable != null)
+        if(currentItem is ConsumableBehaviour consumable)
         {
-            consumable.Use();
-            ShowCircularSlider(consumable.GetCurrentTime() / consumable.GetConsumeTime());
+            if (attack.IsPressed() && consumable != null)
+            {
+                consumable.Use();
+                ShowCircularSlider(consumable.GetCurrentTime() / consumable.GetConsumeTime());
+            }
+            else
+                ResetTime(consumable);
         }
-        else
-            ResetConsumable(consumable);
     }
 
-    void ResetConsumable(ConsumableBehaviour consumable)
-    {
-        if (consumable != null)
+    private void ResetTime(ItemBehaviour obj)
+    {   
+        if (obj == null)
+        {
+            circularSlider.transform.parent.gameObject.SetActive(false);
+            return;
+        }
+
+        if (obj.TryGetComponent<ConsumableBehaviour>(out var consumable))
             consumable.SetCurrentTime(0f);
+
+        if (obj.TryGetComponent<PlaceableBehaviour>(out var placeable))
+            placeable.SetCurrentTime(0f);
 
         circularSlider.transform.parent.gameObject.SetActive(false);
     }
+    
     private void HandleHover(bool hasHit, GameObject hitObject, string tag)
     {
         if (hasHit)
@@ -118,21 +128,26 @@ public class PlayerInteraction : MonoBehaviour
     }
 
     private void HandleInteraction(string tag, GameObject obj)
-    {
-        switch (tag)
-        {
-            case "Item":
-                HandleItemSelection(obj, false);
-                InventoryController.instance.AddItem(obj);
-                break;
+    {   
+        if (interact.WasReleasedThisFrame()) 
+        {   
+            ResetTime(obj.GetComponent<ItemBehaviour>());
+            switch (tag)
+            {
+                case "Item":
+                    HandleItemSelection(obj, false);
+                    InventoryController.instance.AddItem(obj);
+                    break;
 
-            case "Interactive":
-                obj.GetComponent<IInteractiveObject>()?.Interact();
-                break;
-        }
+                case "Interactive":
+                    obj.GetComponent<IInteractiveObject>()?.Interact();
+                    break;
+            }
+        }else if(interact.IsPressed())
+            HandleUnplacing(obj);
     }
 
-    private void HandlePlaceable(bool hasHit, RaycastHit hit)
+    private void HandlePlaceableSilhouette(bool hasHit, RaycastHit hit)
     {
         if (HotBarController.instance.GetCurrentItemBehaviour() is not PlaceableBehaviour placeable)
             return;
@@ -141,6 +156,21 @@ public class PlayerInteraction : MonoBehaviour
             placeable.ShowSilhouette(hit);
         else
             placeable.HideSilhouette();
+    }
+
+    private void HandleUnplacing(GameObject obj)
+    {   
+        if(obj.GetComponent<ItemBehaviour>() is PlaceableBehaviour placeable)
+        {   
+            if(interact.IsPressed() && placeable != null)
+            {   
+                placeable.Unplace();
+                ShowCircularSlider(placeable.GetCurrentTime() / placeable.GetUnplaceTime());
+            }
+            else
+                ResetTime(placeable);
+            
+        }
     }
 
     private void HandleItemSelection(GameObject item, bool selected)

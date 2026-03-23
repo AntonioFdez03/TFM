@@ -45,6 +45,11 @@ public class PlayerAttributes : MonoBehaviour
         UpdateUI();
     }
 
+    public float GetCurrentHealth() => currentHealth;
+    public float GetMaxHealth() => maxHealth;
+    public float GetCurrentHunger() => currentHunger;
+    public float GetMaxHunger() => maxHunger;
+
     public void TakeDamage(float damage)
     {
         if (isInvulnerable)

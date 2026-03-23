@@ -18,16 +18,15 @@ public abstract class ConsumableBehaviour : ItemBehaviour
     public override void Use()
     {
         if (attack.IsPressed())
-        {
-            print("Pulsando tecla");
             timer += Time.deltaTime;
-        }
 
         if(timer > consumeTime)
         {
             timer = 0;
-            Consume();
-        }  
+            PlayerAttributes player = PlayerController.instance.GetPlayerAttributes();
+            if(player.GetCurrentHunger() < player.GetMaxHunger())
+                Consume();
+        }
     }
 
     protected abstract void Consume();

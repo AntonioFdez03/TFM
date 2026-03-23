@@ -19,6 +19,9 @@ public class PlayerInteraction : MonoBehaviour
     private InputAction attack;
     private RaycastHit lastHit;
 
+    private float interactTime = 0.2f;
+    private float timer;
+
     void Start()
     {
         interact = InputSystem.actions.FindAction("Interact");
@@ -86,7 +89,7 @@ public class PlayerInteraction : MonoBehaviour
             if (attack.IsPressed() && consumable != null)
             {
                 consumable.Use();
-                ShowCircularSlider(consumable.GetCurrentTime() / consumable.GetConsumeTime());
+                ShowCircularSlider(consumable.GetCurrentTime() / consumable.GetConsumeTime(),false);
             }
             else
                 ResetTime(consumable);
@@ -129,8 +132,9 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HandleInteraction(string tag, GameObject obj)
     {   
-        if (interact.WasReleasedThisFrame()) 
+        if (interact.WasReleasedThisFrame() && timer < interactTime) 
         {   
+            timer = 0;
             ResetTime(obj.GetComponent<ItemBehaviour>());
             switch (tag)
             {
@@ -143,8 +147,12 @@ public class PlayerInteraction : MonoBehaviour
                     obj.GetComponent<IInteractiveObject>()?.Interact();
                     break;
             }
-        }else if(interact.IsPressed())
-            HandleUnplacing(obj);
+        }else if (interact.IsPressed())    
+            timer += Time.deltaTime;
+        else
+            timer = 0;
+
+        HandleUnplacing(obj);
     }
 
     private void HandlePlaceableSilhouette(bool hasHit, RaycastHit hit)
@@ -165,7 +173,7 @@ public class PlayerInteraction : MonoBehaviour
             if(interact.IsPressed() && placeable != null)
             {   
                 placeable.Unplace();
-                ShowCircularSlider(placeable.GetCurrentTime() / placeable.GetUnplaceTime());
+                ShowCircularSlider(placeable.GetCurrentTime() / placeable.GetUnplaceTime(), true);
             }
             else
                 ResetTime(placeable);
@@ -209,10 +217,14 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    private void ShowCircularSlider(float currentValue)
+    private void ShowCircularSlider(float currentValue, bool delay)
     {   
-        if(currentValue > 0)
-        {
+
+        float startTime = 0;
+        if(delay) startTime = 0.2f;
+
+        if(currentValue > startTime)
+        {   
             circularSlider.transform.parent.gameObject.SetActive(true);
             circularSlider.value = currentValue;
         }

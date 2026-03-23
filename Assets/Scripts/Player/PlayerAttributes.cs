@@ -9,8 +9,10 @@ public class PlayerAttributes : MonoBehaviour
     [SerializeField] UnityEngine.UI.Image healthBar;
     private float currentHealth;
     private float maxHealth = 100f;
-    private float invulnerabilityDuration = 1f;
     private bool isInvulnerable = false;
+    private float invulnerabilityDuration = 1f;
+    private bool canHeal = true;
+    private float healingCooldown = 1;
 
     //Stamina
     [SerializeField] UnityEngine.UI.Image staminaBar;
@@ -29,6 +31,8 @@ public class PlayerAttributes : MonoBehaviour
     private float hungerBurnRate = 1f;
     private float timeSinceLastHungerDecrase = 0f;
     private float hungerDecreaseInterval = 10f;
+    private float hungerDamage = 5f;
+    private float hungerHeal = 5f;
 
     void Start()
     {
@@ -41,6 +45,7 @@ public class PlayerAttributes : MonoBehaviour
     void Update()
     {   
         HandleHunger();
+        HandleHealth();
         HandleStamina();
         UpdateUI();
     }
@@ -54,13 +59,23 @@ public class PlayerAttributes : MonoBehaviour
     {
         if (isInvulnerable)
             return;
-        currentHealth -= damage;
-        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
-        StartCoroutine(DamageCooldown(invulnerabilityDuration));
+        currentHealth = Mathf.Clamp(currentHealth-damage, 0f, maxHealth);
+        StartCoroutine(DamageCooldownCR());
         if(currentHealth == 0)
             PlayerController.instance.SetIsDead(true);
     }
-    public void HandleHunger()
+
+    private void HandleHealth()
+    {
+        if(currentHunger == 0)
+            TakeDamage(hungerDamage);
+        else if(canHeal && currentHunger > 0.75 * maxHunger && currentHealth < maxHealth)
+        {
+            currentHealth = Math.Clamp(currentHealth+hungerHeal,0,maxHealth);
+            StartCoroutine(HealingCooldownCR());
+        }
+    }
+    private void HandleHunger()
     {
         timeSinceLastHungerDecrase += Time.deltaTime;
 
@@ -89,7 +104,7 @@ public class PlayerAttributes : MonoBehaviour
         timeSinceLastSprint = 0f;
     }
 
-    public void HandleStamina()
+    private void HandleStamina()
     {
         canSprint = currentStamina > 0.01f;
         timeSinceLastSprint += Time.deltaTime;
@@ -102,13 +117,6 @@ public class PlayerAttributes : MonoBehaviour
         currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
     }
 
-    IEnumerator DamageCooldown(float duration)
-    {
-        isInvulnerable = true;
-        yield return new WaitForSeconds(duration);
-        isInvulnerable = false;
-    }
-
     private void UpdateUI()
     {
         if (healthBar != null)
@@ -117,5 +125,19 @@ public class PlayerAttributes : MonoBehaviour
             staminaBar.fillAmount = currentStamina / maxStamina;
         if(hungerBar != null)
             hungerBar.fillAmount = currentHunger / maxHunger;
+    }
+
+    IEnumerator HealingCooldownCR()
+    {
+        canHeal = false;
+        yield return new WaitForSeconds(healingCooldown);
+        canHeal = true;
+    }
+
+    IEnumerator DamageCooldownCR()
+    {
+        isInvulnerable = true;
+        yield return new WaitForSeconds(invulnerabilityDuration);
+        isInvulnerable = false;
     }
 }

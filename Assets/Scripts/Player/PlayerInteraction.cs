@@ -183,7 +183,9 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HandleItemSelection(GameObject item, bool selected)
     {   
-        itemInfo.text = selected ? item.GetComponent<ItemData>().GetItemName() : "";
+        if(item.TryGetComponent<ItemData>(out var itemData))
+            itemInfo.text = selected ? itemData.GetItemName() : "";
+            
         foreach (Transform child in item.transform)
         {
             if(child.TryGetComponent(out MeshRenderer meshRenderer)){

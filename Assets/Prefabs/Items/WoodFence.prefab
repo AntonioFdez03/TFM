@@ -191,6 +191,7 @@ GameObject:
   - component: {fileID: 8217471177278559703}
   - component: {fileID: 2487421999762351818}
   - component: {fileID: 8478583967609156186}
+  - component: {fileID: 7286072639812337944}
   - component: {fileID: 4619701040695184648}
   m_Layer: 0
   m_Name: WoodFence
@@ -261,6 +262,23 @@ MonoBehaviour:
   itemIcon: {fileID: 21300000, guid: 7a23b04c5019ec547a7474b759f9a779, type: 3}
   itemPrefab: {fileID: 3106388889649033562}
   itemType: 4
+--- !u!114 &7286072639812337944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3106388889649033562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecf1ff6650c4c83438c7dc53d31fd942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WoodFence
+  greenMaterial: {fileID: 2100000, guid: c289674975e48194ba656debbe498968, type: 2}
+  redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
+  placementMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!65 &4619701040695184648
 BoxCollider:
   m_ObjectHideFlags: 0

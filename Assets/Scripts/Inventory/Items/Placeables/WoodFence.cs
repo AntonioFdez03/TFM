@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Wall : PlaceableBehaviour 
+public class WoodFence : PlaceableBehaviour 
 {
     private float currentHealth;
     private float maxHealth;

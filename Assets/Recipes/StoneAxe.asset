@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad1b90269a18a8d4bba39a3ad8d84f9d, type: 3}
-  m_Name: Axe
+  m_Name: StoneAxe
   m_EditorClassIdentifier: Assembly-CSharp::CraftingRecipe
   recipeType: 1
   stationType: 1

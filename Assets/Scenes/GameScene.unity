@@ -1634,11 +1634,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 750188584}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0.000061035156, y: -0.000061035156}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &298251993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3267,6 +3267,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4fe39b6248cc06b4d873bad00bae7ccb, type: 2}
   - {fileID: 11400000, guid: da30d3e60c32f0f4e9a5194c157fb37d, type: 2}
   - {fileID: 11400000, guid: 96f0331cbe1055f4c9edfa25b0fc4012, type: 2}
+  - {fileID: 11400000, guid: c05970feff5cddd4ab064d7dca213dac, type: 2}
 --- !u!1001 &736211203
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9430,10 +9431,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8978709272722344929, guid: 33775aa5adede7a4796dea97cefb0665, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3651585400076920799}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33775aa5adede7a4796dea97cefb0665, type: 3}
 --- !u!1001 &729181205811508991
 PrefabInstance:
@@ -9616,23 +9614,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 200b9b53a5a020c41bb8385f8889899f, type: 3}
---- !u!1 &3651585400076920798 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8978709272722344929, guid: 33775aa5adede7a4796dea97cefb0665, type: 3}
-  m_PrefabInstance: {fileID: 10499300841460660}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &3651585400076920799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3651585400076920798}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8e8bf148fcdf6a44be8b9f9cb8669ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StonePickaxe
 --- !u!1001 &5831539276707605511
 PrefabInstance:
   m_ObjectHideFlags: 0

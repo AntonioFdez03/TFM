@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
-public enum ToolType { Axe, Pickaxe}
+public enum ToolType { None, Axe, Pickaxe}
 public class ToolBehaviour : ItemBehaviour
 {
     protected ToolType toolType;
@@ -52,7 +52,7 @@ public class ToolBehaviour : ItemBehaviour
             HarvestableObject harvestableObject = hit.collider.CompareTag("Harvestable") ? hit.collider.GetComponent<HarvestableObject>() : null;
             if(harvestableObject != null)
             {
-                harvestableObject.TakeHit(this);
+                harvestableObject.TakeHit(toolType,toolDamage);
                 TakeDamage(2f);
             }
         }

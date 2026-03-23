@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
-public class TreeNode : HarvestableObject
+public class BigTreeNode : HarvestableObject
 {  
     private Rigidbody rb;
     [SerializeField] private List<Transform> logSpawners = new();
@@ -14,11 +14,9 @@ public class TreeNode : HarvestableObject
     protected override void Awake()
     {
         base.Awake();
-        maxHealth = 20;
+        maxHealth = 100;
         currentHealth = maxHealth;
         toolsAccepted.Add(ToolType.Axe);
-        dropItemsCount = 3;
-        cooldownToDrop = 4f;
         rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = true;
         rb.useGravity = false;
@@ -31,8 +29,7 @@ public class TreeNode : HarvestableObject
         transform.position += Vector3.up * 0.5f;
 
         Vector3 fallDirection = PlayerController.instance.transform.forward;
-        rb.AddForce(fallDirection * 400f, ForceMode.Impulse);
-        rb.AddTorque(fallDirection * 6000f, ForceMode.Impulse);
+        rb.AddForce(fallDirection * 1000f, ForceMode.Impulse);
     }
 
     protected void GenerateDropItems()

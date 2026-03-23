@@ -155,17 +155,6 @@ public class PlayerInteraction : MonoBehaviour
         HandleUnplacing(obj);
     }
 
-    private void HandlePlaceableSilhouette(bool hasHit, RaycastHit hit)
-    {
-        if (HotBarController.instance.GetCurrentItemBehaviour() is not PlaceableBehaviour placeable)
-            return;
-
-        if (hasHit && hit.collider.CompareTag("Terrain"))
-            placeable.ShowSilhouette(hit);
-        else
-            placeable.HideSilhouette();
-    }
-
     private void HandleUnplacing(GameObject obj)
     {   
         if(obj.GetComponent<ItemBehaviour>() is PlaceableBehaviour placeable)
@@ -179,6 +168,17 @@ public class PlayerInteraction : MonoBehaviour
                 ResetTime(placeable);
             
         }
+    }
+
+    private void HandlePlaceableSilhouette(bool hasHit, RaycastHit hit)
+    {
+        if (HotBarController.instance.GetCurrentItemBehaviour() is not PlaceableBehaviour placeable)
+            return;
+
+        if (hasHit && hit.collider.CompareTag("Terrain"))
+            placeable.ShowSilhouette(hit);
+        else
+            placeable.HideSilhouette();
     }
 
     private void HandleItemSelection(GameObject item, bool selected)
@@ -230,6 +230,5 @@ public class PlayerInteraction : MonoBehaviour
         }
         else
              circularSlider.transform.parent.gameObject.SetActive(false);
-    
     }
 }

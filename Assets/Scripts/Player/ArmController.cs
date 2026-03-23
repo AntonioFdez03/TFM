@@ -146,7 +146,6 @@ public class ArmController : MonoBehaviour
         Ray ray = new Ray(CameraController.instance.transform.position, CameraController.instance.transform.transform.forward);
         RaycastHit hit;
 
-        print("Puñetazo");
         if (Physics.Raycast(ray, out hit, punchRange))
         {
             Enemy enemy = hit.collider.CompareTag("Enemy") ? hit.collider.GetComponent<Enemy>() : null;
@@ -154,8 +153,18 @@ public class ArmController : MonoBehaviour
             {
                 print("Enemy golpeado");
                 enemy.TakeDamage(punchDamage);
-            }        
+            }
+
+            HarvestableObject harvestableObject = hit.collider.CompareTag("Harvestable") ? hit.collider.GetComponent<HarvestableObject>() : null;
+            if(harvestableObject != null)
+            {
+                harvestableObject.TakeHit(ToolType.None,punchDamage);
+                PlayerAttributes player = PlayerController.instance.GetPlayerAttributes();
+                player.TakeDamage(2f);
+            }  
         }
+
+
     }
 
 

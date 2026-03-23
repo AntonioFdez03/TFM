@@ -19,16 +19,14 @@ public class RockNode : HarvestableObject
         maxHealth = 100;
         currentHealth = maxHealth;
         toolsAccepted.Add(ToolType.Pickaxe);
-        dropItemsCount = 3;
-        cooldownToDrop = 4f;
         rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = true;
         rb.useGravity = false;
     }
 
-    public override void TakeHit(ToolBehaviour tool)
+    public override void TakeHit(ToolType tool, float damage)
     {
-        base.TakeHit(tool);
+        base.TakeHit(tool,damage);
         if(currentHealth < 0.75f * maxHealth && !firstDrop)
             GenerateDropItem(ref firstDrop);
 

@@ -211,7 +211,13 @@ public class PlayerInteraction : MonoBehaviour
 
     private void ShowCircularSlider(float currentValue)
     {   
-        circularSlider.transform.parent.gameObject.SetActive(true);
-        circularSlider.value = currentValue;
+        if(currentValue > 0)
+        {
+            circularSlider.transform.parent.gameObject.SetActive(true);
+            circularSlider.value = currentValue;
+        }
+        else
+             circularSlider.transform.parent.gameObject.SetActive(false);
+    
     }
 }

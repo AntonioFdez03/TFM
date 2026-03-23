@@ -6,6 +6,8 @@ public class ArmController : MonoBehaviour
 {   
     public static ArmController instance;
     private bool isMoving = false;
+    private float AttackCooldown = 1f;
+    private bool canAttack = true;
 
     //Swing settings
     private float swingAngle = -40f;   // Ángulo de inclinación (X)
@@ -50,6 +52,7 @@ public class ArmController : MonoBehaviour
                 StartCoroutine(PunchMovementCoroutine());  
             else if(itemBehaviour is ToolBehaviour)
                 StartCoroutine(ToolSwingCoroutine());
+            StartCoroutine(AttackCooldownCR());
         }
     }
 
@@ -163,9 +166,14 @@ public class ArmController : MonoBehaviour
                 player.TakeDamage(2f);
             }  
         }
-
-
     }
 
+    public bool CanAttack() => canAttack;
 
+    IEnumerator AttackCooldownCR()
+    {
+        canAttack = false;
+        yield return new WaitForSeconds(AttackCooldown);
+        canAttack = true;
+    }
 }

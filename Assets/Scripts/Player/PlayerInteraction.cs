@@ -63,7 +63,13 @@ public class PlayerInteraction : MonoBehaviour
         HandlePlaceableSilhouette(hasHit, hit);
 
         if (!hasHit)
+        {
+            itemInfo.text = "";
             return;
+        }
+
+        if(hit.collider.CompareTag("Terrain"))
+            itemInfo.text = "";
         
         HandleInteraction(tag,hitObject);
         
@@ -76,7 +82,10 @@ public class PlayerInteraction : MonoBehaviour
             return;
 
         if (arm != null)
-            arm.PlayAttackAnimation();
+        {
+            if(arm.CanAttack())
+                arm.PlayAttackAnimation();
+        }
 
         if (currentItem is PlaceableBehaviour placeable)
             placeable.Use();

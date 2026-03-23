@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad1b90269a18a8d4bba39a3ad8d84f9d, type: 3}
   m_Name: WoodFence
   m_EditorClassIdentifier: Assembly-CSharp::CraftingRecipe
-  recipeType: 0
-  stationType: 0
+  recipeType: 4
+  stationType: 1
   ingredients:
   - ingredientData: {fileID: 1609258955208522024, guid: 8d1c73364dcfaec409f4be7fe2790ee1, type: 3}
     ingredientAmount: 3

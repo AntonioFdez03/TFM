@@ -54,7 +54,10 @@ public class InventoryUI : MonoBehaviour
     }
 
     public void UpdateUI()
-    {
+    {   
+        if (InventoryController.instance == null)
+            return;
+        
         GameObject[] items = InventoryController.instance.GetInventoryItems();
 
         foreach (Image currentSlot in inventorySlots)

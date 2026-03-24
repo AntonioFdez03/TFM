@@ -27,6 +27,9 @@ public class CraftingMenuManager : MonoBehaviour
         CleanRecipes();
         ShowRecipes(ItemType.None);
 
+        if(CraftingController.instance == null)
+            return;
+            
         if(CraftingController.instance.GetStationType() != CraftingStationType.None)
             stationType.text = "(" + CraftingController.instance.GetStationType().ToString().ToUpper() + ")";
         else
@@ -42,6 +45,9 @@ public class CraftingMenuManager : MonoBehaviour
     public void ShowRecipes(ItemType recipeType)
     {
         CleanRecipes();
+        if(CraftingController.instance == null)
+            return;
+
         foreach(CraftingRecipe recipe in CraftingController.instance.GetAllRecipeList())
         {
             if((recipeType == ItemType.None || recipe.recipeType == recipeType) && (recipe.stationType == CraftingController.instance.GetStationType() || recipe.stationType == CraftingStationType.None))

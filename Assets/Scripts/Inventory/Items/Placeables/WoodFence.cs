@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class WoodFence : PlaceableBehaviour 
 {
-    private float currentHealth;
-    private float maxHealth;
-
     protected override void Start()
     {   
         base.Start();

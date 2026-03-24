@@ -10,12 +10,13 @@ public class ToolBehaviour : ItemBehaviour
     protected float toolDamage;
     protected float toolRange;
 
-    protected float maxhealth;
-    protected float currentHealth;
+    protected float enemyDamage = 5f;
+    protected float harvestableDamage = 2f;
+    protected float placeableDamage = 5f;
 
     public ToolType GetToolType() => toolType;
     public float GetToolDamage() => toolDamage;
-    public float GetToolMaxHealth() => maxhealth;
+    public float GetToolMaxHealth() => maxHealth;
     public float GetToolCurrentHealth() => currentHealth;
     public void SetToolCurrentHealth(float health) => currentHealth = health;
 
@@ -46,21 +47,27 @@ public class ToolBehaviour : ItemBehaviour
             if (enemy != null)
             {
                 enemy.TakeDamage(toolDamage);
-                TakeDamage(5);
+                TakeDamage(enemyDamage);
             }
 
             HarvestableObject harvestableObject = hit.collider.CompareTag("Harvestable") ? hit.collider.GetComponent<HarvestableObject>() : null;
             if(harvestableObject != null)
             {
                 harvestableObject.TakeHit(toolType,toolDamage);
-                TakeDamage(2f);
+                TakeDamage(harvestableDamage);
+            }
+
+            if(hit.collider.TryGetComponent(out PlaceableBehaviour placeable))
+            {
+                placeable.TakeDamage(toolDamage);
+                TakeDamage(placeableDamage);
             }
         }
     }
 
     protected void TakeDamage(float amount)
     {   
-        currentHealth = Math.Clamp(currentHealth - amount, 0 ,maxhealth);
+        currentHealth = Math.Clamp(currentHealth - amount, 0 ,maxHealth);
         print("Vida: " + currentHealth);
         if(currentHealth == 0)
         {

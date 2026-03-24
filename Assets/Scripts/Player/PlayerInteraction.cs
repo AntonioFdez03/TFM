@@ -9,9 +9,11 @@ public class PlayerInteraction : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] ArmController arm;
-    [SerializeField] TMP_Text itemInfo;
     [SerializeField] Material outlineMaterial;
     [SerializeField] Slider circularSlider;
+    [SerializeField] TMP_Text itemName;
+    [SerializeField] TMP_Text itemHealth;
+    [SerializeField] Image itemHealthSlider;
 
     private float interactDistance = 9f;
 
@@ -41,8 +43,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         var currentItem = HotBarController.instance.GetCurrentItemBehaviour();
 
-        HandleAttackStart(currentItem);
-        HandleConsumable(currentItem);
+        HandleItemUses(currentItem);
     }
 
     private void Interact()
@@ -63,20 +64,21 @@ public class PlayerInteraction : MonoBehaviour
         HandlePlaceableSilhouette(hasHit, hit);
 
         if (!hasHit)
-        {
-            itemInfo.text = "";
+        {   
+            itemHealth.transform.parent.gameObject.SetActive(false);
+            itemName.text = "";
             return;
         }
 
         if(hit.collider.CompareTag("Terrain"))
-            itemInfo.text = "";
+            itemName.text = "";
         
         HandleInteraction(tag,hitObject);
         
         lastHit = hit;
     }
 
-    private void HandleAttackStart(object currentItem)
+    private void HandleItemUses(object currentItem)
     {
         if (!attack.triggered)
             return;
@@ -87,12 +89,11 @@ public class PlayerInteraction : MonoBehaviour
                 arm.PlayAttackAnimation();
         }
 
+        //Placeable
         if (currentItem is PlaceableBehaviour placeable)
             placeable.Use();
-    }
 
-    private void HandleConsumable(object currentItem)
-    {
+        //Consumable
         if(currentItem is ConsumableBehaviour consumable)
         {
             if (attack.IsPressed() && consumable != null)
@@ -104,6 +105,7 @@ public class PlayerInteraction : MonoBehaviour
                 ResetTime(consumable);
         }
     }
+
 
     private void ResetTime(ItemBehaviour obj)
     {   
@@ -193,7 +195,17 @@ public class PlayerInteraction : MonoBehaviour
     private void HandleItemSelection(GameObject item, bool selected)
     {   
         if(item.TryGetComponent<ItemData>(out var itemData))
-            itemInfo.text = selected ? itemData.GetItemName() : "";
+        itemName.text = selected ? itemData.GetItemName() : "";
+
+        if(item.TryGetComponent<ItemBehaviour>(out var itemBehaviour) && itemBehaviour.GetCurrentHealth() != itemBehaviour.GetMaxHealth())
+        {   
+            itemHealth.text = itemBehaviour.GetCurrentHealth().ToString() + "/" + itemBehaviour.GetMaxHealth().ToString();
+            itemHealthSlider.fillAmount = itemBehaviour.GetCurrentHealth()/itemBehaviour.GetMaxHealth();
+                
+            itemHealth.transform.parent.gameObject.SetActive(true);
+        }
+        else
+            itemHealth.transform.parent.gameObject.SetActive(false);
             
         foreach (Transform child in item.transform)
         {
@@ -222,9 +234,9 @@ public class PlayerInteraction : MonoBehaviour
             if(HotBarController.instance.GetCurrentItemBehaviour() is ToolBehaviour toolBehaviour)
             {   
                 if(!harvestable.CanHarvest(toolBehaviour.GetToolType()))
-                    itemInfo.text = $"You need {article} {toolName}";
+                    itemName.text = $"You need {article} {toolName}";
             }else
-                itemInfo.text = $"You need {article} {toolName}";
+                itemName.text = $"You need {article} {toolName}";
         }
     }
 

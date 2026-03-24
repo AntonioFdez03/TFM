@@ -10,7 +10,7 @@ public class StoneAxe : ToolBehaviour
         toolType = ToolType.Axe;
         toolDamage = 20;
         toolRange = 5f;
-        maxhealth = 100f;
-        currentHealth = maxhealth;
+        maxHealth = 100f;
+        currentHealth = maxHealth;
     }
 }

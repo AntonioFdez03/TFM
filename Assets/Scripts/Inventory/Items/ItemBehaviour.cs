@@ -5,6 +5,8 @@ using UnityEngine;
 public abstract class ItemBehaviour : MonoBehaviour
 {  
     protected ItemData itemData;
+    protected float currentHealth;
+    protected float maxHealth = 0;
     protected float useCooldown = 1f;
     protected bool canUse = true;
 
@@ -12,6 +14,10 @@ public abstract class ItemBehaviour : MonoBehaviour
     {
         itemData = GetComponent<ItemData>();
     }
+
+    public float GetCurrentHealth() => currentHealth;
+    public void SetCurrentHealth(float health) => currentHealth = health;
+    public float GetMaxHealth() => maxHealth;
 
     public abstract void Use();
 

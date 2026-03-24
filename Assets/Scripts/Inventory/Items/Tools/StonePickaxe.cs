@@ -10,7 +10,7 @@ public class StonePickaxe : ToolBehaviour
         toolType = ToolType.Pickaxe;
         toolDamage = 15;
         toolRange = 5f;
-        maxhealth = 100f;
-        currentHealth = maxhealth;
+        maxHealth = 100f;
+        currentHealth = maxHealth;
     }
 }

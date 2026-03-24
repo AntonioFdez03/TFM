@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -6,12 +7,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlaceableBehaviour : ItemBehaviour
-{
+{   
     [SerializeField] Material greenMaterial;
     [SerializeField] Material redMaterial;
     [SerializeField] LayerMask placementMask;
     private Vector3 checkBoxSize = new Vector3(3f,3f,3f);
     private GameObject silhouette;
+
     private Vector3 lastValidPosition;
     private Quaternion lastValidRotation;
     private bool canPlace;
@@ -27,6 +29,10 @@ public class PlaceableBehaviour : ItemBehaviour
         gameObject.GetComponent<Rigidbody>().isKinematic = true;
         interact = InputSystem.actions.FindAction("Interact");
     }
+    
+    public float GetCurrentTime() => timer;
+    public float SetCurrentTime(float time) => timer = time;
+    public float GetUnplaceTime() => unplaceTime;
 
     public override void Use()
     {   
@@ -155,7 +161,11 @@ public class PlaceableBehaviour : ItemBehaviour
         }
     }
 
-    public float GetCurrentTime() => timer;
-    public float SetCurrentTime(float time) => timer = time;
-    public float GetUnplaceTime() => unplaceTime;
+    public void TakeDamage(float amount)
+    {
+        currentHealth = Math.Clamp(currentHealth - amount, 0, maxHealth);
+
+        if(currentHealth == 0)
+            Destroy(gameObject);
+    }
 }

@@ -7,8 +7,6 @@ public class WoodFenceDoor : PlaceableBehaviour, IInteractiveObject
 {
     [SerializeField] Transform rotationPivot;
     private GameObject pivot;
-    private float currentHealth;
-    private float maxHealth;
     private bool doorOpen = false;
     private float openAngle = 90f;
     private float openSpeed = 2f;

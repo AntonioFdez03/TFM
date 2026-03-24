@@ -8,6 +8,7 @@ public class Workbench : PlaceableBehaviour, IInteractiveObject
     protected override void Start()
     {
         base.Start();
+        maxHealth = 50;
     }
     public void Interact()
     {   

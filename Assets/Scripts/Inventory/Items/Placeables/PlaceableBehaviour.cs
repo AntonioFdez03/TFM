@@ -19,7 +19,7 @@ public class PlaceableBehaviour : ItemBehaviour
 
     //Unplace logic
     private InputAction interact;
-    protected float unplaceTime;
+    protected float unplaceTime = 1f;
     private float timer;
 
     protected virtual void Start()

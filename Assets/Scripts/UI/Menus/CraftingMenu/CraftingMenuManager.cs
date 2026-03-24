@@ -58,7 +58,6 @@ public class CraftingMenuManager : MonoBehaviour
         recipeInstance.GetComponent<RecipeUI>().SetRecipe(recipe);
 
         Transform ingredientsPanel = recipeInstance.transform.Find("RecipeInfoPanel/IngredientList");
-        print("panel: "+ ingredientsPanel);
         foreach(RecipeIngredient ingredient in recipe.ingredients)
         {   
             GameObject ingredientInstance =  Instantiate(ingredientPrefab,ingredientsPanel,false);

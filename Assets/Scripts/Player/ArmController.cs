@@ -6,7 +6,7 @@ public class ArmController : MonoBehaviour
 {   
     public static ArmController instance;
     private bool isMoving = false;
-    private float AttackCooldown = 1f;
+    private float AttackCooldown = 0.9f;
     private bool canAttack = true;
 
     //Swing settings

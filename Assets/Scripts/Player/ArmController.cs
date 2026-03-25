@@ -45,18 +45,20 @@ public class ArmController : MonoBehaviour
 
     public void PlayAttackAnimation()
     {
-        if (!isMoving)
-        {   
-            ItemBehaviour itemBehaviour = HotBarController.instance.GetCurrentItemBehaviour();
-            if(itemBehaviour == null)
-                StartCoroutine(PunchMovementCoroutine());  
-            else if(itemBehaviour is ToolBehaviour)
-                StartCoroutine(ToolSwingCoroutine());
+        if (!isMoving && canAttack)
+        {
+            ItemBehaviour item = HotBarController.instance.GetCurrentItemBehaviour();
+
+            if(item != null)
+                item.Attack(this);
+            else
+                StartCoroutine(PunchMovementCoroutine());
+
             StartCoroutine(AttackCooldownCR());
         }
     }
 
-    private IEnumerator ToolSwingCoroutine()
+    public IEnumerator ToolSwingCoroutine()
     {
         isMoving = true;
 
@@ -87,7 +89,7 @@ public class ArmController : MonoBehaviour
         SwingHit();
     }
 
-    private IEnumerator PunchMovementCoroutine()
+    public IEnumerator PunchMovementCoroutine()
     {
         isMoving = true;
 

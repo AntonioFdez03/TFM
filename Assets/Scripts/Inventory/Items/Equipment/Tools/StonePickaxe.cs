@@ -8,8 +8,8 @@ public class StonePickaxe : ToolBehaviour
     {
         base.Awake(); 
         toolType = ToolType.Pickaxe;
-        toolDamage = 15;
-        toolRange = 5f;
+        equipmentDamage = 15;
+        equipmentRange = 5f;
         maxHealth = 100f;
         currentHealth = maxHealth;
     }

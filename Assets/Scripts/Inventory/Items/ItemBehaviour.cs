@@ -26,4 +26,6 @@ public abstract class ItemBehaviour : MonoBehaviour
         yield return new WaitForSeconds(useCooldown);
         canUse = true;
     }
+
+    public virtual void Attack(ArmController arm){}
 }

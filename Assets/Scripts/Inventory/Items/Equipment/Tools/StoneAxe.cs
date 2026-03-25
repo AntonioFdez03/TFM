@@ -8,8 +8,8 @@ public class StoneAxe : ToolBehaviour
     {
         base.Awake(); 
         toolType = ToolType.Axe;
-        toolDamage = 20;
-        toolRange = 5f;
+        equipmentDamage = 20;
+        equipmentRange = 5f;
         maxHealth = 100f;
         currentHealth = maxHealth;
     }

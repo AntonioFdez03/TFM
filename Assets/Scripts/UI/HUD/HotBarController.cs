@@ -221,13 +221,12 @@ public class HotBarController : MonoBehaviour
                     slotItem.SetActive(false);
                 }
             }
-            UpdateToolHealthBar(i);
+            UpdateEquipmentHealthBar(i);
         }
         RefreshHandItem();
     }
 
-
-    public void UpdateToolHealthBar(int index)
+    public void UpdateEquipmentHealthBar(int index)
     {   
         GameObject[] items = InventoryController.instance.GetInventoryItems();
 
@@ -244,7 +243,7 @@ public class HotBarController : MonoBehaviour
         ItemBehaviour itemBehaviour = items[index].GetComponent<ItemBehaviour>();
 
         // Si es herramienta
-        if (itemBehaviour is ToolBehaviour toolBehaviour)
+        if (itemBehaviour is EquipmentBehaviour equipmentBehaviour)
         {  
             Transform healthBarInstance = slots[index].Find("HealthBar");
 
@@ -255,7 +254,7 @@ public class HotBarController : MonoBehaviour
                 healthBarInstance.name = "HealthBar";
             }
 
-            if(toolBehaviour.GetToolCurrentHealth() < toolBehaviour.GetToolMaxHealth()) 
+            if(equipmentBehaviour.GetCurrentHealth() < equipmentBehaviour.GetMaxHealth()) 
                 healthBarInstance.gameObject.SetActive(true);
 
             Transform fill = healthBarInstance.Find("Fill");
@@ -263,7 +262,7 @@ public class HotBarController : MonoBehaviour
 
             if (!fill.TryGetComponent<Image>(out var fillImage)) return;
 
-            fillImage.fillAmount = toolBehaviour.GetToolCurrentHealth() / toolBehaviour.GetToolMaxHealth();
+            fillImage.fillAmount = equipmentBehaviour.GetCurrentHealth() / equipmentBehaviour.GetMaxHealth();
         }
         // Si NO es herramienta, eliminar barra si existe
         else

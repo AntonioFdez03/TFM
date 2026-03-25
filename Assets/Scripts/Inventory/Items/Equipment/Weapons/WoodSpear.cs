@@ -8,14 +8,14 @@ public class WoodSpear : WeaponBehaviour
     {
         base.Awake(); 
         equipmentDamage = 50;
-        equipmentRange = 5f;
-        maxHealth = 100f;
+        equipmentRange = 10f;
+        maxHealth = 10f;
         currentHealth = maxHealth;
     }
 
     public override void Attack(ArmController arm)
     {   
         base.Attack(arm);
-        arm.StartCoroutine(arm.PunchMovementCoroutine());
+        arm.StartCoroutine(arm.SpearMovementCR());
     }
 }

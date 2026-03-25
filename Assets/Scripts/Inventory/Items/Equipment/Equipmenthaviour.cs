@@ -39,13 +39,15 @@ public class EquipmentBehaviour : ItemBehaviour
         print("Vida: " + currentHealth);
         if(currentHealth == 0)
         {
-            print("Herramienta destruida");
+            ArmController.instance.ResetArm();
             InventoryController.instance.RemoveItem(HotBarController.instance.GetCurrentItem());
         }
-        
-        EquipmentBehaviour originalItem = HotBarController.instance.GetCurrentItem().GetComponent<EquipmentBehaviour>();
-        if(originalItem != null)
-            originalItem.SetCurrentHealth(currentHealth);
+        else
+        {
+            EquipmentBehaviour originalItem = HotBarController.instance.GetCurrentItem().GetComponent<EquipmentBehaviour>();
+            if(originalItem != null)
+                originalItem.SetCurrentHealth(currentHealth);
+        }
         
         HotBarController.instance.UpdateEquipmentHealthBar(HotBarController.instance.GetSelectedIndex());
     }

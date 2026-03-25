@@ -18,7 +18,7 @@ public class ToolBehaviour : EquipmentBehaviour
     public override void Attack(ArmController arm)
     {
         base.Attack(arm);
-        arm.StartCoroutine(arm.ToolSwingCoroutine());
+        arm.StartCoroutine(arm.ToolSwingCR());
     }
 
     public override void Use()

@@ -5,6 +5,9 @@ using UnityEditor;
 public class ArmController : MonoBehaviour
 {   
     public static ArmController instance;
+    [SerializeField] private Transform handSlot;
+    private Quaternion initialHandRotation;
+    private Quaternion targetHandRotation;
     private bool isMoving = false;
     private float AttackCooldown = 0.9f;
     private bool canAttack = true;
@@ -18,9 +21,9 @@ public class ArmController : MonoBehaviour
     //Punch movement settings
     private float punchDamage = 5f;
     private float punchRange = 5f;
-    private float punchBackDistance = 0.2f;
-    private float punchForwardDistance = 0.4f;
-    private float punchBackDuration = 0.3f;
+    private float punchBackDistance = 0.1f;
+    private float punchForwardDistance = 0.6f;
+    private float punchBackDuration = 0.15f;
     private float punchForwardDuration = 0.1f;
     private float punchReturnDuration = 0.5f;
     private float punchReturnCooldown = 0.2f;
@@ -41,6 +44,9 @@ public class ArmController : MonoBehaviour
     {
         initialLocalPos = transform.localPosition;
         initialRotation = transform.localRotation;
+
+        initialHandRotation = handSlot.localRotation;
+        targetHandRotation = initialHandRotation * Quaternion.Euler(90f, 0f, 0f);
     }
 
     public void PlayAttackAnimation()
@@ -52,45 +58,44 @@ public class ArmController : MonoBehaviour
             if(item != null)
                 item.Attack(this);
             else
-                StartCoroutine(PunchMovementCoroutine());
+                StartCoroutine(PunchMovementCR());
 
             StartCoroutine(AttackCooldownCR());
         }
     }
 
-    public IEnumerator ToolSwingCoroutine()
+    private void ItemHit()
     {
-        isMoving = true;
-
-        // Calculamos la rotación de "golpe" sumando el ángulo al eje X
-        Quaternion targetRotation = initialRotation * Quaternion.Euler(swingAngle, 0, 0);
-
-        // 1. Fase de Bajada (Golpe)
-        float elapsed = 0;
-        while (elapsed < swingDuration)
-        {
-            transform.localRotation = Quaternion.Slerp(initialRotation, targetRotation, elapsed / swingDuration);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        // 2. Fase de Subida (Retorno)
-        elapsed = 0;
-        while (elapsed < returnDuration)
-        {
-            transform.localRotation = Quaternion.Slerp(targetRotation, initialRotation, elapsed / returnDuration);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        // Aseguramos que vuelva exactamente a la posición original
-        transform.localRotation = initialRotation;
-        isMoving = false;
-        SwingHit();
+        ItemBehaviour item = HotBarController.instance.GetCurrentItemBehaviour();
+        if(item != null)
+            item.GetComponent<ItemBehaviour>().Use();
     }
 
-    public IEnumerator PunchMovementCoroutine()
+    private void Punch()
     {
+        Ray ray = new Ray(CameraController.instance.transform.position, CameraController.instance.transform.transform.forward);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, punchRange))
+        {
+            Enemy enemy = hit.collider.CompareTag("Enemy") ? hit.collider.GetComponent<Enemy>() : null;
+            if (enemy != null)
+                enemy.TakeDamage(punchDamage);
+
+            HarvestableObject harvestableObject = hit.collider.CompareTag("Harvestable") ? hit.collider.GetComponent<HarvestableObject>() : null;
+            if(harvestableObject != null)
+            {
+                harvestableObject.TakeHit(ToolType.None,punchDamage);
+                PlayerAttributes player = PlayerController.instance.GetPlayerAttributes();
+                player.TakeDamage(2f);
+            }  
+        }
+    }
+
+    public bool CanAttack() => canAttack;
+
+    public IEnumerator PunchMovementCR()
+    {   
         isMoving = true;
 
         Vector3 backPos = initialLocalPos + Vector3.back * punchBackDistance;
@@ -139,43 +144,126 @@ public class ArmController : MonoBehaviour
         isMoving = false;
     }
 
-    private void SwingHit()
+    public IEnumerator ToolSwingCR()
     {
-        ItemBehaviour item = HotBarController.instance.GetCurrentItemBehaviour();
-        if(item != null)
-            item.GetComponent<ItemBehaviour>().Use();
-    }
+        isMoving = true;
 
-    private void Punch()
-    {
-        Ray ray = new Ray(CameraController.instance.transform.position, CameraController.instance.transform.transform.forward);
-        RaycastHit hit;
+        // Calculamos la rotación de "golpe" sumando el ángulo al eje X
+        Quaternion targetRotation = initialRotation * Quaternion.Euler(swingAngle, 0, 0);
 
-        if (Physics.Raycast(ray, out hit, punchRange))
+        // 1. Fase de Bajada (Golpe)
+        float elapsed = 0;
+        while (elapsed < swingDuration)
         {
-            Enemy enemy = hit.collider.CompareTag("Enemy") ? hit.collider.GetComponent<Enemy>() : null;
-            if (enemy != null)
-            {
-                print("Enemy golpeado");
-                enemy.TakeDamage(punchDamage);
-            }
-
-            HarvestableObject harvestableObject = hit.collider.CompareTag("Harvestable") ? hit.collider.GetComponent<HarvestableObject>() : null;
-            if(harvestableObject != null)
-            {
-                harvestableObject.TakeHit(ToolType.None,punchDamage);
-                PlayerAttributes player = PlayerController.instance.GetPlayerAttributes();
-                player.TakeDamage(2f);
-            }  
+            transform.localRotation = Quaternion.Slerp(initialRotation, targetRotation, elapsed / swingDuration);
+            elapsed += Time.deltaTime;
+            yield return null;
         }
+
+        // 2. Fase de Subida (Retorno)
+        elapsed = 0;
+        while (elapsed < returnDuration)
+        {
+            transform.localRotation = Quaternion.Slerp(targetRotation, initialRotation, elapsed / returnDuration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // Aseguramos que vuelva exactamente a la posición original
+        transform.localRotation = initialRotation;
+        isMoving = false;
+        ItemHit();
     }
 
-    public bool CanAttack() => canAttack;
+    public IEnumerator SpearMovementCR()
+    {
+        isMoving = true;
+
+        Vector3 backPos = initialLocalPos + Vector3.back * punchBackDistance;
+        Vector3 forwardPos = initialLocalPos + Vector3.forward * punchForwardDistance;
+
+        float time = 0f;
+
+        // 1. Retroceso + rotación hacia atrás
+        while (time < punchBackDuration)
+        {
+            float t = time / punchBackDuration;
+
+            ///transform.localPosition = Vector3.Lerp(initialLocalPos, backPos, t);
+
+            handSlot.localRotation = Quaternion.Slerp(initialHandRotation, targetHandRotation, t);
+
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        // 2. Golpe hacia delante
+        time = 0f;
+        while (time < punchForwardDuration)
+        {
+            float t = time / punchForwardDuration;
+
+            transform.localPosition = Vector3.Lerp(backPos, forwardPos, t);
+
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        print("Golpea");
+        ItemHit();
+        print("Vuelve");
+        yield return new WaitForSeconds(punchReturnCooldown);
+
+        // 3. Volver a posición y rotación inicial
+        time = 0f;
+        while (time < punchReturnDuration)
+        {
+            float t = time / punchReturnDuration;
+
+            transform.localPosition = Vector3.Lerp(forwardPos, initialLocalPos, t);
+
+            handSlot.localRotation = Quaternion.Lerp(targetHandRotation, initialHandRotation, t);
+
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(punchCooldown);
+
+        transform.localPosition = initialLocalPos;
+        handSlot.localRotation = initialHandRotation;
+
+        isMoving = false;
+    }
 
     IEnumerator AttackCooldownCR()
     {
         canAttack = false;
         yield return new WaitForSeconds(AttackCooldown);
         canAttack = true;
+    }
+
+    public void ResetArm()
+    {
+        StopAllCoroutines();
+        StartCoroutine(ResetArmCR());
+    }
+
+    IEnumerator ResetArmCR()
+    {   
+        float time = 0f;
+        while (time < 1f)
+        {
+            float t = time / punchReturnDuration;
+
+            transform.localPosition = Vector3.Lerp(transform.localPosition, initialLocalPos, t);
+            handSlot.localRotation = Quaternion.Lerp(handSlot.localRotation, initialHandRotation, t);
+
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        canAttack = true;
+        isMoving = false;
     }
 }

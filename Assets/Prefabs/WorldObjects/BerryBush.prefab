@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5485758865686544390}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BushModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4352374733114481279}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BerryBush
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82,7 +82,7 @@ GameObject:
   - component: {fileID: 6667689563878001045}
   - component: {fileID: 242454021525629960}
   - component: {fileID: 8994566914444847962}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,7 +196,7 @@ GameObject:
   - component: {fileID: 2982254430222144409}
   - component: {fileID: 5312852245803766107}
   - component: {fileID: 3914612010238596777}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}

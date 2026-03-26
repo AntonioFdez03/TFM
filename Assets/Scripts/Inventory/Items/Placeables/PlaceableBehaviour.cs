@@ -11,9 +11,8 @@ public class PlaceableBehaviour : ItemBehaviour
     [SerializeField] Material greenMaterial;
     [SerializeField] Material redMaterial;
     [SerializeField] LayerMask placementMask;
-    private Vector3 checkBoxSize;
+    protected Vector3 checkBoxSize = new Vector3(0,0,0);
     private GameObject silhouette;
-
     private Vector3 lastValidPosition;
     private Quaternion lastValidRotation;
     private bool canPlace;
@@ -28,20 +27,9 @@ public class PlaceableBehaviour : ItemBehaviour
     {
         gameObject.GetComponent<Rigidbody>().isKinematic = true;
         interact = InputSystem.actions.FindAction("Interact");
-
-        
-        if(TryGetComponent(out BoxCollider boxCollider))
-            checkBoxSize = boxCollider.size;
-        
-        
-        if(TryGetComponent(out CapsuleCollider capsuleCollider))
-        {
-            float radius = capsuleCollider.radius;
-            checkBoxSize = new Vector3(radius,radius,radius);
-        }
-
     }
     
+    protected void SetCheckBoxSize(Vector3 boxSize) => checkBoxSize = boxSize;
     public float GetCurrentTime() => timer;
     public float SetCurrentTime(float time) => timer = time;
     public float GetUnplaceTime() => unplaceTime;
@@ -65,6 +53,17 @@ public class PlaceableBehaviour : ItemBehaviour
         InventoryController.instance.RemoveItem(HotBarController.instance.GetCurrentItem());
     }
 
+    private bool CanPlace(Vector3 position, Quaternion rotation)
+    {   
+        print("BOXSIZE en canplace: " + checkBoxSize);
+        return !Physics.CheckBox(
+            position,
+            checkBoxSize / 2f,
+            rotation,
+            placementMask
+        );
+    }
+
     public void ShowSilhouette(RaycastHit hit)
     {   
         if(silhouette == null)
@@ -72,7 +71,8 @@ public class PlaceableBehaviour : ItemBehaviour
             itemData = GetComponent<ItemData>();
             silhouette = Instantiate(itemData.GetItemPrefab(), InventoryController.instance.GetItemsParent());
             silhouette.SetActive(true);
-            OnDrawGizmos();
+            checkBoxSize = GetComponent<BoxCollider>().size;
+            CalculateCheckBoxSize();
         }
         DisableSilhouetteComponents();
         AdjustSilhouette(hit);
@@ -104,36 +104,6 @@ public class PlaceableBehaviour : ItemBehaviour
     {
         if(silhouette != null)
             Destroy(silhouette);
-    }
-
-    private bool CanPlace(Vector3 position, Quaternion rotation)
-    {
-        return !Physics.CheckBox(
-            position,
-            checkBoxSize / 2f,
-            rotation,
-            placementMask
-        );
-    }
-
-    void OnDrawGizmos()
-    {
-        if (silhouette == null) return;
-
-        BoxCollider box = silhouette.GetComponentInChildren<BoxCollider>();
-        if (box == null) return;
-
-        Gizmos.color = Color.red;
-
-        // Matriz con posición, rotación y escala REAL
-        Gizmos.matrix = Matrix4x4.TRS(
-            box.transform.position,
-            box.transform.rotation,
-            box.transform.lossyScale
-        );
-
-        // Dibuja la caja EXACTA del collider
-        Gizmos.DrawWireCube(box.center, box.size);
     }
 
     private void DisableSilhouetteComponents()
@@ -200,5 +170,17 @@ public class PlaceableBehaviour : ItemBehaviour
 
         if(currentHealth == 0)
             Destroy(gameObject);
+    }
+
+    public void CalculateCheckBoxSize()
+    {   
+        if(TryGetComponent(out BoxCollider boxCollider))
+            checkBoxSize = boxCollider.size;
+        
+        if(TryGetComponent(out CapsuleCollider capsuleCollider))
+        {
+            float radius = capsuleCollider.radius;
+            checkBoxSize = new Vector3(radius,radius,radius);
+        }
     }
 }

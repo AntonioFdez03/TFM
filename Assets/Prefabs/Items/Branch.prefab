@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8256731242742110723}
   - component: {fileID: 3815027964812513940}
   - component: {fileID: 3842066102156542339}
+  - component: {fileID: 7027496091133943716}
   m_Layer: 8
   m_Name: Branch
   m_TagString: Item
@@ -103,6 +104,18 @@ MonoBehaviour:
   itemPrefab: {fileID: 3074230260528391914}
   itemType: 2
 --- !u!114 &3842066102156542339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3074230260528391914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 863d4a83ace4815448a1110b8a22244c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ResourceBehaviour
+--- !u!114 &7027496091133943716
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

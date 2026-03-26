@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8256731242742110723}
   - component: {fileID: 3815027964812513940}
   - component: {fileID: 3842066102156542339}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Branch
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 1694937216671716621}
   - component: {fileID: 5823089811712600682}
   - component: {fileID: 5785934030776309232}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BranchModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}

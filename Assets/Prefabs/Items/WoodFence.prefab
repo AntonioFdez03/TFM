@@ -278,7 +278,7 @@ MonoBehaviour:
   redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
   placementMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 384
 --- !u!65 &4619701040695184648
 BoxCollider:
   m_ObjectHideFlags: 0

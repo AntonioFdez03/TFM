@@ -432,7 +432,6 @@ MonoBehaviour:
   placementMask:
     serializedVersion: 2
     m_Bits: 128
-  craftingCanvas: {fileID: 0}
 --- !u!65 &444763037896328908
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -513,7 +512,7 @@ MonoBehaviour:
   redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
   placementMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 384
 --- !u!1 &6285307332729291258
 GameObject:
   m_ObjectHideFlags: 0

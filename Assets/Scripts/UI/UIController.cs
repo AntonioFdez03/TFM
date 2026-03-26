@@ -7,7 +7,7 @@ public class UIController : MonoBehaviour
 {
     public static UIController instance;
     // Definimos los posibles estados de la interfaz
-    public UIState currentState = UIState.Gameplay;
+    private UIState currentState = UIState.Gameplay;
 
     [Header("Canvas")]
     [SerializeField] private GameObject hudCanvas;
@@ -34,6 +34,8 @@ public class UIController : MonoBehaviour
         pauseAction = InputSystem.actions.FindAction("Pause");
         SetState(UIState.Gameplay);
     }
+
+    public UIState GetCurrentState() => currentState;
 
     void Update()
     {   

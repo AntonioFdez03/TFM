@@ -330,7 +330,7 @@ MonoBehaviour:
   redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
   placementMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 384
   rotationPivot: {fileID: 7814146294564194399}
 --- !u!1 &6739802449523232437
 GameObject:

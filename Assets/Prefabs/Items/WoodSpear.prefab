@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1460108488912988009}
   - component: {fileID: 8440230961690894497}
   - component: {fileID: 5625579081900031514}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SpearModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 5553005441400942572}
   - component: {fileID: 2185105522953866109}
   - component: {fileID: 1178885315002047706}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WoodSpear
   m_TagString: Item
   m_Icon: {fileID: 0}

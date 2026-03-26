@@ -11,7 +11,7 @@ public class PlaceableBehaviour : ItemBehaviour
     [SerializeField] Material greenMaterial;
     [SerializeField] Material redMaterial;
     [SerializeField] LayerMask placementMask;
-    private Vector3 checkBoxSize = new Vector3(3f,3f,3f);
+    private Vector3 checkBoxSize;
     private GameObject silhouette;
 
     private Vector3 lastValidPosition;
@@ -28,6 +28,18 @@ public class PlaceableBehaviour : ItemBehaviour
     {
         gameObject.GetComponent<Rigidbody>().isKinematic = true;
         interact = InputSystem.actions.FindAction("Interact");
+
+        
+        if(TryGetComponent(out BoxCollider boxCollider))
+            checkBoxSize = boxCollider.size;
+        
+        
+        if(TryGetComponent(out CapsuleCollider capsuleCollider))
+        {
+            float radius = capsuleCollider.radius;
+            checkBoxSize = new Vector3(radius,radius,radius);
+        }
+
     }
     
     public float GetCurrentTime() => timer;
@@ -60,6 +72,7 @@ public class PlaceableBehaviour : ItemBehaviour
             itemData = GetComponent<ItemData>();
             silhouette = Instantiate(itemData.GetItemPrefab(), InventoryController.instance.GetItemsParent());
             silhouette.SetActive(true);
+            OnDrawGizmos();
         }
         DisableSilhouetteComponents();
         AdjustSilhouette(hit);
@@ -101,6 +114,26 @@ public class PlaceableBehaviour : ItemBehaviour
             rotation,
             placementMask
         );
+    }
+
+    void OnDrawGizmos()
+    {
+        if (silhouette == null) return;
+
+        BoxCollider box = silhouette.GetComponentInChildren<BoxCollider>();
+        if (box == null) return;
+
+        Gizmos.color = Color.red;
+
+        // Matriz con posición, rotación y escala REAL
+        Gizmos.matrix = Matrix4x4.TRS(
+            box.transform.position,
+            box.transform.rotation,
+            box.transform.lossyScale
+        );
+
+        // Dibuja la caja EXACTA del collider
+        Gizmos.DrawWireCube(box.center, box.size);
     }
 
     private void DisableSilhouetteComponents()

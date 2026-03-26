@@ -80,7 +80,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HandleItemUses(object currentItem)
     {
-        if (!attack.triggered)
+        if (!attack.triggered || UIController.instance.GetCurrentState() == UIState.Pause)
             return;
 
         if (arm != null)

@@ -9,6 +9,7 @@ public class Workbench : PlaceableBehaviour, IInteractiveObject
     {
         base.Start();
         maxHealth = 50;
+        currentHealth = maxHealth;
     }
     public void Interact()
     {   

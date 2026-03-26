@@ -32,7 +32,7 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        if(UIController.instance.currentState == UIState.Gameplay){
+        if(UIController.instance.GetCurrentState() == UIState.Gameplay){
             Vector2 mouseCoords = look.ReadValue<Vector2>();
             valueX = mouseCoords.x * sensibility * Time.deltaTime;
             valueY = mouseCoords.y * sensibility * Time.deltaTime;

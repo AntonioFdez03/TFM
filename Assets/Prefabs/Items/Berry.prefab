@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1947540102444889093}
   - component: {fileID: 4809128326304167386}
   - component: {fileID: 1453457080521202830}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Berry
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 5909091140764560264}
   - component: {fileID: 2992469099553044471}
   - component: {fileID: 5228884791381256242}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BerryModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}

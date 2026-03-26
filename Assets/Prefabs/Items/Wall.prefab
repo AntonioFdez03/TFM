@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8128653851220063589}
   - component: {fileID: 5227362045237858011}
   - component: {fileID: 2069342699019331798}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Log (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 7603486299508899928}
   - component: {fileID: 4482773232402364432}
   - component: {fileID: 5523772853292727849}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Log
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 7107814286443622030}
   - component: {fileID: 7465112204518008193}
   - component: {fileID: 4965030874768317450}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Log (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -281,7 +281,7 @@ GameObject:
   - component: {fileID: 2989539217406305487}
   - component: {fileID: 5675578669275004623}
   - component: {fileID: 7100308664595231198}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Log (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -373,7 +373,7 @@ GameObject:
   - component: {fileID: 2188796260976258282}
   - component: {fileID: 5199197488046528693}
   - component: {fileID: -4540091248563182028}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -452,7 +452,7 @@ MonoBehaviour:
   redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
   placementMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 384
 --- !u!54 &-4540091248563182028
 Rigidbody:
   m_ObjectHideFlags: 0

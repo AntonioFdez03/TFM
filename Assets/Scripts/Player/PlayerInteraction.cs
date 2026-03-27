@@ -16,7 +16,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] Image itemHealthSlider;
 
     private float interactDistance = 9f;
-
+    private GameObject lastItem;
     private InputAction interact;
     private InputAction attack;
     private RaycastHit lastHit;
@@ -37,6 +37,7 @@ public class PlayerInteraction : MonoBehaviour
             Interact();
             Use();
         }
+        lastItem = HotBarController.instance.GetCurrentItem();
     }
 
     private void Use()
@@ -78,18 +79,14 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HandleItemUses(object currentItem)
     {
-        if (!attack.triggered || UIController.instance.GetCurrentState() == UIState.Pause)
-            return;
-
-        if (arm != null)
-        {
-            if(arm.CanAttack())
+        if (attack.triggered && UIController.instance.GetCurrentState() != UIState.Pause)
+        {   
+            if (arm != null) 
                 arm.PlayAttackAnimation();
-        }
 
-        //Placeable
-        if (currentItem is PlaceableBehaviour placeable)
-            placeable.Use();
+            if(HotBarController.instance.GetCurrentItemBehaviour() is PlaceableBehaviour placeable)
+                placeable.Use();
+        }
 
         //Consumable
         if(currentItem is ConsumableBehaviour consumable)
@@ -102,10 +99,13 @@ public class PlayerInteraction : MonoBehaviour
             else
                 ResetTime(consumable);
         }
+
+        if(HotBarController.instance.GetCurrentItem() != lastItem)
+            ResetTime(null);
     }
 
 
-    private void ResetTime(ItemBehaviour obj)
+    public void ResetTime(ItemBehaviour obj)
     {   
         if (obj == null)
         {

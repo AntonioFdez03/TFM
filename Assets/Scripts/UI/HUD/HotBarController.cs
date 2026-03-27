@@ -107,6 +107,7 @@ public class HotBarController : MonoBehaviour
             selectedIndex = index;
             if(ArmController.instance.IsMoving())
                 ArmController.instance.ResetArm();
+            
             RefreshHandItem();
         }
     }

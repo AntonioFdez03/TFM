@@ -50,6 +50,15 @@ public class PlayerController : MonoBehaviour
         move = InputSystem.actions.FindAction("Move");
         sprint = InputSystem.actions.FindAction("Sprint");
         jump = InputSystem.actions.FindAction("Jump");
+    }
+
+    public void InitializePlayer(Vector3 position, Quaternion rotation, float health, float hunger, float stamina)
+    {
+        transform.position = position;
+        transform.rotation = rotation;
+        playerAttributes.SetAttributes(health,hunger,stamina);
+
+        print("Jugador instanciado en: " + transform.position);
     }   
     
     public PlayerAttributes GetPlayerAttributes() => playerAttributes;

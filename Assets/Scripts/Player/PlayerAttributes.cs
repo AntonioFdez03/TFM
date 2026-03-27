@@ -51,10 +51,19 @@ public class PlayerAttributes : MonoBehaviour
         UpdateUI();
     }
 
+    public void SetAttributes(float health, float hunger, float stamina)
+    {
+        currentHealth = health;
+        currentHunger = hunger;
+        currentStamina = stamina;
+    }
+
     public float GetCurrentHealth() => currentHealth;
     public float GetMaxHealth() => maxHealth;
     public float GetCurrentHunger() => currentHunger;
+   
     public float GetMaxHunger() => maxHunger;
+    public float GetCurrentStamina() => currentStamina;
 
     public void TakeDamage(float damage)
     {   

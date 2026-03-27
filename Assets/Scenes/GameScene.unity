@@ -3217,6 +3217,7 @@ GameObject:
   m_Component:
   - component: {fileID: 704648039}
   - component: {fileID: 704648040}
+  - component: {fileID: 704648041}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3259,6 +3260,18 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 96f0331cbe1055f4c9edfa25b0fc4012, type: 2}
   - {fileID: 11400000, guid: 95e9b7afb83ad8b4a9d27605579ed102, type: 2}
   - {fileID: 11400000, guid: c05970feff5cddd4ab064d7dca213dac, type: 2}
+--- !u!114 &704648041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704648038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a16c33f01ea4e8245a2f44ebd4ed3179, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveManager
 --- !u!1001 &736211203
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3549,7 +3562,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1693826139}
         m_TargetAssemblyTypeName: PauseMenuManager, Assembly-CSharp
-        m_MethodName: Settings
+        m_MethodName: Save
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9842,10 +9855,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 631565644}
     m_Modifications:
-    - target: {fileID: 3259078088694942741, guid: 38678a89eb3c6c04f83b662ea79a0e8a, type: 3}
-      propertyPath: m_UseGravity
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6505259477395084954, guid: 38678a89eb3c6c04f83b662ea79a0e8a, type: 3}
       propertyPath: m_Name
       value: WoodFenceDoor

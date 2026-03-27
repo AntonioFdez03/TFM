@@ -30,6 +30,9 @@ public class CameraController : MonoBehaviour
         Cursor.visible = false;
     }
 
+    public float GetCurrentRotation() => rotationV;
+    public void SetCurrentRotation(float rotation) => rotationV = rotation;
+
     void Update()
     {
         if(UIController.instance.GetCurrentState() == UIState.Gameplay){

@@ -16,7 +16,7 @@ public class PauseMenuManager : MonoBehaviour
 
     public void Save()
     {
-        
+        SaveManager.instance.SaveGame();
     }
     public void Quit()
     {

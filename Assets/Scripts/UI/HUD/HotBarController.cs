@@ -105,6 +105,8 @@ public class HotBarController : MonoBehaviour
             selectorFrame.anchoredPosition = Vector2.zero;
             selectorFrame.localScale = Vector3.one;
             selectedIndex = index;
+            if(ArmController.instance.IsMoving())
+                ArmController.instance.ResetArm();
             RefreshHandItem();
         }
     }

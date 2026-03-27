@@ -49,6 +49,9 @@ public class ArmController : MonoBehaviour
         targetHandRotation = initialHandRotation * Quaternion.Euler(90f, 0f, 0f);
     }
 
+    public bool IsMoving() => isMoving;
+    public bool CanAttack() => canAttack;
+
     public void PlayAttackAnimation()
     {
         if (!isMoving && canAttack)
@@ -91,8 +94,6 @@ public class ArmController : MonoBehaviour
             }  
         }
     }
-
-    public bool CanAttack() => canAttack;
 
     public IEnumerator PunchMovementCR()
     {   

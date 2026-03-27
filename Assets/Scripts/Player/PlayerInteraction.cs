@@ -42,7 +42,6 @@ public class PlayerInteraction : MonoBehaviour
     private void Use()
     {
         var currentItem = HotBarController.instance.GetCurrentItemBehaviour();
-
         HandleItemUses(currentItem);
     }
 
@@ -74,7 +73,6 @@ public class PlayerInteraction : MonoBehaviour
             itemName.text = "";
         
         HandleInteraction(tag,hitObject);
-        
         lastHit = hit;
     }
 

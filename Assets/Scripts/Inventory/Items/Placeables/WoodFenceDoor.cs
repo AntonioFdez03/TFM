@@ -7,6 +7,7 @@ public class WoodFenceDoor : PlaceableBehaviour, IInteractiveObject
 {
     [SerializeField] Transform rotationPivot;
     private GameObject pivot;
+    private Rigidbody rb;
     private bool doorOpen = false;
     private float openAngle = 90f;
     private float openSpeed = 2f;
@@ -17,10 +18,10 @@ public class WoodFenceDoor : PlaceableBehaviour, IInteractiveObject
     protected override void Start()
     {   
         base.Start();
-
         maxHealth = 100;
         currentHealth = maxHealth;
         pivot = new("Pivot");
+        pivot.transform.rotation = transform.rotation;
         pivot.transform.SetParent(transform.parent);
         if(rotationPivot != null)
         {   
@@ -29,7 +30,7 @@ public class WoodFenceDoor : PlaceableBehaviour, IInteractiveObject
         }
         
         closedRotation = pivot.transform.rotation;
-        openRotation = Quaternion.Euler(0, openAngle, 0) * closedRotation;
+        openRotation = Quaternion.AngleAxis(openAngle, pivot.transform.up) * closedRotation;
     }
 
     void Update()
@@ -54,5 +55,4 @@ public class WoodFenceDoor : PlaceableBehaviour, IInteractiveObject
         if (pivot != null)
             Destroy(pivot); 
     }
-
 }

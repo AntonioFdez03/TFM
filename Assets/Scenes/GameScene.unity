@@ -3710,9 +3710,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5192995033358052908, guid: 200b9b53a5a020c41bb8385f8889899f, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5751404862281763555, guid: 200b9b53a5a020c41bb8385f8889899f, type: 3}
       propertyPath: m_Name
       value: Stone (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5751404862281763555, guid: 200b9b53a5a020c41bb8385f8889899f, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4450,7 +4458,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fd9531f2ef24f74a8252d067c0efcb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIController
-  currentState: 0
   hudCanvas: {fileID: 1943766282}
   inventoryCanvas: {fileID: 1609698436}
   pauseCanvas: {fileID: 2004516524}
@@ -6328,10 +6335,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3074230260528391914, guid: 677e5e059ef81a04a923e573c47ba2c1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1520572092}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 677e5e059ef81a04a923e573c47ba2c1, type: 3}
 --- !u!1 &1493350529 stripped
 GameObject:
@@ -6661,28 +6665,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1517409871}
   m_CullTransparentMesh: 1
---- !u!1 &1520572090 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3074230260528391914, guid: 677e5e059ef81a04a923e573c47ba2c1, type: 3}
-  m_PrefabInstance: {fileID: 1489087100}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1520572091 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5198676040713288470, guid: 677e5e059ef81a04a923e573c47ba2c1, type: 3}
   m_PrefabInstance: {fileID: 1489087100}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1520572092
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1520572090}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 863d4a83ace4815448a1110b8a22244c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ResourceBehaviour
 --- !u!4 &1521163815 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4418457840785516340, guid: 200b9b53a5a020c41bb8385f8889899f, type: 3}
@@ -9855,6 +9842,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 631565644}
     m_Modifications:
+    - target: {fileID: 3259078088694942741, guid: 38678a89eb3c6c04f83b662ea79a0e8a, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6505259477395084954, guid: 38678a89eb3c6c04f83b662ea79a0e8a, type: 3}
       propertyPath: m_Name
       value: WoodFenceDoor

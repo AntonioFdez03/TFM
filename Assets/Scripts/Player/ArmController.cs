@@ -28,7 +28,7 @@ public class ArmController : MonoBehaviour
     private float punchReturnDuration = 0.5f;
     private float punchReturnCooldown = 0.2f;
     private float punchCooldown = 0.2f;
-    private Vector3 initialLocalPos;
+    private Vector3 initialPosition;
 
     void Awake()
     {
@@ -42,7 +42,7 @@ public class ArmController : MonoBehaviour
     
     void Start()
     {
-        initialLocalPos = transform.localPosition;
+        initialPosition = transform.localPosition;
         initialRotation = transform.localRotation;
 
         initialHandRotation = handSlot.localRotation;
@@ -99,8 +99,8 @@ public class ArmController : MonoBehaviour
     {   
         isMoving = true;
 
-        Vector3 backPos = initialLocalPos + Vector3.back * punchBackDistance;
-        Vector3 forwardPos = initialLocalPos + Vector3.forward * punchForwardDistance;
+        Vector3 backPos = initialPosition + Vector3.back * punchBackDistance;
+        Vector3 forwardPos = initialPosition + Vector3.forward * punchForwardDistance;
 
         float time = 0f;
 
@@ -108,7 +108,7 @@ public class ArmController : MonoBehaviour
         while (time < punchBackDuration)
         {
             transform.localPosition = Vector3.Lerp(
-                initialLocalPos, backPos, time / punchBackDuration
+                initialPosition, backPos, time / punchBackDuration
             );
             time += Time.deltaTime;
             yield return null;
@@ -133,7 +133,7 @@ public class ArmController : MonoBehaviour
         while (time < punchReturnDuration)
         {
             transform.localPosition = Vector3.Lerp(
-                forwardPos, initialLocalPos, time / punchReturnDuration
+                forwardPos, initialPosition, time / punchReturnDuration
             );
             time += Time.deltaTime;
             yield return null;
@@ -141,7 +141,7 @@ public class ArmController : MonoBehaviour
 
         yield return new WaitForSeconds(punchCooldown);
 
-        transform.localPosition = initialLocalPos;
+        transform.localPosition = initialPosition;
         isMoving = false;
     }
 
@@ -180,8 +180,8 @@ public class ArmController : MonoBehaviour
     {
         isMoving = true;
 
-        Vector3 backPos = initialLocalPos + Vector3.back * punchBackDistance;
-        Vector3 forwardPos = initialLocalPos + Vector3.forward * punchForwardDistance;
+        Vector3 backPos = initialPosition + Vector3.back * punchBackDistance;
+        Vector3 forwardPos = initialPosition + Vector3.forward * punchForwardDistance;
 
         float time = 0f;
 
@@ -221,7 +221,7 @@ public class ArmController : MonoBehaviour
         {
             float t = time / punchReturnDuration;
 
-            transform.localPosition = Vector3.Lerp(forwardPos, initialLocalPos, t);
+            transform.localPosition = Vector3.Lerp(forwardPos, initialPosition, t);
 
             handSlot.localRotation = Quaternion.Lerp(targetHandRotation, initialHandRotation, t);
 
@@ -231,7 +231,7 @@ public class ArmController : MonoBehaviour
 
         yield return new WaitForSeconds(punchCooldown);
 
-        transform.localPosition = initialLocalPos;
+        transform.localPosition = initialPosition;
         handSlot.localRotation = initialHandRotation;
 
         isMoving = false;
@@ -253,18 +253,20 @@ public class ArmController : MonoBehaviour
     IEnumerator ResetArmCR()
     {   
         float time = 0f;
+        canAttack = true;
+        
         while (time < 1f)
         {
             float t = time / punchReturnDuration;
 
-            transform.localPosition = Vector3.Lerp(transform.localPosition, initialLocalPos, t);
+            transform.localPosition = Vector3.Lerp(transform.localPosition, initialPosition, t);
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, initialRotation, t);
             handSlot.localRotation = Quaternion.Lerp(handSlot.localRotation, initialHandRotation, t);
 
             time += Time.deltaTime;
             yield return null;
         }
 
-        canAttack = true;
         isMoving = false;
     }
 }

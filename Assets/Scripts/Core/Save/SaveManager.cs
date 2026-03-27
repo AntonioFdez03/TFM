@@ -1,5 +1,6 @@
 using System.Collections;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SaveManager : MonoBehaviour
@@ -18,6 +19,9 @@ public class SaveManager : MonoBehaviour
 
     void Start()
     {
+        if(MainMenuManager.instance == null)
+            return;
+
         if(MainMenuManager.instance.GameDataFound())
             StartCoroutine(LoadGameCR());
     }
@@ -26,6 +30,7 @@ public class SaveManager : MonoBehaviour
     {
         SaveData data = new();
         
+        //PLAYER
         data.playerData = new SaveData.PlayerData();
         PlayerAttributes player = PlayerController.instance.GetPlayerAttributes();
 
@@ -36,54 +41,30 @@ public class SaveManager : MonoBehaviour
         data.playerData.playerRotation = player.transform.rotation;
         data.playerData.cameraRotation = CameraController.instance.GetCurrentRotation();
 
-        // ======================
         // INVENTORY
-        // ======================
-        /*
         data.inventoryItems = new System.Collections.Generic.List<SaveData.InventoryItemData>();
 
         InventoryController inventory = InventoryController.instance;
 
-        foreach (var item in inventory.GetItems())
+        foreach (var item in inventory.GetInventoryItems())
         {
             SaveData.InventoryItemData itemData = new SaveData.InventoryItemData();
 
-            itemData.itemID = item.itemID;
-            itemData.currentHealth = item.currentHealth;
-
+            if(item != null)
+            {
+                print("Objeto guardado");
+                itemData.itemID = item.GetInstanceID();
+                itemData.itemHealth = item.GetComponent<ItemBehaviour>().GetCurrentHealth();
+            }
+            else
+            {   
+                print("Objeto null");
+                itemData.itemID = -1;
+                itemData.itemHealth = -1;
+            }
             data.inventoryItems.Add(itemData);
         }
 
-        // ======================
-        // WORLD OBJECTS
-        // ======================
-        data.worldObjects = new System.Collections.Generic.List<SaveData.WorldObjectData>();
-
-        var worldObjects = FindObjectsOfType<MonoBehaviour>();
-
-        foreach (var obj in worldObjects)
-        {
-            if (obj is PlaceableBehaviour placeable)
-            {
-                SaveData.WorldObjectData objData = new SaveData.WorldObjectData();
-
-                objData.prefabID = placeable.prefabID;
-                objData.position = obj.transform.position;
-                objData.rotation = obj.transform.rotation;
-
-                if (obj is IHasHealth hasHealth)
-                {
-                    objData.currentHealth = hasHealth.CurrentHealth;
-                }
-
-                data.worldObjects.Add(objData);
-            }
-        }
-    */
-
-        // ======================
-        // GUARDAR A ARCHIVO
-        // ======================
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(Application.persistentDataPath + "/save.json", json);
         print(Application.persistentDataPath);
@@ -117,8 +98,22 @@ public class SaveManager : MonoBehaviour
         );
 
         CameraController.instance.SetCurrentRotation(data.playerData.cameraRotation);
-        Debug.Log("Juego cargado");
-    }
+
+        InventoryController inventory = InventoryController.instance;
+        GameObject[] newInventory = new GameObject[inventory.GetInventoryItems().Length];
+
+        for (int i = 0; i < data.inventoryItems.Count; i++)
+        {
+            var itemData = data.inventoryItems[i];
+            
+            if(itemData.itemID == -1)
+                newInventory[i] = null;
+            else
+            {
+                //newInventory[i] = itemData.itemID;
+            }
+        }
+    }     
 
     private IEnumerator LoadGameCR()
     {

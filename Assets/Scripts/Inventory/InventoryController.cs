@@ -27,7 +27,8 @@ public class InventoryController : MonoBehaviour
         instance = this;
         items = new GameObject[inventoryMax];
     }
-
+    
+    public void SetInventoryItems(GameObject[] newItems) => items = newItems;
     public GameObject[] GetInventoryItems() => items;
     public int GetHotBarSize() => hotBarSize;
     public int GetInventoryGridSize() => inventoryGridSize;

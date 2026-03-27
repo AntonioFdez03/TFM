@@ -15,17 +15,15 @@ public class SaveData
         public Quaternion playerRotation;
         public float cameraRotation;
     }
-
     public PlayerData playerData;
 
-    // INVENTORY (ITEMS)
+    // INVENTORY
     [Serializable]
     public class InventoryItemData
     {
         public int itemID;
-        public float currentHealth;
+        public float itemHealth;
     }
-
     public List<InventoryItemData> inventoryItems;
 
     // WORLD OBJECTS

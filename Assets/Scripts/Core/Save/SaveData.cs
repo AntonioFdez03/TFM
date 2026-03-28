@@ -20,8 +20,9 @@ public class SaveData
     // INVENTORY
     [Serializable]
     public class InventoryItemData
-    {
-        public int itemID;
+    {   
+        public int inventoryIndex;
+        public string itemName;
         public float itemHealth;
     }
     public List<InventoryItemData> inventoryItems;

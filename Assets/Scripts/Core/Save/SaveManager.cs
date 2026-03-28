@@ -18,12 +18,10 @@ public class SaveManager : MonoBehaviour
     }
 
     void Start()
-    {
-        if(MainMenuManager.instance == null)
-            return;
-
-        if(MainMenuManager.instance.GameDataFound())
+    {   
+        if (File.Exists(Application.persistentDataPath + "/save.json"))
             StartCoroutine(LoadGameCR());
+        
     }
 
     public void SaveGame()
@@ -45,21 +43,22 @@ public class SaveManager : MonoBehaviour
         data.inventoryItems = new System.Collections.Generic.List<SaveData.InventoryItemData>();
 
         InventoryController inventory = InventoryController.instance;
+        GameObject item;
 
-        foreach (var item in inventory.GetInventoryItems())
+        for(int i = 0; i < inventory.GetInventoryItems().Length; i++)
         {
             SaveData.InventoryItemData itemData = new SaveData.InventoryItemData();
+            item = inventory.GetInventoryItems()[i];
 
             if(item != null)
-            {
-                print("Objeto guardado");
-                itemData.itemID = item.GetInstanceID();
+            {   
+                itemData.inventoryIndex = i;
+                itemData.itemName = item.GetComponent<ItemData>().GetItemName();
                 itemData.itemHealth = item.GetComponent<ItemBehaviour>().GetCurrentHealth();
             }
             else
             {   
-                print("Objeto null");
-                itemData.itemID = -1;
+                itemData.itemName = "-1";
                 itemData.itemHealth = -1;
             }
             data.inventoryItems.Add(itemData);
@@ -71,7 +70,7 @@ public class SaveManager : MonoBehaviour
     }
 
     public void LoadGame()
-    {
+    {   
         string path = Application.persistentDataPath + "/save.json";
 
         if (!File.Exists(path))
@@ -88,7 +87,6 @@ public class SaveManager : MonoBehaviour
         // PLAYER
 
         PlayerController player = PlayerController.instance;
-
         player.InitializePlayer(
             data.playerData.playerPosition,
             data.playerData.playerRotation,
@@ -100,18 +98,27 @@ public class SaveManager : MonoBehaviour
         CameraController.instance.SetCurrentRotation(data.playerData.cameraRotation);
 
         InventoryController inventory = InventoryController.instance;
-        GameObject[] newInventory = new GameObject[inventory.GetInventoryItems().Length];
+        GameObject newItem;
 
-        for (int i = 0; i < data.inventoryItems.Count; i++)
-        {
+        for (int i = 0; i < inventory.GetInventoryItems().Length; i++)
+        {   
             var itemData = data.inventoryItems[i];
             
-            if(itemData.itemID == -1)
-                newInventory[i] = null;
-            else
+            if(itemData.itemName == "-1")
             {
-                //newInventory[i] = itemData.itemID;
+                print("Añadiendo null ...");
+                newItem = null;
             }
+            else
+            {   
+                print("Añadiendo item ...");
+                GameObject itemPrefab = ItemsPrefabs.instance.GetPrefabByName(itemData.itemName);
+                if(itemPrefab.TryGetComponent(out EquipmentBehaviour equipmentBehaviour))
+                    equipmentBehaviour.SetCurrentHealth(itemData.itemHealth);
+
+                newItem = Instantiate(itemPrefab);
+            }
+            inventory.SetItem(i,newItem);
         }
     }     
 

@@ -35,12 +35,15 @@ public class InventoryController : MonoBehaviour
     public Transform GetItemsParent() => itemsParent;
 
     public void AddItem(GameObject item)
-    {
+    {   
+        if(item == null)
+            return;
+
         // Buscamos el primer hueco vacío (null)
         for (int i = 0; i < items.Length; i++)
-        {
+        {   
             if (items[i] == null)
-            {
+            {   
                 items[i] = item;
                 item.transform.SetParent(transform);
                 item.SetActive(false);
@@ -49,6 +52,16 @@ public class InventoryController : MonoBehaviour
                 HotBarController.instance.UpdateHotBarUI();
                 return;
             }
+        }
+    }
+
+    public void SetItem(int index, GameObject item)
+    {
+        if(index >= 0 && index < inventoryMax && items[index] == null && item != null)
+        {
+            items[index] = item;
+            OnInventoryChanged?.Invoke();
+            HotBarController.instance.UpdateHotBarUI();
         }
     }
 

@@ -47,6 +47,8 @@ public class InventoryController : MonoBehaviour
                 items[i] = item;
                 item.transform.SetParent(transform);
                 item.SetActive(false);
+                item.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+                item.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
                 
                 OnInventoryChanged?.Invoke();
                 HotBarController.instance.UpdateHotBarUI();
@@ -60,6 +62,8 @@ public class InventoryController : MonoBehaviour
         if(index >= 0 && index < inventoryMax && items[index] == null && item != null)
         {
             items[index] = item;
+            item.transform.SetParent(transform);
+            item.SetActive(false);
             OnInventoryChanged?.Invoke();
             HotBarController.instance.UpdateHotBarUI();
         }

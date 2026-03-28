@@ -14,6 +14,7 @@ public class BigTreeNode : HarvestableObject
     protected override void Awake()
     {
         base.Awake();
+        objectName = "BigTree";
         maxHealth = 100;
         currentHealth = maxHealth;
         toolsAccepted.Add(ToolType.Axe);

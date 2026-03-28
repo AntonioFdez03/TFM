@@ -15,7 +15,9 @@ public class RockNode : HarvestableObject
     private bool fourthDrop = false;
 
     protected override void Awake()
-    {
+    {   
+        base.Awake();
+        objectName = "Rock";
         maxHealth = 100;
         currentHealth = maxHealth;
         toolsAccepted.Add(ToolType.Pickaxe);

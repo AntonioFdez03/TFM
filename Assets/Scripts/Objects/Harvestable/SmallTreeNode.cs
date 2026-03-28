@@ -13,6 +13,7 @@ public class SmallTreeNode : HarvestableObject
     protected override void Awake()
     {
         base.Awake();
+        objectName = "SmallTree";
         maxHealth = 40;
         currentHealth = maxHealth;
         toolsAccepted.Add(ToolType.Axe);

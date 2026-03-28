@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public abstract class HarvestableObject : MonoBehaviour
+public abstract class HarvestableObject : MonoBehaviour, IObjectHealth
 {
+    protected string objectName;
     protected int maxHealth;
     protected float currentHealth;
     protected List<ToolType> toolsAccepted = new();
@@ -13,6 +14,9 @@ public abstract class HarvestableObject : MonoBehaviour
 
     protected virtual void Awake(){}
 
+    public string GetObjectName() => objectName;
+    public float GetCurrentHealth() => currentHealth;
+    public void SetCurrentHealth(float health) => currentHealth = health;
     public virtual void TakeHit(ToolType tool, float damage)
     {
         if (CanHarvest(tool))
@@ -24,8 +28,7 @@ public abstract class HarvestableObject : MonoBehaviour
                 Harvest();
         }
         else
-            print("Herramienta no válida para este objeto");
-        
+            print("Herramienta no válida para este objeto");   
     }
 
     public abstract void Harvest();

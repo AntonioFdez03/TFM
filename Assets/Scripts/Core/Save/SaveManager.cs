@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -6,6 +7,8 @@ using UnityEngine;
 public class SaveManager : MonoBehaviour
 {   
     public static SaveManager instance;
+    [SerializeField] private Transform worldObjects;
+
 
     void Awake()
     {
@@ -20,15 +23,14 @@ public class SaveManager : MonoBehaviour
     void Start()
     {   
         if (File.Exists(Application.persistentDataPath + "/save.json"))
-            StartCoroutine(LoadGameCR());
-        
+            StartCoroutine(LoadGameCR());   
     }
 
     public void SaveGame()
     {
         SaveData data = new();
         
-        //PLAYER
+        // PLAYER
         data.playerData = new SaveData.PlayerData();
         PlayerAttributes player = PlayerController.instance.GetPlayerAttributes();
 
@@ -40,14 +42,14 @@ public class SaveManager : MonoBehaviour
         data.playerData.cameraRotation = CameraController.instance.GetCurrentRotation();
 
         // INVENTORY
-        data.inventoryItems = new System.Collections.Generic.List<SaveData.InventoryItemData>();
+        data.inventoryItems = new List<SaveData.InventoryItemData>();
 
         InventoryController inventory = InventoryController.instance;
         GameObject item;
 
         for(int i = 0; i < inventory.GetInventoryItems().Length; i++)
         {
-            SaveData.InventoryItemData itemData = new SaveData.InventoryItemData();
+            SaveData.InventoryItemData itemData = new();
             item = inventory.GetInventoryItems()[i];
 
             if(item != null)
@@ -59,9 +61,36 @@ public class SaveManager : MonoBehaviour
             else
             {   
                 itemData.itemName = "-1";
-                itemData.itemHealth = -1;
+                itemData.itemHealth = 0;
             }
             data.inventoryItems.Add(itemData);
+        }
+
+        // WORLD OBJECTS
+        data.worldObjects = new List<SaveData.WorldObjectData>();
+        Transform worldObject;
+
+        for(int i = 0; i < worldObjects.childCount ; i++)
+        {
+            SaveData.WorldObjectData objectData = new();
+            worldObject = worldObjects.GetChild(i);
+
+            objectData.position = worldObject.position;
+            objectData.rotation = worldObject.rotation;
+
+            if(worldObjects.GetChild(i).TryGetComponent(out ItemBehaviour itemBehaviour))
+            {
+                objectData.name = itemBehaviour.GetItemData().GetItemName();
+                objectData.type = "Item";
+                objectData.currentHealth = itemBehaviour.GetCurrentHealth();
+            }else if(worldObjects.GetChild(i).TryGetComponent(out HarvestableObject harvestable))
+            {
+                objectData.name = harvestable.GetObjectName();
+                objectData.type = "Harvestable";
+                objectData.currentHealth = harvestable.GetCurrentHealth();
+            }
+
+            data.worldObjects.Add(objectData);
         }
 
         string json = JsonUtility.ToJson(data, true);
@@ -105,14 +134,10 @@ public class SaveManager : MonoBehaviour
             var itemData = data.inventoryItems[i];
             
             if(itemData.itemName == "-1")
-            {
-                print("Añadiendo null ...");
                 newItem = null;
-            }
             else
             {   
-                print("Añadiendo item ...");
-                GameObject itemPrefab = ItemsPrefabs.instance.GetPrefabByName(itemData.itemName);
+                GameObject itemPrefab = ObjectsPrefabs.instance.GetPrefabByName("Item", itemData.itemName);
                 if(itemPrefab.TryGetComponent(out EquipmentBehaviour equipmentBehaviour))
                     equipmentBehaviour.SetCurrentHealth(itemData.itemHealth);
 
@@ -120,6 +145,19 @@ public class SaveManager : MonoBehaviour
             }
             inventory.SetItem(i,newItem);
         }
+        
+        GameObject newObject;
+        for(int i = 0; i < data.worldObjects.Count ; i++)
+        {   
+            var objectData = data.worldObjects[i];
+            print("Instanciando: " + objectData.name);
+            GameObject objectPrefab = ObjectsPrefabs.instance.GetPrefabByName(objectData.type, objectData.name);
+            objectPrefab.GetComponent<IObjectHealth>().SetCurrentHealth(objectData.currentHealth);
+            newObject = Instantiate(objectPrefab,InventoryController.instance.GetItemsParent());
+            newObject.transform.position = objectData.position;
+            newObject.transform.rotation = objectData.rotation;
+        }
+        
     }     
 
     private IEnumerator LoadGameCR()

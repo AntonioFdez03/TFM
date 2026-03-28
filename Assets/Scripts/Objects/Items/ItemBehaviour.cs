@@ -2,7 +2,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public abstract class ItemBehaviour : MonoBehaviour
+public abstract class ItemBehaviour : MonoBehaviour, IObjectHealth
 {  
     protected ItemData itemData;
     protected float currentHealth;
@@ -15,6 +15,7 @@ public abstract class ItemBehaviour : MonoBehaviour
         itemData = GetComponent<ItemData>();
     }
 
+    public ItemData GetItemData() => itemData;
     public float GetCurrentHealth() => currentHealth;
     public void SetCurrentHealth(float health) => currentHealth = health;
     public float GetMaxHealth() => maxHealth;

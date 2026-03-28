@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemsPrefabs : MonoBehaviour
+public class ObjectsPrefabs : MonoBehaviour
 {   
-    public static ItemsPrefabs instance;
-    public List<GameObject> prefabs;
+    public static ObjectsPrefabs instance;
+    public List<GameObject> itemsPrefabs;
+    public List<GameObject> harvestablesPrefabs;
 
     void Awake()
     {
@@ -15,11 +16,17 @@ public class ItemsPrefabs : MonoBehaviour
         }
         instance = this;
     }
-    public GameObject GetPrefabByName(string prefabName)
+    public GameObject GetPrefabByName(string type, string prefabName)
     {
         string cleanName = prefabName.Trim().ToLower();
+        List<GameObject> prefabList;
 
-        foreach (GameObject prefab in prefabs)
+        if(type == "Item")
+            prefabList = itemsPrefabs;
+        else
+            prefabList = harvestablesPrefabs;
+
+        foreach (GameObject prefab in prefabList)
         {
             if (prefab == null) continue;
 

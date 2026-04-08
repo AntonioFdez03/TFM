@@ -156,8 +156,7 @@ public class SaveManager : MonoBehaviour
             newObject = Instantiate(objectPrefab,InventoryController.instance.GetItemsParent());
             newObject.transform.position = objectData.position;
             newObject.transform.rotation = objectData.rotation;
-        }
-        
+        }   
     }     
 
     private IEnumerator LoadGameCR()

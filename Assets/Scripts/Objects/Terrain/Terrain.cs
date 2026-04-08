@@ -77,6 +77,23 @@ public class RegionTerrainGenerator : MonoBehaviour
                 // Combinar región con variación
                 float finalHeight = regionMask * variedHeight;
 
+                // Distancia a los bordes (0 en borde, 1 en centro)
+                float edgeX = Mathf.Min(xNorm, 1f - xNorm);
+                float edgeY = Mathf.Min(yNorm, 1f - yNorm);
+                float edgeDistance = Mathf.Min(edgeX, edgeY);
+
+                // Control de qué tan grueso es el borde montañoso
+                float borderSize = 0.15f;
+
+                // Máscara invertida: 1 en bordes, 0 en el centro
+                float borderMask = 1f - Mathf.SmoothStep(0f, borderSize, edgeDistance);
+
+                // Altura extra para montañas del borde
+                float borderHeight = borderMask * maxHeight;
+
+                // Combinar con el terreno existente
+                finalHeight = Mathf.Max(finalHeight, borderHeight);
+
                 heights[x, y] = finalHeight / terrainData.size.y;
             }
         }

@@ -1,14 +1,13 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.IO;
-using Unity.VisualScripting;
 using TMPro;
 
 public class MainMenuManager : MonoBehaviour
 {   
     public static MainMenuManager instance;
     [SerializeField] private TMP_Text startButtonText;
+
     private bool gameDataFound;
 
     void Awake()

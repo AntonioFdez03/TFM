@@ -2,21 +2,24 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public enum UIState { Gameplay, Inventory, Pause, Crafting }
+public enum UIState { None, Gameplay, Inventory, Pause, Crafting, Furnace }
 public class UIController : MonoBehaviour
 {
     public static UIController instance;
-    // Definimos los posibles estados de la interfaz
     private UIState currentState = UIState.Gameplay;
 
     [Header("Canvas")]
     [SerializeField] private GameObject hudCanvas;
     [SerializeField] private GameObject inventoryCanvas;
     [SerializeField] private GameObject pauseCanvas;
-    [SerializeField] private GameObject craftingCanvas;
+    [SerializeField] private GameObject mixCanvas;
+    [SerializeField] private GameObject craftPanel;
+    [SerializeField] private GameObject furnacePanel;
 
     private InputAction inventoryAction;
     private InputAction pauseAction;
+
+    private UIState lastPanel = UIState.None;
 
     void Awake()
     {
@@ -65,7 +68,7 @@ public class UIController : MonoBehaviour
         hudCanvas.SetActive(currentState == UIState.Gameplay);
         inventoryCanvas.SetActive(currentState == UIState.Inventory);
         pauseCanvas.SetActive(currentState == UIState.Pause);
-        craftingCanvas.SetActive(currentState == UIState.Crafting);
+        mixCanvas.SetActive(currentState == UIState.Crafting || currentState == UIState.Furnace);
 
         switch (currentState)
         {
@@ -94,11 +97,41 @@ public class UIController : MonoBehaviour
                 Time.timeScale = 1f;
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+                LoadPanel(currentState,craftPanel);
+
                 PlayerController.instance.SetCanMove(false);
+                lastPanel = UIState.Crafting;
+                break;
+            
+            case UIState.Furnace:
+                print("Furnace");
+                Time.timeScale = 1f;
+                Cursor.lockState = CursorLockMode.None;
+                LoadPanel(currentState,furnacePanel);
+                PlayerController.instance.SetCanMove(false);
+                lastPanel = UIState.Furnace;
                 break;
         }
     }
 
+    private void LoadPanel(UIState state, GameObject panel)
+    {
+        Transform panelsCanvas = mixCanvas.transform.GetChild(0);
+        if(panelsCanvas.childCount > 1)
+        {
+            if(lastPanel == state)
+                return;
+            else
+                Destroy(panelsCanvas.GetChild(1).gameObject);
+            
+        }
+        
+        GameObject panelInstance = Instantiate(panel);
+        panelInstance.transform.SetParent(mixCanvas.transform.GetChild(0));
+        panelInstance.transform.localScale = Vector3.one;
+        
+            
+    }
     public void SetCraftingState() => SetState(UIState.Crafting);
     public void SetInventoryState() => SetState(UIState.Inventory);
 }

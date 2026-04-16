@@ -1,17 +1,18 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 
-public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+public abstract class Slot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {   
-    [Header("References")]
-    private Transform draggingLayer; // Capa en la que mover el icono mientras se arrastra para mostrar por encima del resto
+    [SerializeField] private Transform draggingLayer; // Capa en la que mover el icono mientras se arrastra para mostrar por encima del resto
+    [SerializeField] protected int slotIndex;
 
-    public int slotIndex;
+    protected Image originalIcon;
+    protected GameObject cloneIcon;
 
-    private Image originalIcon;
-    private GameObject cloneIcon;
-
+    public void SetSlotIndex(int i) => slotIndex = i;
+    public int GetSlotIndex() => slotIndex;
     public void SetDragginLayer(Transform layer) => draggingLayer = layer;
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -47,31 +48,13 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    public virtual void OnEndDrag(PointerEventData eventData)
     {
         if (cloneIcon != null) {
             originalIcon.color = Color.white;
             Destroy(cloneIcon);
         }
-
-        // Area para soltar el item -> 26% a cada lado 
-        float margen = Screen.width * 0.26f;
-        if (eventData.position.x < margen || eventData.position.x > Screen.width - margen)
-        {   
-            InventoryController.instance.DropItem(slotIndex);
-            HotBarController.instance.RefreshHandItem();
-        }
     }
 
-    public void OnDrop(PointerEventData eventData)
-    {
-        InventorySlot slotOrigen = eventData.pointerDrag?.GetComponent<InventorySlot>();
-
-        //Intercambia el slot destino con el actual, aunque esté vacío
-        if (slotOrigen != null)
-        {
-            InventoryController.instance.SwapItems(slotOrigen.slotIndex, this.slotIndex);
-            HotBarController.instance.RefreshHandItem();
-        }
-    }
+    public abstract void OnDrop(PointerEventData eventData);
 }

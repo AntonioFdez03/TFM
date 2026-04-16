@@ -20,6 +20,7 @@ public class UIController : MonoBehaviour
     private InputAction pauseAction;
 
     private UIState lastPanel = UIState.None;
+    private Furnace currentFurnace;
 
     void Awake()
     {
@@ -104,9 +105,9 @@ public class UIController : MonoBehaviour
                 break;
             
             case UIState.Furnace:
-                print("Furnace");
                 Time.timeScale = 1f;
                 Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 LoadPanel(currentState,furnacePanel);
                 PlayerController.instance.SetCanMove(false);
                 lastPanel = UIState.Furnace;
@@ -123,15 +124,31 @@ public class UIController : MonoBehaviour
                 return;
             else
                 Destroy(panelsCanvas.GetChild(1).gameObject);
-            
         }
         
         GameObject panelInstance = Instantiate(panel);
         panelInstance.transform.SetParent(mixCanvas.transform.GetChild(0));
         panelInstance.transform.localScale = Vector3.one;
-        
-            
+
+        switch (state)
+        {   
+            case UIState.Furnace:
+                FurnaceUI furnaceUI = panelInstance.GetComponentInChildren<FurnaceUI>();
+
+                if (furnaceUI != null)
+                {   
+                    furnaceUI.SetFurnace(currentFurnace);
+                }
+            break;
+        }    
     }
+
+    public void OpenFurnace(Furnace furnace)
+    {
+        currentFurnace = furnace;
+        SetState(UIState.Furnace);
+    }
+
     public void SetCraftingState() => SetState(UIState.Crafting);
     public void SetInventoryState() => SetState(UIState.Inventory);
 }

@@ -13,6 +13,6 @@ public class Furnace : PlaceableBehaviour, IInteractiveObject
     }
     public void Interact()
     {   
-        UIController.instance.SetState(UIState.Furnace);    
+        UIController.instance.OpenFurnace(this);
     }
 }

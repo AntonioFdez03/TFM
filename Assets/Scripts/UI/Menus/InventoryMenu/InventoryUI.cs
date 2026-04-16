@@ -45,7 +45,7 @@ public class InventoryUI : MonoBehaviour
             InventorySlot scriptSlot = newSlot.GetComponent<InventorySlot>();
             if (scriptSlot != null)
             {
-                scriptSlot.slotIndex = i;
+                scriptSlot.SetSlotIndex(i);
                 scriptSlot.SetDragginLayer(DragginLayer);
             }
 
@@ -66,7 +66,7 @@ public class InventoryUI : MonoBehaviour
             
             if (scriptSlot != null)
             {
-                int realIndex = scriptSlot.slotIndex; 
+                int realIndex = scriptSlot.GetSlotIndex(); 
                 
                 if (currentSlot.transform.childCount > 0)
                 {

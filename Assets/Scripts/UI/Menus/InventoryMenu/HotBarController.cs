@@ -81,7 +81,7 @@ public class HotBarController : MonoBehaviour
             InventorySlot scriptSlot = newSlot.GetComponent<InventorySlot>();
             if (scriptSlot != null)
             {
-                scriptSlot.slotIndex = i;
+                scriptSlot.SetSlotIndex(i);
             }
 
             inventorySlots.Add(newSlot.GetComponent<Image>());
@@ -147,7 +147,6 @@ public class HotBarController : MonoBehaviour
         handItemInstance = Instantiate(currentPrefab);
         currentItemBehaviour = handItemInstance.GetComponent<ItemBehaviour>();
 
-        print("LastPlaceable: " + lastPlaceableItem);
         if (currentItemBehaviour is not PlaceableBehaviour)
         {   
             handItemInstance.transform.SetParent(handSlot, false);
@@ -159,7 +158,6 @@ public class HotBarController : MonoBehaviour
         }
         else
         {   
-            print("last placeable asignado");
             lastPlaceableItem = currentItemBehaviour as PlaceableBehaviour;
         }
     }

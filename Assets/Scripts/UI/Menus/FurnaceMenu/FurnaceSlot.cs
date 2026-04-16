@@ -1,7 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using Unity.VisualScripting;
 
 public enum FurnaceSlotType {None, Input, Fuel, Output}
 public class FurnaceSlot : Slot
@@ -26,6 +24,7 @@ public class FurnaceSlot : Slot
             {
                 case FurnaceSlotType.Input:
                     furnaceController.AddInput(index,originalItemData);
+                    //InventoryController.instance.RemoveItem(originalItemData);
                     break;
 
                 case FurnaceSlotType.Fuel:

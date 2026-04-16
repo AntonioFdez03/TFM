@@ -16,7 +16,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] Image itemHealthSlider;
 
     private float interactDistance = 9f;
-    private GameObject lastItem;
+    private ItemData lastItem;
     private InputAction interact;
     private InputAction attack;
     private RaycastHit lastHit;
@@ -37,7 +37,9 @@ public class PlayerInteraction : MonoBehaviour
             Interact();
             Use();
         }
-        lastItem = HotBarController.instance.GetCurrentItem();
+
+        if(HotBarController.instance.GetCurrentItem() != null)
+            lastItem = HotBarController.instance.GetCurrentItem().GetComponent<ItemData>();
     }
 
     private void Use()
@@ -139,21 +141,21 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    private void HandleInteraction(string tag, GameObject obj)
+    private void HandleInteraction(string tag, GameObject item)
     {   
         if (interact.WasReleasedThisFrame() && timer < interactTime) 
         {   
             timer = 0;
-            ResetTime(obj.GetComponent<ItemBehaviour>());
+            ResetTime(item.GetComponent<ItemBehaviour>());
             switch (tag)
             {
                 case "Item":
-                    HandleItemSelection(obj, false);
-                    InventoryController.instance.AddItem(obj);
+                    HandleItemSelection(item, false);
+                    InventoryController.instance.AddItem(item);
                     break;
 
                 case "Interactive":
-                    obj.GetComponent<IInteractiveObject>()?.Interact();
+                    item.GetComponent<IInteractiveObject>()?.Interact();
                     break;
             }
         }else if (interact.IsPressed())    
@@ -161,7 +163,7 @@ public class PlayerInteraction : MonoBehaviour
         else
             timer = 0;
 
-        HandleUnplacing(obj);
+        HandleUnplacing(item);
     }
 
     private void HandleUnplacing(GameObject obj)

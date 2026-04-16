@@ -10,7 +10,6 @@ public class FurnaceUI : MonoBehaviour
 
     public void SetFurnace(Furnace furnace)
     {
-        print("Datos cargados");
         furnaceController = furnace.GetComponent<FurnaceController>();
         furnaceController.OnInventoryChanged += UpdateUI;
         LoadFurnaceData();
@@ -23,7 +22,6 @@ public class FurnaceUI : MonoBehaviour
         LoadController(outputPanel);
         UpdateUI();
     }
-
 
     private void LoadController(Transform panel)
     {

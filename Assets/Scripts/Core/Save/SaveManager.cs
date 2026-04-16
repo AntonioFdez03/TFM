@@ -45,7 +45,7 @@ public class SaveManager : MonoBehaviour
         data.inventoryItems = new List<SaveData.InventoryItemData>();
 
         InventoryController inventory = InventoryController.instance;
-        GameObject item;
+        ItemData item;
 
         for(int i = 0; i < inventory.GetInventoryItems().Length; i++)
         {
@@ -127,7 +127,7 @@ public class SaveManager : MonoBehaviour
         CameraController.instance.SetCurrentRotation(data.playerData.cameraRotation);
 
         InventoryController inventory = InventoryController.instance;
-        GameObject newItem;
+        ItemData newItem;
 
         for (int i = 0; i < inventory.GetInventoryItems().Length; i++)
         {   
@@ -141,9 +141,9 @@ public class SaveManager : MonoBehaviour
                 if(itemPrefab.TryGetComponent(out EquipmentBehaviour equipmentBehaviour))
                     equipmentBehaviour.SetCurrentHealth(itemData.itemHealth);
 
-                newItem = Instantiate(itemPrefab);
+                //newItem = Instantiate(itemPrefab);
             }
-            inventory.SetItem(i,newItem);
+            //inventory.SetItem(i,newItem);
         }
         
         GameObject newObject;

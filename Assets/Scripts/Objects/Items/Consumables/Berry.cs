@@ -15,6 +15,6 @@ public class Berry : ConsumableBehaviour
     protected override void Consume()
     {
         PlayerController.instance.GetPlayerAttributes().Eat(hungerPoints);
-        InventoryController.instance.RemoveItem(HotBarController.instance.GetCurrentItem());
+        InventoryController.instance.RemoveItem(HotBarController.instance.GetCurrentItem().GetComponent<ItemData>());
     }
 }

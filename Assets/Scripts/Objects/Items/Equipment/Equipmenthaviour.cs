@@ -40,7 +40,7 @@ public class EquipmentBehaviour : ItemBehaviour
         if(currentHealth == 0)
         {
             ArmController.instance.ResetArm();
-            InventoryController.instance.RemoveItem(HotBarController.instance.GetCurrentItem());
+            InventoryController.instance.RemoveItem(HotBarController.instance.GetCurrentItem().GetComponent<ItemData>());
         }
         else
         {

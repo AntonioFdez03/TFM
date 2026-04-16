@@ -11,7 +11,7 @@ public class PlaceableBehaviour : ItemBehaviour
     [SerializeField] Material greenMaterial;
     [SerializeField] Material redMaterial;
     [SerializeField] LayerMask placementMask;
-    protected Vector3 checkBoxSize = new Vector3(0,0,0);
+    protected Vector3 checkBoxSize = new(0,0,0);
     private GameObject silhouette;
     private Vector3 lastValidPosition;
     private Quaternion lastValidRotation;
@@ -50,7 +50,7 @@ public class PlaceableBehaviour : ItemBehaviour
             silhouette = null;
         }
         
-        InventoryController.instance.RemoveItem(HotBarController.instance.GetCurrentItem());
+        InventoryController.instance.RemoveItem(HotBarController.instance.GetCurrentItem().GetComponent<ItemData>());
     }
 
     private bool CanPlace(Vector3 position, Quaternion rotation)

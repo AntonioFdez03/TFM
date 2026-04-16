@@ -14,7 +14,7 @@ public class InventoryController : MonoBehaviour
     private int hotBarSize = 7;
     private int inventoryGridSize = 21;
 
-    private GameObject[] items;
+    private ItemData[] items;
 
     void Awake()
     {
@@ -24,11 +24,11 @@ public class InventoryController : MonoBehaviour
             return;
         }
         instance = this;
-        items = new GameObject[inventoryMax];
+        items = new ItemData[inventoryMax];
     }
     
-    public void SetInventoryItems(GameObject[] newItems) => items = newItems;
-    public GameObject[] GetInventoryItems() => items;
+    public void SetInventoryItems(ItemData[] newItems) => items = newItems;
+    public ItemData[] GetInventoryItems() => items;
     public int GetHotBarSize() => hotBarSize;
     public int GetInventoryGridSize() => inventoryGridSize;
     public Transform GetItemsParent() => itemsParent;
@@ -42,13 +42,10 @@ public class InventoryController : MonoBehaviour
         for (int i = 0; i < items.Length; i++)
         {   
             if (items[i] == null)
-            {   
-                items[i] = item;
-                item.transform.SetParent(transform);
+            {  
+                items[i] = item.GetComponent<ItemData>();
                 item.SetActive(false);
-                item.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
-                item.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-                
+                item.transform.SetParent(itemsParent);
                 OnInventoryChanged?.Invoke();
                 HotBarController.instance.UpdateHotBarUI();
                 return;
@@ -56,19 +53,17 @@ public class InventoryController : MonoBehaviour
         }
     }
 
-    public void SetItem(int index, GameObject item)
+    public void SetItem(int index, ItemData item)
     {
         if(index >= 0 && index < inventoryMax && items[index] == null && item != null)
         {
             items[index] = item;
-            item.transform.SetParent(transform);
-            item.SetActive(false);
             OnInventoryChanged?.Invoke();
             HotBarController.instance.UpdateHotBarUI();
         }
     }
 
-    public void RemoveItem(GameObject item)
+    public void RemoveItem(ItemData item)
     {
         for (int i = 0; i < items.Length; i++)
         {
@@ -87,11 +82,11 @@ public class InventoryController : MonoBehaviour
     {
         if (index >= 0 && index < items.Length && items[index] != null)
         {
-            GameObject itemToDrop = items[index];
+            ItemData itemToDrop = items[index];
             
             // Vaciamos el slot
-            items[index] = null; 
-            itemToDrop.SetActive(true);
+            items[index] = null;
+            itemToDrop.gameObject.SetActive(true);
 
             //Posicion, giro y escala al soltarlo
             itemToDrop.transform.position = handSlot.transform.position;
@@ -122,11 +117,11 @@ public class InventoryController : MonoBehaviour
         HotBarController.instance.UpdateHotBarUI();
     }
 
-    public List<GameObject> GetItemsByName(string name)
+    public List<ItemData> GetItemsByName(string name)
     {
-        List<GameObject> result = new List<GameObject>();
+        List<ItemData> result = new List<ItemData>();
 
-        foreach (GameObject item in items)
+        foreach (ItemData item in items)
         {
             if (item == null) continue;
 

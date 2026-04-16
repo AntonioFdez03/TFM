@@ -20,7 +20,7 @@ public class HotBarController : MonoBehaviour
     [Range(0, 6)] private int selectedIndex = 0;
     
     private Transform[] slots;
-    private GameObject currentItem;
+    private ItemData currentItem;
     private GameObject handItemInstance;
     private ItemBehaviour currentItemBehaviour;
     private GameObject currentPrefab;
@@ -48,7 +48,7 @@ public class HotBarController : MonoBehaviour
         MoveSelectorFrame(selectedIndex);
     }
 
-    public GameObject GetCurrentItem() => currentItem;
+    public ItemData GetCurrentItem() => currentItem;
     public ItemBehaviour GetCurrentItemBehaviour() => currentItemBehaviour;
     public int GetSelectedIndex() => selectedIndex;
 
@@ -114,7 +114,7 @@ public class HotBarController : MonoBehaviour
 
     public void RefreshHandItem()
     {
-        GameObject[] items = InventoryController.instance.GetInventoryItems();
+        ItemData[] items = InventoryController.instance.GetInventoryItems();
 
         if (selectedIndex < 0 || selectedIndex >= items.Length)
             return;
@@ -190,7 +190,7 @@ public class HotBarController : MonoBehaviour
 
     public void UpdateHotBarUI()
     {
-        GameObject[] items = InventoryController.instance.GetInventoryItems();
+        ItemData[] items = InventoryController.instance.GetInventoryItems();
 
         for (int i = 0; i < slots.Length; i++)
         {
@@ -229,7 +229,7 @@ public class HotBarController : MonoBehaviour
 
     public void UpdateEquipmentHealthBar(int index)
     {   
-        GameObject[] items = InventoryController.instance.GetInventoryItems();
+        ItemData[] items = InventoryController.instance.GetInventoryItems();
 
         // Si no hay item en ese slot
         if (items[index] == null)

@@ -58,13 +58,11 @@ public class InventoryUI : MonoBehaviour
         if (InventoryController.instance == null)
             return;
         
-        GameObject[] items = InventoryController.instance.GetInventoryItems();
+        ItemData[] items = InventoryController.instance.GetInventoryItems();
 
         foreach (Image currentSlot in inventorySlots)
         {
-            InventorySlot scriptSlot = currentSlot.GetComponent<InventorySlot>();
-            
-            if (scriptSlot != null)
+            if (currentSlot.TryGetComponent<InventorySlot>(out var scriptSlot))
             {
                 int realIndex = scriptSlot.GetSlotIndex(); 
                 

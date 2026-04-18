@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 686cb9c65e7f63448975c5d5646a7e89, type: 3}
   m_Name: Chest
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  id: 
-  itemName: 
-  icon: {fileID: 0}
+  id: Chest
+  itemName: Chest
+  icon: {fileID: 21300000, guid: ce31a7b7a4bb52a4da163a2de18f7ee5, type: 3}
   prefab: {fileID: 0}
   type: 0
   maxHealth: 0

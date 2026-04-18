@@ -5,12 +5,6 @@ using UnityEngine;
 
 public class Furnace : PlaceableBehaviour, IInteractiveObject
 {
-    protected override void Start()
-    {
-        base.Start();
-        maxHealth = 70;
-        currentHealth = maxHealth;
-    }
     public void Interact()
     {   
         UIController.instance.OpenFurnace(this);

@@ -5,15 +5,16 @@ using UnityEngine;
 
 public enum ToolType { None, Axe, Pickaxe}
 public class ToolBehaviour : EquipmentBehaviour
-{
-    protected ToolType toolType;
+{   
+    protected ToolData toolData;
 
-    protected override void Awake()
+    public ToolType GetToolType() => toolData.toolType;
+
+    public override void Initialize(ItemStack stack)
     {
-        base.Awake(); 
+        base.Initialize(stack);
+        toolData = equipmentData as ToolData;
     }
-
-    public ToolType GetToolType() => toolType;
 
     public override void Attack(ArmController arm)
     {
@@ -22,7 +23,7 @@ public class ToolBehaviour : EquipmentBehaviour
     }
 
     public override void Use()
-    {
+    {   
         if (!canUse) 
             return;
         
@@ -36,27 +37,26 @@ public class ToolBehaviour : EquipmentBehaviour
         Ray ray = new Ray(CameraController.instance.transform.position, CameraController.instance.transform.forward);
         RaycastHit hit;
 
-        Debug.DrawRay(ray.origin, ray.direction * equipmentRange, Color.red);
-        if (Physics.Raycast(ray, out hit, equipmentRange))
+        Debug.DrawRay(ray.origin, ray.direction * toolData.range, Color.red);
+        if (Physics.Raycast(ray, out hit, toolData.range))
         {
             Enemy enemy = hit.collider.CompareTag("Enemy") ? hit.collider.GetComponent<Enemy>() : null;
             if (enemy != null)
             {
-                enemy.TakeDamage(equipmentDamage);
+                enemy.TakeDamage(toolData.damage);
                 TakeDamage(enemyDamage);
             }
 
             HarvestableObject harvestableObject = hit.collider.CompareTag("Harvestable") ? hit.collider.GetComponent<HarvestableObject>() : null;
             if(harvestableObject != null)
             {   
-                print("Harvestable detectado");
-                harvestableObject.TakeHit(toolType,equipmentDamage);
+                harvestableObject.TakeHit(toolData.toolType,toolData.damage);
                 TakeDamage(harvestableDamage);
             }
 
             if(hit.collider.TryGetComponent(out PlaceableBehaviour placeable))
             {
-                placeable.TakeDamage(equipmentDamage);
+                placeable.TakeDamage(toolData.damage);
                 TakeDamage(placeableDamage);
             }
         }

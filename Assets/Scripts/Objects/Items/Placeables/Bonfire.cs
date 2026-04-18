@@ -12,8 +12,6 @@ public class Bonfire : PlaceableBehaviour
     {   
         base.Start();
         fireDamage = 20;
-        maxHealth = 10;
-        currentHealth = maxHealth;
     }
 
     void Update()

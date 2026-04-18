@@ -18,8 +18,6 @@ public class WoodFenceDoor : PlaceableBehaviour, IInteractiveObject
     protected override void Start()
     {   
         base.Start();
-        maxHealth = 100;
-        currentHealth = maxHealth;
         pivot = new("Pivot");
         pivot.transform.rotation = transform.rotation;
         pivot.transform.SetParent(transform.parent);

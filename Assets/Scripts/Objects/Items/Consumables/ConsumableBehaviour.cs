@@ -4,24 +4,27 @@ using UnityEngine.InputSystem;
 
 public abstract class ConsumableBehaviour : ItemBehaviour
 {   
-    protected float consumeTime;
+    protected ConsumableData consumableData;
     protected float timer;
 
     InputAction attack;
 
-    protected override void Awake()
+    public override void Initialize(ItemStack stack)
     {
-        base.Awake();
-        attack = InputSystem.actions.FindAction("Attack");
+        base.Initialize(stack);
+        consumableData = data as ConsumableData;
     }
 
     public override void Use()
-    {
+    {   
+        attack = InputSystem.actions.FindAction("Attack");
+
         if (attack.IsPressed())
             timer += Time.deltaTime;
 
-        if(timer > consumeTime)
+        if(timer > consumableData.consumeTime)
         {
+            print("Entra");
             timer = 0;
             PlayerAttributes player = PlayerController.instance.GetPlayerAttributes();
             if(player.GetCurrentHunger() < player.GetMaxHunger())
@@ -33,5 +36,5 @@ public abstract class ConsumableBehaviour : ItemBehaviour
 
     public float GetCurrentTime() => timer;
     public float SetCurrentTime(float time) => timer = time;
-    public float GetConsumeTime() => consumeTime;
+    public float GetConsumeTime() => consumableData.consumeTime;
 }

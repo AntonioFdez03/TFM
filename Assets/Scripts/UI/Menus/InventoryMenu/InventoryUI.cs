@@ -1,102 +1,58 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 
 public class InventoryUI : MonoBehaviour
 {
-    [Header("References")]
-    [SerializeField] Transform gridPanel; 
+    [SerializeField] Transform gridPanel;
     [SerializeField] Transform hotBarPanel;
     [SerializeField] GameObject slotPrefab;
-    [SerializeField] Transform DragginLayer;
+    [SerializeField] Transform dragginLayer;
 
-    private List<Image> inventorySlots = new();
+    private List<GameObject> slots = new();
 
     void Start()
-    {   
-        CleanPanel(hotBarPanel);
-        CleanPanel(gridPanel);
+    {
+        Generate(hotBarPanel, InventoryController.instance.GetHotBarSize(), 0);
+        Generate(gridPanel, InventoryController.instance.GetInventoryGridSize(),InventoryController.instance.GetHotBarSize());
 
-        GenerateSlots(hotBarPanel, InventoryController.instance.GetHotBarSize(), 0); // Barra de equipamiento del inventario
-        GenerateSlots(gridPanel, InventoryController.instance.GetInventoryGridSize(), InventoryController.instance.GetHotBarSize()); // Grid del inventario
         UpdateUI();
     }
 
-    void CleanPanel(Transform panel)
-    {   
-        foreach(Transform child in panel)
-        {
-            Destroy(child.gameObject);
-        }
-    }
-    
-    public void GenerateSlots(Transform parent, int count, int startIndex)
+    void Generate(Transform parent, int count, int start)
     {
-        for (int i = startIndex; i < count + startIndex; i++)
+        for (int i = start; i < start + count; i++)
         {
-            GameObject newSlot = Instantiate(slotPrefab, parent);
-            newSlot.name = "Slot_" + i;
-
-            RectTransform rect = newSlot.GetComponent<RectTransform>();
-            if (rect != null) rect.sizeDelta = new Vector2(110f,110f);
-        
-
-            InventorySlot scriptSlot = newSlot.GetComponent<InventorySlot>();
-            if (scriptSlot != null)
-            {
-                scriptSlot.SetSlotIndex(i);
-                scriptSlot.SetDragginLayer(DragginLayer);
-            }
-
-            inventorySlots.Add(newSlot.GetComponent<Image>());
+            GameObject slot = Instantiate(slotPrefab, parent);
+            slot.name = "Slot_" + i;
+            slot.GetComponent<Slot>().SetSlotIndex(i);
+            slot.GetComponent<Slot>().SetDragginLayer(dragginLayer);
+            slots.Add(slot);
         }
     }
 
     public void UpdateUI()
-    {   
-        if (InventoryController.instance == null)
-            return;
-        
-        ItemData[] items = InventoryController.instance.GetInventoryItems();
+    {
+        var items = InventoryController.instance.GetInventoryItems();
 
-        foreach (Image currentSlot in inventorySlots)
+        for (int i = 0; i < items.Length && i < slots.Count; i++)
         {
-            if (currentSlot.TryGetComponent<InventorySlot>(out var scriptSlot))
-            {
-                int realIndex = scriptSlot.GetSlotIndex(); 
+            Image slot = slots[i].transform.GetChild(0).GetComponent<Image>();
+
+            if (items[i] != null)
+            {   
+                ItemData data = ItemDataBase.instance.GetByID(items[i].id);
+
+                if (data == null) continue;
                 
-                if (currentSlot.transform.childCount > 0)
-                {
-                    GameObject slotItem = currentSlot.transform.GetChild(0).gameObject;
-
-                    if (realIndex < items.Length && items[realIndex] != null)
-                    {
-                        // 1. Obtenemos los datos del objeto real que está en el controlador
-                        ItemData originalData = items[realIndex].GetComponent<ItemData>();
-                        
-                        // 2. Obtenemos el script ItemData que añadimos al Icono en CreateChildIcon
-                        ItemData uiData = slotItem.GetComponent<ItemData>();
-
-                        if (originalData != null && uiData != null)
-                        {
-                            // 3. PASO CRUCIAL: Copiamos la información al icono de la UI
-                            uiData.CopyFrom(originalData);
-
-                            // 4. Actualizamos el aspecto visual
-                            slotItem.GetComponent<Image>().sprite = originalData.GetItemIcon();
-                            slotItem.SetActive(true);
-                        }
-                    }
-                    else
-                    {
-                        // Si el slot está vacío, reseteamos el ItemData de la UI para no dejar basura
-                        ItemData uiData = slotItem.GetComponentInChildren<ItemData>();
-                        if (uiData != null) uiData.SetItemPrefab(null);
-
-                        slotItem.SetActive(false);
-                    }
-                }
+                slot.sprite = data.icon;
+                slot.gameObject.SetActive(true);
+            }
+            else
+            {
+                slot.sprite = null;
+                slot.gameObject.SetActive(false);
             }
         }
     }

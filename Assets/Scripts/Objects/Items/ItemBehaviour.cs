@@ -1,24 +1,54 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class ItemBehaviour : MonoBehaviour, IObjectHealth
-{  
-    protected ItemData itemData;
-    protected float currentHealth;
-    protected float maxHealth = 0;
+{
+    [SerializeField] protected ItemData data;
+
+    protected ItemStack itemStack = null;
+
     protected float useCooldown = 1f;
     protected bool canUse = true;
 
-    protected virtual void Awake()
+    void Start()
     {
-        itemData = GetComponent<ItemData>();
+        if (data != null && itemStack == null)
+        {
+            itemStack = new ItemStack
+            {
+                id = data.id,
+                currentHealth = data.maxHealth
+            };
+        }
     }
 
-    public ItemData GetItemData() => itemData;
-    public float GetCurrentHealth() => currentHealth;
-    public void SetCurrentHealth(float health) => currentHealth = health;
-    public float GetMaxHealth() => maxHealth;
+    public virtual void Initialize(ItemStack stack)
+    {
+        itemStack = stack;
+
+        if (data != null && itemStack == null)
+        {
+            itemStack = new ItemStack
+            {
+                id = data.id,
+                currentHealth = data.maxHealth
+            };
+        }
+    }
+
+    public ItemData GetData() => data;
+    public ItemStack GetItemStack() => itemStack;
+
+    public float GetCurrentHealth() => itemStack != null ? itemStack.currentHealth : 0;
+
+    public void SetCurrentHealth(float health)
+    {
+        if (itemStack != null)
+            itemStack.currentHealth = health;
+    }
+
+    public float GetMaxHealth()
+        => data != null ? data.maxHealth : 0;
 
     public abstract void Use();
 
@@ -28,5 +58,5 @@ public abstract class ItemBehaviour : MonoBehaviour, IObjectHealth
         canUse = true;
     }
 
-    public virtual void Attack(ArmController arm){}
+    public virtual void Attack(ArmController arm) { }
 }

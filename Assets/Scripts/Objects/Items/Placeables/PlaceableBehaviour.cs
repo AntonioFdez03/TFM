@@ -1,61 +1,66 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlaceableBehaviour : ItemBehaviour
-{   
+{
     [SerializeField] Material greenMaterial;
     [SerializeField] Material redMaterial;
     [SerializeField] LayerMask placementMask;
-    protected Vector3 checkBoxSize = new(0,0,0);
+
+    protected Vector3 checkBoxSize;
     private GameObject silhouette;
     private Vector3 lastValidPosition;
     private Quaternion lastValidRotation;
     private bool canPlace;
+
     protected bool straight = false;
 
-    //Unplace logic
     private InputAction interact;
     protected float unplaceTime = 1f;
     private float timer;
 
     protected virtual void Start()
     {
-        gameObject.GetComponent<Rigidbody>().isKinematic = true;
+        GetComponent<Rigidbody>().isKinematic = true;
         interact = InputSystem.actions.FindAction("Interact");
     }
-    
-    protected void SetCheckBoxSize(Vector3 boxSize) => checkBoxSize = boxSize;
-    public float GetCurrentTime() => timer;
-    public float SetCurrentTime(float time) => timer = time;
+
+    protected void SetCheckBoxSize(Vector3 boxSize) => checkBoxSize = boxSize; 
+    public float GetCurrentTime() => timer; 
+    public float SetCurrentTime(float time) => timer = time; 
     public float GetUnplaceTime() => unplaceTime;
 
     public override void Use()
-    {   
-        if(!canPlace || itemData == null)
+    {
+        if (!canPlace || data == null)
             return;
 
-        GameObject newObject = Instantiate( itemData.GetItemPrefab(),lastValidPosition, lastValidRotation, InventoryController.instance.GetItemsParent());
+        GameObject prefab = data.prefab;
+
+        GameObject newObject = Instantiate(
+            prefab,
+            lastValidPosition,
+            lastValidRotation,
+            InventoryController.instance.GetItemsParent()
+        );
+
         newObject.transform.localScale = Vector3.one;
         newObject.SetActive(true);
-        newObject.GetComponent<Rigidbody>().isKinematic = true;
 
         if (silhouette != null)
         {
             Destroy(silhouette);
             silhouette = null;
         }
-        
-        InventoryController.instance.RemoveItem(HotBarController.instance.GetCurrentItem().GetComponent<ItemData>());
+
+        InventoryController.instance.RemoveItem(GetItemStack());
     }
 
     private bool CanPlace(Vector3 position, Quaternion rotation)
-    {   
-        print("BOXSIZE en canplace: " + checkBoxSize);
+    {
         return !Physics.CheckBox(
             position,
             checkBoxSize / 2f,
@@ -65,23 +70,24 @@ public class PlaceableBehaviour : ItemBehaviour
     }
 
     public void ShowSilhouette(RaycastHit hit)
-    {   
-        if(silhouette == null)
-        {   
-            itemData = GetComponent<ItemData>();
-            silhouette = Instantiate(itemData.GetItemPrefab(), InventoryController.instance.GetItemsParent());
+    {
+        if (silhouette == null)
+        {
+            silhouette = Instantiate(data.prefab, InventoryController.instance.GetItemsParent());
             silhouette.SetActive(true);
-            checkBoxSize = GetComponent<BoxCollider>().size;
+
             CalculateCheckBoxSize();
         }
+
         DisableSilhouetteComponents();
         AdjustSilhouette(hit);
+
         Renderer[] renderers = silhouette.GetComponentsInChildren<Renderer>();
         silhouette.SetActive(true);
 
         canPlace = CanPlace(silhouette.transform.position, silhouette.transform.rotation);
 
-        if(canPlace)
+        if (canPlace)
         {
             lastValidPosition = silhouette.transform.position;
             lastValidRotation = silhouette.transform.rotation;
@@ -92,8 +98,8 @@ public class PlaceableBehaviour : ItemBehaviour
     }
 
     public void HideSilhouette()
-    {   
-        if(silhouette != null)
+    {
+        if (silhouette != null)
         {
             canPlace = false;
             silhouette.SetActive(false);
@@ -102,36 +108,30 @@ public class PlaceableBehaviour : ItemBehaviour
 
     public void DeleteSilhouette()
     {
-        if(silhouette != null)
+        if (silhouette != null)
             Destroy(silhouette);
     }
 
     private void DisableSilhouetteComponents()
     {
-        Collider[] colliders = silhouette.GetComponentsInChildren<Collider>();
-        Light[] lights = silhouette.GetComponentsInChildren<Light>();
-        ParticleSystem[] particles = silhouette.GetComponentsInChildren<ParticleSystem>();
-
-        foreach (Collider c in colliders)
+        foreach (var c in silhouette.GetComponentsInChildren<Collider>())
             c.enabled = false;
 
-        foreach (Light l in lights)
+        foreach (var l in silhouette.GetComponentsInChildren<Light>())
             l.enabled = false;
-            
-        foreach (ParticleSystem p in particles)
+
+        foreach (var p in silhouette.GetComponentsInChildren<ParticleSystem>())
             p.Stop();
     }
 
     private void AdjustSilhouette(RaycastHit hit)
-    {   
+    {
         silhouette.transform.position = hit.point;
         silhouette.transform.localScale = Vector3.one;
 
-        // Dirección de la cámara en plano horizontal
         Vector3 camForward = Camera.main.transform.forward;
         camForward.y = 0f;
 
-        // Evitar vector cero
         if (camForward.sqrMagnitude < 0.001f)
             camForward = Vector3.forward;
 
@@ -141,24 +141,25 @@ public class PlaceableBehaviour : ItemBehaviour
 
         if (straight)
         {
-            print("Recto");
-            silhouette.transform.rotation = Quaternion.Euler(0f, lookRotation.eulerAngles.y, 0f);
+            silhouette.transform.rotation =
+                Quaternion.Euler(0f, lookRotation.eulerAngles.y, 0f);
         }
         else
         {
-            print("Torcido");
-            Quaternion alignToGround = Quaternion.FromToRotation(Vector3.up, hit.normal);
+            Quaternion alignToGround =
+                Quaternion.FromToRotation(Vector3.up, hit.normal);
+
             silhouette.transform.rotation = alignToGround * lookRotation;
         }
     }
 
     public void Unplace()
-    {   
+    {
         if (interact.IsPressed())
             timer += Time.deltaTime;
 
-        if(timer > unplaceTime)
-        {   
+        if (timer > unplaceTime)
+        {
             timer = 0;
             InventoryController.instance.AddItem(gameObject);
         }
@@ -166,21 +167,21 @@ public class PlaceableBehaviour : ItemBehaviour
 
     public void TakeDamage(float amount)
     {
-        currentHealth = Math.Clamp(currentHealth - amount, 0, maxHealth);
+        SetCurrentHealth(Mathf.Clamp(GetCurrentHealth() - amount, 0, GetMaxHealth()));
 
-        if(currentHealth == 0)
+        if (GetCurrentHealth() == 0)
             Destroy(gameObject);
     }
 
     public void CalculateCheckBoxSize()
-    {   
-        if(TryGetComponent(out BoxCollider boxCollider))
-            checkBoxSize = boxCollider.size;
-        
-        if(TryGetComponent(out CapsuleCollider capsuleCollider))
+    {
+        if (TryGetComponent(out BoxCollider box))
+            checkBoxSize = box.size;
+
+        if (TryGetComponent(out CapsuleCollider capsule))
         {
-            float radius = capsuleCollider.radius;
-            checkBoxSize = new Vector3(radius,radius,radius);
+            float r = capsule.radius;
+            checkBoxSize = new Vector3(r, r, r);
         }
     }
 }

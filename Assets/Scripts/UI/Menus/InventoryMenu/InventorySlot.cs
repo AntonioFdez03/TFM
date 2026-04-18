@@ -15,7 +15,7 @@ public class InventorySlot : Slot
             if (eventData.position.x < margen || eventData.position.x > Screen.width - margen)
             {   
                 InventoryController.instance.DropItem(slotIndex);
-                HotBarController.instance.RefreshHandItem();
+                HotBarController.instance.UpdateHandItem();
             }
         }
     }
@@ -23,13 +23,35 @@ public class InventorySlot : Slot
     public override void OnDrop(PointerEventData eventData)
     {
         Slot slotOrigen = eventData.pointerDrag?.GetComponent<Slot>();
-
         if (slotOrigen != null)
         {
-            if(slotOrigen as InventorySlot)
+            if(slotOrigen is InventorySlot)
             {
                 InventoryController.instance.SwapItems(slotOrigen.GetSlotIndex(), slotIndex);
-                HotBarController.instance.RefreshHandItem();
+                HotBarController.instance.UpdateHandItem();
+            }else if (slotOrigen is FurnaceSlot furnaceSlot)
+            {
+                int originIndex = furnaceSlot.GetSlotIndex();
+                FurnaceController furnace = furnaceSlot.GetController();
+
+                ItemStack item = furnace.GetItem(furnaceSlot.GetSlotType(),originIndex);
+
+                if (item != null)
+                {
+                    InventoryController.instance.AddItemFromStack(item,slotIndex);
+                    furnace.RemoveItem(furnaceSlot.GetSlotType(), originIndex);
+                }
+            }else if(slotOrigen is StorageSlot storageSlot)
+            {
+                int originIndex = storageSlot.GetSlotIndex();
+                StorageController storage = storageSlot.GetController();
+                ItemStack item = storage.GetItem(originIndex);
+
+                if(item != null)
+                {
+                    InventoryController.instance.AddItemFromStack(item, slotIndex);
+                    storage.RemoveItem(originIndex);
+                }
             }
         }
     }

@@ -9,7 +9,7 @@ public class CraftingRecipe : ScriptableObject
     public ItemType recipeType;
     public CraftingStationType stationType;
     public List<RecipeIngredient> ingredients;
-    public GameObject recipeItem;
+    public ItemData resultItem;
 
 }
 

@@ -5,9 +5,11 @@ using UnityEngine;
 
 public class WeaponBehaviour : EquipmentBehaviour
 {
-    protected override void Awake()
+    protected WeaponData weaponData;
+
+    void Start()
     {
-        base.Awake(); 
+        weaponData = equipmentData as WeaponData;
     }
 
     public override void Attack(ArmController arm)
@@ -20,7 +22,7 @@ public class WeaponBehaviour : EquipmentBehaviour
         if (!canUse) 
             return;
         
-        canUse = false;      
+        //canUse = false;      
         UseWeapon();
         StartCoroutine(UseCooldown());
     }
@@ -30,19 +32,19 @@ public class WeaponBehaviour : EquipmentBehaviour
         Ray ray = new Ray(CameraController.instance.transform.position, CameraController.instance.transform.forward);
         RaycastHit hit;
 
-        Debug.DrawRay(ray.origin, ray.direction * equipmentRange, Color.red);
-        if (Physics.Raycast(ray, out hit, equipmentRange))
+        Debug.DrawRay(ray.origin, ray.direction * weaponData.range, Color.red);
+        if (Physics.Raycast(ray, out hit, weaponData.range))
         {
             Enemy enemy = hit.collider.CompareTag("Enemy") ? hit.collider.GetComponent<Enemy>() : null;
             if (enemy != null)
             {
-                enemy.TakeDamage(equipmentDamage);
+                enemy.TakeDamage(weaponData.damage);
                 TakeDamage(enemyDamage);
             }
 
             if(hit.collider.TryGetComponent(out PlaceableBehaviour placeable))
             {
-                placeable.TakeDamage(equipmentDamage/10);
+                placeable.TakeDamage(weaponData.damage/10);
                 TakeDamage(placeableDamage);
             }
         }

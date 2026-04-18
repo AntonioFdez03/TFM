@@ -22,8 +22,8 @@ public class SaveData
     public class InventoryItemData
     {   
         public int inventoryIndex;
-        public string itemName;
-        public float itemHealth;
+        public string id;
+        public float currentHealth;
     }
     public List<InventoryItemData> inventoryItems;
 
@@ -31,7 +31,7 @@ public class SaveData
     [Serializable]
     public class WorldObjectData
     {
-        public string name;
+        public string id;
         public string type;
         public Vector3 position;
         public Quaternion rotation;

@@ -269,8 +269,6 @@ GameObject:
   - component: {fileID: 898607839491906329}
   - component: {fileID: 270146035662296054}
   - component: {fileID: 1328262498189213171}
-  - component: {fileID: 1786545768881228581}
-  - component: {fileID: 3619220665176545466}
   m_Layer: 8
   m_Name: Pickaxe
   m_TagString: Item
@@ -344,31 +342,3 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.3, z: 0}
---- !u!114 &1786545768881228581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8978709272722344929}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b866a28731e74644491ee60557d48567, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  itemName: Pickaxe
-  itemIcon: {fileID: 21300000, guid: 0d934b2ae90ec9549a408483c7f2b9b9, type: 3}
-  itemPrefab: {fileID: 8978709272722344929}
-  itemType: 1
---- !u!114 &3619220665176545466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8978709272722344929}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8e8bf148fcdf6a44be8b9f9cb8669ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StonePickaxe

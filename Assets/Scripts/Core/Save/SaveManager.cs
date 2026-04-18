@@ -1,18 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SaveManager : MonoBehaviour
-{   
+{
     public static SaveManager instance;
     [SerializeField] private Transform worldObjects;
 
-
     void Awake()
     {
-        if(instance != null && instance != this)
+        if (instance != null && instance != this)
         {
             Destroy(gameObject);
             return;
@@ -21,17 +19,21 @@ public class SaveManager : MonoBehaviour
     }
 
     void Start()
-    {   
+    {
         if (File.Exists(Application.persistentDataPath + "/save.json"))
-            StartCoroutine(LoadGameCR());   
+            StartCoroutine(LoadGameCR());
     }
 
+    // =====================================================
+    // SAVE
+    // =====================================================
     public void SaveGame()
     {
         SaveData data = new();
-        
-        // PLAYER
+
+        // ---------------- PLAYER ----------------
         data.playerData = new SaveData.PlayerData();
+
         PlayerAttributes player = PlayerController.instance.GetPlayerAttributes();
 
         data.playerData.playerHealth = player.GetCurrentHealth();
@@ -41,51 +43,59 @@ public class SaveManager : MonoBehaviour
         data.playerData.playerRotation = player.transform.rotation;
         data.playerData.cameraRotation = CameraController.instance.GetCurrentRotation();
 
-        // INVENTORY
+        // ---------------- INVENTORY ----------------
         data.inventoryItems = new List<SaveData.InventoryItemData>();
 
         InventoryController inventory = InventoryController.instance;
-        ItemData item;
 
-        for(int i = 0; i < inventory.GetInventoryItems().Length; i++)
+        for (int i = 0; i < inventory.GetInventoryItems().Length; i++)
         {
             SaveData.InventoryItemData itemData = new();
-            item = inventory.GetInventoryItems()[i];
 
-            if(item != null)
-            {   
-                itemData.inventoryIndex = i;
-                itemData.itemName = item.GetComponent<ItemData>().GetItemName();
-                itemData.itemHealth = item.GetComponent<ItemBehaviour>().GetCurrentHealth();
+            ItemStack instance = inventory.GetInventoryItems()[i];
+
+            itemData.inventoryIndex = i;
+
+            if (instance != null)
+            {
+                itemData.id = instance.id;
+                itemData.currentHealth = instance.currentHealth;
             }
             else
-            {   
-                itemData.itemName = "-1";
-                itemData.itemHealth = 0;
+            {
+                itemData.id = "-1";
+                itemData.currentHealth = 0;
             }
+
             data.inventoryItems.Add(itemData);
         }
 
-        // WORLD OBJECTS
+        // ---------------- WORLD OBJECTS ----------------
         data.worldObjects = new List<SaveData.WorldObjectData>();
-        Transform worldObject;
 
-        for(int i = 0; i < worldObjects.childCount ; i++)
+        for (int i = 0; i < worldObjects.childCount; i++)
         {
+            Transform worldObject = worldObjects.GetChild(i);
+
             SaveData.WorldObjectData objectData = new();
-            worldObject = worldObjects.GetChild(i);
 
             objectData.position = worldObject.position;
             objectData.rotation = worldObject.rotation;
 
-            if(worldObjects.GetChild(i).TryGetComponent(out ItemBehaviour itemBehaviour))
+            // ITEM EN EL MUNDO
+            if (worldObject.TryGetComponent(out ItemBehaviour itemBehaviour))
             {
-                objectData.name = itemBehaviour.GetItemData().GetItemName();
+                ItemStack instance = itemBehaviour.GetItemStack();
+
+                objectData.id = instance.id;
                 objectData.type = "Item";
-                objectData.currentHealth = itemBehaviour.GetCurrentHealth();
-            }else if(worldObjects.GetChild(i).TryGetComponent(out HarvestableObject harvestable))
+                objectData.currentHealth = instance.currentHealth;
+            }
+            
+            // HARVESTABLE
+            else if (worldObject.TryGetComponent(out HarvestableObject harvestable))
             {
-                objectData.name = harvestable.GetObjectName();
+                objectData.id = harvestable.GetObjectName();
                 objectData.type = "Harvestable";
                 objectData.currentHealth = harvestable.GetCurrentHealth();
             }
@@ -93,13 +103,16 @@ public class SaveManager : MonoBehaviour
             data.worldObjects.Add(objectData);
         }
 
+        // ---------------- WRITE ----------------
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(Application.persistentDataPath + "/save.json", json);
-        print(Application.persistentDataPath);
     }
 
+    // =====================================================
+    // LOAD
+    // =====================================================
     public void LoadGame()
-    {   
+    {
         string path = Application.persistentDataPath + "/save.json";
 
         if (!File.Exists(path))
@@ -108,14 +121,12 @@ public class SaveManager : MonoBehaviour
             return;
         }
 
-        // Leer archivo
         string json = File.ReadAllText(path);
-        // Convertir JSON a objeto
         SaveData data = JsonUtility.FromJson<SaveData>(json);
 
-        // PLAYER
-
+        // ---------------- PLAYER ----------------
         PlayerController player = PlayerController.instance;
+
         player.InitializePlayer(
             data.playerData.playerPosition,
             data.playerData.playerRotation,
@@ -126,38 +137,49 @@ public class SaveManager : MonoBehaviour
 
         CameraController.instance.SetCurrentRotation(data.playerData.cameraRotation);
 
+        // ---------------- INVENTORY ----------------
         InventoryController inventory = InventoryController.instance;
-        ItemData newItem;
 
         for (int i = 0; i < inventory.GetInventoryItems().Length; i++)
-        {   
+        {
             var itemData = data.inventoryItems[i];
-            
-            if(itemData.itemName == "-1")
-                newItem = null;
-            else
-            {   
-                GameObject itemPrefab = ObjectsPrefabs.instance.GetPrefabByName("Item", itemData.itemName);
-                if(itemPrefab.TryGetComponent(out EquipmentBehaviour equipmentBehaviour))
-                    equipmentBehaviour.SetCurrentHealth(itemData.itemHealth);
 
-                //newItem = Instantiate(itemPrefab);
+            if (itemData.id == "-1")
+            {
+                inventory.SetItem(i, null);
+                continue;
             }
-            //inventory.SetItem(i,newItem);
+
+            ItemStack instance = new ItemStack
+            {
+                id = itemData.id,
+                currentHealth = itemData.currentHealth
+            };
+
+            inventory.SetItem(i, instance);
         }
-        
-        GameObject newObject;
-        for(int i = 0; i < data.worldObjects.Count ; i++)
-        {   
+
+        // ---------------- WORLD OBJECTS ----------------
+        for (int i = 0; i < data.worldObjects.Count; i++)
+        {
             var objectData = data.worldObjects[i];
-            print("Instanciando: " + objectData.name);
-            GameObject objectPrefab = ObjectsPrefabs.instance.GetPrefabByName(objectData.type, objectData.name);
-            objectPrefab.GetComponent<IObjectHealth>().SetCurrentHealth(objectData.currentHealth);
-            newObject = Instantiate(objectPrefab,InventoryController.instance.GetItemsParent());
-            newObject.transform.position = objectData.position;
-            newObject.transform.rotation = objectData.rotation;
-        }   
-    }     
+
+            GameObject prefab = ObjectsPrefabs.instance.GetPrefabByName(
+                objectData.type,
+                objectData.id
+            );
+
+            GameObject obj = Instantiate(prefab, worldObjects);
+
+            obj.transform.position = objectData.position;
+            obj.transform.rotation = objectData.rotation;
+
+            if (obj.TryGetComponent(out IObjectHealth health))
+            {
+                health.SetCurrentHealth(objectData.currentHealth);
+            }
+        }
+    }
 
     private IEnumerator LoadGameCR()
     {

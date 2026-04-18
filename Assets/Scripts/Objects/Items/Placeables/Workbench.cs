@@ -5,12 +5,6 @@ using UnityEngine;
 
 public class Workbench : PlaceableBehaviour, IInteractiveObject
 {
-    protected override void Start()
-    {
-        base.Start();
-        maxHealth = 50;
-        currentHealth = maxHealth;
-    }
     public void Interact()
     {   
         CraftingController.instance.SetStationType(CraftingStationType.Workbench);

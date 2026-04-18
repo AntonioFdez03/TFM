@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 7974805289909714352}
   - component: {fileID: 6499391862128669032}
   - component: {fileID: 1262174427906494345}
-  - component: {fileID: 4240959610573453641}
+  - component: {fileID: 3944281018277129116}
   m_Layer: 5
-  m_Name: InventorySlot
+  m_Name: FurnaceSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4240959610573453641
+--- !u!114 &3944281018277129116
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,10 +86,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 481518832277276816}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a473a49666af7740b2ed55267071fa2, type: 3}
+  m_Script: {fileID: 11500000, guid: 5a1c91427ed123f42b85bfa709eee6eb, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InventorySlot
+  m_EditorClassIdentifier: Assembly-CSharp::FurnaceSlot
+  draggingLayer: {fileID: 0}
   slotIndex: 0
+  slotType: 0
 --- !u!1 &6269321399697232292
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,7 +103,6 @@ GameObject:
   - component: {fileID: 2497344589296414717}
   - component: {fileID: 8740260264401363611}
   - component: {fileID: 8079383022082345908}
-  - component: {fileID: 9207244669674557287}
   m_Layer: 0
   m_Name: Icon
   m_TagString: Untagged
@@ -166,19 +167,3 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &9207244669674557287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6269321399697232292}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b866a28731e74644491ee60557d48567, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  itemName: 
-  itemIcon: {fileID: 0}
-  itemPrefab: {fileID: 0}
-  itemType: 0

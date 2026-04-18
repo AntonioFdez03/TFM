@@ -1,8 +1,9 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public enum UIState { None, Gameplay, Inventory, Pause, Crafting, Furnace }
+public enum UIState { None, Gameplay, Inventory, Pause, Crafting, Furnace, Storage }
 public class UIController : MonoBehaviour
 {
     public static UIController instance;
@@ -15,12 +16,13 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject mixCanvas;
     [SerializeField] private GameObject craftPanel;
     [SerializeField] private GameObject furnacePanel;
+    [SerializeField] private GameObject storagePanel;
+    [SerializeField] private Transform dragginLayer;
 
     private InputAction inventoryAction;
     private InputAction pauseAction;
-
-    private UIState lastPanel = UIState.None;
     private Furnace currentFurnace;
+    private Storage currentStorage;
 
     void Awake()
     {
@@ -69,7 +71,7 @@ public class UIController : MonoBehaviour
         hudCanvas.SetActive(currentState == UIState.Gameplay);
         inventoryCanvas.SetActive(currentState == UIState.Inventory);
         pauseCanvas.SetActive(currentState == UIState.Pause);
-        mixCanvas.SetActive(currentState == UIState.Crafting || currentState == UIState.Furnace);
+        mixCanvas.SetActive(currentState == UIState.Crafting || currentState == UIState.Furnace || currentState == UIState.Storage);
 
         switch (currentState)
         {
@@ -98,55 +100,72 @@ public class UIController : MonoBehaviour
                 Time.timeScale = 1f;
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                LoadPanel(currentState,craftPanel);
+                LoadPanel(craftPanel);
 
                 PlayerController.instance.SetCanMove(false);
-                lastPanel = UIState.Crafting;
                 break;
             
             case UIState.Furnace:
                 Time.timeScale = 1f;
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                LoadPanel(currentState,furnacePanel);
+                LoadPanel(furnacePanel);
                 PlayerController.instance.SetCanMove(false);
-                lastPanel = UIState.Furnace;
+                break;
+
+            case UIState.Storage:
+                Time.timeScale = 1f;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                LoadPanel(storagePanel);
+                PlayerController.instance.SetCanMove(false);
                 break;
         }
     }
 
-    private void LoadPanel(UIState state, GameObject panel)
+    private void LoadPanel(GameObject panel)
     {
+        print("Panel: " + panel);
         Transform panelsCanvas = mixCanvas.transform.GetChild(0);
-        if(panelsCanvas.childCount > 1)
-        {
-            if(lastPanel == state)
-                return;
-            else
-                Destroy(panelsCanvas.GetChild(1).gameObject);
-        }
-        
-        GameObject panelInstance = Instantiate(panel);
-        panelInstance.transform.SetParent(mixCanvas.transform.GetChild(0));
+
+        if (panelsCanvas.childCount > 1)
+            Destroy(panelsCanvas.GetChild(1).gameObject);
+
+        GameObject panelInstance = Instantiate(panel, panelsCanvas);
         panelInstance.transform.localScale = Vector3.one;
 
-        switch (state)
-        {   
+        switch (currentState)
+        {
             case UIState.Furnace:
-                FurnaceUI furnaceUI = panelInstance.GetComponentInChildren<FurnaceUI>();
-
+                FurnaceUI furnaceUI = panelInstance.GetComponent<FurnaceUI>();
                 if (furnaceUI != null)
-                {   
+                {
+                    furnaceUI.SetDragginLayer(dragginLayer);
                     furnaceUI.SetFurnace(currentFurnace);
                 }
-            break;
-        }    
+                break;
+            case UIState.Storage:
+                print("case");
+                StorageUI storageUI = panelInstance.GetComponent<StorageUI>();
+                    if (storageUI != null)
+                    {
+                        storageUI.SetDragginLayer(dragginLayer);
+                        storageUI.SetStorage(currentStorage);
+                    }
+                break;
+        }
     }
 
     public void OpenFurnace(Furnace furnace)
     {
         currentFurnace = furnace;
         SetState(UIState.Furnace);
+    }
+
+    public void OpenStorage(Storage storage)
+    {
+        currentStorage = storage;
+        SetState(UIState.Storage);
     }
 
     public void SetCraftingState() => SetState(UIState.Crafting);

@@ -1,54 +1,60 @@
 using System;
 using System.Collections;
-using UnityEditor;
 using UnityEngine;
 
 public class EquipmentBehaviour : ItemBehaviour
 {
-    protected float equipmentDamage;
-    protected float equipmentRange;
+    protected EquipmentData equipmentData;
 
     protected float enemyDamage = 5f;
     protected float harvestableDamage = 2f;
     protected float placeableDamage = 5f;
 
-    public float GetEquipmentDamage() => equipmentDamage;
-
-    protected override void Awake()
+    public override void Initialize(ItemStack stack)
     {
-        base.Awake(); 
+        base.Initialize(stack);
+        equipmentData = data as EquipmentData;
     }
+
+    public float GetEquipmentDamage() => equipmentData.damage;
 
     public override void Attack(ArmController arm)
     {
-        base.Attack(arm);
+        if (!canUse)
+            return;
+
+        //canUse = false;
+        StartCoroutine(UseCooldown());
+
     }
 
     public override void Use()
     {
-        if (!canUse) 
+        if (!canUse)
             return;
-        
-        canUse = false;      
+
+        //canUse = false;
         StartCoroutine(UseCooldown());
     }
 
     protected void TakeDamage(float amount)
-    {   
-        currentHealth = Math.Clamp(currentHealth - amount, 0 ,maxHealth);
-        print("Vida: " + currentHealth);
-        if(currentHealth == 0)
+    {
+        if (itemStack == null) return;
+
+        float newHealth = Mathf.Clamp(itemStack.currentHealth - amount, 0, GetMaxHealth()
+        );
+
+        itemStack.currentHealth = newHealth;
+
+        if (newHealth <= 0)
         {
             ArmController.instance.ResetArm();
-            InventoryController.instance.RemoveItem(HotBarController.instance.GetCurrentItem().GetComponent<ItemData>());
+
+            InventoryController.instance.RemoveItem(HotBarController.instance.GetCurrentItem());
         }
-        else
-        {
-            EquipmentBehaviour originalItem = HotBarController.instance.GetCurrentItem().GetComponent<EquipmentBehaviour>();
-            if(originalItem != null)
-                originalItem.SetCurrentHealth(currentHealth);
-        }
-        
-        HotBarController.instance.UpdateEquipmentHealthBar(HotBarController.instance.GetSelectedIndex());
+
+        HotBarController.instance.UpdateEquipmentHealthBar(
+            HotBarController.instance.GetSelectedIndex()
+        );
     }
 }

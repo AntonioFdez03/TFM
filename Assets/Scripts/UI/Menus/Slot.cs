@@ -5,8 +5,8 @@ using UnityEditorInternal.Profiling.Memory.Experimental;
 
 public abstract class Slot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {   
-    [SerializeField] private Transform draggingLayer; // Capa en la que mover el icono mientras se arrastra para mostrar por encima del resto
     [SerializeField] protected int slotIndex;
+    [SerializeField] protected Transform draggingLayer;
 
     protected Image originalIcon;
     protected GameObject cloneIcon;
@@ -16,13 +16,11 @@ public abstract class Slot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void SetDragginLayer(Transform layer) => draggingLayer = layer;
 
     public void OnBeginDrag(PointerEventData eventData)
-    {
+    {    
         if (transform.childCount == 0) return; //Si no hay nada en el slot
 
         originalIcon = transform.GetChild(0).GetComponent<Image>();
-
         if (originalIcon == null || !originalIcon.gameObject.activeSelf) return;
-
         // Ocultar el icono original
         originalIcon.color = new Color(1, 1, 1, 0f); 
 

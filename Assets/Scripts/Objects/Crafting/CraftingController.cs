@@ -23,23 +23,49 @@ public class CraftingController : MonoBehaviour
 
     public void CraftRecipe(CraftingRecipe recipe)
     {
-        if (CanCraft(recipe))
+        if (!CanCraft(recipe))
         {
-            foreach(RecipeIngredient ingredient in recipe.ingredients)
-                for(int i = 0 ; i < ingredient.ingredientAmount ; i++)
-                    InventoryController.instance.RemoveItem(InventoryController.instance.GetItemsByName(ingredient.ingredientData.GetItemName())[0]);
-            
-            GameObject itemInstance = Instantiate(recipe.recipeItem);
-            InventoryController.instance.AddItem(itemInstance);
-        }else
-            print("NO SE PUEDE CRAFTEAR");
+            Debug.Log("NO SE PUEDE CRAFTEAR");
+            return;
+        }
+
+        // 1. consumir ingredientes
+        foreach (RecipeIngredient ingredient in recipe.ingredients)
+        {
+            int remaining = ingredient.ingredientAmount;
+
+            for (int i = 0; i < InventoryController.instance.GetInventoryItems().Length; i++)
+            {
+                var item = InventoryController.instance.GetInventoryItems()[i];
+                if (item == null) continue;
+
+                if (item.id == ingredient.ingredientData.id)
+                {
+                    InventoryController.instance.RemoveItemById(item.id);
+                    remaining--;
+
+                    if (remaining <= 0)
+                        break;
+                }
+            }
+        }
+
+        // 2. crear ItemInstance nuevo
+        ItemStack newItem = new ItemStack
+        {
+            id = recipe.resultItem.id,
+            currentHealth = recipe.resultItem.maxHealth
+        };
+
+        // 3. añadir al inventario
+        InventoryController.instance.AddItemFromStack(newItem);
     }
 
     public bool CanCraft(CraftingRecipe recipe)
     {
        foreach(RecipeIngredient ingredient in recipe.ingredients)
         {
-            if(InventoryController.instance.GetItemsByName(ingredient.ingredientData.GetItemName()).Count < ingredient.ingredientAmount)
+            if(InventoryController.instance.GetItemsById(ingredient.ingredientData.id).Count < ingredient.ingredientAmount)
                 return false;
         }
         return true;

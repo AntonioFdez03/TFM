@@ -14,7 +14,7 @@ public class InventoryController : MonoBehaviour
     private int hotBarSize = 7;
     private int inventoryGridSize = 21;
 
-    private ItemData[] items;
+    private ItemStack[] items;
 
     void Awake()
     {
@@ -24,88 +24,150 @@ public class InventoryController : MonoBehaviour
             return;
         }
         instance = this;
-        items = new ItemData[inventoryMax];
+        items = new ItemStack[inventoryMax];
     }
     
-    public void SetInventoryItems(ItemData[] newItems) => items = newItems;
-    public ItemData[] GetInventoryItems() => items;
+    public void SetInventoryItems(ItemStack[] newItems) => items = newItems;
+    public ItemStack[] GetInventoryItems() => items;
     public int GetHotBarSize() => hotBarSize;
     public int GetInventoryGridSize() => inventoryGridSize;
     public Transform GetItemsParent() => itemsParent;
 
+    public ItemStack GetItem(int index)
+    {
+        if(index < 0 || index > inventoryMax) return null;
+        return items[index];
+    }
+
+    public void SetItem(int index, ItemStack item)
+    {
+        if(index >= 0 && index < inventoryMax && items[index] == null && item != null)
+        {
+            items[index] = item;
+            UpdateUIs();
+        }
+    }
+
     public void AddItem(GameObject item)
-    {   
-        if(item == null)
+    {
+        if (item == null)
             return;
 
-        // Buscamos el primer hueco vacío (null)
+        
+        if (!item.TryGetComponent<ItemBehaviour>(out var behaviour))
+            return;
+
+        ItemData data = behaviour.GetData();
+        print("Data: " + data);
+        ItemStack newItem = new()
+        {
+            id = data.id,
+            currentHealth = behaviour.GetCurrentHealth()
+        };
+
         for (int i = 0; i < items.Length; i++)
-        {   
+        {
             if (items[i] == null)
-            {  
-                items[i] = item.GetComponent<ItemData>();
-                item.SetActive(false);
-                item.transform.SetParent(itemsParent);
-                OnInventoryChanged?.Invoke();
-                HotBarController.instance.UpdateHotBarUI();
+            {
+                items[i] = newItem;
+                Destroy(item);
+
+                UpdateUIs();
                 return;
             }
         }
     }
 
-    public void SetItem(int index, ItemData item)
+    public void AddItemFromStack(ItemStack item)
     {
-        if(index >= 0 && index < inventoryMax && items[index] == null && item != null)
+        if (item == null) return;
+
+        for (int i = 0; i < items.Length; i++)
         {
-            items[index] = item;
-            OnInventoryChanged?.Invoke();
-            HotBarController.instance.UpdateHotBarUI();
+            if (items[i] == null)
+            {
+                items[i] = item;
+
+                UpdateUIs();
+                return;
+            }
         }
     }
 
-    public void RemoveItem(ItemData item)
+    public void AddItemFromStack(ItemStack item, int index)
     {
+        if(index < 0 || index > inventoryMax) return;
+
+        if(items[index] == null)
+            items[index] = item;
+        
+        UpdateUIs();
+    }
+
+    public void RemoveItem(ItemStack item)
+    {
+        if (instance == null) return;
+
         for (int i = 0; i < items.Length; i++)
         {
             if (items[i] == item)
-            {   
+            {
                 items[i] = null;
-                Destroy(item);
-                OnInventoryChanged?.Invoke();
-                HotBarController.instance.UpdateHotBarUI();
+                UpdateUIs();
                 return;
+            }
+        }
+    }
+
+    public void RemoveItemById(string id)
+    {
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (items[i] != null && items[i].id == id)
+            {
+                items[i] = null;
+
+                UpdateUIs();
             }
         }
     }
 
     public void DropItem(int index)
     {
-        if (index >= 0 && index < items.Length && items[index] != null)
+        if (index < 0 || index >= items.Length || items[index] == null)
+            return;
+
+        ItemStack itemStack = items[index];
+
+        ItemData def = ItemDataBase.instance.GetByID(itemStack.id);
+
+        GameObject obj = Instantiate(def.prefab, handSlot.position, Quaternion.identity);
+
+        // posición / rotación
+        Transform player = PlayerController.instance.transform;
+        obj.transform.rotation = player.rotation * Quaternion.Euler(0f, 0f, 90f);
+
+        // restaurar estado
+        ItemBehaviour behaviour = obj.GetComponent<ItemBehaviour>();
+        if (behaviour != null)
+            behaviour.Initialize(itemStack);
+
+        // física
+        Rigidbody rb = obj.GetComponent<Rigidbody>();
+        if (rb != null)
         {
-            ItemData itemToDrop = items[index];
-            
-            // Vaciamos el slot
-            items[index] = null;
-            itemToDrop.gameObject.SetActive(true);
-
-            //Posicion, giro y escala al soltarlo
-            itemToDrop.transform.position = handSlot.transform.position;
-            Transform player = PlayerController.instance.transform;
-            itemToDrop.transform.rotation = player.rotation * Quaternion.Euler(0f, 0f, 90f);
-
-            Rigidbody rb = itemToDrop.GetComponent<Rigidbody>();
             rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
             rb.isKinematic = false;
 
-            itemToDrop.transform.SetParent(itemsParent, true);
-            itemToDrop.transform.localScale = Vector3.one;
+            Vector3 force = CameraController.instance.transform.forward * 50f +
+                            CameraController.instance.transform.up * 40f;
 
-            Vector3 dropForce = CameraController.instance.transform.forward * 50f + CameraController.instance.transform.up * 40f;
-            rb.AddForce(dropForce,ForceMode.Impulse);
-
-            OnInventoryChanged?.Invoke();
-            HotBarController.instance.UpdateHotBarUI();
+            rb.AddForce(force, ForceMode.Impulse);
         }
+
+        items[index] = null;
+
+        UpdateUIs();
     }
 
     public void SwapItems(int originIndex, int targetIndex)
@@ -113,25 +175,29 @@ public class InventoryController : MonoBehaviour
         if (originIndex == targetIndex) return;
 
         (items[targetIndex], items[originIndex]) = (items[originIndex], items[targetIndex]);
-        OnInventoryChanged?.Invoke();
-        HotBarController.instance.UpdateHotBarUI();
+        UpdateUIs();
     }
 
-    public List<ItemData> GetItemsByName(string name)
+    public List<ItemStack> GetItemsById(string id)
     {
-        List<ItemData> result = new List<ItemData>();
+        List<ItemStack> result = new();
 
-        foreach (ItemData item in items)
+        foreach (var item in items)
         {
             if (item == null) continue;
 
-            ItemData data = item.GetComponent<ItemData>();
-            if (data != null && data.GetItemName() == name)
-            {
+            ItemData def = ItemDataBase.instance.GetByID(item.id);
+
+            if (def != null && def.id == id)
                 result.Add(item);
-            }
         }
 
         return result;
+    }
+
+    private void UpdateUIs()
+    {
+        OnInventoryChanged?.Invoke();
+        HotBarController.instance.UpdateHotBarUI();
     }
 }

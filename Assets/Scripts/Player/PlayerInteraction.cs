@@ -16,7 +16,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] Image itemHealthSlider;
 
     private float interactDistance = 9f;
-    private ItemData lastItem;
+    private ItemStack previousItem;
     private InputAction interact;
     private InputAction attack;
     private RaycastHit lastHit;
@@ -38,14 +38,36 @@ public class PlayerInteraction : MonoBehaviour
             Use();
         }
 
-        if(HotBarController.instance.GetCurrentItem() != null)
-            lastItem = HotBarController.instance.GetCurrentItem().GetComponent<ItemData>();
+        var current = HotBarController.instance.GetCurrentItem();
+
+        if (current != previousItem)
+        {
+            CancelUse();
+            previousItem = current;
+        }
     }
 
     private void Use()
     {
         var currentItem = HotBarController.instance.GetCurrentItemBehaviour();
         HandleItemUses(currentItem);
+    }
+
+    private void CancelUse()
+    {
+        circularSlider.transform.parent.gameObject.SetActive(false);
+
+        // Si había un consumible activo, resetea su progreso
+        if (previousItem != null)
+        {
+            var behaviour = HotBarController.instance.GetCurrentItemBehaviour();
+
+            if (behaviour is ConsumableBehaviour consumable)
+                consumable.SetCurrentTime(0f);
+
+            if (behaviour is PlaceableBehaviour placeable)
+                placeable.SetCurrentTime(0f);
+        }
     }
 
     private void Interact()
@@ -101,19 +123,15 @@ public class PlayerInteraction : MonoBehaviour
             else
                 ResetTime(consumable);
         }
-
-        if(HotBarController.instance.GetCurrentItem() != lastItem)
-            ResetTime(null);
     }
 
 
     public void ResetTime(ItemBehaviour obj)
     {   
+        circularSlider.transform.parent.gameObject.SetActive(false);
+
         if (obj == null)
-        {
-            circularSlider.transform.parent.gameObject.SetActive(false);
             return;
-        }
 
         if (obj.TryGetComponent<ConsumableBehaviour>(out var consumable))
             consumable.SetCurrentTime(0f);
@@ -121,7 +139,6 @@ public class PlayerInteraction : MonoBehaviour
         if (obj.TryGetComponent<PlaceableBehaviour>(out var placeable))
             placeable.SetCurrentTime(0f);
 
-        circularSlider.transform.parent.gameObject.SetActive(false);
     }
     
     private void HandleHover(bool hasHit, GameObject hitObject, string tag)
@@ -194,8 +211,8 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HandleItemSelection(GameObject item, bool selected)
     {   
-        if(item.TryGetComponent<ItemData>(out var itemData))
-        itemName.text = selected ? itemData.GetItemName() : "";
+        if(item.TryGetComponent(out ItemBehaviour itemB))
+            itemName.text = selected ? itemB.GetData().itemName : "";
 
         if(item.TryGetComponent<ItemBehaviour>(out var itemBehaviour) && itemBehaviour.GetCurrentHealth() != itemBehaviour.GetMaxHealth())
         {   
@@ -241,8 +258,7 @@ public class PlayerInteraction : MonoBehaviour
     }
 
     private void ShowCircularSlider(float currentValue, bool delay)
-    {   
-
+    {  
         float startTime = 0;
         if(delay) startTime = 0.2f;
 
@@ -251,7 +267,8 @@ public class PlayerInteraction : MonoBehaviour
             circularSlider.transform.parent.gameObject.SetActive(true);
             circularSlider.value = currentValue;
         }
-        else
-             circularSlider.transform.parent.gameObject.SetActive(false);
+        else{
+            circularSlider.transform.parent.gameObject.SetActive(false);
+        }
     }
 }

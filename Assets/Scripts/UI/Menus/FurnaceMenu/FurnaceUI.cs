@@ -3,35 +3,36 @@ using UnityEngine.UI;
 
 public class FurnaceUI : MonoBehaviour
 {   
+    [SerializeField] private GameObject slotPrefab;
     [SerializeField] private Transform inputPanel;
     [SerializeField] private Transform fuelPanel;
     [SerializeField] private Transform outputPanel;
+    private Transform dragginLayer;
     private FurnaceController furnaceController;
 
     public void SetFurnace(Furnace furnace)
     {
         furnaceController = furnace.GetComponent<FurnaceController>();
         furnaceController.OnInventoryChanged += UpdateUI;
-        LoadFurnaceData();
-    }
-
-    void LoadFurnaceData()
-    {
-        LoadController(inputPanel);
-        LoadController(fuelPanel);
-        LoadController(outputPanel);
+        GenerateSlots(inputPanel,3,FurnaceSlotType.Input);
+        GenerateSlots(fuelPanel,1,FurnaceSlotType.Fuel);
+        GenerateSlots(outputPanel,3,FurnaceSlotType.Output);
         UpdateUI();
     }
 
-    private void LoadController(Transform panel)
+    public void SetDragginLayer(Transform layer) => dragginLayer = layer;
+
+    private void GenerateSlots(Transform panel, int amount, FurnaceSlotType type)
     {
-        foreach (Transform child in panel)
+        for (int i = 0; i < amount; i++)
         {
-            FurnaceSlot slot = child.GetComponent<FurnaceSlot>();
-            if (slot != null)
-            {
-                slot.SetController(furnaceController);
-            }
+            GameObject slot = Instantiate(slotPrefab, panel);
+            slot.name = "Slot_" + i;
+            slot.transform.localPosition = Vector3.zero;
+            slot.GetComponent<Slot>().SetSlotIndex(i);
+            slot.GetComponent<Slot>().SetDragginLayer(dragginLayer);
+            slot.GetComponent<FurnaceSlot>().SetController(furnaceController);
+            slot.GetComponent<FurnaceSlot>().SetFurnaceSlotType(type);
         }
     }
 
@@ -40,41 +41,49 @@ public class FurnaceUI : MonoBehaviour
         if (furnaceController == null)
             return;
 
-        ItemData[] inputItems = furnaceController.GetInputObjects();
+        UpdatePanel(inputPanel, furnaceController.GetInputObjects());
 
-        for (int i = 0; i < inputPanel.childCount; i++)
+        ItemStack[] fuelArray = new ItemStack[1];
+        fuelArray[0] = furnaceController.GetFuelObject();
+        UpdatePanel(fuelPanel, fuelArray);
+
+        UpdatePanel(outputPanel, furnaceController.GetOutputObjects());
+    }
+
+    void UpdatePanel(Transform panel, ItemStack[] items)
+    {
+        for (int i = 0; i < panel.childCount; i++)
         {
-            Transform slotTransform = inputPanel.GetChild(i);
-            FurnaceSlot slot = slotTransform.GetComponent<FurnaceSlot>();
+            Transform slotTransform = panel.GetChild(i);
 
-            if (slot == null) continue;
+            if (!slotTransform.TryGetComponent<FurnaceSlot>(out var slot))
+                continue;
 
             int index = slot.GetSlotIndex();
 
-            // Icono UI (primer hijo del slot)
-            if (slotTransform.childCount == 0) continue;
+            if (slotTransform.childCount == 0)
+                continue;
 
             GameObject iconGO = slotTransform.GetChild(0).gameObject;
             Image iconImage = iconGO.GetComponent<Image>();
 
-            if (index < inputItems.Length && inputItems[index] != null)
+            if (index < items.Length && items[index] != null)
             {
-                ItemData item = inputItems[index];
+                ItemStack item = items[index];
+                ItemData data = ItemDataBase.instance.GetByID(item.id);
 
-                // Asignar sprite
-                iconImage.sprite = item.GetItemIcon();
-                iconGO.SetActive(true);
-
-                // (Opcional) copiar datos al icono si usas ItemData en UI
-                ItemData uiData = iconGO.GetComponent<ItemData>();
-                if (uiData != null)
+                if (data != null)
                 {
-                    uiData.CopyFrom(item);
+                    iconImage.sprite = data.icon;
+                    iconGO.SetActive(true);
+                }
+                else
+                {
+                    iconGO.SetActive(false);
                 }
             }
             else
             {
-                // Vaciar slot
                 iconImage.sprite = null;
                 iconGO.SetActive(false);
             }

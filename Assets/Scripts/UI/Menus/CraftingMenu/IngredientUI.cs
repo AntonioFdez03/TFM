@@ -22,7 +22,7 @@ public class IngredientUI : MonoBehaviour
 
         if (ingredientImage != null && ingredient.ingredientData != null)
         {
-            ingredientImage.sprite = ingredient.ingredientData.GetItemIcon();
+            ingredientImage.sprite = ingredient.ingredientData.icon;
         }
     }
 }

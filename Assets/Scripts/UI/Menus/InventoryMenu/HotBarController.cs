@@ -20,7 +20,7 @@ public class HotBarController : MonoBehaviour
     [Range(0, 6)] private int selectedIndex = 0;
     
     private Transform[] slots;
-    private ItemData currentItem;
+    private ItemStack currentItem;
     private GameObject handItemInstance;
     private ItemBehaviour currentItemBehaviour;
     private GameObject currentPrefab;
@@ -48,7 +48,7 @@ public class HotBarController : MonoBehaviour
         MoveSelectorFrame(selectedIndex);
     }
 
-    public ItemData GetCurrentItem() => currentItem;
+    public ItemStack GetCurrentItem() => currentItem;
     public ItemBehaviour GetCurrentItemBehaviour() => currentItemBehaviour;
     public int GetSelectedIndex() => selectedIndex;
 
@@ -108,30 +108,29 @@ public class HotBarController : MonoBehaviour
             if(ArmController.instance.IsMoving())
                 ArmController.instance.ResetArm();
             
-            RefreshHandItem();
+            UpdateHandItem();
         }
     }
 
-    public void RefreshHandItem()
+    public void UpdateHandItem()
     {
-        ItemData[] items = InventoryController.instance.GetInventoryItems();
+        ItemStack[] items = InventoryController.instance.GetInventoryItems();
 
         if (selectedIndex < 0 || selectedIndex >= items.Length)
             return;
 
-        // objeto real del inventario
         currentItem = items[selectedIndex];
+
+        // limpiar anterior
+        if (handItemInstance != null)
+            Destroy(handItemInstance);
 
         if (lastPlaceableItem != null)
         {
             lastPlaceableItem.DeleteSilhouette();
             lastPlaceableItem = null;
         }
-        // destruir instancia visual anterior
-        if (handItemInstance != null)
-            Destroy(handItemInstance);
 
-        // slot vacío
         if (currentItem == null)
         {
             handItemInstance = null;
@@ -140,26 +139,27 @@ public class HotBarController : MonoBehaviour
             return;
         }
 
-        ItemData data = currentItem.GetComponent<ItemData>();
-        currentPrefab = data.GetItemPrefab();
+        ItemData item = ItemDataBase.instance.GetByID(currentItem.id);
 
-        // crear instancia visual
+        currentPrefab = item.prefab;
         handItemInstance = Instantiate(currentPrefab);
         currentItemBehaviour = handItemInstance.GetComponent<ItemBehaviour>();
 
+        if (currentItemBehaviour != null)
+        {
+            currentItemBehaviour.Initialize(currentItem);
+            currentItemBehaviour.SetCurrentHealth(currentItem.currentHealth);
+        }
+
         if (currentItemBehaviour is not PlaceableBehaviour)
-        {   
+        {
             handItemInstance.transform.SetParent(handSlot, false);
             handItemInstance.transform.localScale = Vector3.one;
             handItemInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-            handItemInstance.SetActive(true);
-
             DisablePhysics();
         }
         else
-        {   
             lastPlaceableItem = currentItemBehaviour as PlaceableBehaviour;
-        }
     }
 
     private void DisablePhysics()
@@ -178,7 +178,7 @@ public class HotBarController : MonoBehaviour
     }
 
     private void DropCurrentItem()
-    {
+    {   
         if (dropItem.WasPressedThisFrame() && currentItem != null)
         {
             InventoryController.instance.DropItem(selectedIndex);
@@ -190,7 +190,7 @@ public class HotBarController : MonoBehaviour
 
     public void UpdateHotBarUI()
     {
-        ItemData[] items = InventoryController.instance.GetInventoryItems();
+        ItemStack[] items = InventoryController.instance.GetInventoryItems();
 
         for (int i = 0; i < slots.Length; i++)
         {
@@ -201,37 +201,31 @@ public class HotBarController : MonoBehaviour
             {
                 GameObject slotItem = slots[i].GetChild(0).gameObject;
 
-                if (i < InventoryController.instance.GetHotBarSize() && items[i] != null)
+                if (i < items.Length && items[i] != null)
                 {
-                    ItemData originalData = items[i].GetComponent<ItemData>();
-                    ItemData uiData = slotItem.GetComponent<ItemData>();
+                    ItemData item = ItemDataBase.instance.GetByID(items[i].id);
 
-                    if (originalData != null && uiData != null)
+                    if (item != null)
                     {
-                        uiData.CopyFrom(originalData);
-                        slotItem.GetComponent<Image>().sprite = originalData.GetItemIcon();
+                        slotItem.GetComponent<Image>().sprite = item.icon;
                         slotItem.SetActive(true);
                     }
                 }
                 else
                 {
-                    ItemData uiData = slotItem.GetComponent<ItemData>();
-                    if (uiData != null)
-                        uiData.SetItemPrefab(null);
-
                     slotItem.SetActive(false);
                 }
             }
+
             UpdateEquipmentHealthBar(i);
         }
-        RefreshHandItem();
+        UpdateHandItem();
     }
 
     public void UpdateEquipmentHealthBar(int index)
-    {   
-        ItemData[] items = InventoryController.instance.GetInventoryItems();
+    {
+        ItemStack[] items = InventoryController.instance.GetInventoryItems();
 
-        // Si no hay item en ese slot
         if (items[index] == null)
         {
             Transform existingBar = slots[index].Find("HealthBar");
@@ -241,21 +235,27 @@ public class HotBarController : MonoBehaviour
             return;
         }
 
-        ItemBehaviour itemBehaviour = items[index].GetComponent<ItemBehaviour>();
+        ItemData item = ItemDataBase.instance.GetByID(items[index].id);
 
-        // Si es herramienta
-        if (itemBehaviour is EquipmentBehaviour equipmentBehaviour)
-        {  
+        if (item == null)
+            return;
+
+        float currentHealth = items[index].currentHealth;
+        float maxHealth = item.maxHealth;
+
+        if (item.type == ItemType.Tool || item.type == ItemType.Weapon)
+        {
             Transform healthBarInstance = slots[index].Find("HealthBar");
 
             if (healthBarInstance == null)
             {
                 healthBarInstance = Instantiate(itemHealthBar, slots[index]);
-                healthBarInstance.gameObject.SetActive(false);
                 healthBarInstance.name = "HealthBar";
+                healthBarInstance.gameObject.SetActive(false);
             }
 
-            if(equipmentBehaviour.GetCurrentHealth() < equipmentBehaviour.GetMaxHealth()) 
+            // Mostrar si no está al 100%
+            if (currentHealth < maxHealth)
                 healthBarInstance.gameObject.SetActive(true);
 
             Transform fill = healthBarInstance.Find("Fill");
@@ -263,9 +263,8 @@ public class HotBarController : MonoBehaviour
 
             if (!fill.TryGetComponent<Image>(out var fillImage)) return;
 
-            fillImage.fillAmount = equipmentBehaviour.GetCurrentHealth() / equipmentBehaviour.GetMaxHealth();
+            fillImage.fillAmount = Mathf.Clamp01(currentHealth / maxHealth);
         }
-        // Si NO es herramienta, eliminar barra si existe
         else
         {
             Transform existingBar = slots[index].Find("HealthBar");

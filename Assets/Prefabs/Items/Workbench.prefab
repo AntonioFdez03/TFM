@@ -390,8 +390,6 @@ GameObject:
   - component: {fileID: 3932009009019475427}
   - component: {fileID: 444763037896328908}
   - component: {fileID: 3096068539149192954}
-  - component: {fileID: 5267862427402882369}
-  - component: {fileID: 2756443570146996382}
   m_Layer: 7
   m_Name: Workbench
   m_TagString: Interactive
@@ -427,6 +425,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1a6dd37e58ec744db21d004a9771c4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CraftingTable
+  data: {fileID: 11400000, guid: 2bf996ee3a4afae4886d84ef612a86a3, type: 2}
   greenMaterial: {fileID: 2100000, guid: c289674975e48194ba656debbe498968, type: 2}
   redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
   placementMask:
@@ -480,39 +479,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &5267862427402882369
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5282416814275813928}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b866a28731e74644491ee60557d48567, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  itemName: Workbench
-  itemIcon: {fileID: 21300000, guid: 7a23b04c5019ec547a7474b759f9a779, type: 3}
-  itemPrefab: {fileID: 5282416814275813928}
-  itemType: 4
---- !u!114 &2756443570146996382
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5282416814275813928}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daa3e8df43ce2bd4ba69ae29fde22158, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlaceableBehaviour
-  greenMaterial: {fileID: 2100000, guid: c289674975e48194ba656debbe498968, type: 2}
-  redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
-  placementMask:
-    serializedVersion: 2
-    m_Bits: 384
 --- !u!1 &6285307332729291258
 GameObject:
   m_ObjectHideFlags: 0

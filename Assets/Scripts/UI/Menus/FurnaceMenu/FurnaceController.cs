@@ -7,17 +7,17 @@ public class FurnaceController : MonoBehaviour
     public Action OnInventoryChanged;
 
     private int furnaceSize = 3;
-    private ItemStack[] input;
-    private ItemStack[] output;
-    private ItemStack fuelObject = null;
+    private ItemStack[] inputItems;
+    private ItemStack[] outputItems;
+    private ItemStack fuelItem = null;
     private float currentFuel;
     private float maxFuel = 100;
     private float fuelBurnRate = 2f;
 
     void Start()
     {
-        input = new ItemStack[furnaceSize];
-        output = new ItemStack[furnaceSize];
+        inputItems = new ItemStack[furnaceSize];
+        outputItems = new ItemStack[furnaceSize];
         currentFuel = 0;
     }
 
@@ -26,10 +26,24 @@ public class FurnaceController : MonoBehaviour
         //print("Working...");
     }
 
-    public ItemStack[] GetInputObjects() => input;
-    public ItemStack[] GetOutputObjects() => output;
-    public ItemStack GetFuelObject() => fuelObject;
+    public ItemStack[] GetInputItems() => inputItems;
+    public ItemStack[] GetOutputItems() => outputItems;
+    public ItemStack GetFuelItem() => fuelItem;
     public float GetCurrentFuel() => currentFuel;
+
+    public bool IsEmpty()
+    {   
+        if(fuelItem != null) return false;
+
+        for(int i = 0; i < furnaceSize ; i++)
+        {
+            if(GetItem(FurnaceSlotType.Input,i) != null || GetItem(FurnaceSlotType.Output,i) != null)
+                return false;
+        }
+
+        return true;
+
+    }
 
     public ItemStack GetItem(FurnaceSlotType type,int index)
     {
@@ -39,15 +53,15 @@ public class FurnaceController : MonoBehaviour
         switch (type)
         {
             case FurnaceSlotType.Input:
-                item = input[index];
+                item = inputItems[index];
                 break;
 
             case FurnaceSlotType.Fuel:
-                item = fuelObject;
+                item = fuelItem;
                 break;
 
             case FurnaceSlotType.Output:
-                item = output[index];
+                item = outputItems[index];
                 break;
         }
         return item;
@@ -57,7 +71,7 @@ public class FurnaceController : MonoBehaviour
     {   
         if(index >= 0 && index < furnaceSize)
         {
-            input[index] = item;
+            inputItems[index] = item;
         }
 
         OnInventoryChanged?.Invoke();
@@ -65,7 +79,7 @@ public class FurnaceController : MonoBehaviour
 
     public void AddFuel(ItemStack item)
     {
-        fuelObject = item;
+        fuelItem = item;
         OnInventoryChanged?.Invoke();
     }
 
@@ -76,15 +90,15 @@ public class FurnaceController : MonoBehaviour
         switch (type)
         {
             case FurnaceSlotType.Input:
-                input[index] = null;
+                inputItems[index] = null;
                 break;
 
             case FurnaceSlotType.Fuel:
-                fuelObject = null;
+                fuelItem = null;
                 break;
 
             case FurnaceSlotType.Output:
-                output[index] = null;
+                outputItems[index] = null;
                 break;
         }
         OnInventoryChanged?.Invoke();

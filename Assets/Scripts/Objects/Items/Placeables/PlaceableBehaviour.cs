@@ -15,7 +15,7 @@ public class PlaceableBehaviour : ItemBehaviour
     private Vector3 lastValidPosition;
     private Quaternion lastValidRotation;
     private bool canPlace;
-
+    protected bool canUnplace = true;
     protected bool straight = false;
 
     private InputAction interact;
@@ -32,6 +32,7 @@ public class PlaceableBehaviour : ItemBehaviour
     public float GetCurrentTime() => timer; 
     public float SetCurrentTime(float time) => timer = time; 
     public float GetUnplaceTime() => unplaceTime;
+    public virtual bool CanUnplace() => canUnplace;
 
     public override void Use()
     {
@@ -155,13 +156,16 @@ public class PlaceableBehaviour : ItemBehaviour
 
     public void Unplace()
     {
-        if (interact.IsPressed())
+        if (CanUnplace())
+        {
+            if (interact.IsPressed())
             timer += Time.deltaTime;
 
-        if (timer > unplaceTime)
-        {
-            timer = 0;
-            InventoryController.instance.AddItem(gameObject);
+            if (timer > unplaceTime)
+            {
+                timer = 0;
+                InventoryController.instance.AddItem(gameObject);
+            }
         }
     }
 

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3d85d73b23090064f9aa1b3aad4e1dd8
+guid: 478b1682d0d097b4b9eef7f586bc9f77
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -7,13 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Hojas
-    second: {fileID: 2100000, guid: ee1d503d1a246684c8f845c1d52e62c1, type: 2}
+      name: HojasArbol
+    second: {fileID: 2100000, guid: 78e54312a36c64f48b99c1075c0c0a58, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Material
-    second: {fileID: 2100000, guid: 9229f4e24ad58ee41857984269ebf4e6, type: 2}
+    second: {fileID: 2100000, guid: 2fa6e9abe5087374e9bd3c09b601900c, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

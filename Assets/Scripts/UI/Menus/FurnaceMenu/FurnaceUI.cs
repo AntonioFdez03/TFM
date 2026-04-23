@@ -41,13 +41,13 @@ public class FurnaceUI : MonoBehaviour
         if (furnaceController == null)
             return;
 
-        UpdatePanel(inputPanel, furnaceController.GetInputObjects());
+        UpdatePanel(inputPanel, furnaceController.GetInputItems());
 
         ItemStack[] fuelArray = new ItemStack[1];
-        fuelArray[0] = furnaceController.GetFuelObject();
+        fuelArray[0] = furnaceController.GetFuelItem();
         UpdatePanel(fuelPanel, fuelArray);
 
-        UpdatePanel(outputPanel, furnaceController.GetOutputObjects());
+        UpdatePanel(outputPanel, furnaceController.GetOutputItems());
     }
 
     void UpdatePanel(Transform panel, ItemStack[] items)

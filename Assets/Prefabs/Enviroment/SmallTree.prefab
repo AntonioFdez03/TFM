@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 9077926872537645342}
   - component: {fileID: 121012696202935487}
   - component: {fileID: 6260526351769643594}
+  - component: {fileID: 87506654493226836}
   m_Layer: 0
   m_Name: SmallTree
   m_TagString: Harvestable
@@ -186,6 +187,22 @@ MonoBehaviour:
   branchSpawners:
   - {fileID: 6022391111969557622}
   - {fileID: 8045764257756525449}
+--- !u!208 &87506654493226836
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697567960401337852}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.1, y: 5.2170005, z: 0.1}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 5.2170005, z: -0.051000003}
+  m_TimeToStationary: 0.5
 --- !u!1 &6275607051570831046
 GameObject:
   m_ObjectHideFlags: 0

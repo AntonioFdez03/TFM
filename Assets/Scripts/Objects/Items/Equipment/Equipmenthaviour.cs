@@ -6,7 +6,7 @@ public class EquipmentBehaviour : ItemBehaviour
 {
     protected EquipmentData equipmentData;
 
-    protected float enemyDamage = 5f;
+    protected float animalDamage = 5f;
     protected float harvestableDamage = 2f;
     protected float placeableDamage = 5f;
 

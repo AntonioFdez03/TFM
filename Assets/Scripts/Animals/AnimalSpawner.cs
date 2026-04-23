@@ -2,39 +2,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemySpawner : MonoBehaviour
+public class AnimalSpawner : MonoBehaviour
 {   
     [SerializeField] private Transform player;
-    [SerializeField] private List<GameObject> enemies;
-    [SerializeField] private Transform enemiesParent;
+    [SerializeField] private List<GameObject> animals;
+    [SerializeField] private Transform animalsParent;
 
     private float minSpawnDistance = 10f;
     private float maxSpawnDistance = 20f;
     private float spawnRate = 20f;
-    private int maxEnemies = 10;
+    private int maxAnimals = 10;
     private float timer;
 
     void Update()
     {
         timer += Time.deltaTime;
 
-        if (timer >= spawnRate && GameObject.FindGameObjectsWithTag("Enemy").Length < maxEnemies && DayCycleController.instance.IsNight())
+        if (timer >= spawnRate && GameObject.FindGameObjectsWithTag("Animal").Length < maxAnimals)
         {
-            SpawnEnemy();
+            SpawnAnimal();
             timer = 0f;
         }
     }
 
-    private void SpawnEnemy()
+    private void SpawnAnimal()
     {
-        int index = Random.Range(0, enemies.Count);
-        GameObject prefab = enemies[index];
+        int index = Random.Range(0, animals.Count);
+        GameObject prefab = animals[index];
 
         Vector3 spawnPos = GetSpawnPosition();
 
-        GameObject enemy = Instantiate(prefab, spawnPos, Quaternion.identity);
-        enemy.transform.SetParent(enemiesParent);
-        enemy.GetComponent<Enemy>().SetTarget(player);
+        GameObject animal = Instantiate(prefab, spawnPos, Quaternion.identity);
+        animal.GetComponent<Animal>().SetBehaviour(new PacificBehaviour());
+        animal.transform.SetParent(animalsParent);
     }
 
     private Vector3 GetSpawnPosition()

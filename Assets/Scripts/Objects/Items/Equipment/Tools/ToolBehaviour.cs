@@ -40,11 +40,11 @@ public class ToolBehaviour : EquipmentBehaviour
         Debug.DrawRay(ray.origin, ray.direction * toolData.range, Color.red);
         if (Physics.Raycast(ray, out hit, toolData.range))
         {
-            Enemy enemy = hit.collider.CompareTag("Enemy") ? hit.collider.GetComponent<Enemy>() : null;
-            if (enemy != null)
+            Animal animal = hit.collider.CompareTag("Animal") ? hit.collider.GetComponent<Animal>() : null;
+            if (animal != null)
             {
-                enemy.TakeDamage(toolData.damage);
-                TakeDamage(enemyDamage);
+                animal.TakeDamage(toolData.damage);
+                TakeDamage(animalDamage);
             }
 
             HarvestableObject harvestableObject = hit.collider.CompareTag("Harvestable") ? hit.collider.GetComponent<HarvestableObject>() : null;

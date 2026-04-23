@@ -35,11 +35,11 @@ public class WeaponBehaviour : EquipmentBehaviour
         Debug.DrawRay(ray.origin, ray.direction * weaponData.range, Color.red);
         if (Physics.Raycast(ray, out hit, weaponData.range))
         {
-            Enemy enemy = hit.collider.CompareTag("Enemy") ? hit.collider.GetComponent<Enemy>() : null;
-            if (enemy != null)
+            Animal animal = hit.collider.CompareTag("Animal") ? hit.collider.GetComponent<Animal>() : null;
+            if (animal != null)
             {
-                enemy.TakeDamage(weaponData.damage);
-                TakeDamage(enemyDamage);
+                animal.TakeDamage(weaponData.damage);
+                TakeDamage(animalDamage);
             }
 
             if(hit.collider.TryGetComponent(out PlaceableBehaviour placeable))

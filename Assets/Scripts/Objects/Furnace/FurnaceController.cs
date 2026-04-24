@@ -11,8 +11,6 @@ public class FurnaceController : MonoBehaviour
     private ItemStack[] outputItems;
     private ItemStack fuelItem = null;
     private float currentFuel;
-    private float maxFuel = 100;
-    private float fuelBurnRate = 2f;
 
     void Start()
     {
@@ -23,27 +21,17 @@ public class FurnaceController : MonoBehaviour
 
     void Update()
     {
-        //print("Working...");
+        if(currentFuel > 0 && !IsInputEmpty())
+        {   
+            print("Working");
+            Work();
+        }
     }
 
     public ItemStack[] GetInputItems() => inputItems;
     public ItemStack[] GetOutputItems() => outputItems;
     public ItemStack GetFuelItem() => fuelItem;
     public float GetCurrentFuel() => currentFuel;
-
-    public bool IsEmpty()
-    {   
-        if(fuelItem != null) return false;
-
-        for(int i = 0; i < furnaceSize ; i++)
-        {
-            if(GetItem(FurnaceSlotType.Input,i) != null || GetItem(FurnaceSlotType.Output,i) != null)
-                return false;
-        }
-
-        return true;
-
-    }
 
     public ItemStack GetItem(FurnaceSlotType type,int index)
     {
@@ -80,6 +68,18 @@ public class FurnaceController : MonoBehaviour
     public void AddFuel(ItemStack item)
     {
         fuelItem = item;
+        ItemData itemData = ItemDataBase.instance.GetByID(fuelItem.id);
+        currentFuel = FurnaceDataBase.instance.GetFuel(itemData).energy;
+        OnInventoryChanged?.Invoke();
+    }
+
+    private void AddOutput(int index, ItemStack item)
+    {
+        if(index >= 0 && index < furnaceSize)
+        {
+            outputItems[index] = item;
+        }
+
         OnInventoryChanged?.Invoke();
     }
 
@@ -102,5 +102,55 @@ public class FurnaceController : MonoBehaviour
                 break;
         }
         OnInventoryChanged?.Invoke();
+    }
+
+    private void Work()
+    {   
+        if(inputItems[0] == null)
+            return;
+        
+        ItemData item = ItemDataBase.instance.GetByID(inputItems[0].id);
+        FurnaceRecipe recipe = FurnaceDataBase.instance.GetRecipe(item);
+
+        if(recipe != null)
+        {
+            RemoveItem(FurnaceSlotType.Input,0);
+            RemoveItem(FurnaceSlotType.Fuel,0);
+            
+            // 2. crear ItemInstance nuevo
+            ItemStack newItem = new ItemStack
+            {
+                id = recipe.resultItem.id,
+                currentHealth = recipe.resultItem.maxHealth
+            };
+
+          
+            AddOutput(0,newItem);
+        }
+    }
+
+    public bool IsFurnaceEmpty()
+    {   
+        if(fuelItem != null) return false;
+
+        for(int i = 0; i < furnaceSize ; i++)
+        {
+            if(inputItems[i] != null || outputItems[i] != null)
+                return false;
+        }
+
+        return true;
+
+    }
+
+    private bool IsInputEmpty()
+    {
+        for(int i = 0; i < furnaceSize ; i++)
+        {
+            if(inputItems[i] != null)
+                return false;
+        }
+
+        return true;
     }
 }

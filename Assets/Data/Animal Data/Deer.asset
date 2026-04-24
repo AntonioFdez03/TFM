@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e693d6f0e0c954e87d09094e5766d3, type: 3}
   m_Name: Deer
   m_EditorClassIdentifier: Assembly-CSharp::AnimalData
-  speed: 10
+  speed: 5
   damage: 0
   maxHealth: 50

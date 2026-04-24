@@ -33,7 +33,28 @@ public class AnimalSpawner : MonoBehaviour
         Vector3 spawnPos = GetSpawnPosition();
 
         GameObject animal = Instantiate(prefab, spawnPos, Quaternion.identity);
+
+        NavMeshAgent agent = animal.GetComponent<NavMeshAgent>();
+
+        if (agent != null)
+        {
+            NavMeshHit hit;
+
+            // 👇 REVALIDAR específicamente para el agent
+            if (NavMesh.SamplePosition(spawnPos, out hit, 2f, NavMesh.AllAreas))
+            {
+                agent.Warp(hit.position);
+            }
+            else
+            {
+                Debug.LogWarning("Spawn inválido para agent");
+                Destroy(animal);
+                return;
+            }
+        }
+
         animal.GetComponent<Animal>().SetBehaviour(new PacificBehaviour());
+        animal.GetComponent<Animal>().SetPlayer(player);
         animal.transform.SetParent(animalsParent);
     }
 

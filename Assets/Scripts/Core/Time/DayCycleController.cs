@@ -8,6 +8,7 @@ public class DayCycleController : MonoBehaviour
     [SerializeField] float dayDuration = 24; //En minutos
     [SerializeField] float intensity = 1;
     private float sunRotationX;
+    private int currentDay = 0;
 
     void Awake()
     {
@@ -27,6 +28,9 @@ public class DayCycleController : MonoBehaviour
     {   
         currentHour += 24/(60*dayDuration) * Time.deltaTime;
         currentHour %= 24;
+
+        if(currentHour == 0)
+            currentDay++;
 
         sunRotationX = 15 * currentHour;
         sun.localEulerAngles = new Vector3(sunRotationX,0,0);

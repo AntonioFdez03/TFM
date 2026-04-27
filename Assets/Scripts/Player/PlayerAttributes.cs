@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerAttributes : MonoBehaviour
 {   
     //Health 
-    [SerializeField] UnityEngine.UI.Image healthBar;
+    [SerializeField] Image healthBar;
     private float currentHealth;
     private float maxHealth = 100f;
     private bool isInvulnerable = false;
@@ -16,7 +16,7 @@ public class PlayerAttributes : MonoBehaviour
     private float timeSinceLastDamage = 0f;
 
     //Stamina
-    [SerializeField] UnityEngine.UI.Image staminaBar;
+    [SerializeField] Image staminaBar;
     private float currentStamina;
     private float maxStamina = 100f;
     private float staminaBurnRate = 10f; //Consumo por segundo
@@ -26,7 +26,7 @@ public class PlayerAttributes : MonoBehaviour
     public bool canSprint;
 
     //Hunger
-    [SerializeField] UnityEngine.UI.Image hungerBar;
+    [SerializeField] Image hungerBar;
     private float currentHunger;
     private float maxHunger = 100f;
     private float hungerBurnRate = 1f;
@@ -35,14 +35,19 @@ public class PlayerAttributes : MonoBehaviour
     private float hungerDamage = 5f;
     private float hungerHeal = 5f;
 
+    //Sanity
+    [SerializeField] Image sanityBar;
+    private float currentSanity;
+    private float maxSanity;
+
     void Start()
     {
         currentHealth = maxHealth;
         currentStamina = maxStamina;
         currentHunger = maxHunger;
+        currentSanity = maxSanity;
     }
 
-    // Update is called once per frame
     void Update()
     {   
         HandleHunger();
@@ -51,11 +56,12 @@ public class PlayerAttributes : MonoBehaviour
         UpdateUI();
     }
 
-    public void SetAttributes(float health, float hunger, float stamina)
+    public void SetAttributes(float health, float hunger, float stamina, float sanity)
     {
         currentHealth = health;
         currentHunger = hunger;
         currentStamina = stamina;
+        currentSanity = sanity;
     }
 
     public float GetCurrentHealth() => currentHealth;
@@ -66,7 +72,7 @@ public class PlayerAttributes : MonoBehaviour
     public float GetCurrentStamina() => currentStamina;
 
     public void TakeDamage(float damage)
-    {   
+    {  
         if (isInvulnerable)
             return;
         currentHealth = Mathf.Clamp(currentHealth-damage, 0f, maxHealth);

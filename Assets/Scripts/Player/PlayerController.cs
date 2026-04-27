@@ -52,11 +52,11 @@ public class PlayerController : MonoBehaviour
         jump = InputSystem.actions.FindAction("Jump");
     }
 
-    public void InitializePlayer(Vector3 position, Quaternion rotation, float health, float hunger, float stamina)
+    public void InitializePlayer(Vector3 position, Quaternion rotation, float health, float hunger, float stamina, float sanity)
     {
         transform.position = position;
         transform.rotation = rotation;
-        playerAttributes.SetAttributes(health,hunger,stamina);
+        playerAttributes.SetAttributes(health,hunger,stamina, sanity);
 
         print("Jugador instanciado en: " + transform.position);
     }   

@@ -53,4 +53,14 @@ public class StorageController : MonoBehaviour
         (items[targetIndex], items[originIndex]) = (items[originIndex], items[targetIndex]);
         OnInventoryChanged?.Invoke();
     }
+
+    public bool isEmpty()
+    {
+        for(int i = 0; i < storageSize ; i++)
+        {
+            if(items[i] != null)
+                return false;
+        }
+        return true;
+    }
 }

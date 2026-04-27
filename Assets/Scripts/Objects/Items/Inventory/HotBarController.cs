@@ -159,7 +159,9 @@ public class HotBarController : MonoBehaviour
             DisablePhysics();
         }
         else
+        {
             lastPlaceableItem = currentItemBehaviour as PlaceableBehaviour;
+        }
     }
 
     private void DisablePhysics()

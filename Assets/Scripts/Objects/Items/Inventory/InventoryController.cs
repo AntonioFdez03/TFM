@@ -49,7 +49,7 @@ public class InventoryController : MonoBehaviour
     }
 
     public void AddItem(GameObject item)
-    {
+    {   
         if (item == null)
             return;
 
@@ -58,7 +58,6 @@ public class InventoryController : MonoBehaviour
             return;
 
         ItemData data = behaviour.GetData();
-        print("Data: " + data);
         ItemStack newItem = new()
         {
             id = data.id,

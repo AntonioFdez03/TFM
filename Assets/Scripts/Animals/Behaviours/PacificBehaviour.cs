@@ -5,7 +5,6 @@ using UnityEngine.AI;
 public class PacificBehaviour : IAnimalBehaviour
 {
     float timer;
-    bool isMoving;
 
     public void Act(Animal animal)
     {
@@ -37,14 +36,9 @@ public class PacificBehaviour : IAnimalBehaviour
         int action = Random.Range(0, 2);
 
         if (action == 0)
-        {
-            isMoving = false;
             agent.ResetPath();
-        }
         else
         {
-            isMoving = true;
-
             Vector3 randomDirection = Random.insideUnitSphere * 40f;
             randomDirection += animal.transform.position;
 

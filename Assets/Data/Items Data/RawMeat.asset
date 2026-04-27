@@ -16,8 +16,6 @@ MonoBehaviour:
   itemName: Raw Meat
   icon: {fileID: 21300000, guid: 3dffa9291e3fc3543a6dc112a4c029cc, type: 3}
   prefab: {fileID: 5442471255067961418, guid: 08d42728e0e98714fb8c8261d3146e7e, type: 3}
-  type: 4
-  maxHealth: 0
-  hungerPoints: 0
-  healthPoints: 5
+  hungerPoints: 5
+  healthPoints: -5
   consumeTime: 3

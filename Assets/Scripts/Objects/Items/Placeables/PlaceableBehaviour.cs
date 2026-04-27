@@ -83,7 +83,6 @@ public class PlaceableBehaviour : ItemBehaviour
         DisableSilhouetteComponents();
         AdjustSilhouette(hit);
 
-        Renderer[] renderers = silhouette.GetComponentsInChildren<Renderer>();
         silhouette.SetActive(true);
 
         canPlace = CanPlace(silhouette.transform.position, silhouette.transform.rotation);
@@ -94,8 +93,17 @@ public class PlaceableBehaviour : ItemBehaviour
             lastValidRotation = silhouette.transform.rotation;
         }
 
-        foreach (Renderer r in renderers)
-            r.material = canPlace ? greenMaterial : redMaterial;
+        Material targetMat = canPlace ? greenMaterial : redMaterial;
+        Renderer renderer = silhouette.GetComponentInChildren<MeshRenderer>();
+        print("Mesh: " + renderer);
+        print("Mats: " + renderer.materials);
+        Material[] mats = renderer.materials;
+
+        for (int i = 0; i < mats.Length; i++)
+            mats[i] = targetMat;
+        
+
+        renderer.materials = mats;
     }
 
     public void HideSilhouette()
@@ -155,7 +163,7 @@ public class PlaceableBehaviour : ItemBehaviour
     }
 
     public void Unplace()
-    {
+    {   
         if (CanUnplace())
         {
             if (interact.IsPressed())

@@ -132,7 +132,8 @@ public class SaveManager : MonoBehaviour
             data.playerData.playerRotation,
             data.playerData.playerHealth,
             data.playerData.playerHunger,
-            data.playerData.playerStamina
+            data.playerData.playerStamina,
+            0
         );
 
         CameraController.instance.SetCurrentRotation(data.playerData.cameraRotation);

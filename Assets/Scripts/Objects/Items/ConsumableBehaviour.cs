@@ -32,11 +32,12 @@ public class ConsumableBehaviour : ItemBehaviour
     }
 
     protected void Consume()
-    {
+    {   
+        print(consumableData.healthPoints);
         if(consumableData.hungerPoints > 0)
             PlayerController.instance.GetPlayerAttributes().Eat(consumableData.hungerPoints);
         
-        if(consumableData.healthPoints > 0)
+        if(consumableData.healthPoints != 0)
             PlayerController.instance.GetPlayerAttributes().Heal(consumableData.healthPoints);
 
         InventoryController.instance.RemoveItem(HotBarController.instance.GetCurrentItem());

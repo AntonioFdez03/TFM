@@ -18,11 +18,5 @@ public class Storage : PlaceableBehaviour, IInteractiveObject
         UIController.instance.OpenStorage(this);
     }
 
-    public override bool CanUnplace()
-    {
-        if(storageController.GetItems().Length > 0)
-            return false;
-
-        return true;
-    }
+    public override bool CanUnplace() => storageController.isEmpty();
 }

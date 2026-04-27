@@ -11,6 +11,9 @@ public class FurnaceController : MonoBehaviour
     private ItemStack[] outputItems;
     private ItemStack fuelItem = null;
     private float currentFuel;
+    private float timer = 0;
+    private float bakeDuration = 5f;
+    private int currentActiveItem = -1;
 
     void Start()
     {
@@ -20,12 +23,12 @@ public class FurnaceController : MonoBehaviour
     }
 
     void Update()
-    {
-        if(currentFuel > 0 && !IsInputEmpty())
-        {   
-            print("Working");
-            Work();
-        }
+    {   
+        if(currentFuel == 0 && fuelItem != null)
+            RemoveItem(FurnaceSlotType.Fuel,0);
+
+        SetActiveItem();
+        Work();
     }
 
     public ItemStack[] GetInputItems() => inputItems;
@@ -104,29 +107,54 @@ public class FurnaceController : MonoBehaviour
         OnInventoryChanged?.Invoke();
     }
 
-    private void Work()
-    {   
-        if(inputItems[0] == null)
+    private void BakeItem(int index)
+    {
+        if(inputItems[index] == null)
             return;
         
-        ItemData item = ItemDataBase.instance.GetByID(inputItems[0].id);
+        ItemData item = ItemDataBase.instance.GetByID(inputItems[index].id);
         FurnaceRecipe recipe = FurnaceDataBase.instance.GetRecipe(item);
 
         if(recipe != null)
         {
-            RemoveItem(FurnaceSlotType.Input,0);
-            RemoveItem(FurnaceSlotType.Fuel,0);
-            
-            // 2. crear ItemInstance nuevo
-            ItemStack newItem = new ItemStack
+            RemoveItem(FurnaceSlotType.Input,index);
+            currentFuel -= 1;
+            currentActiveItem = -1;
+        
+            ItemStack resultItem = new ItemStack
             {
                 id = recipe.resultItem.id,
                 currentHealth = recipe.resultItem.maxHealth
             };
 
-          
-            AddOutput(0,newItem);
+            AddOutput(index,resultItem);
         }
+    }
+
+    private void SetActiveItem()
+    {
+        if(!IsInputEmpty() && currentActiveItem == -1)
+        {
+            for(int i = 0; i < furnaceSize; i++)
+            {
+                if(inputItems[i] != null && outputItems[i] == null)
+                    currentActiveItem = i;
+            }
+        }
+    }
+
+    private void Work()
+    {
+        timer += Time.deltaTime;
+        if(currentFuel > 0 && currentActiveItem != -1)
+        {   
+            if(timer > bakeDuration)
+            {
+                timer = 0;
+                BakeItem(currentActiveItem);
+            }
+        }else
+            timer = 0;
     }
 
     public bool IsFurnaceEmpty()

@@ -7,12 +7,15 @@ public class ItemData : ScriptableObject
     public string itemName;
     public Sprite icon;
     public GameObject prefab;
-    public ItemType type;
+}
+
+public class DurableItemData : ItemData
+{
     public float maxHealth;
 }
 
 [CreateAssetMenu(menuName = "Items/Equipment Data")]
-public class EquipmentData : ItemData
+public class EquipmentData : DurableItemData
 {
     public float damage;
     public float range;
@@ -30,10 +33,17 @@ public class WeaponData : EquipmentData
     
 }
 
+[CreateAssetMenu(menuName = "Items/Placeable Data")]
+public class PlaceableData : DurableItemData
+{
+    
+}
+
 [CreateAssetMenu(menuName = "Items/Consumable Data")]
 public class ConsumableData : ItemData
 {
     public float hungerPoints;
+    public float healthPoints;
     public float consumeTime = 1f;
 }
 

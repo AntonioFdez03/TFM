@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.InputSystem;
 
-public abstract class ConsumableBehaviour : ItemBehaviour
+public class ConsumableBehaviour : ItemBehaviour
 {   
     protected ConsumableData consumableData;
     protected float timer;
@@ -24,7 +24,6 @@ public abstract class ConsumableBehaviour : ItemBehaviour
 
         if(timer > consumableData.consumeTime)
         {
-            print("Entra");
             timer = 0;
             PlayerAttributes player = PlayerController.instance.GetPlayerAttributes();
             if(player.GetCurrentHunger() < player.GetMaxHunger())
@@ -32,7 +31,16 @@ public abstract class ConsumableBehaviour : ItemBehaviour
         }
     }
 
-    protected abstract void Consume();
+    protected void Consume()
+    {
+        if(consumableData.hungerPoints > 0)
+            PlayerController.instance.GetPlayerAttributes().Eat(consumableData.hungerPoints);
+        
+        if(consumableData.healthPoints > 0)
+            PlayerController.instance.GetPlayerAttributes().Heal(consumableData.healthPoints);
+
+        InventoryController.instance.RemoveItem(HotBarController.instance.GetCurrentItem());
+    }
 
     public float GetCurrentTime() => timer;
     public float SetCurrentTime(float time) => timer = time;

@@ -13,11 +13,15 @@ public abstract class ItemBehaviour : MonoBehaviour, IObjectHealth
     void Start()
     {
         if (data != null && itemStack == null)
-        {
+        {   
+            float maxHealth = 0;
+            if(data is DurableItemData durableItemData)
+                maxHealth = durableItemData.maxHealth;
+
             itemStack = new ItemStack
             {
                 id = data.id,
-                currentHealth = data.maxHealth
+                currentHealth = maxHealth
             };
         }
     }
@@ -27,11 +31,15 @@ public abstract class ItemBehaviour : MonoBehaviour, IObjectHealth
         itemStack = stack;
 
         if (data != null && itemStack == null)
-        {
+        {   
+            float maxHealth = 0;
+            if(data is DurableItemData durableItemData)
+                maxHealth = durableItemData.maxHealth;
+
             itemStack = new ItemStack
             {
                 id = data.id,
-                currentHealth = data.maxHealth
+                currentHealth = maxHealth
             };
         }
     }
@@ -47,8 +55,13 @@ public abstract class ItemBehaviour : MonoBehaviour, IObjectHealth
             itemStack.currentHealth = health;
     }
 
-    public float GetMaxHealth()
-        => data != null ? data.maxHealth : 0;
+    public float GetMaxHealth() {
+
+        if(data != null && data is DurableItemData durableItemData)
+            return durableItemData.maxHealth;
+        
+        return 0;
+    }
 
     public abstract void Use();
 

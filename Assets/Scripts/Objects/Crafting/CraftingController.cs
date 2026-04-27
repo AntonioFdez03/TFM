@@ -50,11 +50,14 @@ public class CraftingController : MonoBehaviour
             }
         }
 
+        float maxHealth = 0;
+        if(recipe.resultItem is DurableItemData durableItemData)
+            maxHealth = durableItemData.maxHealth;
         // 2. crear ItemInstance nuevo
         ItemStack newItem = new ItemStack
         {
             id = recipe.resultItem.id,
-            currentHealth = recipe.resultItem.maxHealth
+            currentHealth = maxHealth
         };
 
         // 3. añadir al inventario

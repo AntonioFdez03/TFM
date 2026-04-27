@@ -111,6 +111,11 @@ public class PlayerAttributes : MonoBehaviour
         timeSinceLastHungerDecrase = 0f;
     }
 
+    public void Heal(float amount)
+    {
+        currentHealth = Math.Clamp(currentHealth + amount, 0, maxHealth);
+    }
+
     public void UseStamina()
     {
         currentStamina -= staminaBurnRate * Time.deltaTime;

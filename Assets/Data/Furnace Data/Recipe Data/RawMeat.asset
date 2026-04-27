@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6931629643a82b345b154d79ebd7e9d6, type: 3}
-  m_Name: Fuel Log
-  m_EditorClassIdentifier: Assembly-CSharp::FuelData
-  fuelItem: {fileID: 11400000, guid: c5324503454db6a448f8a75641b0c1b9, type: 2}
-  energy: 2
+  m_Script: {fileID: 11500000, guid: 6121205a950f2944d8b2ba22ea118441, type: 3}
+  m_Name: RawMeat
+  m_EditorClassIdentifier: Assembly-CSharp::FurnaceRecipe
+  inputItem: {fileID: 0}
+  resultItem: {fileID: 0}
+  cookTime: 5

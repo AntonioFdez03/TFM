@@ -120,11 +120,15 @@ public class FurnaceController : MonoBehaviour
             RemoveItem(FurnaceSlotType.Input,index);
             currentFuel -= 1;
             currentActiveItem = -1;
+
+            float maxHealth = 0;
+            if(recipe.resultItem is DurableItemData durableItemData)
+                maxHealth = durableItemData.maxHealth;
         
             ItemStack resultItem = new ItemStack
             {
                 id = recipe.resultItem.id,
-                currentHealth = recipe.resultItem.maxHealth
+                currentHealth = maxHealth
             };
 
             AddOutput(index,resultItem);

@@ -241,10 +241,10 @@ public class HotBarController : MonoBehaviour
             return;
 
         float currentHealth = items[index].currentHealth;
-        float maxHealth = item.maxHealth;
 
-        if (item.type == ItemType.Tool || item.type == ItemType.Weapon)
-        {
+        if(item is DurableItemData durableItemData)
+        {   
+            float maxHealth = durableItemData.maxHealth;
             Transform healthBarInstance = slots[index].Find("HealthBar");
 
             if (healthBarInstance == null)

@@ -7,18 +7,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Brown
-    second: {fileID: 2100000, guid: 76b75ec81fd6ad64b9060a9191d1b7f1, type: 2}
+      name: Charred
+    second: {fileID: 2100000, guid: 80dd27e17d54e444183ffc5af756cb83, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material
-    second: {fileID: 2100000, guid: 5d6ef20fd7fedb94a885ee77d6808d62, type: 2}
+      name: Stone
+    second: {fileID: 2100000, guid: a67348040803a174bad9e8075c5f0b9c, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material.001
-    second: {fileID: 2100000, guid: 5d6ef20fd7fedb94a885ee77d6808d62, type: 2}
+      name: Wood
+    second: {fileID: 2100000, guid: 22ffe5ae385f4494793d38fcdc75fd3c, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

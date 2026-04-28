@@ -15,6 +15,4 @@ MonoBehaviour:
   id: Chest
   itemName: Chest
   icon: {fileID: 21300000, guid: ce31a7b7a4bb52a4da163a2de18f7ee5, type: 3}
-  prefab: {fileID: 0}
-  type: 0
-  maxHealth: 0
+  prefab: {fileID: 8464849528717681756, guid: 91a3e11eb39fe8842af81e16cd26066b, type: 3}

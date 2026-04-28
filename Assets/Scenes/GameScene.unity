@@ -2492,6 +2492,7 @@ MonoBehaviour:
   - {fileID: 6505259477395084954, guid: 38678a89eb3c6c04f83b662ea79a0e8a, type: 3}
   - {fileID: 6914362959334807342, guid: 6c16754d8d5e96f4cbce31d8e7cf03f2, type: 3}
   - {fileID: 5282416814275813928, guid: f5716f7b7c7133743b64adf49ab432b3, type: 3}
+  - {fileID: 8464849528717681756, guid: 91a3e11eb39fe8842af81e16cd26066b, type: 3}
   harvestablesPrefabs:
   - {fileID: 3936722399912076011, guid: 2f294005e2faee349a3310b6788d3d0a, type: 3}
   - {fileID: 2040128832123783285, guid: 4604dc18c1f60b044a2b6884d3087eb9, type: 3}
@@ -2520,6 +2521,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 11ec88620aeaf7c498723822feec416b, type: 2}
   - {fileID: 11400000, guid: ae33f897032b8334ba7c57697d2ecdbb, type: 2}
   - {fileID: 11400000, guid: d745305c9da3c0e4798b1dbb3deb058b, type: 2}
+  - {fileID: 11400000, guid: daec3f20c734676449e66d5d6f84d427, type: 2}
 --- !u!114 &704648044
 MonoBehaviour:
   m_ObjectHideFlags: 0

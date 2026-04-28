@@ -64,6 +64,20 @@ public class HotBarController : MonoBehaviour
                 MoveSelectorFrame(i);
             }
         }
+
+        float scroll = Mouse.current.scroll.ReadValue().y;
+        int currentIndex = 0;
+
+        if (scroll < 0)
+        {
+            currentIndex = (selectedIndex + 1) % slots.Length;
+            MoveSelectorFrame(currentIndex);
+        }
+        else if (scroll > 0)
+        {
+            currentIndex = (selectedIndex - 1 + slots.Length) % slots.Length;
+            MoveSelectorFrame(currentIndex);
+        }
         DropCurrentItem();
     }
 
@@ -161,6 +175,7 @@ public class HotBarController : MonoBehaviour
         else
         {
             lastPlaceableItem = currentItemBehaviour as PlaceableBehaviour;
+            handItemInstance.SetActive(false);
         }
     }
 

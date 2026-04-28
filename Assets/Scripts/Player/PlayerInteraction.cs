@@ -19,6 +19,7 @@ public class PlayerInteraction : MonoBehaviour
     private ItemStack previousItem;
     private InputAction interact;
     private InputAction attack;
+    private InputAction rotate;
     private RaycastHit lastHit;
 
     private float interactTime = 0.2f;
@@ -28,6 +29,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         interact = InputSystem.actions.FindAction("Interact");
         attack = InputSystem.actions.FindAction("Attack");
+        rotate = InputSystem.actions.FindAction("Rotate");
     }
 
     void Update()
@@ -204,7 +206,11 @@ public class PlayerInteraction : MonoBehaviour
             return;
 
         if (hasHit && hit.collider.CompareTag("Terrain"))
+        {
             placeable.ShowSilhouette(hit);
+            if(rotate.IsPressed())
+                placeable.RotateSilhouette();
+        }
         else
             placeable.HideSilhouette();
     }

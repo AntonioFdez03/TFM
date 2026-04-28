@@ -14,6 +14,7 @@ public class PlaceableBehaviour : ItemBehaviour
     private GameObject silhouette;
     private Vector3 lastValidPosition;
     private Quaternion lastValidRotation;
+    private Quaternion customRotation;
     private bool canPlace;
     protected bool canUnplace = true;
     protected bool straight = false;
@@ -76,6 +77,7 @@ public class PlaceableBehaviour : ItemBehaviour
         {
             silhouette = Instantiate(data.prefab, InventoryController.instance.GetItemsParent());
             silhouette.SetActive(true);
+            customRotation = Quaternion.identity;
 
             CalculateCheckBoxSize();
         }
@@ -95,8 +97,6 @@ public class PlaceableBehaviour : ItemBehaviour
 
         Material targetMat = canPlace ? greenMaterial : redMaterial;
         Renderer renderer = silhouette.GetComponentInChildren<MeshRenderer>();
-        print("Mesh: " + renderer);
-        print("Mats: " + renderer.materials);
         Material[] mats = renderer.materials;
 
         for (int i = 0; i < mats.Length; i++)
@@ -151,15 +151,20 @@ public class PlaceableBehaviour : ItemBehaviour
         if (straight)
         {
             silhouette.transform.rotation =
-                Quaternion.Euler(0f, lookRotation.eulerAngles.y, 0f);
+                Quaternion.Euler(0f, lookRotation.eulerAngles.y * customRotation.y, 0f);
         }
         else
         {
             Quaternion alignToGround =
                 Quaternion.FromToRotation(Vector3.up, hit.normal);
 
-            silhouette.transform.rotation = alignToGround * lookRotation;
+            silhouette.transform.rotation = alignToGround * lookRotation * customRotation;
         }
+    }
+
+    public void RotateSilhouette()
+    {   
+        customRotation *= Quaternion.Euler(0, 70 * Time.deltaTime, 0);
     }
 
     public void Unplace()

@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     [Header("Gravity")]
     private Vector3 gravity = Vector3.down * 30f;
     private float yVelocity;
+    private Vector3 groundNormal;
 
     void Awake()
     {
@@ -57,8 +58,6 @@ public class PlayerController : MonoBehaviour
         transform.position = position;
         transform.rotation = rotation;
         playerAttributes.SetAttributes(health,hunger,stamina, sanity);
-
-        print("Jugador instanciado en: " + transform.position);
     }   
     
     public PlayerAttributes GetPlayerAttributes() => playerAttributes;
@@ -71,14 +70,23 @@ public class PlayerController : MonoBehaviour
     void Update()
     {   
         if(!isDead)
-        {
+        {  
+            float angle = Vector3.Angle(groundNormal, Vector3.up);
+
+            if (angle > controller.slopeLimit)
+            {
+                Vector3 slide = new Vector3(groundNormal.x, -groundNormal.y, groundNormal.z);
+                controller.Move(slide * 5f * Time.deltaTime);
+            }
+
             if (canMove)
             {
                 Vector3 finalMovement = Vector3.zero;
                 finalMovement += CalculateHorizontalMovement();
                 finalMovement += CalculateVerticalMovement();
                 controller.Move(finalMovement * Time.deltaTime);
-            }
+            }     
+                
         }
     }
 
@@ -127,5 +135,10 @@ public class PlayerController : MonoBehaviour
 
         // Devolvemos el vector vertical
         return new Vector3(0, yVelocity, 0);
+    }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        groundNormal = hit.normal;
     }
 }

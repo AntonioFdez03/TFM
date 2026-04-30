@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 686cb9c65e7f63448975c5d5646a7e89, type: 3}
+  m_Name: MetalIngot
+  m_EditorClassIdentifier: Assembly-CSharp::ItemData
+  id: MetalIngot
+  itemName: Metal Ingot
+  icon: {fileID: 21300000, guid: 793ae14eeb1cf0940aebc46d93b09af4, type: 3}
+  prefab: {fileID: 7456756144791194955, guid: 07cfffe96c5ece84399d16eac6e44ca0, type: 3}

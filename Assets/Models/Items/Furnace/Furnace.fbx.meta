@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3d85d73b23090064f9aa1b3aad4e1dd8
+guid: bd8bf1435f85c2b48acac5a53cfad255
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -7,13 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: ImagenRama
-    second: {fileID: 2100000, guid: a3fc1acef729d144388a18fdace4bdea, type: 2}
+      name: Ground
+    second: {fileID: 2100000, guid: 089a0a9adfbae9348a2e4f01415b481c, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material
-    second: {fileID: 2100000, guid: 108c82162e5314d4ea26be6cdb493cef, type: 2}
+      name: Stone
+    second: {fileID: 2100000, guid: 532cbd70073266c4dbbcefc5f7a6e4d6, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -7,6 +7,7 @@ public class FurnaceUI : MonoBehaviour
     [SerializeField] private Transform inputPanel;
     [SerializeField] private Transform fuelPanel;
     [SerializeField] private Transform outputPanel;
+    [SerializeField] private GameObject furnaceBar;
     private Transform dragginLayer;
     private FurnaceController furnaceController;
 
@@ -33,7 +34,22 @@ public class FurnaceUI : MonoBehaviour
             slot.GetComponent<Slot>().SetDragginLayer(dragginLayer);
             slot.GetComponent<FurnaceSlot>().SetController(furnaceController);
             slot.GetComponent<FurnaceSlot>().SetFurnaceSlotType(type);
+
+            if(type != FurnaceSlotType.Output)
+                AddSliderBar(slot.transform);
         }
+    }
+
+    private void AddSliderBar(Transform slot)
+    {
+        GameObject sliderBar = Instantiate(furnaceBar, slot, false);
+
+        RectTransform rt = sliderBar.GetComponent<RectTransform>();
+        rt.anchoredPosition = new Vector3(0, -40, 0);
+        rt.localScale = Vector3.one;
+
+        sliderBar.SetActive(false);
+        sliderBar.transform.SetParent(slot);
     }
 
     private void UpdateUI()
@@ -76,16 +92,19 @@ public class FurnaceUI : MonoBehaviour
                 {
                     iconImage.sprite = data.icon;
                     iconGO.SetActive(true);
+                    //slot.transform.GetChild(1).gameObject.SetActive(true);
                 }
                 else
                 {
                     iconGO.SetActive(false);
+                    //slot.transform.GetChild(1).gameObject.SetActive(false);
                 }
             }
             else
             {
                 iconImage.sprite = null;
                 iconGO.SetActive(false);
+                //slot.transform.GetChild(1).gameObject.SetActive(false);
             }
         }
     }

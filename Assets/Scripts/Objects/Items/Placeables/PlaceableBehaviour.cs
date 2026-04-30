@@ -135,18 +135,16 @@ public class PlaceableBehaviour : ItemBehaviour
 
     private void AdjustSilhouette(RaycastHit hit)
     {
+        print("Silueta ajustada en: " + hit.point);
         silhouette.transform.position = hit.point;
         silhouette.transform.localScale = Vector3.one;
 
-        Vector3 camForward = Camera.main.transform.forward;
-        camForward.y = 0f;
+        Vector3 silhoueteForward = Camera.main.transform.position - hit.point;
+        silhoueteForward.y = 0f;
 
-        if (camForward.sqrMagnitude < 0.001f)
-            camForward = Vector3.forward;
+        silhoueteForward.Normalize();
 
-        camForward.Normalize();
-
-        Quaternion lookRotation = Quaternion.LookRotation(camForward);
+        Quaternion lookRotation = Quaternion.LookRotation(silhoueteForward);
 
         if (straight)
         {

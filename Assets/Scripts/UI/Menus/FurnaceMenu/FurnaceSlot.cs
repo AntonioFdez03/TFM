@@ -23,7 +23,7 @@ public class FurnaceSlot : Slot
         if (furnaceController == null)
             return;
 
-        ItemStack item = null;
+        ItemStack item;
         if(originSlot is InventorySlot)
         {
             item = InventoryController.instance.GetInventoryItems()[originIndex];
@@ -32,13 +32,19 @@ public class FurnaceSlot : Slot
                 switch (furnaceSlotType)
                 {
                     case FurnaceSlotType.Input:
-                        furnaceController.AddInput(index,item);
-                        InventoryController.instance.RemoveItem(item);
+                        if(furnaceController.GetItem(FurnaceSlotType.Input,index) == null)
+                        {
+                            furnaceController.AddInput(index,item);
+                            InventoryController.instance.RemoveItem(item);
+                        }
                         break;
 
                     case FurnaceSlotType.Fuel:
-                        furnaceController.AddFuel(item);
-                        InventoryController.instance.RemoveItem(item);
+                        if(furnaceController.GetItem(FurnaceSlotType.Fuel,index) == null)
+                        {
+                            furnaceController.AddFuel(item);
+                            InventoryController.instance.RemoveItem(item);
+                        }
                     break;
                 }
             }
@@ -48,13 +54,19 @@ public class FurnaceSlot : Slot
             switch (furnaceSlotType)
                 {
                     case FurnaceSlotType.Input:
-                        furnaceController.AddInput(index,item);
-                        furnaceController.RemoveItem(furnaceSlot.GetSlotType(),furnaceSlot.GetSlotIndex());
+                        if(furnaceController.GetItem(FurnaceSlotType.Input,index) == null)
+                        {
+                            furnaceController.AddInput(index,item);
+                            furnaceController.RemoveItem(furnaceSlot.GetSlotType(),furnaceSlot.GetSlotIndex());
+                        }
                         break;
 
                     case FurnaceSlotType.Fuel:
-                        furnaceController.AddFuel(item);
-                        furnaceController.RemoveItem(furnaceSlot.GetSlotType(),furnaceSlot.GetSlotIndex());
+                        if(furnaceController.GetItem(FurnaceSlotType.Fuel,index) == null)
+                        {
+                            furnaceController.AddFuel(item);
+                            furnaceController.RemoveItem(furnaceSlot.GetSlotType(),furnaceSlot.GetSlotIndex());
+                        }
                         break;
                 }
         }

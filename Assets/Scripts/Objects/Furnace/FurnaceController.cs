@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class FurnaceController : MonoBehaviour
@@ -15,6 +16,12 @@ public class FurnaceController : MonoBehaviour
     private float bakeDuration = 5f;
     private int currentActiveItem = -1;
 
+    [SerializeField] Transform fuelPosition;
+    [SerializeField] GameObject FuelLogPrefab;
+    [SerializeField] GameObject FuelBranchPrefab;
+    [SerializeField] GameObject FuelCharcoalPrefab;
+    [SerializeField] GameObject fire;
+
     void Start()
     {
         inputItems = new ItemStack[furnaceSize];
@@ -23,9 +30,14 @@ public class FurnaceController : MonoBehaviour
     }
 
     void Update()
-    {   
+    {      
+        SetFuelPrefab();
+
         if(currentFuel == 0 && fuelItem != null)
             RemoveItem(FurnaceSlotType.Fuel,0);
+
+        if(fuelItem == null)
+            currentFuel = 0;
 
         SetActiveItem();
         Work();
@@ -107,6 +119,24 @@ public class FurnaceController : MonoBehaviour
         OnInventoryChanged?.Invoke();
     }
 
+    private void Work()
+    {
+        timer += Time.deltaTime;
+        if(currentFuel > 0 && currentActiveItem != -1)
+        {   
+            fire.SetActive(true);
+            if(timer > bakeDuration)
+            {
+                timer = 0;
+                BakeItem(currentActiveItem);
+            }
+        }
+        else
+        {   
+            timer = 0;
+            fire.SetActive(false);
+        }
+    }
     private void BakeItem(int index)
     {
         if(inputItems[index] == null)
@@ -147,18 +177,35 @@ public class FurnaceController : MonoBehaviour
         }
     }
 
-    private void Work()
+    private void SetFuelPrefab()
+    {   
+        if(fuelPosition.childCount > 0)
+            Destroy(fuelPosition.GetChild(0).gameObject);
+        
+        if(fuelItem == null) 
+            return;
+
+        switch (fuelItem.id)
+        {
+            case "Branch":
+                InstantiateFuelPrefab(FuelBranchPrefab);
+                break;
+
+            case "Log":
+                InstantiateFuelPrefab(FuelLogPrefab);
+                break;
+
+            case "Charcoal":
+                InstantiateFuelPrefab(FuelCharcoalPrefab);
+                break;
+        }
+    }
+
+    private void InstantiateFuelPrefab(GameObject fuelPrefab)
     {
-        timer += Time.deltaTime;
-        if(currentFuel > 0 && currentActiveItem != -1)
-        {   
-            if(timer > bakeDuration)
-            {
-                timer = 0;
-                BakeItem(currentActiveItem);
-            }
-        }else
-            timer = 0;
+        GameObject fuelInstance = Instantiate(fuelPrefab,fuelPosition);
+        fuelInstance.transform.SetLocalPositionAndRotation(Vector3.zero,Quaternion.identity);
+        fuelInstance.transform.localScale = Vector3.one;
     }
 
     public bool IsFurnaceEmpty()

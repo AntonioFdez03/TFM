@@ -2417,11 +2417,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 704648039}
+  - component: {fileID: 704648046}
   - component: {fileID: 704648040}
   - component: {fileID: 704648041}
   - component: {fileID: 704648042}
   - component: {fileID: 704648043}
   - component: {fileID: 704648044}
+  - component: {fileID: 704648045}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2558,6 +2560,37 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8861e252e77664b4d92a5e3af360b348, type: 2}
   - {fileID: 11400000, guid: 303135f234e6c7242bc1aa6fedb4ee2f, type: 2}
   - {fileID: 11400000, guid: eb0637aefdc5fbc478218bd645a10840, type: 2}
+--- !u!114 &704648045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704648038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 719e4042cbb7b944da9efc7db58e668e, type: 2}
+--- !u!114 &704648046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704648038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10f2c177f5826c6468dbf8a4c3468625, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Inventory
+  itemsParent: {fileID: 631565644}
+  handSlot: {fileID: 1741390092}
 --- !u!1 &787303286
 GameObject:
   m_ObjectHideFlags: 0
@@ -2691,52 +2724,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 787303286}
   m_CullTransparentMesh: 1
---- !u!1 &816133978
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 816133979}
-  - component: {fileID: 816133980}
-  m_Layer: 0
-  m_Name: Inventory
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &816133979
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 816133978}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 4, z: 0}
-  m_LocalScale: {x: 3, y: 4, z: 3}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1453335105}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &816133980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 816133978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10f2c177f5826c6468dbf8a4c3468625, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Inventory
-  itemsParent: {fileID: 631565644}
-  handSlot: {fileID: 1741390092}
 --- !u!1 &847799050
 GameObject:
   m_ObjectHideFlags: 0
@@ -3274,6 +3261,7 @@ GameObject:
   m_Component:
   - component: {fileID: 984625997}
   - component: {fileID: 984625998}
+  - component: {fileID: 984625999}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -3321,6 +3309,19 @@ MonoBehaviour:
   furnacePanel: {fileID: 3810195561991840232, guid: c7b18975058c4e946bd481412b2509c4, type: 3}
   storagePanel: {fileID: 1999780505210303099, guid: f1a21e1d1b006a949a3b183f2fc92a7d, type: 3}
   dragginLayer: {fileID: 548691765}
+--- !u!114 &984625999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 984625996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 823d7a88a38e96f469dadcad49b3ae86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScreenEffectsController
+  globalVolume: {fileID: 704648045}
 --- !u!1 &1021148638
 GameObject:
   m_ObjectHideFlags: 0
@@ -4926,7 +4927,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1082862868}
-  - {fileID: 816133979}
   - {fileID: 1581440718}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5712,7 +5712,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0

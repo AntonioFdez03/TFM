@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class PlayerAttributes : MonoBehaviour
 {   
+    public event Action<float> OnHealthChanged;
+    public event Action<float> OnSanityChanged;
+
     //Health 
     [SerializeField] Image healthBar;
     private float currentHealth;
@@ -78,8 +81,11 @@ public class PlayerAttributes : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth-damage, 0f, maxHealth);
         StartCoroutine(DamageCooldownCR());
         timeSinceLastDamage = 0f;
+
         if(currentHealth == 0)
             PlayerController.instance.SetIsDead(true);
+
+        OnHealthChanged?.Invoke(currentHealth / maxHealth);
     }
 
     private void HandleHealth()
@@ -90,6 +96,7 @@ public class PlayerAttributes : MonoBehaviour
         else if(canHeal && currentHunger > 0.75 * maxHunger && currentHealth < maxHealth && timeSinceLastDamage > 10f)
         {
             currentHealth = Math.Clamp(currentHealth+hungerHeal,0,maxHealth);
+            OnHealthChanged?.Invoke(currentHealth / maxHealth);
             StartCoroutine(HealingCooldownCR());
         }
     }

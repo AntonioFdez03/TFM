@@ -37,10 +37,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
         instance = this;
-    }
 
-    void Start()
-    {   
         canMove = true;
         
         //References

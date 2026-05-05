@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class DayCycleController : MonoBehaviour
@@ -8,7 +9,9 @@ public class DayCycleController : MonoBehaviour
     [SerializeField] float dayDuration = 24; //En minutos
     [SerializeField] float intensity = 1;
     private float sunRotationX;
-    private int currentDay = 0;
+
+    [SerializeField] private TMP_Text dayText;
+    private int currentDay = 1;
 
     void Awake()
     {
@@ -27,10 +30,13 @@ public class DayCycleController : MonoBehaviour
     void Update()
     {   
         currentHour += 24/(60*dayDuration) * Time.deltaTime;
-        currentHour %= 24;
 
-        if(currentHour == 0)
+        if(currentHour > 24)
             currentDay++;
+
+        currentHour %= 24;
+        
+        dayText.text = "Day \n" + currentDay.ToString();
 
         sunRotationX = 15 * currentHour;
         sun.localEulerAngles = new Vector3(sunRotationX,0,0);

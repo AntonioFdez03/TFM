@@ -70,9 +70,10 @@ public class PlayerAttributes : MonoBehaviour
     public float GetCurrentHealth() => currentHealth;
     public float GetMaxHealth() => maxHealth;
     public float GetCurrentHunger() => currentHunger;
-   
     public float GetMaxHunger() => maxHunger;
     public float GetCurrentStamina() => currentStamina;
+    public float GetCurrentSanity() => currentSanity;
+    public float GetMaxSanity() => maxSanity;
 
     public void TakeDamage(float damage)
     {  

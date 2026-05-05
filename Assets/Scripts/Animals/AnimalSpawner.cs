@@ -40,7 +40,6 @@ public class AnimalSpawner : MonoBehaviour
         {
             NavMeshHit hit;
 
-            // 👇 REVALIDAR específicamente para el agent
             if (NavMesh.SamplePosition(spawnPos, out hit, 2f, NavMesh.AllAreas))
             {
                 agent.Warp(hit.position);
@@ -53,7 +52,14 @@ public class AnimalSpawner : MonoBehaviour
             }
         }
 
-        animal.GetComponent<Animal>().SetBehaviour(new PacificBehaviour());
+        if(PlayerController.instance.GetPlayerAttributes().GetCurrentSanity() < PlayerController.instance.GetPlayerAttributes().GetMaxSanity() * 0.5f)
+        {
+            animal.GetComponent<Animal>().SetBehaviour(new HostileBehaviour());
+        }
+        else
+        {
+            animal.GetComponent<Animal>().SetBehaviour(new PacificBehaviour());
+        }
         animal.GetComponent<Animal>().SetPlayer(player);
         animal.transform.SetParent(animalsParent);
     }

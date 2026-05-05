@@ -87,6 +87,7 @@ public class PlaceableBehaviour : ItemBehaviour
         AdjustSilhouette(hit);
 
         silhouette.SetActive(true);
+        silhouette.GetComponent<Rigidbody>().isKinematic = true;
 
         canPlace = CanPlace(silhouette.transform.position, silhouette.transform.rotation);
 
@@ -97,14 +98,19 @@ public class PlaceableBehaviour : ItemBehaviour
         }
 
         Material targetMat = canPlace ? greenMaterial : redMaterial;
-        Renderer renderer = silhouette.GetComponentInChildren<MeshRenderer>();
-        Material[] mats = renderer.materials;
+        Renderer[] renderers = silhouette.GetComponentsInChildren<Renderer>();
 
-        for (int i = 0; i < mats.Length; i++)
-            mats[i] = targetMat;
-        
+        foreach (Renderer r in renderers)
+        {
+            Material[] mats = r.materials;
 
-        renderer.materials = mats;
+            for (int i = 0; i < mats.Length; i++)
+            {
+                mats[i] = targetMat;
+            }
+
+            r.materials = mats;
+        }
     }
 
     public void HideSilhouette()
@@ -123,7 +129,7 @@ public class PlaceableBehaviour : ItemBehaviour
     }
 
     private void DisableSilhouetteComponents()
-    {
+    {   
         foreach (var c in silhouette.GetComponentsInChildren<Collider>())
             c.enabled = false;
 
@@ -132,6 +138,10 @@ public class PlaceableBehaviour : ItemBehaviour
 
         foreach (var p in silhouette.GetComponentsInChildren<ParticleSystem>())
             p.Stop();
+        
+        foreach (var t in silhouette.GetComponentsInChildren<Transform>())
+            t.localRotation = Quaternion.identity;  
+        
     }
 
     private void AdjustSilhouette(RaycastHit hit)

@@ -145,7 +145,6 @@ public class UIController : MonoBehaviour
                 }
                 break;
             case UIState.Storage:
-                print("case");
                 StorageUI storageUI = panelInstance.GetComponent<StorageUI>();
                     if (storageUI != null)
                     {

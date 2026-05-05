@@ -146,7 +146,6 @@ public class PlaceableBehaviour : ItemBehaviour
 
     private void AdjustSilhouette(RaycastHit hit)
     {
-        print("Silueta ajustada en: " + hit.point);
         silhouette.transform.position = hit.point;
         silhouette.transform.localScale = Vector3.one;
 

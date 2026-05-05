@@ -18,4 +18,5 @@ MonoBehaviour:
   prefab: {fileID: 2228412806016164105, guid: 902a282c4e6a2554a9fd9de45f3bc82f, type: 3}
   hungerPoints: 20
   healthPoints: 5
-  consumeTime: 1
+  sanityPoints: 10
+  consumeTime: 3

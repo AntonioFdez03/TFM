@@ -41,7 +41,7 @@ public class PlayerAttributes : MonoBehaviour
     //Sanity
     [SerializeField] Image sanityBar;
     private float currentSanity;
-    private float maxSanity;
+    private float maxSanity = 100f;
 
     void Start()
     {
@@ -125,9 +125,16 @@ public class PlayerAttributes : MonoBehaviour
         timeSinceLastHungerDecrase = 0f;
     }
 
-    public void Heal(float amount)
+    public void UpdateHealth(float amount)
     {
         currentHealth = Math.Clamp(currentHealth + amount, 0, maxHealth);
+        OnHealthChanged?.Invoke(currentHealth / maxHealth);
+    }
+
+    public void UpdateSanity(float amount)
+    {   
+        currentSanity = Math.Clamp(currentSanity + amount, 0, maxSanity);
+        OnSanityChanged?.Invoke(currentSanity / maxSanity);
     }
 
     public void UseStamina()
@@ -157,6 +164,8 @@ public class PlayerAttributes : MonoBehaviour
             staminaBar.fillAmount = currentStamina / maxStamina;
         if(hungerBar != null)
             hungerBar.fillAmount = currentHunger / maxHunger;
+        if(sanityBar != null)
+            sanityBar.fillAmount = currentSanity / maxSanity;
     }
 
     IEnumerator HealingCooldownCR()

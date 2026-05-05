@@ -174,7 +174,10 @@ public class PlayerInteraction : MonoBehaviour
                     break;
 
                 case "Interactive":
-                    item.GetComponent<IInteractiveObject>()?.Interact();
+                    if (item.TryGetComponent(out IInteractiveObject interactiveObject))
+                        interactiveObject.Interact();
+                    else
+                        item.GetComponentInParent<IInteractiveObject>()?.Interact();
                     break;
             }
         }else if (interact.IsPressed())    

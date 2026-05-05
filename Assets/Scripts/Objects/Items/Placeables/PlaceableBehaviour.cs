@@ -23,8 +23,9 @@ public class PlaceableBehaviour : ItemBehaviour
     protected float unplaceTime = 1f;
     private float timer;
 
-    protected virtual void Start()
+    protected override void Start()
     {
+        base.Start();
         GetComponent<Rigidbody>().isKinematic = true;
         interact = InputSystem.actions.FindAction("Interact");
     }

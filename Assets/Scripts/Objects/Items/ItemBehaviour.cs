@@ -10,8 +10,8 @@ public abstract class ItemBehaviour : MonoBehaviour, IObjectHealth
     protected float useCooldown = 1f;
     protected bool canUse = true;
 
-    void Start()
-    {
+    protected virtual void Start()
+    {   
         if (data != null && itemStack == null)
         {   
             float maxHealth = 0;

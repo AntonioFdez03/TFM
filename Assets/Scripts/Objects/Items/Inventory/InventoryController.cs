@@ -53,11 +53,11 @@ public class InventoryController : MonoBehaviour
         if (item == null)
             return;
 
-        
         if (!item.TryGetComponent<ItemBehaviour>(out var behaviour))
             return;
 
         ItemData data = behaviour.GetData();
+        print("Vida del item: " + behaviour.GetCurrentHealth());
         ItemStack newItem = new()
         {
             id = data.id,

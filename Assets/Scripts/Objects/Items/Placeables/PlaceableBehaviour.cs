@@ -50,6 +50,9 @@ public class PlaceableBehaviour : ItemBehaviour
             InventoryController.instance.GetItemsParent()
         );
 
+        
+        newObject.GetComponent<ItemBehaviour>().SetItemStack(itemStack);
+
         newObject.transform.localScale = Vector3.one;
         newObject.SetActive(true);
 

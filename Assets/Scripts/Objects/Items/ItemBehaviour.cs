@@ -46,6 +46,7 @@ public abstract class ItemBehaviour : MonoBehaviour, IObjectHealth
 
     public ItemData GetData() => data;
     public ItemStack GetItemStack() => itemStack;
+    public void SetItemStack(ItemStack stack) => itemStack = stack;
 
     public float GetCurrentHealth() => itemStack != null ? itemStack.currentHealth : 0;
 

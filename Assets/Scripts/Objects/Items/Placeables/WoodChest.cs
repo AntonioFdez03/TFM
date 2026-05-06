@@ -21,7 +21,7 @@ public class WoodChest : Storage
 
     void Update()
     {   
-        chestOpen = UIController.instance.GetCurrentState() == UIState.Storage;
+        chestOpen = UIController.instance.GetCurrentState() == UIState.Storage && UIController.instance.GetCurrentStorage() == this;
         Quaternion targetRotation = chestOpen ? openRotation : closedRotation;
 
         rotationPivot.rotation = Quaternion.Lerp(

@@ -8,12 +8,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Charred
-    second: {fileID: 2100000, guid: 80dd27e17d54e444183ffc5af756cb83, type: 2}
+    second: {fileID: 2100000, guid: 0cd89ff135b005a4db8c26da2f164c6b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Stone
-    second: {fileID: 2100000, guid: 0cd89ff135b005a4db8c26da2f164c6b, type: 2}
+    second: {fileID: 2100000, guid: 5d6ef20fd7fedb94a885ee77d6808d62, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

@@ -73,6 +73,9 @@ public class UIController : MonoBehaviour
         pauseCanvas.SetActive(currentState == UIState.Pause);
         mixCanvas.SetActive(currentState == UIState.Crafting || currentState == UIState.Furnace || currentState == UIState.Storage);
 
+        if (currentState == UIState.Storage && newState != UIState.Storage)
+            currentStorage = null;
+        
         switch (currentState)
         {
             case UIState.Gameplay:
@@ -167,6 +170,7 @@ public class UIController : MonoBehaviour
         SetState(UIState.Storage);
     }
 
+    public Storage GetCurrentStorage() => currentStorage;
     public void SetCraftingState() => SetState(UIState.Crafting);
     public void SetInventoryState() => SetState(UIState.Inventory);
 }

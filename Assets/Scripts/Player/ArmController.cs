@@ -56,7 +56,7 @@ public class ArmController : MonoBehaviour
     {
         UpdateAnimation();
     }
-    
+
     public bool IsMoving() => isMoving;
     public bool CanAttack() => canAttack;
 
@@ -69,7 +69,10 @@ public class ArmController : MonoBehaviour
             if(item != null)
                 item.Attack(this);
             else
+            {
+                animator.SetTrigger("Punch");
                 StartCoroutine(PunchMovementCR());
+            }
 
             StartCoroutine(AttackCooldownCR());
         }
@@ -281,9 +284,22 @@ public class ArmController : MonoBehaviour
     {
         ItemBehaviour currentBehaviour = HotBarController.instance.GetCurrentItemBehaviour();
 
-        if(currentBehaviour is ToolBehaviour)
-            animator.SetBool("Clutch",true);
-        else
+        if(currentBehaviour == null)
+        {
             animator.SetBool("Clutch",false);
+            animator.SetBool("Grab",false);
+            return;
+        }
+
+        if(currentBehaviour is ToolBehaviour)
+        {
+            animator.SetBool("Clutch",true);
+            animator.SetBool("Grab",false);
+        }
+        else
+        {   
+            animator.SetBool("Grab",true);
+            animator.SetBool("Clutch",false);
+        } 
     }
 }

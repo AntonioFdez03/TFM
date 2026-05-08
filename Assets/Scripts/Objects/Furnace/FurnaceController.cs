@@ -21,6 +21,7 @@ public class FurnaceController : MonoBehaviour
     [SerializeField] GameObject FuelBranchPrefab;
     [SerializeField] GameObject FuelCharcoalPrefab;
     [SerializeField] GameObject fire;
+    [SerializeField] GameObject fireLight;
 
     void Start()
     {
@@ -125,6 +126,7 @@ public class FurnaceController : MonoBehaviour
         if(currentFuel > 0 && currentActiveItem != -1)
         {   
             fire.SetActive(true);
+            fireLight.SetActive(true);
             if(timer > bakeDuration)
             {
                 timer = 0;
@@ -135,6 +137,7 @@ public class FurnaceController : MonoBehaviour
         {   
             timer = 0;
             fire.SetActive(false);
+            fireLight.SetActive(false);
         }
     }
     private void BakeItem(int index)

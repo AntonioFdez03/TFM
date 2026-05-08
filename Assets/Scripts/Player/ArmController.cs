@@ -5,7 +5,10 @@ using UnityEditor;
 public class ArmController : MonoBehaviour
 {   
     public static ArmController instance;
+
     [SerializeField] private Transform handSlot;
+    [SerializeField] private Animator animator;
+
     private Quaternion initialHandRotation;
     private Quaternion targetHandRotation;
     private bool isMoving = false;
@@ -41,7 +44,7 @@ public class ArmController : MonoBehaviour
     }
     
     void Start()
-    {
+    {   
         initialPosition = transform.localPosition;
         initialRotation = transform.localRotation;
 
@@ -49,6 +52,11 @@ public class ArmController : MonoBehaviour
         targetHandRotation = initialHandRotation * Quaternion.Euler(90f, 0f, 0f);
     }
 
+    void Update()
+    {
+        UpdateAnimation();
+    }
+    
     public bool IsMoving() => isMoving;
     public bool CanAttack() => canAttack;
 
@@ -210,9 +218,7 @@ public class ArmController : MonoBehaviour
             yield return null;
         }
 
-        print("Golpea");
         ItemHit();
-        print("Vuelve");
         yield return new WaitForSeconds(punchReturnCooldown);
 
         // 3. Volver a posición y rotación inicial
@@ -268,5 +274,16 @@ public class ArmController : MonoBehaviour
         }
 
         isMoving = false;
+    }
+
+
+    private void UpdateAnimation()
+    {
+        ItemBehaviour currentBehaviour = HotBarController.instance.GetCurrentItemBehaviour();
+
+        if(currentBehaviour is ToolBehaviour)
+            animator.SetBool("Clutch",true);
+        else
+            animator.SetBool("Clutch",false);
     }
 }

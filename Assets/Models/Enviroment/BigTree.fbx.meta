@@ -8,12 +8,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: ImagenRama
-    second: {fileID: 2100000, guid: a3fc1acef729d144388a18fdace4bdea, type: 2}
+    second: {fileID: 2100000, guid: 9229f4e24ad58ee41857984269ebf4e6, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Material
-    second: {fileID: 2100000, guid: 108c82162e5314d4ea26be6cdb493cef, type: 2}
+    second: {fileID: 2100000, guid: 6158fa1dc08f5954286fec7249789619, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

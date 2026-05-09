@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d4a83ace4815448a1110b8a22244c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResourceBehaviour
-  data: {fileID: 11400000, guid: 32c8912cab7a67f4d88dc366dc8c2175, type: 2}
+  data: {fileID: 11400000, guid: 049433d72a335734cabd1a42db497f52, type: 2}
 --- !u!1001 &4129920321052033854
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -147,7 +147,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: c39167b4ff3730743af47f4bf404d8a4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 5d6ef20fd7fedb94a885ee77d6808d62, type: 2}
+      objectReference: {fileID: 2100000, guid: 532cbd70073266c4dbbcefc5f7a6e4d6, type: 2}
     - target: {fileID: -5754084199372789682, guid: c39167b4ff3730743af47f4bf404d8a4, type: 3}
       propertyPath: m_Mesh
       value: 

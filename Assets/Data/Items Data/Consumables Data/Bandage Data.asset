@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Bandage Data
+  m_EditorClassIdentifier: Assembly-CSharp::ConsumableData
+  id: Bandage
+  itemName: Bandage
+  icon: {fileID: 21300000, guid: 3dffa9291e3fc3543a6dc112a4c029cc, type: 3}
+  prefab: {fileID: 1802994727675784924, guid: 114b77f53c3a9fa4fb9dfa022d830a6d, type: 3}
+  hungerPoints: 0
+  healthPoints: 15
+  sanityPoints: 0
+  consumeTime: 7

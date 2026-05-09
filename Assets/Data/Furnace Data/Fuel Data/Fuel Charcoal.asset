@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6931629643a82b345b154d79ebd7e9d6, type: 3}
   m_Name: Fuel Charcoal
   m_EditorClassIdentifier: Assembly-CSharp::FuelData
-  fuelItem: {fileID: 11400000, guid: d87bbfdd22304b640934d78b740f0643, type: 2}
+  fuelItem: {fileID: 11400000, guid: 351741b5e9c32ce448208d5061868f34, type: 2}
   energy: 3

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6931629643a82b345b154d79ebd7e9d6, type: 3}
   m_Name: Fuel Branch
   m_EditorClassIdentifier: Assembly-CSharp::FuelData
-  fuelItem: {fileID: 11400000, guid: 5cf8d6bef9792144db267bc83e0b96e9, type: 2}
+  fuelItem: {fileID: 11400000, guid: 0758635f9cf27de4a84ea618a2d31a82, type: 2}
   energy: 1

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: StoneSpear Data
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  id: StoneSpear
+  itemName: Stone Spear
+  icon: {fileID: 21300000, guid: 793ae14eeb1cf0940aebc46d93b09af4, type: 3}
+  prefab: {fileID: 7351978201140487590, guid: e47ed157bd8222a4e8cb3e068acdc09a, type: 3}
+  maxHealth: 70
+  damage: 15
+  range: 7

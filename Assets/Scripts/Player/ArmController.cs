@@ -94,7 +94,16 @@ public class ArmController : MonoBehaviour
         {
             Animal animal = hit.collider.CompareTag("Animal") ? hit.collider.GetComponent<Animal>() : null;
             if (animal != null)
+            {
                 animal.TakeDamage(punchDamage);
+
+                Vector3 dir =
+                    (animal.transform.position - transform.position).normalized;
+
+                animal.StartCoroutine(
+                    animal.KnockbackCR(dir, 0.8f, 0.15f)
+                );
+            }
 
             HarvestableObject harvestableObject = hit.collider.CompareTag("Harvestable") ? hit.collider.GetComponent<HarvestableObject>() : null;
             if(harvestableObject != null)

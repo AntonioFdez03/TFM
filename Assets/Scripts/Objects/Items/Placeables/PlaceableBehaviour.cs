@@ -193,8 +193,9 @@ public class PlaceableBehaviour : ItemBehaviour
     }
 
     public void TakeDamage(float amount)
-    {
+    {   
         SetCurrentHealth(Mathf.Clamp(GetCurrentHealth() - amount, 0, GetMaxHealth()));
+        print("Item: " + name + ", daño recibido: " + amount + ", y me queda: " + itemStack.currentHealth);
 
         if (GetCurrentHealth() == 0)
             Destroy(gameObject);

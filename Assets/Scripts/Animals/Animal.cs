@@ -52,6 +52,34 @@ public class Animal : MonoBehaviour
         }
     }
 
+    public IEnumerator KnockbackCR(Vector3 dir, float force, float duration)
+    {
+        NavMeshAgent agent = GetAgent();
+
+        agent.isStopped = true;   // importante
+        agent.updatePosition = true;
+
+        Vector3 start = transform.position;
+        Vector3 target = start + dir * force;
+
+        float t = 0f;
+
+        while (t < duration)
+        {
+            float step = t / duration;
+
+            Vector3 pos = Vector3.Lerp(start, target, step);
+
+            agent.Move(pos - transform.position); // 👈 clave (NO transform.position)
+
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        agent.Warp(target); // re-sincroniza sin salto visible
+        agent.isStopped = false;
+    }
+
     private void Die()
     {
         print("Animal muerto");

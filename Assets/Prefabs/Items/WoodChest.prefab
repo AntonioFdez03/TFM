@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 6586940359625362781}
   - component: {fileID: 386344863918105593}
   m_Layer: 7
-  m_Name: Chest
+  m_Name: WoodChest
   m_TagString: Interactive
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

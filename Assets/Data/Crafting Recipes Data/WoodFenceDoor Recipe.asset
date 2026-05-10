@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad1b90269a18a8d4bba39a3ad8d84f9d, type: 3}
-  m_Name: WoodFenceDoor
+  m_Name: WoodFenceDoor Recipe
   m_EditorClassIdentifier: Assembly-CSharp::CraftingRecipe
-  recipeType: 4
+  recipeType: 5
   stationType: 1
   ingredients:
-  - ingredientData: {fileID: 1609258955208522024, guid: 8d1c73364dcfaec409f4be7fe2790ee1, type: 3}
-    ingredientAmount: 3
-  recipeItem: {fileID: 6505259477395084954, guid: 38678a89eb3c6c04f83b662ea79a0e8a, type: 3}
+  - ingredientData: {fileID: 11400000, guid: 0758635f9cf27de4a84ea618a2d31a82, type: 2}
+    ingredientAmount: 6
+  resultItem: {fileID: 11400000, guid: 019612d7d24a12542879570cd464cdf8, type: 2}

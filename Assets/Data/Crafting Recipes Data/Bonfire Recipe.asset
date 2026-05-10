@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad1b90269a18a8d4bba39a3ad8d84f9d, type: 3}
-  m_Name: Wall
+  m_Name: Bonfire Recipe
   m_EditorClassIdentifier: Assembly-CSharp::CraftingRecipe
-  recipeType: 4
-  stationType: 1
+  recipeType: 5
+  stationType: 0
   ingredients:
-  - ingredientData: {fileID: 1609258955208522024, guid: 8d1c73364dcfaec409f4be7fe2790ee1, type: 3}
-    ingredientAmount: 4
-  recipeItem: {fileID: 8171022512432728542, guid: 3d4a976570fd4bd46bfe8cc8b6fad0a4, type: 3}
+  - ingredientData: {fileID: 11400000, guid: 5cf8d6bef9792144db267bc83e0b96e9, type: 2}
+    ingredientAmount: 3
+  - ingredientData: {fileID: 11400000, guid: 32c8912cab7a67f4d88dc366dc8c2175, type: 2}
+    ingredientAmount: 6
+  resultItem: {fileID: 11400000, guid: d776dadad6d7024409773418b37e5906, type: 2}

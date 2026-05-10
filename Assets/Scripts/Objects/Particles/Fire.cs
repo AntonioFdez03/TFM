@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Bonfire : PlaceableBehaviour
+public class Fire : MonoBehaviour
 {
     private bool burnPlayer;
     private float fireDamage;
 
-    protected override void Start()
+    void Start()
     {   
-        base.Start();
         fireDamage = 20;
     }
 
@@ -23,14 +22,14 @@ public class Bonfire : PlaceableBehaviour
     }
 
     protected void OnTriggerEnter(Collider other)
-    {
+    {   
         if (other.CompareTag("Player"))
             burnPlayer = true;
         
     }
 
     protected void OnTriggerExit(Collider other)
-    {
+    {   
         if (other.CompareTag("Player"))
             burnPlayer = false;
     }

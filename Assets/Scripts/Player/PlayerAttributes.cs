@@ -38,6 +38,7 @@ public class PlayerAttributes : MonoBehaviour
     //Sanity
     private float currentSanity;
     private float maxSanity = 100f;
+    private bool inLight = false;
 
     void Start()
     {
@@ -150,6 +151,23 @@ public class PlayerAttributes : MonoBehaviour
         }
 
         currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Light"))
+        {
+            inLight = true;
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        
+        if(other.CompareTag("Light"))
+        {
+            inLight = false;
+        }
     }
 
     IEnumerator HealingCooldownCR()

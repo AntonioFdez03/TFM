@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad1b90269a18a8d4bba39a3ad8d84f9d, type: 3}
-  m_Name: WoodChest
+  m_Name: WoodFence Recipe
   m_EditorClassIdentifier: Assembly-CSharp::CraftingRecipe
   recipeType: 5
   stationType: 1
   ingredients:
-  - ingredientData: {fileID: 11400000, guid: 5cf8d6bef9792144db267bc83e0b96e9, type: 2}
-    ingredientAmount: 2
-  resultItem: {fileID: 11400000, guid: daec3f20c734676449e66d5d6f84d427, type: 2}
+  - ingredientData: {fileID: 11400000, guid: 0758635f9cf27de4a84ea618a2d31a82, type: 2}
+    ingredientAmount: 5
+  resultItem: {fileID: 11400000, guid: b50dd6a1e2ed7bc4daa76625354b7f1a, type: 2}

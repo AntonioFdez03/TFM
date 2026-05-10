@@ -83,5 +83,6 @@ public class Animal : MonoBehaviour
     private void Die()
     {
         print("Animal muerto");
+        player.GetComponent<PlayerController>().GetPlayerAttributes().UpdateSanity(-10f);
     }
 }

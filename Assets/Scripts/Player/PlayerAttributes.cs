@@ -9,7 +9,6 @@ public class PlayerAttributes : MonoBehaviour
     public event Action<float> OnSanityChanged;
 
     //Health 
-    [SerializeField] Image healthBar;
     private float currentHealth;
     private float maxHealth = 100f;
     private bool isInvulnerable = false;
@@ -19,7 +18,6 @@ public class PlayerAttributes : MonoBehaviour
     private float timeSinceLastDamage = 0f;
 
     //Stamina
-    [SerializeField] Image staminaBar;
     private float currentStamina;
     private float maxStamina = 100f;
     private float staminaBurnRate = 10f; //Consumo por segundo
@@ -29,7 +27,6 @@ public class PlayerAttributes : MonoBehaviour
     public bool canSprint;
 
     //Hunger
-    [SerializeField] Image hungerBar;
     private float currentHunger;
     private float maxHunger = 100f;
     private float hungerBurnRate = 1f;
@@ -39,7 +36,6 @@ public class PlayerAttributes : MonoBehaviour
     private float hungerHeal = 5f;
 
     //Sanity
-    [SerializeField] Image sanityBar;
     private float currentSanity;
     private float maxSanity = 100f;
 
@@ -56,7 +52,6 @@ public class PlayerAttributes : MonoBehaviour
         HandleHunger();
         HandleHealth();
         HandleStamina();
-        UpdateUI();
     }
 
     public void SetAttributes(float health, float hunger, float stamina, float sanity)
@@ -72,6 +67,7 @@ public class PlayerAttributes : MonoBehaviour
     public float GetCurrentHunger() => currentHunger;
     public float GetMaxHunger() => maxHunger;
     public float GetCurrentStamina() => currentStamina;
+    public float GetMaxStamina() => maxStamina;
     public float GetCurrentSanity() => currentSanity;
     public float GetMaxSanity() => maxSanity;
 
@@ -154,18 +150,6 @@ public class PlayerAttributes : MonoBehaviour
         }
 
         currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
-    }
-
-    private void UpdateUI()
-    {
-        if (healthBar != null)
-            healthBar.fillAmount = currentHealth / maxHealth;
-        if (staminaBar != null)
-            staminaBar.fillAmount = currentStamina / maxStamina;
-        if(hungerBar != null)
-            hungerBar.fillAmount = currentHunger / maxHunger;
-        if(sanityBar != null)
-            sanityBar.fillAmount = currentSanity / maxSanity;
     }
 
     IEnumerator HealingCooldownCR()

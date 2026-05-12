@@ -42,7 +42,7 @@ public class WeaponData : EquipmentData
 [CreateAssetMenu(menuName = "Items/Placeable Data")]
 public class PlaceableData : DurableItemData
 {
-    
+    public bool straight;
 }
 
 [CreateAssetMenu(menuName = "Items/Consumable Data")]

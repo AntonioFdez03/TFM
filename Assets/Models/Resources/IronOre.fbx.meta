@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0a2763923248a3747b5d786bd60a0fe2
+guid: 6240102eb2a8f12498c35dddaf5a90cb
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -7,8 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material.001
-    second: {fileID: 2100000, guid: c55fb4f4f358837429f58219034760e2, type: 2}
+      name: IronOre
+    second: {fileID: 2100000, guid: 381c0e1064a48fb4898a980e0d90545b, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

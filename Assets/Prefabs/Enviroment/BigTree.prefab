@@ -79,7 +79,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2040128832123783285}
-  m_Mesh: {fileID: -6492768007808028557, guid: 3d85d73b23090064f9aa1b3aad4e1dd8, type: 3}
+  m_Mesh: {fileID: -4626752521224134738, guid: 3d85d73b23090064f9aa1b3aad4e1dd8, type: 3}
 --- !u!23 &3291977901387507587
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -105,8 +105,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ee1d503d1a246684c8f845c1d52e62c1, type: 2}
   - {fileID: 2100000, guid: 9229f4e24ad58ee41857984269ebf4e6, type: 2}
+  - {fileID: 2100000, guid: c55fb4f4f358837429f58219034760e2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5508049dedc538449b1cdd7a1b1a8fe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TreeNode
-  dropItem: {fileID: 201371129139926570, guid: 8d1c73364dcfaec409f4be7fe2790ee1, type: 3}
+  dropItem: {fileID: 5144113718169600618, guid: 8d1c73364dcfaec409f4be7fe2790ee1, type: 3}
   logSpawners:
   - {fileID: 2461676895653780925}
   - {fileID: 4244760929947655750}

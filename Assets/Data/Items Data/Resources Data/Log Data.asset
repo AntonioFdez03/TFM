@@ -15,4 +15,4 @@ MonoBehaviour:
   id: Log
   itemName: Log
   icon: {fileID: 21300000, guid: cc8e7f6e3b761a143ba06e8cbb87e02d, type: 3}
-  prefab: {fileID: 201371129139926570, guid: 8d1c73364dcfaec409f4be7fe2790ee1, type: 3}
+  prefab: {fileID: 5144113718169600618, guid: 8d1c73364dcfaec409f4be7fe2790ee1, type: 3}

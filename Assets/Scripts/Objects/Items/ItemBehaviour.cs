@@ -18,6 +18,9 @@ public abstract class ItemBehaviour : MonoBehaviour, IObjectHealth
             if(data is DurableItemData durableItemData)
                 maxHealth = durableItemData.maxHealth;
 
+            if(data is PlaceableData placeableData)
+                print("Item: " + placeableData.id + ", straight: " + placeableData.straight);
+
             itemStack = new ItemStack
             {
                 id = data.id,

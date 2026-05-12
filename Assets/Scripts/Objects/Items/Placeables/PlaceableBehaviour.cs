@@ -16,11 +16,12 @@ public class PlaceableBehaviour : ItemBehaviour
     private Quaternion customRotation;
     private bool canPlace;
     protected bool canUnplace = true;
-    protected bool straight = false;
 
     private InputAction interact;
     protected float unplaceTime = 1f;
     private float timer;
+
+    private float maxSlopeAngle = 35f;
 
     protected override void Start()
     {
@@ -64,9 +65,9 @@ public class PlaceableBehaviour : ItemBehaviour
         InventoryController.instance.RemoveItem(GetItemStack());
     }
 
-    private bool CanPlace(Vector3 position, Quaternion rotation)
+    private bool Collides(Vector3 position, Quaternion rotation)
     {
-        return !Physics.CheckBox(
+        return Physics.CheckBox(
             position,
             checkBoxSize / 2f,
             rotation,
@@ -83,6 +84,9 @@ public class PlaceableBehaviour : ItemBehaviour
             customRotation = Quaternion.identity;
 
             CalculateCheckBoxSize();
+
+            if (data is PlaceableData placeableData)
+                print(placeableData.straight);
         }
 
         DisableSilhouetteComponents();
@@ -91,7 +95,7 @@ public class PlaceableBehaviour : ItemBehaviour
         silhouette.SetActive(true);
         silhouette.GetComponent<Rigidbody>().isKinematic = true;
 
-        canPlace = CanPlace(silhouette.transform.position, silhouette.transform.rotation);
+        canPlace = IsSlopeValid(hit) && !Collides(silhouette.transform.position, silhouette.transform.rotation);
 
         if (canPlace)
         {
@@ -157,14 +161,19 @@ public class PlaceableBehaviour : ItemBehaviour
         silhoueteForward.Normalize();
 
         Quaternion lookRotation = Quaternion.LookRotation(silhoueteForward);
+        bool straight = false;
+
+        if (data is PlaceableData placeableData)
+            straight = placeableData.straight;
 
         if (straight)
-        {
-            silhouette.transform.rotation =
-                Quaternion.Euler(0f, lookRotation.eulerAngles.y * customRotation.y, 0f);
+        {   
+            print("Straight");
+            silhouette.transform.rotation = Quaternion.Euler(0f, lookRotation.eulerAngles.y, 0f) * customRotation;
         }
         else
         {
+            print("NO Straight");
             Quaternion alignToGround =
                 Quaternion.FromToRotation(Vector3.up, hit.normal);
 
@@ -211,5 +220,11 @@ public class PlaceableBehaviour : ItemBehaviour
             float r = capsule.radius;
             checkBoxSize = new Vector3(r, r, r);
         }
+    }
+
+    private bool IsSlopeValid(RaycastHit hit)
+    {
+        float slopeAngle = Vector3.Angle(Vector3.up, hit.normal);
+        return slopeAngle <= maxSlopeAngle;
     }
 }

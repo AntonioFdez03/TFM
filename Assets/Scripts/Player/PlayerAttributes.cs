@@ -38,6 +38,8 @@ public class PlayerAttributes : MonoBehaviour
     //Sanity
     private float currentSanity;
     private float maxSanity = 100f;
+    private float timeSinceLastSanityDecrase = 0f;
+    private float sanityDecreaseInterval = 5f;
     private bool inLight = false;
 
     void Start()
@@ -53,6 +55,7 @@ public class PlayerAttributes : MonoBehaviour
         HandleHunger();
         HandleHealth();
         HandleStamina();
+        HandleSanity();
     }
 
     public void SetAttributes(float health, float hunger, float stamina, float sanity)
@@ -114,6 +117,22 @@ public class PlayerAttributes : MonoBehaviour
         }
 
         currentHunger = Mathf.Clamp(currentHunger, 0f, maxHunger);
+    }
+
+    private void HandleSanity()
+    {   
+        timeSinceLastSanityDecrase += Time.deltaTime;
+
+        if(timeSinceLastSanityDecrase >= sanityDecreaseInterval)
+        {
+            if(!DayCycleController.instance.IsNight() || inLight)
+                UpdateSanity(2f);
+            else
+                UpdateSanity(-2f);
+
+            timeSinceLastSanityDecrase = 0f;
+        }
+        
     }
 
     public void Eat(float amount)

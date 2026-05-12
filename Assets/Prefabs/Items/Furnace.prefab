@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 2247040119985530741}
   - component: {fileID: 6545446730599463044}
   - component: {fileID: 3345991029561090538}
+  - component: {fileID: 8505342933408011573}
   m_Layer: 7
   m_Name: Point Light
-  m_TagString: Untagged
+  m_TagString: Light
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,6 +128,27 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!135 &8505342933408011573
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1064237462393038945}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 9.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3737032221231161264
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,7 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daa3e8df43ce2bd4ba69ae29fde22158, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlaceableBehaviour
-  data: {fileID: 0}
+  data: {fileID: 11400000, guid: 862a9bf6f5154654a9a000e1d26433c1, type: 2}
   greenMaterial: {fileID: 2100000, guid: c289674975e48194ba656debbe498968, type: 2}
   redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
   placementMask:

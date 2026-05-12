@@ -13,6 +13,8 @@ public class Animal : MonoBehaviour
     private NavMeshAgent agent;
     private Transform player;
 
+    private bool dead = false;
+
 
     private float currentHealth;
 
@@ -30,8 +32,9 @@ public class Animal : MonoBehaviour
     public NavMeshAgent GetAgent() => agent;
 
     void Update()
-    {
-        animalBehaviour?.Act(this);
+    {   
+        if(!dead)
+            animalBehaviour?.Act(this);
     }
     
     public AnimalData GetAnimalData() => data;
@@ -40,8 +43,8 @@ public class Animal : MonoBehaviour
     public void TakeDamage(float amount)
     {   
         currentHealth = Math.Clamp(currentHealth - amount, 0, data.maxHealth);
-        print("Animal dañado, vida: " + currentHealth);
 
+        print("Vida restante: " + currentHealth);
         if(currentHealth == 0)
         {
             Die();
@@ -82,7 +85,8 @@ public class Animal : MonoBehaviour
 
     private void Die()
     {
-        print("Animal muerto");
+        dead = true;
+        animator.SetTrigger("Dead");
         player.GetComponent<PlayerController>().GetPlayerAttributes().UpdateSanity(-10f);
     }
 }

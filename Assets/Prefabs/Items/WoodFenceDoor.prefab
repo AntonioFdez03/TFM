@@ -296,7 +296,7 @@ NavMeshObstacle:
   m_Extents: {x: 3.8320003, y: 1.9350001, z: 0.319}
   m_MoveThreshold: 0.1
   m_Carve: 1
-  m_CarveOnlyStationary: 1
+  m_CarveOnlyStationary: 0
   m_Center: {x: 0.002, y: 2.7700002, z: -0.127}
   m_TimeToStationary: 0.5
 --- !u!1 &6505259477395084954
@@ -311,7 +311,6 @@ GameObject:
   - component: {fileID: 3103041533000536002}
   - component: {fileID: 3259078088694942741}
   - component: {fileID: 1063926543105526354}
-  - component: {fileID: 450824505411197062}
   m_Layer: 7
   m_Name: WoodFenceDoor
   m_TagString: Interactive
@@ -403,19 +402,4 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 384
   rotationPivot: {fileID: 7814146294564194399}
---- !u!208 &450824505411197062
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6505259477395084954}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 4, y: 2.5, z: 0.5}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 2.5, z: 0}
-  m_TimeToStationary: 0.5
+  navObstacle: {fileID: 3688570558793594308}

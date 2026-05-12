@@ -11,14 +11,14 @@ public class AnimalSpawner : MonoBehaviour
     private float minSpawnDistance = 10f;
     private float maxSpawnDistance = 20f;
     private float spawnRate = 20f;
-    private int maxAnimals = 10;
+    private int maxAnimals = 1;
     private float timer;
 
     void Update()
     {
         timer += Time.deltaTime;
 
-        if (timer >= spawnRate && GameObject.FindGameObjectsWithTag("Animal").Length < maxAnimals)
+        if (timer >= spawnRate && animalsParent.childCount < maxAnimals)
         {
             SpawnAnimal();
             timer = 0f;

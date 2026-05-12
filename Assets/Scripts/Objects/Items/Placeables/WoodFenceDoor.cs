@@ -8,14 +8,13 @@ using UnityEngine.UI;
 public class WoodFenceDoor : PlaceableBehaviour, IInteractiveObject
 {
     [SerializeField] Transform rotationPivot;
+    [SerializeField] private NavMeshObstacle navObstacle;
     private GameObject pivot;
     private bool doorOpen = false;
     private float openAngle = 90f;
     private float openSpeed = 2f;
     private Quaternion closedRotation;
     private Quaternion openRotation;
-
-    private NavMeshObstacle navObstacle;
 
 
     protected override void Start()
@@ -25,7 +24,7 @@ public class WoodFenceDoor : PlaceableBehaviour, IInteractiveObject
         closedRotation = rotationPivot.rotation;
         openRotation = Quaternion.AngleAxis(openAngle, rotationPivot.up) * closedRotation;
 
-        navObstacle = GetComponent<NavMeshObstacle>();
+        navObstacle.carveOnlyStationary = false;
     }
 
     void Update()

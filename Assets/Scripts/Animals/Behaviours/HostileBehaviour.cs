@@ -37,17 +37,19 @@ public class HostileBehaviour : IAnimalBehaviour
                 {
                     ChasePlayer(animal);
                 }
-                else
-                {
+                else if (attackTimer < 0f)
+                {   
                     agent.ResetPath();
                     LookAtPlayer(animal);
+                    animal.GetAnimator().SetTrigger("Attack");
                     AttackPlayer(animal);
                 }
             }
-            else
+            else if(attackTimer < 0f)
             {
                 agent.ResetPath();
                 LookAtPlayer(animal);
+                animal.GetAnimator().SetTrigger("Attack");
                 TryAttackStructure(animal);
             }
         }
@@ -76,9 +78,6 @@ public class HostileBehaviour : IAnimalBehaviour
 
     private void AttackPlayer(Animal animal)
     {
-        if (attackTimer > 0f)
-            return;
-
         Transform player = animal.GetPlayer();
 
         if (player != null)
@@ -93,8 +92,6 @@ public class HostileBehaviour : IAnimalBehaviour
 
     private void TryAttackStructure(Animal animal)
     {
-        if (attackTimer > 0f)
-            return;
 
         Transform player = animal.GetPlayer();
 

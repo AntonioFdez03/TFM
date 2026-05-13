@@ -66,6 +66,8 @@ public class Animal : MonoBehaviour
         }
         else
         {
+            animator.SetTrigger("Flinch");
+            StartCoroutine(FlinchCR());
             animalBehaviour.TakeDamage(this);
         }
     }
@@ -163,5 +165,10 @@ public class Animal : MonoBehaviour
         meshCollider.enabled = true;
 
         animator.enabled = false;
+    }
+
+    private IEnumerator FlinchCR()
+    {
+        yield return new WaitForSeconds(2f);
     }
 }

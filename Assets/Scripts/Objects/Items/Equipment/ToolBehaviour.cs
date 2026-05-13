@@ -40,7 +40,7 @@ public class ToolBehaviour : EquipmentBehaviour
         Debug.DrawRay(ray.origin, ray.direction * toolData.range, Color.red);
         if (Physics.Raycast(ray, out hit, toolData.range))
         {
-            Animal animal = hit.collider.CompareTag("Animal") ? hit.collider.GetComponent<Animal>() : null;
+            Animal animal = hit.collider.CompareTag("Animal") ? hit.collider.GetComponentInParent<Animal>() : null;
             if (animal != null)
             {
                 animal.TakeDamage(toolData.damage);

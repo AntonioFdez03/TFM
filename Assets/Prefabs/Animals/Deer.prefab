@@ -299,9 +299,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5081955822020099593}
   - component: {fileID: 9018798833237905521}
+  - component: {fileID: 881748349164470565}
   m_Layer: 0
   m_Name: Model
-  m_TagString: Untagged
+  m_TagString: Animal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -414,6 +415,28 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.000000005122274, y: 0.009865381, z: -0.0016703391}
     m_Extent: {x: 0.0053104623, y: 0.010368563, z: 0.0097864}
   m_DirtyAABB: 0
+--- !u!64 &881748349164470565
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2500683495434887335}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5638743240089414024, guid: 8bba2c3506a59b5478adfdc65c4c3a96, type: 3}
 --- !u!1 &2557657890927703782
 GameObject:
   m_ObjectHideFlags: 0
@@ -998,7 +1021,7 @@ GameObject:
   - component: {fileID: 8656122947914657206}
   m_Layer: 0
   m_Name: Deer_001_rig
-  m_TagString: Untagged
+  m_TagString: Animal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1222,7 +1245,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7922649801668778606}
-  - component: {fileID: 7922649801668778605}
   - component: {fileID: 7922649801668778610}
   - component: {fileID: 3646756198352511478}
   - component: {fileID: 1353840603495440698}
@@ -1250,31 +1272,6 @@ Transform:
   - {fileID: 8656122947914657206}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!143 &7922649801668778605
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7402009758359158996}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 1.71
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.88, z: 0}
 --- !u!95 &7922649801668778610
 Animator:
   serializedVersion: 7
@@ -1310,6 +1307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Animal
   data: {fileID: 11400000, guid: c291a50cd32df6c40b1b8b2044f458b1, type: 2}
+  dropItem: {fileID: 5442471255067961418, guid: 08d42728e0e98714fb8c8261d3146e7e, type: 3}
 --- !u!195 &1353840603495440698
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -224,22 +224,33 @@ public class ArmController : MonoBehaviour
         isMoving = true;
 
         // Calculamos la rotación de "golpe" sumando el ángulo al eje X
-        Quaternion targetRotation = initialRotation * Quaternion.Euler(swingAngle, 0, 0);
+        Quaternion swingRotation = initialRotation * Quaternion.Euler(swingAngle, 0, 0);
 
-        // 1. Fase de Bajada (Golpe)
+        // 1. Fase de subida
         float elapsed = 0;
         while (elapsed < swingDuration)
         {
-            transform.localRotation = Quaternion.Slerp(initialRotation, targetRotation, elapsed / swingDuration);
+            transform.localRotation = Quaternion.Slerp(initialRotation, swingRotation, elapsed / swingDuration);
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        // 2. Fase de Subida (Retorno)
+        Quaternion hitRotation = Quaternion.Euler(30, 0, 0);
+        // 2. Fase de golpeo
         elapsed = 0;
         while (elapsed < returnDuration)
         {
-            transform.localRotation = Quaternion.Slerp(targetRotation, initialRotation, elapsed / returnDuration);
+            transform.localRotation = Quaternion.Slerp(swingRotation, hitRotation, elapsed / returnDuration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        ItemHit();
+        yield return new WaitForSeconds(0.2f);
+        elapsed = 0;
+        while (elapsed < 0.5f)
+        {
+            transform.localRotation = Quaternion.Slerp(hitRotation, initialRotation, elapsed / 0.5f);
             elapsed += Time.deltaTime;
             yield return null;
         }
@@ -247,7 +258,6 @@ public class ArmController : MonoBehaviour
         // Aseguramos que vuelva exactamente a la posición original
         transform.localRotation = initialRotation;
         isMoving = false;
-        ItemHit();
     }
 
     public IEnumerator SpearMovementCR()

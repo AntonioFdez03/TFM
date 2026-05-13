@@ -165,7 +165,61 @@ public class ArmController : MonoBehaviour
         isMoving = false;
     }
 
-    public IEnumerator ToolSwingCR()
+    public IEnumerator AxeSwingCR()
+    {
+        isMoving = true;
+
+        Quaternion prepRot = initialRotation * Quaternion.Euler(0f, 0f, -50f);
+
+        float elapsed = 0f;
+
+        while (elapsed < 0.08f)
+        {
+            float t = elapsed / 0.08f;
+            transform.localRotation = Quaternion.Slerp(initialRotation, prepRot, t);
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // Calculamos la rotación de "golpe" sumando el ángulo al eje X
+        Quaternion targetRotation = prepRot * Quaternion.Euler(swingAngle, 0, 0);
+        elapsed = 0f;
+        // 1. Fase de subida 
+        while (elapsed < swingDuration)
+        {
+            transform.localRotation = Quaternion.Slerp(prepRot, targetRotation, elapsed / swingDuration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // 2. Fase de bajada
+        Quaternion hitRot = Quaternion.Euler(0, -40, -65);
+        elapsed = 0;
+        while (elapsed < returnDuration)
+        {
+            transform.localRotation = Quaternion.Slerp(targetRotation, hitRot, elapsed / returnDuration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        ItemHit();
+        
+        yield return new WaitForSeconds(0.3f);
+        elapsed = 0;
+        while (elapsed < 0.5f)
+        {
+            transform.localRotation = Quaternion.Slerp(hitRot, initialRotation, elapsed / 0.5f);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // Aseguramos que vuelva exactamente a la posición original
+        transform.localRotation = initialRotation;
+        isMoving = false;
+    }
+
+    public IEnumerator PickaxeSwingCR()
     {
         isMoving = true;
 

@@ -220,9 +220,10 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HandleItemSelection(GameObject item, bool selected)
     {   
+        Debug.Log("item: " + item);
         if(item.TryGetComponent(out ItemBehaviour itemB))
             itemName.text = selected ? itemB.GetData().itemName : "";
-
+        Debug.Log("Primer if: " + item);
         if(item.TryGetComponent<ItemBehaviour>(out var itemBehaviour) && itemBehaviour.GetCurrentHealth() != itemBehaviour.GetMaxHealth())
         {   
             itemHealth.text = itemBehaviour.GetCurrentHealth().ToString() + "/" + itemBehaviour.GetMaxHealth().ToString();
@@ -232,7 +233,8 @@ public class PlayerInteraction : MonoBehaviour
         }
         else
             itemHealth.transform.parent.gameObject.SetActive(false);
-            
+        
+        Debug.Log("Segundo if: " + item);
         foreach (Transform child in item.transform)
         {
             if(child.TryGetComponent(out MeshRenderer meshRenderer)){

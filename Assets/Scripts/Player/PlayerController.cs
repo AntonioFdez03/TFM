@@ -6,26 +6,31 @@ public class PlayerController : MonoBehaviour
 {   
     public static PlayerController instance;
 
-    [Header("References")]
     private PlayerAttributes playerAttributes;
     private CharacterController controller;
 
-    [Header("Movement")]
-    [SerializeField] float movementSpeed = 10f; 
-    [SerializeField] float sprintSpeed = 20f; 
-    [SerializeField] float jumpForce = 10f;
+    private float movementSpeed = 10f; 
+    private float sprintSpeed = 20f; 
+    private float crouchSpeed = 5f;
+    private float jumpForce = 10f;
+
     private bool canMove;
     private bool isDead;
     private bool isMoving;
     private bool isSprinting;
+    private bool isCrouching;
+
     private InputAction move;
     private InputAction sprint;
     private InputAction jump;
+    private InputAction crouch;
 
-    [Header("Gravity")]
     private Vector3 gravity = Vector3.down * 30f;
     private float yVelocity;
     private Vector3 groundNormal;
+
+    private Vector3 initialCameraPosition;
+    private Vector3 crouchCameraPosition;
 
     void Awake()
     {
@@ -46,6 +51,11 @@ public class PlayerController : MonoBehaviour
         move = InputSystem.actions.FindAction("Move");
         sprint = InputSystem.actions.FindAction("Sprint");
         jump = InputSystem.actions.FindAction("Jump");
+        crouch = InputSystem.actions.FindAction("Crouch");
+
+        initialCameraPosition = Camera.main.transform.localPosition;
+        crouchCameraPosition = initialCameraPosition;
+        crouchCameraPosition.y = initialCameraPosition.y/2;
     }
 
     public void InitializePlayer(Vector3 position, Quaternion rotation, float health, float hunger, float stamina, float sanity)
@@ -64,7 +74,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {   
-        if(!isDead)
+        if (!isDead)
         {  
             float angle = Vector3.Angle(groundNormal, Vector3.up);
 
@@ -76,12 +86,14 @@ public class PlayerController : MonoBehaviour
 
             if (canMove)
             {
+                Crouch();
+
                 Vector3 finalMovement = Vector3.zero;
                 finalMovement += CalculateHorizontalMovement();
                 finalMovement += CalculateVerticalMovement();
+
                 controller.Move(finalMovement * Time.deltaTime);
             }     
-                
         }
     }
 
@@ -104,7 +116,7 @@ public class PlayerController : MonoBehaviour
 
         if (isSprinting) playerAttributes.UseStamina();
 
-        float currentSpeed = isSprinting ? sprintSpeed : movementSpeed;
+        float currentSpeed = isSprinting ? sprintSpeed : crouch.IsPressed()? crouchSpeed : movementSpeed;
         
         return direction * currentSpeed;
     }
@@ -130,6 +142,18 @@ public class PlayerController : MonoBehaviour
 
         // Devolvemos el vector vertical
         return new Vector3(0, yVelocity, 0);
+    }
+
+    private void Crouch()
+    {
+        isCrouching = crouch.IsPressed();
+
+        Vector3 crouchCameraPosition = initialCameraPosition;
+        crouchCameraPosition.y = initialCameraPosition.y / 2f;
+
+        Vector3 targetPosition = isCrouching ? crouchCameraPosition : initialCameraPosition;
+
+        Camera.main.transform.localPosition = Vector3.Lerp( Camera.main.transform.localPosition, targetPosition, 8f * Time.deltaTime);
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)

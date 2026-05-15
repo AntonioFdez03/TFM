@@ -43,11 +43,9 @@ public class PlayerController : MonoBehaviour
 
         canMove = true;
         
-        //References
         controller = GetComponent<CharacterController>();
         playerAttributes = GetComponent<PlayerAttributes>();
 
-        //Actions
         move = InputSystem.actions.FindAction("Move");
         sprint = InputSystem.actions.FindAction("Sprint");
         jump = InputSystem.actions.FindAction("Jump");
@@ -69,6 +67,7 @@ public class PlayerController : MonoBehaviour
     public void SetCanMove(bool cM) => canMove = cM;
     public bool GetCanMove() => canMove;
     public bool IsSprinting() => isSprinting;
+    public bool IsCrouching() => isCrouching;
     public void SetIsDead(bool iD) => isDead = iD;
     public bool IsDead() => isDead;
 
@@ -116,7 +115,7 @@ public class PlayerController : MonoBehaviour
 
         if (isSprinting) playerAttributes.UseStamina();
 
-        float currentSpeed = isSprinting ? sprintSpeed : crouch.IsPressed()? crouchSpeed : movementSpeed;
+        float currentSpeed = isCrouching ? crouchSpeed : isSprinting? sprintSpeed : movementSpeed;
         
         return direction * currentSpeed;
     }
@@ -130,17 +129,13 @@ public class PlayerController : MonoBehaviour
             controller.stepOffset = 0.3f;
         }
 
-        // SALTO
         if (jump.triggered && controller.isGrounded)
         { 
             yVelocity = jumpForce;
             controller.stepOffset = 0;
         }
 
-        // Aplicar gravedad a la variable persistente
         yVelocity += gravity.y * Time.deltaTime;
-
-        // Devolvemos el vector vertical
         return new Vector3(0, yVelocity, 0);
     }
 

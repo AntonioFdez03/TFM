@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
-public class SmallTreeNode : HarvestableObject
+public class SmallTree : HarvestableObject
 {  
     private Rigidbody rb;
     [SerializeField] private List<Transform> branchSpawners;

@@ -75,7 +75,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7060172275402456886}
-  m_Mesh: {fileID: -4533958171038950931, guid: a4c7ad40eec231644b6e808d013c3356, type: 3}
+  m_Mesh: {fileID: 1624858771954948895, guid: a4c7ad40eec231644b6e808d013c3356, type: 3}
 --- !u!23 &8684537340187830896
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -138,7 +138,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RockNode
   dropItem: {fileID: 5751404862281763555, guid: 200b9b53a5a020c41bb8385f8889899f, type: 3}
-  dropPosition: {fileID: 5880530853166526837}
+  rockPhase: 0
+  rockMeshes:
+  - {fileID: 1624858771954948895, guid: a4c7ad40eec231644b6e808d013c3356, type: 3}
+  - {fileID: -2342673988543676562, guid: a4c7ad40eec231644b6e808d013c3356, type: 3}
+  - {fileID: -6861804273140172623, guid: a4c7ad40eec231644b6e808d013c3356, type: 3}
 --- !u!64 &3911385266859528711
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -160,7 +164,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 1624858771954948895, guid: a4c7ad40eec231644b6e808d013c3356, type: 3}
 --- !u!54 &8482163141861195001
 Rigidbody:
   m_ObjectHideFlags: 0

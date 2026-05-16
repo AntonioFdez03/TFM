@@ -5,50 +5,53 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
-public class RockNode : HarvestableObject
+public class Rock : HarvestableObject
 {   
-    [SerializeField] private Transform dropPosition;
+
+    [SerializeField] private int rockPhase = 0;
+    [SerializeField] private List<Mesh> rockMeshes;
     private Rigidbody rb;
-    private bool firstDrop = false;
-    private bool secondDrop = false;
-    private bool thirdDrop = false;
-    private bool fourthDrop = false;
+    private MeshFilter meshFilter;
+    private MeshCollider meshCollider;
 
     protected override void Awake()
     {   
         base.Awake();
         objectName = "Rock";
-        maxHealth = 100;
+        maxHealth = 30;
         currentHealth = maxHealth;
         toolsAccepted.Add(ToolType.Pickaxe);
         rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = true;
         rb.useGravity = false;
-    }
 
-    public override void TakeHit(ToolType tool, float damage)
-    {
-        base.TakeHit(tool,damage);
-        if(currentHealth < 0.75f * maxHealth && !firstDrop)
-            GenerateDropItem(ref firstDrop);
+        meshFilter = GetComponent<MeshFilter>();
+        meshFilter.mesh = rockMeshes[rockPhase];
 
-        if(currentHealth < 0.5f * maxHealth && !secondDrop)
-            GenerateDropItem(ref secondDrop);
-
-        if(currentHealth < 0.25f * maxHealth && !thirdDrop)
-            GenerateDropItem(ref thirdDrop);
+        meshCollider = GetComponent<MeshCollider>();
+        meshCollider.sharedMesh = rockMeshes[rockPhase];
     }
 
     public override void Harvest()
     {   
-        GenerateDropItem(ref fourthDrop);
-        Destroy(gameObject);
+        DropItem();
+        DropItem();
+        rockPhase += 1;
+        if(rockPhase < rockMeshes.Count)
+        {   
+            currentHealth = maxHealth;
+            meshFilter.mesh = rockMeshes[rockPhase];
+            meshCollider.sharedMesh = rockMeshes[rockPhase];
+        }else
+            Destroy(gameObject);
     }
 
-    protected void GenerateDropItem(ref bool drop)
-    {  
-        drop = true;
-        GameObject dropItemInstance = Instantiate(dropItem, dropPosition.position, Quaternion.identity);
+    private void DropItem()
+    {
+        Vector3 dropPosition = transform.position + Vector3.up * 4;
+
+        GameObject dropItemInstance = Instantiate(dropItem, dropPosition, Quaternion.identity);
+
         dropItemInstance.transform.SetParent(InventoryController.instance.GetItemsParent());
 
         Rigidbody dropItemRB = dropItemInstance.GetComponent<Rigidbody>();

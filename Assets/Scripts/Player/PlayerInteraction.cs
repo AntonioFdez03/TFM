@@ -91,6 +91,7 @@ public class PlayerInteraction : MonoBehaviour
 
         if (!hasHit)
         {   
+            circularSlider.transform.parent.gameObject.SetActive(false);
             itemHealth.transform.parent.gameObject.SetActive(false);
             itemName.text = "";
             return;
@@ -141,6 +142,7 @@ public class PlayerInteraction : MonoBehaviour
         if (obj.TryGetComponent<PlaceableBehaviour>(out var placeable))
             placeable.SetCurrentTime(0f);
 
+
     }
     
     private void HandleHover(bool hasHit, GameObject hitObject, string tag)
@@ -185,22 +187,34 @@ public class PlayerInteraction : MonoBehaviour
         else
             timer = 0;
 
-        HandleUnplacing(item);
+        HandleInteractHolding(item);
     }
 
-    private void HandleUnplacing(GameObject obj)
+    private void HandleInteractHolding(GameObject obj)
     {   
-        if(obj.GetComponent<ItemBehaviour>() is PlaceableBehaviour placeable)
+        PlaceableBehaviour placeable = obj.GetComponent<ItemBehaviour>() as PlaceableBehaviour; 
+        Bush bush = obj.GetComponent<Bush>();
+
+        if(interact.IsPressed() && placeable != null)
         {   
-            if(interact.IsPressed() && placeable != null)
-            {   
-                placeable.Unplace();
-                ShowCircularSlider(placeable.GetCurrentTime() / placeable.GetUnplaceTime(), true);
-            }
-            else
-                ResetTime(placeable);
-            
+            placeable.Unplace();
+            ShowCircularSlider(placeable.GetCurrentTime() / placeable.GetUnplaceTime(), true);
         }
+        else
+             ResetTime(placeable);
+
+        if(interact.IsPressed() && bush != null)
+        {   
+            bush.Recolect();
+            ShowCircularSlider(bush.GetCurrentTime() / bush.GetRecolectTime(), true);
+        }
+        else
+        {   
+            circularSlider.transform.parent.gameObject.SetActive(false);
+            if(bush != null)
+                bush.SetCurrentTime(0);
+        }
+            
     }
 
     private void HandlePlaceableSilhouette(bool hasHit, RaycastHit hit)

@@ -48,13 +48,10 @@ public class InventoryController : MonoBehaviour
         }
     }
 
-    public void AddItem(GameObject item)
+    public bool AddItem(GameObject item)
     {   
-        if (item == null)
-            return;
-
-        if (!item.TryGetComponent<ItemBehaviour>(out var behaviour))
-            return;
+        if (item == null || !item.TryGetComponent<ItemBehaviour>(out var behaviour))
+            return false;
 
         ItemData data = behaviour.GetData();
         print("Vida del item: " + behaviour.GetCurrentHealth());
@@ -72,9 +69,11 @@ public class InventoryController : MonoBehaviour
                 Destroy(item);
 
                 UpdateUIs();
-                return;
+                return true;
             }
         }
+
+        return false;
     }
 
     public void AddItemFromStack(ItemStack item)

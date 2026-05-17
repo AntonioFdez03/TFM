@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class Bush : HarvestableObject
 {   
+    private float recolectTime = 5f;
+    private float timer = 0;
+    private bool recolected = false;
+    private int dropCount = 3;
+
     protected override void Awake()
     {
         base.Awake();
@@ -11,6 +16,21 @@ public class Bush : HarvestableObject
         toolsAccepted.Add(ToolType.Axe);
     }
 
+    public void SetCurrentTime(float t) => timer = t;
+    public float GetCurrentTime() => timer;
+    public float GetRecolectTime() => recolectTime;
+
+    public void Recolect()
+    {
+        timer += Time.deltaTime;
+
+        if(timer >= recolectTime)
+        {   
+            recolected = true;
+            Harvest();
+            timer = 0;
+        }
+    }
     public override void Harvest()
     {
         int berriesCount = transform.childCount;
@@ -30,9 +50,22 @@ public class Bush : HarvestableObject
             rb.AddForce(Vector3.down, ForceMode.Impulse);
         }
 
-        DropItem();
-        DropItem();
-        DropItem();
+        if (recolected)
+        {
+            for(int i = 0; i < dropCount; i++)
+            {
+                GameObject dropInstance = Instantiate(dropItem);
+                if(!InventoryController.instance.AddItem(dropInstance))
+                    DropItem();
+            }
+        }
+        else
+        {
+            for(int i = 0; i < dropCount; i++)
+            {
+                DropItem();
+            }
+        }
 
         Destroy(gameObject);
     }

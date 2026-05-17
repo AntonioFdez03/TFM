@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 271f196dd4628bf47b4877604900f8b6
+guid: dc680165ce86afd4396f111b052f610c
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: VegetableFiber
-    second: {fileID: 2100000, guid: b171017a90479504c860f68d26ab2ae8, type: 2}
+    second: {fileID: 2100000, guid: 3cb3314f68f8cc54cbbdb2583dd65330, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

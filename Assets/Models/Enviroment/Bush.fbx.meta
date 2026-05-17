@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d25ec2c92a821da47bb23377d4f35adc
+guid: 483aee2a5217b1845a96a8a9ad7b2ccf
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -7,13 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: ImagenRama
-    second: {fileID: 2100000, guid: 9229f4e24ad58ee41857984269ebf4e6, type: 2}
+      name: Branch
+    second: {fileID: 2100000, guid: 6158fa1dc08f5954286fec7249789619, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material
-    second: {fileID: 2100000, guid: c55fb4f4f358837429f58219034760e2, type: 2}
+      name: ImagenHoja
+    second: {fileID: 2100000, guid: ebe97dd5594513240942782894bc121a, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

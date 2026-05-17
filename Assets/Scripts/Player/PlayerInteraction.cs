@@ -205,6 +205,7 @@ public class PlayerInteraction : MonoBehaviour
         {   
             placeable.Unplace();
             ShowCircularSlider(placeable.GetCurrentTime() / placeable.GetUnplaceTime(), true);
+            return;
         }
         else
              ResetTime(placeable);
@@ -213,6 +214,7 @@ public class PlayerInteraction : MonoBehaviour
         {   
             bush.Recolect();
             ShowCircularSlider(bush.GetCurrentTime() / bush.GetRecolectTime(), true);
+            return;
         }
         else
         {   

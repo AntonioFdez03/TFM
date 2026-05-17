@@ -1,19 +1,32 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem.Interactions;
 
 public class PacificBehaviour : IAnimalBehaviour
 {
-    float timer;
+    private float timer;
+    private float chaseDistance = 50f;
 
     public void Act(Animal animal)
     {
         NavMeshAgent agent = animal.GetAgent();
+        Transform player = animal.GetPlayer();
+        
+        float distanceToPlayer = Vector3.Distance(animal.transform.position, player.position);
 
-        timer -= Time.deltaTime;
+        Vector3 directionToPlayer = (player.position - animal.transform.position).normalized;
+        float dot = Vector3.Dot(animal.transform.forward, directionToPlayer);
+        bool isLookingAtPlayer = dot > 0.7f;
 
-        if (timer <= 0)
-            ChooseNewAction(animal);
+        if(distanceToPlayer <= chaseDistance && (!player.GetComponent<PlayerController>().IsCrouching() || isLookingAtPlayer))
+            Flee(animal);
+        else
+        {
+            timer -= Time.deltaTime;
+            if (timer <= 0)
+                ChooseNewAction(animal);
+        }
 
         float speed = agent.velocity.magnitude;
 

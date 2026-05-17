@@ -52,7 +52,7 @@ public class AnimalSpawner : MonoBehaviour
             }
         }
 
-        if(PlayerController.instance.GetPlayerAttributes().GetCurrentSanity() < PlayerController.instance.GetPlayerAttributes().GetMaxSanity() *1.1f)
+        if(PlayerController.instance.GetPlayerAttributes().GetCurrentSanity() < PlayerController.instance.GetPlayerAttributes().GetMaxSanity() *0.5f)
         {
             animal.GetComponent<Animal>().SetBehaviour(new HostileBehaviour());
         }

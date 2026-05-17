@@ -22,10 +22,7 @@ public class HostileBehaviour : IAnimalBehaviour
         if (player == null || !agent.isOnNavMesh)
             return;
 
-        float distanceToPlayer = Vector3.Distance(
-            animal.transform.position,
-            player.position
-        );
+        float distanceToPlayer = Vector3.Distance(animal.transform.position, player.position);
 
         bool canReach = CanReachTarget(agent, player.position);
 

@@ -16,6 +16,9 @@ public class InventoryController : MonoBehaviour
 
     private ItemStack[] items;
 
+    [SerializeField] private AudioClip itemDropSound;
+    private AudioSource audioSource;
+
     void Awake()
     {
         if(instance != null && instance != this)
@@ -25,6 +28,8 @@ public class InventoryController : MonoBehaviour
         }
         instance = this;
         items = new ItemStack[inventoryMax];
+
+        audioSource = GetComponent<AudioSource>();
     }
     
     public void SetInventoryItems(ItemStack[] newItems) => items = newItems;
@@ -130,15 +135,21 @@ public class InventoryController : MonoBehaviour
         }
     }
 
-    public void DropItem(int index)
+    public bool DropItem(int index)
     {
         if (index < 0 || index >= items.Length || items[index] == null)
-            return;
+            return false;
+        
 
         ItemStack itemStack = items[index];
 
         ItemData def = ItemDataBase.instance.GetByID(itemStack.id);
 
+        if(def.prefab.TryGetComponent<PlaceableBehaviour>(out _))
+            return false;
+
+        audioSource.PlayOneShot(itemDropSound, 0.4f);
+        
         GameObject obj = Instantiate(def.prefab, handSlot.position, Quaternion.identity);
 
         // posición / rotación
@@ -152,6 +163,7 @@ public class InventoryController : MonoBehaviour
 
         // física
         Rigidbody rb = obj.GetComponent<Rigidbody>();
+
         if (rb != null)
         {
             rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
@@ -166,6 +178,7 @@ public class InventoryController : MonoBehaviour
         items[index] = null;
 
         UpdateUIs();
+        return true;
     }
 
     public void SwapItems(int originIndex, int targetIndex)

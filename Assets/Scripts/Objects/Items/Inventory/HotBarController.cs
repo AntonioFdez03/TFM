@@ -198,7 +198,8 @@ public class HotBarController : MonoBehaviour
     {   
         if (dropItem.WasPressedThisFrame() && currentItem != null)
         {
-            InventoryController.instance.DropItem(selectedIndex);
+            if(!InventoryController.instance.DropItem(selectedIndex))
+                return;
 
             if (handItemInstance != null)
                 Destroy(handItemInstance);

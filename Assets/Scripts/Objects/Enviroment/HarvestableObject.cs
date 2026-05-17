@@ -12,7 +12,13 @@ public abstract class HarvestableObject : MonoBehaviour, IObjectHealth
     protected float currentHealth;
     protected List<ToolType> toolsAccepted = new();
 
-    protected virtual void Awake(){}
+    [SerializeField] private AudioClip hitSound;
+    private AudioSource audioSource;
+
+    protected virtual void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     public string GetObjectName() => objectName;
     public float GetCurrentHealth() => currentHealth;
@@ -22,7 +28,7 @@ public abstract class HarvestableObject : MonoBehaviour, IObjectHealth
         if (CanHarvest(tool))
         {
             currentHealth = Math.Clamp(currentHealth - damage, 0 ,maxHealth);
-            print($"{gameObject.name} golpeado. Vida: {currentHealth}");
+            audioSource.PlayOneShot(hitSound);
             
             if (currentHealth == 0)
                 Harvest();

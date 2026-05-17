@@ -25,8 +25,13 @@ public class PlayerInteraction : MonoBehaviour
     private float interactTime = 0.2f;
     private float timer;
 
+    [SerializeField] private AudioClip itemPickUpSound;
+    private AudioSource audioSource;
+
     void Start()
-    {
+    {   
+        audioSource = GetComponent<AudioSource>();
+
         interact = InputSystem.actions.FindAction("Interact");
         attack = InputSystem.actions.FindAction("Attack");
         rotate = InputSystem.actions.FindAction("Rotate");
@@ -172,7 +177,8 @@ public class PlayerInteraction : MonoBehaviour
             {
                 case "Item":
                     HandleItemSelection(item, false);
-                    InventoryController.instance.AddItem(item);
+                    if(InventoryController.instance.AddItem(item))
+                        audioSource.PlayOneShot(itemPickUpSound, 0.4f);
                     break;
 
                 case "Interactive":

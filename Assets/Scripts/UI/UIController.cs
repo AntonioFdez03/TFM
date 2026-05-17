@@ -19,6 +19,10 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject storagePanel;
     [SerializeField] private Transform dragginLayer;
 
+    [Header("Sounds")]
+    [SerializeField] private AudioClip inventoryOpen;
+    [SerializeField] private AudioClip inventoryClose;
+
     private InputAction inventoryAction;
     private InputAction pauseAction;
     private Furnace currentFurnace;
@@ -86,6 +90,7 @@ public class UIController : MonoBehaviour
                 break;
 
             case UIState.Inventory:
+                AudioManager.instance.PlayOneShot(inventoryOpen, 0.2f);
                 Time.timeScale = 1f;
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;

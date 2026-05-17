@@ -15,6 +15,7 @@ public class FurnaceController : MonoBehaviour
     private float timer = 0;
     private float bakeDuration = 5f;
     private int currentActiveItem = -1;
+    private bool working = false;
 
     [SerializeField] Transform fuelPosition;
     [SerializeField] GameObject FuelLogPrefab;
@@ -23,8 +24,17 @@ public class FurnaceController : MonoBehaviour
     [SerializeField] GameObject fire;
     [SerializeField] GameObject fireLight;
 
+    [SerializeField] private AudioClip fireSound;
+    private AudioSource audioSource;
+
     void Start()
-    {
+    {   
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = fireSound;
+        audioSource.loop = true;
+        audioSource.spatialBlend = 1f;
+        audioSource.Play();
+
         inputItems = new ItemStack[furnaceSize];
         outputItems = new ItemStack[furnaceSize];
         currentFuel = 0;
@@ -42,6 +52,11 @@ public class FurnaceController : MonoBehaviour
 
         SetActiveItem();
         Work();
+
+        fire.SetActive(working);
+        fireLight.SetActive(working);
+        
+        HandleFireSound();
     }
 
     public ItemStack[] GetInputItems() => inputItems;
@@ -71,22 +86,40 @@ public class FurnaceController : MonoBehaviour
         return item;
     }
 
-    public void AddInput(int index, ItemStack item)
-    {   
-        if(index >= 0 && index < furnaceSize)
-        {
-            inputItems[index] = item;
-        }
+    public bool AddInput(int index, ItemStack item)
+    {
+        if(index < 0 || index >= furnaceSize)
+            return false;
+
+        ItemData itemData = ItemDataBase.instance.GetByID(item.id);
+
+        FurnaceRecipe recipe = FurnaceDataBase.instance.GetRecipe(itemData);
+
+        if(recipe == null)
+            return false;
+
+        inputItems[index] = item;
 
         OnInventoryChanged?.Invoke();
+        return true;
     }
 
-    public void AddFuel(ItemStack item)
+    public bool AddFuel(ItemStack item)
     {
+        ItemData itemData = ItemDataBase.instance.GetByID(item.id);
+
+        if(itemData == null || fuelItem != null)
+            return false;
+
+        FuelData fuelData = FurnaceDataBase.instance.GetFuel(itemData);
+        
+        if(fuelData == null)
+            return false;
+        
         fuelItem = item;
-        ItemData itemData = ItemDataBase.instance.GetByID(fuelItem.id);
         currentFuel = FurnaceDataBase.instance.GetFuel(itemData).energy;
         OnInventoryChanged?.Invoke();
+        return true;
     }
 
     private void AddOutput(int index, ItemStack item)
@@ -125,8 +158,7 @@ public class FurnaceController : MonoBehaviour
         timer += Time.deltaTime;
         if(currentFuel > 0 && currentActiveItem != -1)
         {   
-            fire.SetActive(true);
-            fireLight.SetActive(true);
+            working = true;
             if(timer > bakeDuration)
             {
                 timer = 0;
@@ -135,9 +167,8 @@ public class FurnaceController : MonoBehaviour
         }
         else
         {   
+            working = false;
             timer = 0;
-            fire.SetActive(false);
-            fireLight.SetActive(false);
         }
     }
     private void BakeItem(int index)
@@ -234,5 +265,19 @@ public class FurnaceController : MonoBehaviour
         }
 
         return true;
+    }
+
+    private void HandleFireSound()
+    {
+        if(working)
+        {
+            if(!audioSource.isPlaying)
+                audioSource.Play();
+        }
+        else
+        {
+            if(audioSource.isPlaying)
+                audioSource.Stop();
+        }
     }
 }

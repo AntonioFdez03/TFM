@@ -7,6 +7,8 @@ public class MainMenuManager : MonoBehaviour
 {   
     public static MainMenuManager instance;
     [SerializeField] private TMP_Text startButtonText;
+    [SerializeField] private AudioClip buttonSound;
+    private AudioSource audioSource;
 
     private bool gameDataFound;
 
@@ -21,7 +23,8 @@ public class MainMenuManager : MonoBehaviour
     }
 
     void Start()
-    {
+    {   
+        audioSource = GetComponent<AudioSource>();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
@@ -38,11 +41,13 @@ public class MainMenuManager : MonoBehaviour
     
     public void StartGame()
     {   
+        audioSource.PlayOneShot(buttonSound);
         SceneManager.LoadScene("GameScene");
     }
 
     public void QuitGame()
     {
+        audioSource.PlayOneShot(buttonSound);
         Application.Quit();
     }
 }

@@ -5,12 +5,22 @@ using UnityEngine;
 
 public class Fire : MonoBehaviour
 {
+    [SerializeField] private AudioClip fireSound;
+    private AudioSource audioSource;
     private bool burnPlayer;
     private float fireDamage;
 
     void Start()
-    {   
+    {
+        audioSource = GetComponent<AudioSource>();
+
         fireDamage = 20;
+
+        audioSource.clip = fireSound;
+        audioSource.loop = true;
+        audioSource.spatialBlend = 1f;
+
+        audioSource.Play();
     }
 
     void Update()

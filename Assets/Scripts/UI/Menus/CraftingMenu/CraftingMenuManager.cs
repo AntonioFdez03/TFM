@@ -12,13 +12,17 @@ public class CraftingMenuManager : MonoBehaviour
     [SerializeField] private GameObject recipesPanel;
     [SerializeField] private GameObject recipePrefab;
     [SerializeField] private GameObject ingredientPrefab;
+    [SerializeField] private Button allButton;
     [SerializeField] private Button toolsButton;
     [SerializeField] private Button placeablesButton;
+    [SerializeField] private Button consumablesButton;
+    [SerializeField] private Button resourcesButton;
 
     void Start()
     {   
         CleanRecipes();
         ShowRecipes(ItemType.None);
+        allButton.interactable = false;
     }
 
     void OnEnable()
@@ -71,11 +75,18 @@ public class CraftingMenuManager : MonoBehaviour
         }
     }
 
+    public void AllButtonPressed() {
+        EnableButtons();
+        allButton.interactable = false;
+        ShowRecipes(ItemType.None);
+    }
+
     public void ToolsButtonPressed() {
         EnableButtons();
         toolsButton.interactable = false;
         ShowRecipes(ItemType.Tool);
     }
+
     public void PlaceablesButtonPressed() 
     {
         EnableButtons();
@@ -83,9 +94,24 @@ public class CraftingMenuManager : MonoBehaviour
         ShowRecipes(ItemType.Placeable);
     }
 
+    public void ConsumablesButtonPressed() {
+        EnableButtons();
+        consumablesButton.interactable = false;
+        ShowRecipes(ItemType.Consumable);
+    }
+
+    public void ResourcesButtonPressed() {
+        EnableButtons();
+        resourcesButton.interactable = false;
+        ShowRecipes(ItemType.Resource);
+    }
+
     private void EnableButtons()
     {
+        allButton.interactable = true;
         toolsButton.interactable = true;
         placeablesButton.interactable = true;
+        consumablesButton.interactable = true;
+        resourcesButton.interactable = true;
     }
 }

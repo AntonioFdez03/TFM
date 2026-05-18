@@ -10,10 +10,6 @@ public class PlayerInteraction : MonoBehaviour
     [Header("References")]
     [SerializeField] ArmController arm;
     [SerializeField] Material outlineMaterial;
-    [SerializeField] Slider circularSlider;
-    [SerializeField] TMP_Text itemName;
-    [SerializeField] TMP_Text itemHealth;
-    [SerializeField] Image itemHealthSlider;
 
     private float interactDistance = 9f;
     private ItemStack previousItem;
@@ -25,13 +21,8 @@ public class PlayerInteraction : MonoBehaviour
     private float interactTime = 0.2f;
     private float timer;
 
-    [SerializeField] private AudioClip itemPickUpSound;
-    private AudioSource audioSource;
-
     void Start()
     {   
-        audioSource = GetComponent<AudioSource>();
-
         interact = InputSystem.actions.FindAction("Interact");
         attack = InputSystem.actions.FindAction("Attack");
         rotate = InputSystem.actions.FindAction("Rotate");
@@ -39,6 +30,8 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
+        GameplayUI.instance.ClearKeys();
+
         if (PlayerController.instance.GetCanMove())
         {
             Interact();
@@ -52,6 +45,9 @@ public class PlayerInteraction : MonoBehaviour
             CancelUse();
             previousItem = current;
         }
+
+        if(HotBarController.instance.GetCurrentItem() != null)
+            GameplayUI.instance.AddKey("Q", "Drop item");
     }
 
     private void Use()
@@ -62,7 +58,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void CancelUse()
     {
-        circularSlider.transform.parent.gameObject.SetActive(false);
+        GameplayUI.instance.HideCircularSlider();
 
         // Si había un consumible activo, resetea su progreso
         if (previousItem != null)
@@ -96,14 +92,14 @@ public class PlayerInteraction : MonoBehaviour
 
         if (!hasHit)
         {   
-            circularSlider.transform.parent.gameObject.SetActive(false);
-            itemHealth.transform.parent.gameObject.SetActive(false);
-            itemName.text = "";
+            GameplayUI.instance.HideCircularSlider();
+            GameplayUI.instance.HideItemHealth();
+            GameplayUI.instance.HideItemName();
             return;
         }
 
         if(hit.collider.CompareTag("Terrain"))
-            itemName.text = "";
+            GameplayUI.instance.HideItemName();
         
         HandleInteraction(tag,hitObject);
         lastHit = hit;
@@ -126,7 +122,7 @@ public class PlayerInteraction : MonoBehaviour
             if (attack.IsPressed() && consumable != null)
             {
                 consumable.Use();
-                ShowCircularSlider(consumable.GetCurrentTime() / consumable.GetConsumeTime(),false);
+                GameplayUI.instance.ShowCircularSlider(consumable.GetCurrentTime() / consumable.GetConsumeTime(), false);
             }
             else
                 ResetTime(consumable);
@@ -136,7 +132,7 @@ public class PlayerInteraction : MonoBehaviour
 
     public void ResetTime(ItemBehaviour obj)
     {   
-        circularSlider.transform.parent.gameObject.SetActive(false);
+         GameplayUI.instance.HideCircularSlider();
 
         if (obj == null)
             return;
@@ -158,10 +154,15 @@ public class PlayerInteraction : MonoBehaviour
             {
                 case "Item":
                     HandleItemSelection(hitObject, true);
+                    GameplayUI.instance.AddKey("E", "Pick up");
                     break;
 
                 case "Harvestable":
                     HandleHarvestableInfo(hitObject);
+                    break;
+
+                case "Interactive":
+                    GameplayUI.instance.AddKey("E", "Interact");
                     break;
             }
         }
@@ -177,8 +178,7 @@ public class PlayerInteraction : MonoBehaviour
             {
                 case "Item":
                     HandleItemSelection(item, false);
-                    if(InventoryController.instance.AddItem(item))
-                        audioSource.PlayOneShot(itemPickUpSound, 0.4f);
+                    InventoryController.instance.AddItem(item);
                     break;
 
                 case "Interactive":
@@ -204,7 +204,7 @@ public class PlayerInteraction : MonoBehaviour
         if(interact.IsPressed() && placeable != null)
         {   
             placeable.Unplace();
-            ShowCircularSlider(placeable.GetCurrentTime() / placeable.GetUnplaceTime(), true);
+            GameplayUI.instance.ShowCircularSlider(placeable.GetCurrentTime() / placeable.GetUnplaceTime(), true);
             return;
         }
         else
@@ -213,12 +213,13 @@ public class PlayerInteraction : MonoBehaviour
         if(interact.IsPressed() && bush != null)
         {   
             bush.Recolect();
-            ShowCircularSlider(bush.GetCurrentTime() / bush.GetRecolectTime(), true);
+            GameplayUI.instance.ShowCircularSlider(bush.GetCurrentTime() / bush.GetRecolectTime(), true);
             return;
         }
         else
         {   
-            circularSlider.transform.parent.gameObject.SetActive(false);
+            GameplayUI.instance.HideCircularSlider();
+            
             if(bush != null)
                 bush.SetCurrentTime(0);
         }
@@ -232,6 +233,8 @@ public class PlayerInteraction : MonoBehaviour
 
         if (hasHit && hit.collider.CompareTag("Terrain"))
         {
+            GameplayUI.instance.AddKey("RMB", "Place");
+            GameplayUI.instance.AddKey("R", "Rotate");
             placeable.ShowSilhouette(hit);
             if(rotate.IsPressed())
                 placeable.RotateSilhouette();
@@ -244,17 +247,19 @@ public class PlayerInteraction : MonoBehaviour
     {   
         Debug.Log("item: " + item);
         if(item.TryGetComponent(out ItemBehaviour itemB))
-            itemName.text = selected ? itemB.GetData().itemName : "";
-        Debug.Log("Primer if: " + item);
-        if(item.TryGetComponent<ItemBehaviour>(out var itemBehaviour) && itemBehaviour.GetCurrentHealth() != itemBehaviour.GetMaxHealth())
-        {   
-            itemHealth.text = itemBehaviour.GetCurrentHealth().ToString() + "/" + itemBehaviour.GetMaxHealth().ToString();
-            itemHealthSlider.fillAmount = itemBehaviour.GetCurrentHealth()/itemBehaviour.GetMaxHealth();
-                
-            itemHealth.transform.parent.gameObject.SetActive(true);
+        {
+            if(selected)
+                GameplayUI.instance.ShowItemName(itemB.GetData().itemName);
+            else
+                GameplayUI.instance.HideItemName();
         }
+            
+
+        Debug.Log("Primer if: " + item);
+        if(item.TryGetComponent<ItemBehaviour>(out var itemBehaviour) && itemBehaviour.GetCurrentHealth() != itemBehaviour.GetMaxHealth())  
+            GameplayUI.instance.ShowItemHealth(itemBehaviour.GetCurrentHealth(), itemBehaviour.GetMaxHealth());
         else
-            itemHealth.transform.parent.gameObject.SetActive(false);
+            GameplayUI.instance.HideItemHealth();
         
         Debug.Log("Segundo if: " + item);
         foreach (Transform child in item.transform)
@@ -278,30 +283,21 @@ public class PlayerInteraction : MonoBehaviour
         {   
             string toolName = harvestable.GetToolsAccepted()[0].ToString();
             char firstLetter = char.ToUpper(toolName[0]);
-            string article = "a";
-            if ("AEIOU".IndexOf(firstLetter) >= 0)
-                article = "an";
+            //string article = "a";
+            if ("AEIOU".IndexOf(firstLetter) >= 0){
+                //article = "an";
+            }
             if(HotBarController.instance.GetCurrentItemBehaviour() is ToolBehaviour toolBehaviour)
-            {   
-                if(!harvestable.CanHarvest(toolBehaviour.GetToolType()))
-                    itemName.text = $"You need {article} {toolName}";
-            }else
-                itemName.text = $"You need {article} {toolName}";
-        }
-    }
-
-    private void ShowCircularSlider(float currentValue, bool delay)
-    {  
-        float startTime = 0;
-        if(delay) startTime = 0.2f;
-
-        if(currentValue > startTime)
-        {   
-            circularSlider.transform.parent.gameObject.SetActive(true);
-            circularSlider.value = currentValue;
-        }
-        else{
-            circularSlider.transform.parent.gameObject.SetActive(false);
+            {
+                if (!harvestable.CanHarvest(toolBehaviour.GetToolType()))
+                {
+                    //itemName.text = $"You need {article} {toolName}";
+                }
+            }
+            else
+            {
+                //itemName.text = $"You need {article} {toolName}";
+            }    
         }
     }
 }

@@ -8,10 +8,10 @@ public class AnimalSpawner : MonoBehaviour
     [SerializeField] private List<GameObject> animals;
     [SerializeField] private Transform animalsParent;
 
-    private float minSpawnDistance = 10f;
-    private float maxSpawnDistance = 20f;
+    private float minSpawnDistance = 150f;
+    private float maxSpawnDistance = 200f;
     private float spawnRate = 20f;
-    private int maxAnimals = 1;
+    private int maxAnimals = 10;
     private float timer;
 
     void Update()
@@ -66,21 +66,35 @@ public class AnimalSpawner : MonoBehaviour
 
     private Vector3 GetSpawnPosition()
     {
-        // 1. Dirección aleatoria alrededor del jugador
-        Vector2 randomCircle = Random.insideUnitCircle.normalized;
-        float distance = Random.Range(minSpawnDistance, maxSpawnDistance);
+        Camera cam = Camera.main;
 
-        Vector3 direction = new Vector3(randomCircle.x, 0, randomCircle.y);
-        Vector3 rawPosition = player.position + direction * distance;
-
-        // 2. Ajustar al NavMesh (esto ya respeta altura del terreno)
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(rawPosition, out hit, 10f, NavMesh.AllAreas))
+        for(int i = 0; i < 20; i++)
         {
-            return hit.position;
+            Vector2 randomCircle = Random.insideUnitCircle.normalized;
+
+            float distance = Random.Range(minSpawnDistance, maxSpawnDistance);
+
+            Vector3 direction = new Vector3(randomCircle.x, 0, randomCircle.y);
+
+            Vector3 rawPosition = player.position + direction * distance;
+            rawPosition.x = Mathf.Clamp(rawPosition.x, -850f, 850f);
+            rawPosition.z = Mathf.Clamp(rawPosition.z, -850f, 850f);
+
+            Vector3 dirToSpawn = (rawPosition - cam.transform.position).normalized;
+
+            float dot = Vector3.Dot(cam.transform.forward, dirToSpawn);
+
+            bool isVisible = dot > 0.4f;
+
+            if(isVisible)
+                continue;
+
+            NavMeshHit hit;
+
+            if (NavMesh.SamplePosition(rawPosition, out hit, 10f, NavMesh.AllAreas))
+                return hit.position;
         }
 
-        // fallback
-        return player.position;
+        return Vector3.zero;
     }
 }

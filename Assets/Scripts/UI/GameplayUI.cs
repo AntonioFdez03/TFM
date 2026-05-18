@@ -1,13 +1,17 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class GameplayUI : MonoBehaviour
 {   
+    public static GameplayUI instance;
+
+    // Stats del jugador
     [SerializeField] private Transform sanityBar;
     [SerializeField] private Transform staminaBar;
     [SerializeField] private Transform healthBar;
     [SerializeField] private Transform hungerBar;
-
     private PlayerAttributes player;
 
     private float intensity = 0.1f;
@@ -22,6 +26,26 @@ public class GameplayUI : MonoBehaviour
     private Vector3 healthOriginalScale;
     private Vector3 hungerOriginalScale;
 
+    // Info del item
+    [SerializeField] private TMP_Text itemName;
+    [SerializeField] private TMP_Text itemHealth;
+    [SerializeField] Image itemHealthSlider;
+    [SerializeField] Slider circularSlider;
+
+    //Teclas
+    [SerializeField] Transform keysLayout;
+    [SerializeField] GameObject keyInfoPrefab;
+
+    void Awake()
+    {
+        if(instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+    }
+
     void Start()
     {   
         player = PlayerController.instance.GetPlayerAttributes();
@@ -30,11 +54,21 @@ public class GameplayUI : MonoBehaviour
         staminaOriginalScale = staminaBar.transform.localScale;
         healthOriginalScale = healthBar.transform.localScale;
         hungerOriginalScale = hungerBar.transform.localScale;
+
+        HideItemName();
+        HideItemHealth();
+        HideCircularSlider();
     }
 
     void Update()
-    {   
-        UpdateSpeedValues();
+    {     
+        HandleBeat();
+        UpdateStatsBar();
+    }
+
+    private void HandleBeat()
+    {
+        UpdateBeatSpeed();
 
         sanityBar.transform.localScale = sanityOriginalScale;
         staminaBar.transform.localScale = staminaOriginalScale;
@@ -45,8 +79,6 @@ public class GameplayUI : MonoBehaviour
         Beat(staminaBar, staminaOriginalScale, staminaBeatSpeed);
         Beat(healthBar, healthOriginalScale, healthBeatSpeed);
         Beat(hungerBar, hungerOriginalScale, hungerBeatSpeed);
-
-        UpdateStatsBar();
     }
 
     private void Beat(Transform stat, Vector3 originalScale, float speed)
@@ -55,59 +87,36 @@ public class GameplayUI : MonoBehaviour
         stat.localScale = originalScale + originalScale * pulse;
     }
 
-    private void UpdateSpeedValues()
+    private void UpdateBeatSpeed()
     {   
         float healthPercent = player.GetCurrentHealth() / player.GetMaxHealth();
-
-        if(healthPercent < 0.15f)
-            healthBeatSpeed = defaultBeatSpeed * 3;
-
-        else if(healthPercent < 0.3f)
-            healthBeatSpeed = defaultBeatSpeed * 2;
-
-        else if(healthPercent < 0.5f)
-            healthBeatSpeed = defaultBeatSpeed;
-
-        else 
-            healthBeatSpeed = 0f;
-
         float sanityPercent = player.GetCurrentSanity() / player.GetMaxSanity();
-
-        if(sanityPercent < 0.15f)
-            sanityBeatSpeed = defaultBeatSpeed * 3;
-
-        else if(sanityPercent < 0.3f)
-            sanityBeatSpeed = defaultBeatSpeed * 2;
-
-        else if(sanityPercent < 0.5f)
-            sanityBeatSpeed = defaultBeatSpeed;
-
-        else 
-            sanityBeatSpeed = 0f;
-
         float staminaPercent = player.GetCurrentStamina() / player.GetMaxStamina();
+        float hungerPercent = player.GetCurrentHunger() / player.GetMaxHunger();    
+        
+        healthBeatSpeed = CalculateBeatSpeed(healthPercent);
+        sanityBeatSpeed = CalculateBeatSpeed(sanityPercent);
+        hungerBeatSpeed = CalculateBeatSpeed(hungerPercent);
 
         if(staminaPercent == 0f)
             staminaBeatSpeed = defaultBeatSpeed;
         else 
             staminaBeatSpeed = 0f;
-
-        float hungerPercent = player.GetCurrentHunger() / player.GetMaxHunger();
-
-        if(hungerPercent < 0.15f)
-            hungerBeatSpeed = defaultBeatSpeed * 3;
-
-        else if(hungerPercent < 0.3f)
-            hungerBeatSpeed = defaultBeatSpeed * 2;
-
-        else if(hungerPercent < 0.5f)
-            hungerBeatSpeed = defaultBeatSpeed;
-        
-        else 
-            hungerBeatSpeed = 0f;
     }
 
-    
+    private float CalculateBeatSpeed(float percent)
+    {
+        if(percent < 0.15f)
+            return defaultBeatSpeed * 3;
+
+        if(percent < 0.3f)
+            return defaultBeatSpeed * 2;
+
+        if(percent < 0.5f)
+            return defaultBeatSpeed;
+
+        return 0f;
+    }
 
     private void UpdateStatsBar()
     {   
@@ -119,5 +128,62 @@ public class GameplayUI : MonoBehaviour
             healthBar.GetChild(0).GetComponent<Image>().fillAmount = player.GetCurrentHealth()/player.GetMaxHealth();
         if(hungerBar != null)
             hungerBar.GetChild(0).GetComponent<Image>().fillAmount = player.GetCurrentHunger()/player.GetMaxHunger();
+    }
+
+    public void ShowItemName(string text)
+    {
+        itemName.text = text;
+    }
+
+    public void HideItemName()
+    {
+        itemName.text = "";
+    }
+
+    public void ShowItemHealth(float current, float max)
+    {
+        itemHealth.transform.parent.gameObject.SetActive(true);
+
+        itemHealth.text = current + "/" + max;
+        itemHealthSlider.fillAmount = current / max;
+    }
+
+    public void HideItemHealth()
+    {
+        itemHealth.transform.parent.gameObject.SetActive(false);
+    }
+
+    public void HideCircularSlider()
+    {
+        circularSlider.transform.parent.gameObject.SetActive(false);
+    }
+
+    public void ShowCircularSlider(float currentValue, bool delay)
+    {  
+        float startTime = 0;
+        if(delay) startTime = 0.2f;
+
+        if(currentValue > startTime)
+        {   
+            circularSlider.transform.parent.gameObject.SetActive(true);
+            circularSlider.value = currentValue;
+        }
+        else{
+            circularSlider.transform.parent.gameObject.SetActive(false);
+        }
+    }
+
+
+    public void ClearKeys()
+    {
+        foreach (Transform child in keysLayout)
+            Destroy(child.gameObject);
+    }
+
+    public void AddKey(string id, string text)
+    {   
+        var key = Instantiate(keyInfoPrefab, keysLayout);
+        key.GetComponentInChildren<TMP_Text>().text = text;
+        key.GetComponentInChildren<Image>().sprite = KeyDataBase.instance.GetIcon(id);
     }
 }

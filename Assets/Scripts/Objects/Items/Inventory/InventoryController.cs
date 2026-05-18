@@ -16,6 +16,7 @@ public class InventoryController : MonoBehaviour
 
     private ItemStack[] items;
 
+    [SerializeField] private AudioClip itemPickUpSound;
     [SerializeField] private AudioClip itemDropSound;
     private AudioSource audioSource;
 
@@ -59,7 +60,6 @@ public class InventoryController : MonoBehaviour
             return false;
 
         ItemData data = behaviour.GetData();
-        print("Vida del item: " + behaviour.GetCurrentHealth());
         ItemStack newItem = new()
         {
             id = data.id,
@@ -69,7 +69,8 @@ public class InventoryController : MonoBehaviour
         for (int i = 0; i < items.Length; i++)
         {
             if (items[i] == null)
-            {
+            {   
+                audioSource.PlayOneShot(itemPickUpSound, 0.4f);
                 items[i] = newItem;
                 Destroy(item);
 

@@ -41,7 +41,7 @@ public class Rock : HarvestableObject
         {   
             currentHealth = maxHealth;
             meshFilter.mesh = rockMeshes[rockPhase];
-            meshCollider.sharedMesh = rockMeshes[rockPhase];
+            //meshCollider.sharedMesh = rockMeshes[rockPhase];
         }else
             Destroy(gameObject);
     }

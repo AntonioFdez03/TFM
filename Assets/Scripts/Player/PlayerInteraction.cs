@@ -46,6 +46,12 @@ public class PlayerInteraction : MonoBehaviour
             previousItem = current;
         }
 
+        ItemBehaviour itemBehaviour = HotBarController.instance.GetCurrentItemBehaviour();
+        if(itemBehaviour == null)
+            GameplayUI.instance.AddKey("RMB", "Punch");
+        else if(itemBehaviour is EquipmentBehaviour)
+            GameplayUI.instance.AddKey("RMB", "Attack");
+
         if(InventoryController.instance.CanDrop(HotBarController.instance.GetSelectedIndex()))
             GameplayUI.instance.AddKey("Q", "Drop item");
     }
@@ -119,6 +125,7 @@ public class PlayerInteraction : MonoBehaviour
         //Consumable
         if(currentItem is ConsumableBehaviour consumable)
         {
+            GameplayUI.instance.AddKey("HoldRMB", "Consume");
             if (attack.IsPressed() && consumable != null)
             {
                 consumable.Use();
@@ -170,6 +177,7 @@ public class PlayerInteraction : MonoBehaviour
                     break;
 
                 case "Interactive":
+                    HandleItemSelection(hitObject, true);
                     GameplayUI.instance.AddKey("E", "Interact");
                     if(hitObject.GetComponent<PlaceableBehaviour>() != null)
                         GameplayUI.instance.AddKey("HoldE", "Unplace");
@@ -192,6 +200,7 @@ public class PlayerInteraction : MonoBehaviour
                     break;
 
                 case "Interactive":
+                    HandleItemSelection(item, false);
                     if (item.TryGetComponent(out IInteractiveObject interactiveObject))
                         interactiveObject.Interact();
                     else

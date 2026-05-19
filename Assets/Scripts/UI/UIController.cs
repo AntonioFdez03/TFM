@@ -25,6 +25,7 @@ public class UIController : MonoBehaviour
 
     private InputAction inventoryAction;
     private InputAction pauseAction;
+    private InputAction craftAction;
     private Furnace currentFurnace;
     private Storage currentStorage;
 
@@ -42,6 +43,7 @@ public class UIController : MonoBehaviour
     {
         inventoryAction = InputSystem.actions.FindAction("Inventory");
         pauseAction = InputSystem.actions.FindAction("Pause");
+        craftAction = InputSystem.actions.FindAction("Craft");
         SetState(UIState.Gameplay);
     }
 
@@ -64,6 +66,13 @@ public class UIController : MonoBehaviour
         {
             if (currentState == UIState.Gameplay) SetState(UIState.Pause);
             else SetState(UIState.Gameplay);
+        }
+
+        // Craft
+        if (craftAction.WasPressedThisFrame())
+        {
+            if(currentState == UIState.Gameplay || currentState == UIState.Inventory) SetState(UIState.Crafting);
+            else if(currentState == UIState.Crafting) SetState(UIState.Inventory);        
         }
     }
 

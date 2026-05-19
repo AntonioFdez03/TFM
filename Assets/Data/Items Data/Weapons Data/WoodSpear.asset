@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: WoodSpear Data
+  m_Script: {fileID: 11500000, guid: 0679ea395d4e47143b371be84379b0d1, type: 3}
+  m_Name: WoodSpear
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   id: WoodSpear
   itemName: Wood Spear
-  icon: {fileID: 21300000, guid: 4cca19c60f3f09a40ae0a669387250b9, type: 3}
+  icon: {fileID: 21300000, guid: 82b85fbad19149c4ea08686f4a6a0ba8, type: 3}
   prefab: {fileID: 6914362959334807342, guid: 6c16754d8d5e96f4cbce31d8e7cf03f2, type: 3}
   maxHealth: 30
   damage: 10

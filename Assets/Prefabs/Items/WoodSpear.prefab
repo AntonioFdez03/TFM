@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62cae9b66ab5f3743b4f52ce49addbc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WoodSpear
-  data: {fileID: 11400000, guid: 201e96aa94d52834182e9a71f2dd28ec, type: 2}
+  data: {fileID: 11400000, guid: 73d5f35e423101b49bf2242126c5e73f, type: 2}
 --- !u!1001 &8229294714731970416
 PrefabInstance:
   m_ObjectHideFlags: 0

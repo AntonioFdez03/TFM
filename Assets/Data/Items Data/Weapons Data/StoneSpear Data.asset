@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 0679ea395d4e47143b371be84379b0d1, type: 3}
   m_Name: StoneSpear Data
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   id: StoneSpear
   itemName: Stone Spear
-  icon: {fileID: 21300000, guid: 793ae14eeb1cf0940aebc46d93b09af4, type: 3}
+  icon: {fileID: 21300000, guid: 82b85fbad19149c4ea08686f4a6a0ba8, type: 3}
   prefab: {fileID: 7351978201140487590, guid: e47ed157bd8222a4e8cb3e068acdc09a, type: 3}
   maxHealth: 70
   damage: 15

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6121205a950f2944d8b2ba22ea118441, type: 3}
   m_Name: IronOre
   m_EditorClassIdentifier: Assembly-CSharp::FurnaceRecipe
-  inputItem: {fileID: 11400000, guid: a3b21dd91f1ca3f44991996d561ee346, type: 2}
-  resultItem: {fileID: 11400000, guid: 026e79c7337176f4eb6fd96fbd00bfd1, type: 2}
+  inputItem: {fileID: 11400000, guid: 64f7840853149164aa37dc9674f0befa, type: 2}
+  resultItem: {fileID: 11400000, guid: bbcb858016858b546864a60db85f6d04, type: 2}
   cookTime: 10

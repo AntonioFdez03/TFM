@@ -201,7 +201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c7521b27c48b5641b9bbd98cc715301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Furnace
-  data: {fileID: 11400000, guid: 862a9bf6f5154654a9a000e1d26433c1, type: 2}
+  data: {fileID: 11400000, guid: 1a6be33acfdb6b642b776b0a3b308741, type: 2}
   greenMaterial: {fileID: 2100000, guid: c289674975e48194ba656debbe498968, type: 2}
   redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
   placementMask:

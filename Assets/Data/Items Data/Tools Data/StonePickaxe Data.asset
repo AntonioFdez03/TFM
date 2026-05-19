@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 135746e2c48e3144193e77391ab3b29d, type: 3}
   m_Name: StonePickaxe Data
   m_EditorClassIdentifier: Assembly-CSharp::ToolData
   id: StonePickaxe
   itemName: Stone Pickaxe
-  icon: {fileID: 21300000, guid: 793ae14eeb1cf0940aebc46d93b09af4, type: 3}
+  icon: {fileID: 21300000, guid: 82b85fbad19149c4ea08686f4a6a0ba8, type: 3}
   prefab: {fileID: 8978709272722344929, guid: 33775aa5adede7a4796dea97cefb0665, type: 3}
   maxHealth: 50
   damage: 10

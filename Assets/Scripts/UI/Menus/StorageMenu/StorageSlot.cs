@@ -40,9 +40,20 @@ public class StorageSlot : Slot
             item = InventoryController.instance.GetInventoryItems()[originIndex];
             if(item != null)
             {
-                storageController.AddItem(index,item);
-                InventoryController.instance.RemoveItem(item);
-                
+                ItemStack storageItem = storageController.GetItem(index);
+
+                // Swap
+                if(storageItem != null)
+                {
+                    storageController.AddItem(index, item);
+                    InventoryController.instance.SetItem(originIndex, storageItem);
+                }
+                // Mover normal
+                else
+                {
+                    storageController.AddItem(index, item);
+                    InventoryController.instance.RemoveItem(item);
+                }
             }
         }else if(originSlot is StorageSlot)
         {

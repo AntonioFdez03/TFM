@@ -25,10 +25,14 @@ public abstract class HarvestableObject : MonoBehaviour, IObjectHealth
     public void SetCurrentHealth(float health) => currentHealth = health;
     public virtual void TakeHit(ToolType tool, float damage)
     {
+        Debug.Log("takeHit: " + tool + ", damage: " + damage);
         if (CanHarvest(tool))
         {
+            Debug.Log("Entra");
             currentHealth = Math.Clamp(currentHealth - damage, 0 ,maxHealth);
-            audioSource.PlayOneShot(hitSound);
+
+            if(hitSound != null && audioSource != null)
+                audioSource.PlayOneShot(hitSound);
             
             if (currentHealth == 0)
                 Harvest();

@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: b22b8a9f9b34898488c1a7533e0a223f, type: 3}
   m_Name: WoodFence Data
   m_EditorClassIdentifier: Assembly-CSharp::PlaceableData
   id: WoodFence
   itemName: Wood Fence
-  icon: {fileID: 21300000, guid: 4cca19c60f3f09a40ae0a669387250b9, type: 3}
+  icon: {fileID: 21300000, guid: b1e97a28ae2e21f4b9a5de5483fff264, type: 3}
   prefab: {fileID: 3106388889649033562, guid: c4a4012cc0f540f4990f920a80049999, type: 3}
   maxHealth: 100
+  straight: 0

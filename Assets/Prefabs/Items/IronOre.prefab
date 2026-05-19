@@ -208,4 +208,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d4a83ace4815448a1110b8a22244c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResourceBehaviour
-  data: {fileID: 11400000, guid: a3b21dd91f1ca3f44991996d561ee346, type: 2}
+  data: {fileID: 11400000, guid: 64f7840853149164aa37dc9674f0befa, type: 2}

@@ -47,11 +47,23 @@ public class InventoryController : MonoBehaviour
 
     public void SetItem(int index, ItemStack item)
     {
-        if(index >= 0 && index < inventoryMax && items[index] == null && item != null)
+        if(index >= 0 && index < inventoryMax)
         {
             items[index] = item;
             UpdateUIs();
         }
+    }
+
+    public bool CanAdd()
+    {
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (items[i] == null)
+            {   
+                return true;
+            }
+        }
+        return false;
     }
 
     public bool AddItem(GameObject item)
@@ -138,19 +150,14 @@ public class InventoryController : MonoBehaviour
 
     public bool DropItem(int index)
     {
-        if (index < 0 || index >= items.Length || items[index] == null)
-            return false;
-        
-
-        ItemStack itemStack = items[index];
-
-        ItemData def = ItemDataBase.instance.GetByID(itemStack.id);
-
-        if(def.prefab.TryGetComponent<PlaceableBehaviour>(out _))
+        if(!CanDrop(index))
             return false;
 
         audioSource.PlayOneShot(itemDropSound, 0.4f);
         
+        ItemStack itemStack = items[index];
+
+        ItemData def = ItemDataBase.instance.GetByID(itemStack.id);
         GameObject obj = Instantiate(def.prefab, handSlot.position, Quaternion.identity);
 
         // posición / rotación
@@ -179,6 +186,22 @@ public class InventoryController : MonoBehaviour
         items[index] = null;
 
         UpdateUIs();
+        return true;
+    }
+
+    public bool CanDrop(int index)
+    {
+        if (index < 0 || index >= items.Length || items[index] == null)
+            return false;
+        
+
+        ItemStack itemStack = items[index];
+
+        ItemData def = ItemDataBase.instance.GetByID(itemStack.id);
+
+        if(def.prefab.TryGetComponent<PlaceableBehaviour>(out _))
+            return false;
+        
         return true;
     }
 

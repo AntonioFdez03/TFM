@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 06a98d063fcfb4444ae86e7fbc4773ec, type: 3}
   m_Name: VegetableFiber Data
   m_EditorClassIdentifier: Assembly-CSharp::ResourceItemData
   id: VegetableFiber
   itemName: Vegetable Fiber
-  icon: {fileID: 21300000, guid: 82b85fbad19149c4ea08686f4a6a0ba8, type: 3}
+  icon: {fileID: 21300000, guid: 3922425081d54284c9eafd631441ef5e, type: 3}
   prefab: {fileID: 2717929752634245167, guid: 0ab8a685fdb71ec4c97bfb3f8bdfcd32, type: 3}

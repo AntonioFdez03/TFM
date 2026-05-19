@@ -74,7 +74,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d4a83ace4815448a1110b8a22244c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResourceBehaviour
-  data: {fileID: 11400000, guid: 46700ac101a378e4eadfb95b84652c08, type: 2}
+  data: {fileID: 11400000, guid: 54c5c24ce88c0b6458b276513a89b55b, type: 2}
 --- !u!136 &8863319364029633577
 CapsuleCollider:
   m_ObjectHideFlags: 0

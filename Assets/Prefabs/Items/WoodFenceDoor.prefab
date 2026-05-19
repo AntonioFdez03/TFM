@@ -395,7 +395,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9aec6246d0a0434cbfbfe9c7e9c33a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WoodFenceDoor
-  data: {fileID: 11400000, guid: 019612d7d24a12542879570cd464cdf8, type: 2}
+  data: {fileID: 11400000, guid: 3e5bf8f0ff46ae2418fcad62ba8bd184, type: 2}
   greenMaterial: {fileID: 2100000, guid: c289674975e48194ba656debbe498968, type: 2}
   redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
   placementMask:

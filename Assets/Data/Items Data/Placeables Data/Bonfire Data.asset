@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: Bonfire Data 1
+  m_Script: {fileID: 11500000, guid: b22b8a9f9b34898488c1a7533e0a223f, type: 3}
+  m_Name: Bonfire Data
   m_EditorClassIdentifier: Assembly-CSharp::PlaceableData
   id: Bonfire
   itemName: Bonfire

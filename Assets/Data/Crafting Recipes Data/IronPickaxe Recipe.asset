@@ -15,8 +15,8 @@ MonoBehaviour:
   recipeType: 1
   stationType: 1
   ingredients:
-  - ingredientData: {fileID: 11400000, guid: 0758635f9cf27de4a84ea618a2d31a82, type: 2}
+  - ingredientData: {fileID: 11400000, guid: 8435173b4ff12ae42b9363cf8e4e5a93, type: 2}
     ingredientAmount: 1
-  - ingredientData: {fileID: 11400000, guid: 026e79c7337176f4eb6fd96fbd00bfd1, type: 2}
+  - ingredientData: {fileID: 11400000, guid: bbcb858016858b546864a60db85f6d04, type: 2}
     ingredientAmount: 1
-  resultItem: {fileID: 11400000, guid: 8c879cdd463478947af309c8a8d1f679, type: 2}
+  resultItem: {fileID: 11400000, guid: df3452426887a5f42b5f712012ed746b, type: 2}

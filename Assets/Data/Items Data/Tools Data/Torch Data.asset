@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 135746e2c48e3144193e77391ab3b29d, type: 3}
   m_Name: Torch Data
   m_EditorClassIdentifier: Assembly-CSharp::ToolData
   id: Torch

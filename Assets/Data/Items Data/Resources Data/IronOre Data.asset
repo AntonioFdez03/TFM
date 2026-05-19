@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 06a98d063fcfb4444ae86e7fbc4773ec, type: 3}
   m_Name: IronOre Data
   m_EditorClassIdentifier: Assembly-CSharp::ResourceItemData
   id: IronOre
   itemName: Iron Ore
-  icon: {fileID: 21300000, guid: ce31a7b7a4bb52a4da163a2de18f7ee5, type: 3}
+  icon: {fileID: 21300000, guid: b1e97a28ae2e21f4b9a5de5483fff264, type: 3}
   prefab: {fileID: 7506220752220957125, guid: f0851c8e8f5959347af29fc826b18d0f, type: 3}

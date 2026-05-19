@@ -46,7 +46,7 @@ public class PlayerInteraction : MonoBehaviour
             previousItem = current;
         }
 
-        if(HotBarController.instance.GetCurrentItem() != null)
+        if(InventoryController.instance.CanDrop(HotBarController.instance.GetSelectedIndex()))
             GameplayUI.instance.AddKey("Q", "Drop item");
     }
 
@@ -154,15 +154,25 @@ public class PlayerInteraction : MonoBehaviour
             {
                 case "Item":
                     HandleItemSelection(hitObject, true);
-                    GameplayUI.instance.AddKey("E", "Pick up");
+                    if (InventoryController.instance.CanAdd())
+                    {
+                        if(hitObject.GetComponent<PlaceableBehaviour>() != null)
+                            GameplayUI.instance.AddKey("HoldE", "Unplace");
+                        else
+                            GameplayUI.instance.AddKey("E", "Pick up");
+                    }
                     break;
 
                 case "Harvestable":
                     HandleHarvestableInfo(hitObject);
+                    if(hitObject.GetComponent<Bush>() != null)
+                        GameplayUI.instance.AddKey("HoldE", "Recolect");
                     break;
 
                 case "Interactive":
                     GameplayUI.instance.AddKey("E", "Interact");
+                    if(hitObject.GetComponent<PlaceableBehaviour>() != null)
+                        GameplayUI.instance.AddKey("HoldE", "Unplace");
                     break;
             }
         }
@@ -245,9 +255,8 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HandleItemSelection(GameObject item, bool selected)
     {   
-        Debug.Log("item: " + item);
         if(item.TryGetComponent(out ItemBehaviour itemB))
-        {
+        {   
             if(selected)
                 GameplayUI.instance.ShowItemName(itemB.GetData().itemName);
             else
@@ -255,13 +264,11 @@ public class PlayerInteraction : MonoBehaviour
         }
             
 
-        Debug.Log("Primer if: " + item);
         if(item.TryGetComponent<ItemBehaviour>(out var itemBehaviour) && itemBehaviour.GetCurrentHealth() != itemBehaviour.GetMaxHealth())  
             GameplayUI.instance.ShowItemHealth(itemBehaviour.GetCurrentHealth(), itemBehaviour.GetMaxHealth());
         else
             GameplayUI.instance.HideItemHealth();
         
-        Debug.Log("Segundo if: " + item);
         foreach (Transform child in item.transform)
         {
             if(child.TryGetComponent(out MeshRenderer meshRenderer)){

@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9932d298fded97e4dacf35547d3695f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ToolBehaviour
-  data: {fileID: 11400000, guid: c19536c5271b3164099605602169feef, type: 2}
+  data: {fileID: 11400000, guid: 641c8b20aca44204aac1acade17e224b, type: 2}
 --- !u!1001 &9099233600301822610
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6121205a950f2944d8b2ba22ea118441, type: 3}
   m_Name: Branch
   m_EditorClassIdentifier: Assembly-CSharp::FurnaceRecipe
-  inputItem: {fileID: 11400000, guid: 0758635f9cf27de4a84ea618a2d31a82, type: 2}
-  resultItem: {fileID: 11400000, guid: 351741b5e9c32ce448208d5061868f34, type: 2}
+  inputItem: {fileID: 11400000, guid: 8435173b4ff12ae42b9363cf8e4e5a93, type: 2}
+  resultItem: {fileID: 11400000, guid: 20a98eaf72450e2498c25c00a089df3d, type: 2}
   cookTime: 1

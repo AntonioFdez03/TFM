@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6121205a950f2944d8b2ba22ea118441, type: 3}
   m_Name: RawMeat
   m_EditorClassIdentifier: Assembly-CSharp::FurnaceRecipe
-  inputItem: {fileID: 11400000, guid: ae33f897032b8334ba7c57697d2ecdbb, type: 2}
-  resultItem: {fileID: 11400000, guid: d745305c9da3c0e4798b1dbb3deb058b, type: 2}
+  inputItem: {fileID: 11400000, guid: e0fc882922cb0f64b8bf4300501b2400, type: 2}
+  resultItem: {fileID: 11400000, guid: 75b106348886e8a45b5fc1b1d4181bc7, type: 2}
   cookTime: 5

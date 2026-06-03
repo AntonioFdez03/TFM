@@ -46,6 +46,7 @@ public class HotBarController : MonoBehaviour
         GenerateSlots(hotBarPanel, InventoryController.instance.GetHotBarSize(), 0);
         LoadSlots();
         MoveSelectorFrame(selectedIndex);
+        UpdateHotBarUI();
     }
 
     public ItemStack GetCurrentItem() => currentItem;

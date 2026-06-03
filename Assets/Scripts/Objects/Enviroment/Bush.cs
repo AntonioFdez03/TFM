@@ -5,7 +5,12 @@ public class Bush : HarvestableObject
     private float recolectTime = 5f;
     private float timer = 0;
     private bool recolected = false;
+    private bool recolecting = false;
+    private bool soundActive = false;
+
     private int dropCount = 3;
+
+    [SerializeField] private AudioClip recolectSound;
 
     protected override void Awake()
     {
@@ -21,8 +26,17 @@ public class Bush : HarvestableObject
     public float GetRecolectTime() => recolectTime;
 
     public void Recolect()
-    {
+    {   
+        recolecting = true;
         timer += Time.deltaTime;
+
+        if (!soundActive)
+        {
+            soundActive = true;
+            audioSource.clip = recolectSound;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
 
         if(timer >= recolectTime)
         {   
@@ -31,6 +45,18 @@ public class Bush : HarvestableObject
             timer = 0;
         }
     }
+
+    private void Update()
+    {
+        if (!recolecting && soundActive)
+        {
+            soundActive = false;
+            audioSource.Stop();
+        }
+
+        recolecting = false;
+    }
+
     public override void Harvest()
     {
         int berriesCount = transform.childCount;

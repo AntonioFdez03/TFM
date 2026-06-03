@@ -317,6 +317,7 @@ MonoBehaviour:
   placementMask:
     serializedVersion: 2
     m_Bits: 384
+  placeSound: {fileID: 8300000, guid: 8399d7d3bd2c38c4aad8e54d04c36f17, type: 3}
   openSound: {fileID: 8300000, guid: d581db0e85450014e927d7ea4599bcb3, type: 3}
   closeSound: {fileID: 8300000, guid: 5af914f8b521e3c4a8d31a79f8015939, type: 3}
   rotationPivot: {fileID: 2618175973170114808}

@@ -7,6 +7,7 @@ public class CraftingController : MonoBehaviour
     [SerializeField] private List<CraftingRecipe> allRecipes = new();
     private CraftingStationType stationType;
 
+
     void Awake()
     {
         if(instance != null && instance != this)
@@ -28,6 +29,9 @@ public class CraftingController : MonoBehaviour
             Debug.Log("NO SE PUEDE CRAFTEAR");
             return;
         }
+
+        string sound = stationType == CraftingStationType.None ? "HandCraft" : "BenchCraft";
+        AudioManager.instance.PlayOneShot(sound);
 
         // 1. consumir ingredientes
         foreach (RecipeIngredient ingredient in recipe.ingredients)

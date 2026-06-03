@@ -13,7 +13,7 @@ public abstract class HarvestableObject : MonoBehaviour, IObjectHealth
     protected List<ToolType> toolsAccepted = new();
 
     [SerializeField] private AudioClip hitSound;
-    private AudioSource audioSource;
+    protected AudioSource audioSource;
 
     protected virtual void Awake()
     {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -23,6 +24,7 @@ public class PlaceableBehaviour : ItemBehaviour
 
     private float maxSlopeAngle = 35f;
 
+
     protected override void Start()
     {
         base.Start();
@@ -40,6 +42,8 @@ public class PlaceableBehaviour : ItemBehaviour
     {
         if (!canPlace || data == null)
             return;
+
+        AudioManager.instance.PlayOneShot("Place");
 
         GameObject prefab = data.prefab;
 

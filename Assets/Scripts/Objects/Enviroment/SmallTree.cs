@@ -10,9 +10,8 @@ public class SmallTree : HarvestableObject
     private Rigidbody rb;
     [SerializeField] private List<Transform> branchSpawners;
 
-    protected override void Awake()
+    protected void Awake()
     {
-        base.Awake();
         objectName = "SmallTree";
         maxHealth = 50;
         currentHealth = maxHealth;

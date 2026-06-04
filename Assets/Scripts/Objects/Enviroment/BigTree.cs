@@ -11,9 +11,8 @@ public class BigTree : HarvestableObject
     [SerializeField] private GameObject stumpPrefab;
     private Rigidbody rb;
     
-    protected override void Awake()
+    protected void Awake()
     {
-        base.Awake();
         objectName = "BigTree";
         maxHealth = 100;
         currentHealth = maxHealth;

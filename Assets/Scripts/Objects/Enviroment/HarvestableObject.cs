@@ -13,12 +13,7 @@ public abstract class HarvestableObject : MonoBehaviour, IObjectHealth
     protected List<ToolType> toolsAccepted = new();
 
     [SerializeField] private AudioClip hitSound;
-    protected AudioSource audioSource;
-
-    protected virtual void Awake()
-    {
-        audioSource = GetComponent<AudioSource>();
-    }
+    [SerializeField] protected AudioClip harvestSound;
 
     public string GetObjectName() => objectName;
     public float GetCurrentHealth() => currentHealth;
@@ -28,14 +23,15 @@ public abstract class HarvestableObject : MonoBehaviour, IObjectHealth
         Debug.Log("takeHit: " + tool + ", damage: " + damage);
         if (CanHarvest(tool))
         {
-            Debug.Log("Entra");
             currentHealth = Math.Clamp(currentHealth - damage, 0 ,maxHealth);
-
-            if(hitSound != null && audioSource != null)
-                audioSource.PlayOneShot(hitSound);
             
             if (currentHealth == 0)
+            {
+                AudioManager.instance.PlayOneShot(harvestSound, 0.6f);
                 Harvest();
+            }
+            else if(hitSound != null)
+                AudioManager.instance.PlayOneShot(hitSound, 0.4f);
         }
         else
             print("Herramienta no válida para este objeto");   

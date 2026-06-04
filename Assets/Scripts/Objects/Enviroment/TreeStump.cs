@@ -8,9 +8,8 @@ using UnityEngine;
 public class TreeStump : HarvestableObject
 {   
     
-    protected override void Awake()
+    protected void Awake()
     {
-        base.Awake();
         objectName = "TreeStump";
         maxHealth = 50;
         currentHealth = maxHealth;

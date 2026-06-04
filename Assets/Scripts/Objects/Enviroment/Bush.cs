@@ -11,10 +11,10 @@ public class Bush : HarvestableObject
     private int dropCount = 3;
 
     [SerializeField] private AudioClip recolectSound;
+    private AudioSource audioSource;
 
-    protected override void Awake()
+    protected void Awake()
     {
-        base.Awake();
         objectName = "Bush";
         maxHealth = 30;
         currentHealth = maxHealth;

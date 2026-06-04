@@ -48,8 +48,8 @@ public class EquipmentBehaviour : ItemBehaviour
 
         if (newHealth <= 0)
         {
+            AudioManager.instance.PlayOneShot("ToolBroken");
             ArmController.instance.ResetArm();
-
             InventoryController.instance.RemoveItem(HotBarController.instance.GetCurrentItem());
         }
 

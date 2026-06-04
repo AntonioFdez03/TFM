@@ -10,9 +10,8 @@ public class CutTree : HarvestableObject
     [SerializeField] private List<Transform> logSpawners = new();
     [SerializeField] private GameObject trigger;
     
-    protected override void Awake()
+    protected void Awake()
     {
-        base.Awake();
         objectName = "CutTree";
         maxHealth = 50;
         currentHealth = maxHealth;

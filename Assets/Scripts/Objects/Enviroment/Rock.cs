@@ -14,9 +14,8 @@ public class Rock : HarvestableObject
     private MeshFilter meshFilter;
     private MeshCollider meshCollider;
 
-    protected override void Awake()
+    protected void Awake()
     {   
-        base.Awake();
         objectName = "Rock";
         maxHealth = 30;
         currentHealth = maxHealth;

@@ -161,13 +161,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CutTree
   dropItem: {fileID: 5144113718169600618, guid: 8d1c73364dcfaec409f4be7fe2790ee1, type: 3}
+  hitSound: {fileID: 8300000, guid: 477fae28586de464290f4c8ec525c89a, type: 3}
+  harvestSound: {fileID: 8300000, guid: adb6cf5bf8ba6754bbae6d78bec7b1ed, type: 3}
   logSpawners:
   - {fileID: 2313665013719026095}
   - {fileID: 6188449362407184202}
   - {fileID: 3788463466520948012}
   trigger: {fileID: 3614330385059354855}
-  cutTreePrefab: {fileID: 0}
-  stumpPrefab: {fileID: 0}
 --- !u!1 &3614330385059354855
 GameObject:
   m_ObjectHideFlags: 0

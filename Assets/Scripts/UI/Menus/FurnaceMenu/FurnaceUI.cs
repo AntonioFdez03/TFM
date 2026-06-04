@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,9 @@ public class FurnaceUI : MonoBehaviour
     [SerializeField] private Transform fuelPanel;
     [SerializeField] private Transform outputPanel;
     [SerializeField] private GameObject furnaceBar;
+
+    [SerializeField] private List<GameObject> fuelBarImages;
+    
     private Transform dragginLayer;
     private FurnaceController furnaceController;
 
@@ -64,6 +68,7 @@ public class FurnaceUI : MonoBehaviour
         UpdatePanel(fuelPanel, fuelArray);
 
         UpdatePanel(outputPanel, furnaceController.GetOutputItems());
+        UpdateFuelBar();
     }
 
     void UpdatePanel(Transform panel, ItemStack[] items)
@@ -106,6 +111,17 @@ public class FurnaceUI : MonoBehaviour
                 iconGO.SetActive(false);
                 //slot.transform.GetChild(1).gameObject.SetActive(false);
             }
+        }
+    }
+
+    private void UpdateFuelBar()
+    {
+        foreach(GameObject image in fuelBarImages)
+            image.SetActive(false);
+    
+        for(int i = 0; i < furnaceController.GetCurrentFuel(); i++)
+        {
+            fuelBarImages[i].SetActive(true);
         }
     }
 

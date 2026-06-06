@@ -36,7 +36,7 @@ public class InventorySlot : Slot
 
                 ItemStack item = furnace.GetItem(furnaceSlot.GetSlotType(),originIndex);
 
-                if (item != null && InventoryController.instance.GetItem(slotIndex) != null)
+                if (item != null && InventoryController.instance.GetItem(slotIndex) == null)
                 {
                     InventoryController.instance.AddItemFromStack(item,slotIndex);
                     furnace.RemoveItem(furnaceSlot.GetSlotType(), originIndex);

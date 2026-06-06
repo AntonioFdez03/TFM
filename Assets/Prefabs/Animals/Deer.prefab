@@ -315,13 +315,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2500683495434887335}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.00000008146034, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7922649801668778606}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!137 &9018798833237905521
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -347,7 +347,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f6730b960ba6c914e9141395fc93249f, type: 2}
+  - {fileID: 2100000, guid: 9359f49b84d2f154592644e673b40ff1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1308,6 +1308,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Animal
   data: {fileID: 11400000, guid: c291a50cd32df6c40b1b8b2044f458b1, type: 2}
   dropItem: {fileID: 5442471255067961418, guid: 08d42728e0e98714fb8c8261d3146e7e, type: 3}
+  pacificMaterial: {fileID: 2100000, guid: 9359f49b84d2f154592644e673b40ff1, type: 2}
+  hostileMaterial: {fileID: 2100000, guid: e4882107b3e2a594fab0451d492925f8, type: 2}
 --- !u!195 &1353840603495440698
 NavMeshAgent:
   m_ObjectHideFlags: 0

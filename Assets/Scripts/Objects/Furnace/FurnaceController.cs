@@ -6,10 +6,11 @@ public class FurnaceController : MonoBehaviour
 {  
     public Action OnInventoryChanged;
 
-    private int furnaceSize = 3;
+    private readonly int furnaceSize = 3;
     private ItemStack[] inputItems;
     private ItemStack[] outputItems;
     private ItemStack fuelItem = null;
+    private bool[] activeFuelSlots;
     private float currentFuel;
     private float timer = 0;
     private float bakeDuration = 5f;
@@ -37,6 +38,7 @@ public class FurnaceController : MonoBehaviour
         inputItems = new ItemStack[furnaceSize];
         outputItems = new ItemStack[furnaceSize];
         currentFuel = 0;
+        activeFuelSlots = new bool[furnaceSize];
     }
 
     void Update()
@@ -61,7 +63,11 @@ public class FurnaceController : MonoBehaviour
     public ItemStack[] GetInputItems() => inputItems;
     public ItemStack[] GetOutputItems() => outputItems;
     public ItemStack GetFuelItem() => fuelItem;
+    public bool[] GetActiveFuelSlots() => activeFuelSlots;
     public float GetCurrentFuel() => currentFuel;
+    public float GetCurrentTimer() => timer;
+    public float GetCurrentBakeDuration() => bakeDuration;
+    
 
     public ItemStack GetItem(FurnaceSlotType type,int index)
     {
@@ -117,6 +123,12 @@ public class FurnaceController : MonoBehaviour
         
         fuelItem = item;
         currentFuel = FurnaceDataBase.instance.GetFuel(itemData).energy;
+
+        for(int i = 0; i < currentFuel; i++)
+        {
+            activeFuelSlots[i] = true;
+        }
+
         OnInventoryChanged?.Invoke();
         return true;
     }
@@ -155,14 +167,14 @@ public class FurnaceController : MonoBehaviour
     private void Work()
     {
         timer += Time.deltaTime;
-        if(currentFuel > 0 && currentActiveItem != -1)
+        if(currentFuel > 0 && currentActiveItem != -1 && currentFuel >= currentActiveItem + 1)
         {   
             working = true;
             if(timer > bakeDuration)
             {
                 timer = 0;
                 BakeItem(currentActiveItem);
-            }
+            }      
         }
         else
         {   
@@ -183,6 +195,7 @@ public class FurnaceController : MonoBehaviour
             RemoveItem(FurnaceSlotType.Input,index);
             currentFuel -= 1;
             currentActiveItem = -1;
+            activeFuelSlots[index] = false;
 
             float maxHealth = 0;
             if(recipe.resultItem is DurableItemData durableItemData)
@@ -202,9 +215,9 @@ public class FurnaceController : MonoBehaviour
     {
         if(!IsInputEmpty() && currentActiveItem == -1)
         {
-            for(int i = 0; i < furnaceSize; i++)
+            for(int i = furnaceSize - 1; i >= 0; i--)
             {
-                if(inputItems[i] != null && outputItems[i] == null)
+                if(inputItems[i] != null && outputItems[i] == null && currentFuel >= i + 1)
                     currentActiveItem = i;
             }
         }

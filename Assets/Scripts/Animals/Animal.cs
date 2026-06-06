@@ -6,6 +6,8 @@ public class Animal : MonoBehaviour
 {
     [SerializeField] protected AnimalData data;
     [SerializeField] private GameObject dropItem;
+    [SerializeField] private Material pacificMaterial;
+    [SerializeField] private Material hostileMaterial;
     private IAnimalBehaviour animalBehaviour;
     private Animator animator;
     private NavMeshAgent agent;
@@ -17,6 +19,8 @@ public class Animal : MonoBehaviour
     private Mesh bakedMesh;
 
     private bool dead = false;
+    private bool isHostile = false;
+    private bool wasHostile = false;
 
     private float currentHealth;
 
@@ -42,10 +46,20 @@ public class Animal : MonoBehaviour
 
     void Update()
     {
+        isHostile = PlayerController.instance.GetPlayerAttributes().GetCurrentSanity() < PlayerController.instance.GetPlayerAttributes().GetMaxSanity() * 0.5f;
+        skinnedMesh.material = isHostile ? hostileMaterial : pacificMaterial;
+            
         if (!dead)
         {
+            if(isHostile && !wasHostile)
+                animalBehaviour = new HostileBehaviour();
+            else if(!isHostile && wasHostile)
+                animalBehaviour = new PacificBehaviour();
+
             animalBehaviour?.Act(this);
         }
+
+        wasHostile = isHostile;
     }
 
     public void TakeDamage(float amount)

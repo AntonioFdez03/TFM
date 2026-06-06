@@ -61,7 +61,7 @@ Assets/
    IAnimalBehaviour.cs
    PacificBehaviour.cs
  Scripts/Core/
-  Camera/CameraController.cs
+  AudioManager.cs
   Save/
    SaveData.cs
    SaveManager.cs
@@ -71,10 +71,11 @@ Assets/
   CraftingRecipe.cs
  Scripts/Objects/Enviroment/
   BigTree.cs
+  Bush.cs
   CutTree.cs
   HarvestableObject.cs
-  RockNode.cs
-  SmallTreeNode.cs
+  Rock.cs
+  SmallTree.cs
   TreeStump.cs
  Scripts/Objects/Furnace/
   FuelData.cs
@@ -94,7 +95,15 @@ Assets/
    Inventory/
     HotBarController.cs
     InventoryController.cs
-    ItemData.cs
+    ItemData/
+     ConsumableData.cs
+     DurableItemData.cs
+     EquipmentData.cs
+     ItemData.cs
+     PlaceableData.cs
+     ResourceData.cs
+     ToolData.cs
+     WeaponData.cs
     ItemDataBase.cs
     ItemStack.cs
    ItemBehaviour.cs
@@ -111,11 +120,15 @@ Assets/
   Terrain/Terrain.cs
  Scripts/Player/
   ArmController.cs
+  CameraController.cs
   PlayerAttributes.cs
   PlayerController.cs
   PlayerInteraction.cs
  Scripts/UI/
   GameplayUI.cs
+  Keys/
+   KeyData.cs
+   KeyDataBase.cs
   Menus/CraftingMenu/
    CraftingMenuManager.cs
    IngredientUI.cs
@@ -479,7 +492,6 @@ Temp/bin/Debug/
  Unity.Searcher.Editor.dll
  Unity.Settings.Editor.dll
  Unity.ShaderGraph.Editor.dll
- Unity.ShaderGraph.Utilities.dll
  Unity.Splines.dll
  Unity.Splines.Editor.dll
  Unity.TerrainTools.dll
@@ -501,10 +513,8 @@ Temp/bin/Debug/
  Unity.VisualScripting.State.Editor.dll
  Unity.VisualStudio.Editor.dll
  Unity.VSCode.Editor.dll
- UnityEditor.TestRunner.dll
  UnityEditor.UI.Analytics.dll
  UnityEditor.UI.dll
- UnityEngine.TestRunner.dll
  UnityEngine.UI.dll
 
 [analyzerReferences]

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ConsumableData
   id: Berry
   itemName: Berry
-  icon: {fileID: 21300000, guid: b1e97a28ae2e21f4b9a5de5483fff264, type: 3}
+  icon: {fileID: 21300000, guid: ea50ac81b46dcfd488ec2aea760e51dc, type: 3}
   prefab: {fileID: 6294567182878355621, guid: 51a1bcca14a3e034e914cdf5ed363035, type: 3}
   hungerPoints: 5
   healthPoints: 0

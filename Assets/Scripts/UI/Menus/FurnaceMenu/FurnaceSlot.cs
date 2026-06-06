@@ -56,16 +56,16 @@ public class FurnaceSlot : Slot
                     case FurnaceSlotType.Input:
                         if(furnaceController.GetItem(FurnaceSlotType.Input,index) == null)
                         {
-                            furnaceController.AddInput(index,item);
-                            furnaceController.RemoveItem(furnaceSlot.GetSlotType(),furnaceSlot.GetSlotIndex());
+                            if(furnaceController.AddInput(index,item))
+                                furnaceController.RemoveItem(furnaceSlot.GetSlotType(),furnaceSlot.GetSlotIndex());
                         }
                         break;
 
                     case FurnaceSlotType.Fuel:
                         if(furnaceController.GetItem(FurnaceSlotType.Fuel,index) == null)
                         {
-                            furnaceController.AddFuel(item);
-                            furnaceController.RemoveItem(furnaceSlot.GetSlotType(),furnaceSlot.GetSlotIndex());
+                            if(furnaceController.AddFuel(item))
+                                furnaceController.RemoveItem(furnaceSlot.GetSlotType(),furnaceSlot.GetSlotIndex());
                         }
                         break;
                 }

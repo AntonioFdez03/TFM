@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ToolData
   id: IronAxe
   itemName: Iron Axe
-  icon: {fileID: 21300000, guid: 0d934b2ae90ec9549a408483c7f2b9b9, type: 3}
+  icon: {fileID: 21300000, guid: 03726715035b0bc40866610053332a43, type: 3}
   prefab: {fileID: 2323832488127001772, guid: 700136752f13a974381f36a93aeb459c, type: 3}
   maxHealth: 100
   damage: 20

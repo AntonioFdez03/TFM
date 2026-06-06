@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,7 @@ public class FurnaceUI : MonoBehaviour
     [SerializeField] private GameObject furnaceBar;
 
     [SerializeField] private List<GameObject> fuelBarImages;
+    [SerializeField] private Image arrow;
     
     private Transform dragginLayer;
     private FurnaceController furnaceController;
@@ -56,6 +58,12 @@ public class FurnaceUI : MonoBehaviour
         sliderBar.transform.SetParent(slot);
     }
 
+    private void Update()
+    {
+        if(furnaceController == null) return;
+
+        UpdateArrow();
+    }
     private void UpdateUI()
     {
         if (furnaceController == null)
@@ -116,13 +124,19 @@ public class FurnaceUI : MonoBehaviour
 
     private void UpdateFuelBar()
     {
-        foreach(GameObject image in fuelBarImages)
-            image.SetActive(false);
-    
-        for(int i = 0; i < furnaceController.GetCurrentFuel(); i++)
+        bool[] fuelStates = furnaceController.GetActiveFuelSlots();
+
+        for(int i = 0; i < fuelBarImages.Count; i++)
         {
-            fuelBarImages[i].SetActive(true);
+            fuelBarImages[i].SetActive(fuelStates[i]);
         }
+}
+
+    private void UpdateArrow()
+    {
+        print("Current timer: " + furnaceController.GetCurrentTimer());
+        print("Current bake: " + furnaceController.GetCurrentBakeDuration());
+        arrow.fillAmount = furnaceController.GetCurrentTimer() / furnaceController.GetCurrentBakeDuration();
     }
 
     private void OnDisable()

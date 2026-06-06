@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ToolData
   id: IronPickaxe
   itemName: Iron Pickaxe
-  icon: {fileID: 21300000, guid: 67b149b84779b4344a76d86dcd9c81dd, type: 3}
+  icon: {fileID: 21300000, guid: 050879199fb60b647829553429d11373, type: 3}
   prefab: {fileID: 5378914829250258113, guid: 9fbb51a33cc946b4b832d2d0fd254d9a, type: 3}
   maxHealth: 100
   damage: 20

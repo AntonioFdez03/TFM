@@ -835,7 +835,6 @@ Library/PackageCache/
 Temp/bin/Debug/
  Unity.Burst.dll
  Unity.Collections.dll
- Unity.InputSystem.dll
  Unity.Mathematics.dll
  Unity.RenderPipelines.Core.Runtime.dll
  Unity.RenderPipelines.Core.Runtime.Shared.dll
@@ -843,9 +842,7 @@ Temp/bin/Debug/
  Unity.RenderPipelines.HighDefinition.Config.Runtime.dll
  Unity.Timeline.dll
  Unity.VisualEffectGraph.Runtime.dll
- UnityEditor.TestRunner.dll
  UnityEditor.UI.dll
- UnityEngine.TestRunner.dll
  UnityEngine.UI.dll
 
 [analyzerReferences]

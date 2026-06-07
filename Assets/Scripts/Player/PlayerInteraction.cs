@@ -1,10 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -296,8 +292,8 @@ public class PlayerInteraction : MonoBehaviour
                 GameplayUI.instance.HideItemName();
         }
 
-        if(item.TryGetComponent<ItemBehaviour>(out var itemBehaviour) && itemBehaviour.GetCurrentHealth() != itemBehaviour.GetMaxHealth())  
-            GameplayUI.instance.ShowItemHealth(itemBehaviour.GetCurrentHealth(), itemBehaviour.GetMaxHealth());
+        if(item.TryGetComponent<IObjectHealth>(out var objectHealth) && objectHealth.GetCurrentHealth() != objectHealth.GetMaxHealth())  
+            GameplayUI.instance.ShowItemHealth(objectHealth.GetCurrentHealth(), objectHealth.GetMaxHealth());
         else
             GameplayUI.instance.HideItemHealth();
         

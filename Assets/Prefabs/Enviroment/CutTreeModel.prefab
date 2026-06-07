@@ -160,6 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8d5caffb2a0d7f45be0f522981d656c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CutTree
+  data: {fileID: 11400000, guid: 5b1a371bab4c4cd4abd3dd4ca8809435, type: 2}
   dropItem: {fileID: 5144113718169600618, guid: 8d1c73364dcfaec409f4be7fe2790ee1, type: 3}
   hitSound: {fileID: 8300000, guid: 477fae28586de464290f4c8ec525c89a, type: 3}
   harvestSound: {fileID: 8300000, guid: adb6cf5bf8ba6754bbae6d78bec7b1ed, type: 3}

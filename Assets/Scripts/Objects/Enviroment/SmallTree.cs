@@ -12,8 +12,7 @@ public class SmallTree : HarvestableObject
 
     protected void Awake()
     {
-        objectName = "SmallTree";
-        maxHealth = 50;
+        maxHealth = data.maxHealth;
         currentHealth = maxHealth;
         toolsAccepted.Add(ToolType.Axe);
         toolsAccepted.Add(ToolType.None);

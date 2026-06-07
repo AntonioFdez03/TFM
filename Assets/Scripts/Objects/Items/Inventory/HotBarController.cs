@@ -1,10 +1,7 @@
 using System.Collections.Generic;
-using System.Linq;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using UnityEngine.XR;
 
 public class HotBarController : MonoBehaviour
 {   

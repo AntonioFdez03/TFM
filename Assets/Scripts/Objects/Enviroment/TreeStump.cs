@@ -10,8 +10,7 @@ public class TreeStump : HarvestableObject
     
     protected void Awake()
     {
-        objectName = "TreeStump";
-        maxHealth = 50;
+        maxHealth = data.maxHealth;
         currentHealth = maxHealth;
         toolsAccepted.Add(ToolType.Axe);  
     }

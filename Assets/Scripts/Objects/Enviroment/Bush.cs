@@ -15,8 +15,7 @@ public class Bush : HarvestableObject
 
     protected void Awake()
     {
-        objectName = "Bush";
-        maxHealth = 30;
+        maxHealth = data.maxHealth;
         currentHealth = maxHealth;
         toolsAccepted.Add(ToolType.Axe);
     }

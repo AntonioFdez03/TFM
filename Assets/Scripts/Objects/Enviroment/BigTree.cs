@@ -13,8 +13,7 @@ public class BigTree : HarvestableObject
     
     protected void Awake()
     {
-        objectName = "BigTree";
-        maxHealth = 100;
+        maxHealth = data.maxHealth;
         currentHealth = maxHealth;
         toolsAccepted.Add(ToolType.Axe);
         rb = gameObject.GetComponent<Rigidbody>();

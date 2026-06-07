@@ -138,6 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd74b196c15d3f2468b3d0478d0ecaa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RockNode
+  data: {fileID: 11400000, guid: 0d1d4411db3e0ff4b9ae3190c498844f, type: 2}
   dropItem: {fileID: 5751404862281763555, guid: 200b9b53a5a020c41bb8385f8889899f, type: 3}
   hitSound: {fileID: 8300000, guid: aea4c75860ce8fe4a90f74976930597a, type: 3}
   harvestSound: {fileID: 0}

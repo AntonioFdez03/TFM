@@ -6,17 +6,20 @@ using UnityEngine;
 
 public abstract class HarvestableObject : MonoBehaviour, IObjectHealth
 {   
+    [SerializeField] protected HarvestableData data;
     [SerializeField] protected GameObject dropItem = null;
     protected string objectName;
-    protected int maxHealth;
+    protected float maxHealth;
     protected float currentHealth;
     protected List<ToolType> toolsAccepted = new();
 
     [SerializeField] private AudioClip hitSound;
     [SerializeField] protected AudioClip harvestSound;
 
-    public string GetObjectName() => objectName;
+    public HarvestableData GetData() => data;
     public float GetCurrentHealth() => currentHealth;
+    public float GetMaxHealth() => maxHealth;
+
     public void SetCurrentHealth(float health) => currentHealth = health;
     public virtual void TakeHit(ToolType tool, float damage)
     {

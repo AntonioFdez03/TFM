@@ -12,8 +12,7 @@ public class CutTree : HarvestableObject
     
     protected void Awake()
     {
-        objectName = "CutTree";
-        maxHealth = 50;
+        maxHealth = data.maxHealth;
         currentHealth = maxHealth;
         toolsAccepted.Add(ToolType.Axe);  
     }

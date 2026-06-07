@@ -16,8 +16,7 @@ public class Rock : HarvestableObject
 
     protected void Awake()
     {   
-        objectName = "Rock";
-        maxHealth = 30;
+        maxHealth = data.maxHealth;
         currentHealth = maxHealth;
         toolsAccepted.Add(ToolType.Pickaxe);
         rb = gameObject.GetComponent<Rigidbody>();

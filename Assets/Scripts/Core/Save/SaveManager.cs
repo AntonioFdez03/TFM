@@ -95,7 +95,7 @@ public class SaveManager : MonoBehaviour
             // HARVESTABLE
             else if (worldObject.TryGetComponent(out HarvestableObject harvestable))
             {
-                objectData.id = harvestable.GetObjectName();
+                objectData.id = harvestable.GetData().id;
                 objectData.type = "Harvestable";
                 objectData.currentHealth = harvestable.GetCurrentHealth();
             }

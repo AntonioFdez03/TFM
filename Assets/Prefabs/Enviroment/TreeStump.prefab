@@ -126,4 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f6e37378f9251d4fa035f22866ac653, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TreeStump
+  data: {fileID: 11400000, guid: 978fd459397f44b4298737d641f350d5, type: 2}
   dropItem: {fileID: 0}
+  hitSound: {fileID: 0}
+  harvestSound: {fileID: 0}

@@ -8,4 +8,5 @@ public interface IObjectHealth
 {   
     void SetCurrentHealth(float health);
     float GetCurrentHealth();
+    float GetMaxHealth();
 }

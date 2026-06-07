@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 1734677999308791038}
   - component: {fileID: 3496617699371733003}
   - component: {fileID: 70536954401243057}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Point Light
   m_TagString: Light
   m_Icon: {fileID: 0}

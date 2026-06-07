@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 121012696202935487}
   - component: {fileID: 6260526351769643594}
   - component: {fileID: 87506654493226836}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SmallTree
   m_TagString: Harvestable
   m_Icon: {fileID: 0}
@@ -184,6 +184,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SmallTreeNode
   dropItem: {fileID: 3074230260528391914, guid: 677e5e059ef81a04a923e573c47ba2c1, type: 3}
+  hitSound: {fileID: 0}
+  harvestSound: {fileID: 0}
   branchSpawners:
   - {fileID: 6022391111969557622}
   - {fileID: 8045764257756525449}
@@ -212,7 +214,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8045764257756525449}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: DropPosition2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -243,7 +245,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6022391111969557622}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: DropPosition1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3744691457243286734}
   - component: {fileID: 8256731242742110723}
   - component: {fileID: 3842066102156542339}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Branch
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -161,6 +161,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 43531e2670ce64f4c9c9ac5bb248d8dd, type: 3}
       propertyPath: m_Name
       value: Branch
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 43531e2670ce64f4c9c9ac5bb248d8dd, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

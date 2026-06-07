@@ -103,10 +103,19 @@ public class PlayerInteraction : MonoBehaviour
         if (lastHit.collider != null)
             HandleItemSelection(lastHit.collider.gameObject, false);
 
-        bool hasHit = Physics.Raycast(ray, out hit, interactDistance);
+        int layerMask = ~LayerMask.GetMask("Light");
+
+        bool hasHit = Physics.Raycast(
+            ray,
+            out hit,
+            interactDistance,
+            layerMask
+        );
 
         GameObject hitObject = hasHit ? hit.collider.gameObject : null;
         string tag = hasHit ? hit.collider.tag : null;
+
+        
 
         HandleHover(hasHit,hitObject,tag);
         HandlePlaceableSilhouette(hasHit, hit);

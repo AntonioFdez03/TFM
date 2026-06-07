@@ -5,10 +5,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlaceableBehaviour : ItemBehaviour
-{
+{   
+    protected static LayerMask placementMask;
     [SerializeField] Material greenMaterial;
     [SerializeField] Material redMaterial;
-    [SerializeField] LayerMask placementMask;
 
     protected Vector3 checkBoxSize;
     private GameObject silhouette;
@@ -30,6 +30,14 @@ public class PlaceableBehaviour : ItemBehaviour
         base.Start();
         GetComponent<Rigidbody>().isKinematic = true;
         interact = InputSystem.actions.FindAction("Interact");
+
+        placementMask = LayerMask.GetMask(
+            "Items",
+            "PlacedObjects",
+            "Enviroment"
+        );
+
+        print($"[Start] placementMask = {placementMask.value}");
     }
 
     protected void SetCheckBoxSize(Vector3 boxSize) => checkBoxSize = boxSize; 
@@ -71,12 +79,16 @@ public class PlaceableBehaviour : ItemBehaviour
 
     private bool Collides(Vector3 position, Quaternion rotation)
     {
-        return Physics.CheckBox(
+        print($"[Collide] placementMask = {placementMask.value}");
+        bool hit = Physics.CheckBox(
             position,
             checkBoxSize / 2f,
             rotation,
             placementMask
         );
+
+        print("Colliding: " + hit);
+        return hit;
     }
 
     public void ShowSilhouette(RaycastHit hit)
@@ -91,9 +103,9 @@ public class PlaceableBehaviour : ItemBehaviour
 
             if (data is PlaceableData placeableData)
                 print(placeableData.straight);
-        }
 
-        DisableSilhouetteComponents();
+            DisableSilhouetteComponents(); 
+        }
         AdjustSilhouette(hit);
 
         silhouette.SetActive(true);
@@ -147,11 +159,12 @@ public class PlaceableBehaviour : ItemBehaviour
             l.enabled = false;
 
         foreach (var p in silhouette.GetComponentsInChildren<ParticleSystem>())
-            p.Stop();
-        
-        foreach (var t in silhouette.GetComponentsInChildren<Transform>())
-            t.localRotation = Quaternion.identity;  
-        
+            p.Stop(); 
+
+        foreach (var chest in silhouette.GetComponentsInChildren<WoodChest>())
+        {
+            chest.enabled = false;
+        }
     }
 
     private void AdjustSilhouette(RaycastHit hit)
@@ -172,17 +185,16 @@ public class PlaceableBehaviour : ItemBehaviour
 
         if (straight)
         {   
-            print("Straight");
             silhouette.transform.rotation = Quaternion.Euler(0f, lookRotation.eulerAngles.y, 0f) * customRotation;
         }
         else
         {
-            print("NO Straight");
             Quaternion alignToGround =
                 Quaternion.FromToRotation(Vector3.up, hit.normal);
 
             silhouette.transform.rotation = alignToGround * lookRotation * customRotation;
         }
+            
     }
 
     public void RotateSilhouette()
@@ -214,16 +226,60 @@ public class PlaceableBehaviour : ItemBehaviour
             Destroy(gameObject);
     }
 
-    public void CalculateCheckBoxSize()
+    private void CalculateCheckBoxSize()
     {
-        if (TryGetComponent(out BoxCollider box))
-            checkBoxSize = box.size;
+        if (silhouette == null)
+            return;
 
-        if (TryGetComponent(out CapsuleCollider capsule))
+        Collider col = silhouette.GetComponentInChildren<Collider>();
+
+        if (col == null)
         {
-            float r = capsule.radius;
-            checkBoxSize = new Vector3(r, r, r);
+            Debug.LogWarning("No collider found in silhouette");
+            return;
         }
+
+        switch (col)
+        {
+            case BoxCollider box:
+                checkBoxSize = Vector3.Scale(
+                    box.size,
+                    box.transform.lossyScale
+                );
+                break;
+
+            case CapsuleCollider capsule:
+                float radius = capsule.radius;
+
+                Vector3 scale = capsule.transform.lossyScale;
+
+                // Escala horizontal promedio para el radio
+                float scaledRadius =
+                    radius * Mathf.Max(scale.x, scale.z);
+
+                float diameter = scaledRadius * 2f;
+
+                checkBoxSize = new Vector3(
+                    diameter,
+                    capsule.height * scale.y,
+                    diameter
+                );
+                break;
+
+            case MeshCollider mesh:
+                checkBoxSize = Vector3.Scale(
+                    mesh.sharedMesh.bounds.size,
+                    mesh.transform.lossyScale
+                );
+                break;
+
+            default:
+                // Fallback para cualquier collider raro
+                checkBoxSize = col.bounds.size;
+                break;
+        }
+
+        Debug.Log($"CheckBox Size: {checkBoxSize}");
     }
 
     private bool IsSlopeValid(RaycastHit hit)

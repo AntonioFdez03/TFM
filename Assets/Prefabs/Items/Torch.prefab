@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7096988369828536346}
   - component: {fileID: 3521768477407646951}
   - component: {fileID: 5662626760672225940}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 2760000705046790723}
   - component: {fileID: 5103126136830359240}
   - component: {fileID: 6356856351217971253}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4950,7 +4950,7 @@ GameObject:
   - component: {fileID: 3012647159734656052}
   - component: {fileID: 3270026675002441359}
   - component: {fileID: 5807723797963422557}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Point Light
   m_TagString: Light
   m_Icon: {fileID: 0}
@@ -5142,6 +5142,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 332d60d2ca7d4134f8806d4c0c2541fe, type: 3}
       propertyPath: m_Name
       value: TorchModel
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 332d60d2ca7d4134f8806d4c0c2541fe, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

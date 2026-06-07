@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7940256837438548877}
   - component: {fileID: 7993663974460631541}
   - component: {fileID: 3920659745837221447}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: IronRock
   m_TagString: Harvestable
   m_Icon: {fileID: 0}
@@ -270,7 +270,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2261698647561336954}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: DropPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -9,7 +9,7 @@ public class StandingTorch : PlaceableBehaviour, IInteractiveObject
     private bool fireActive;
     private float burnRate = 1f;
     private float burnCooldown = 30f;
-    private float timer = 0f;
+    private float fireTimer = 0f;
 
 
     protected override void Start()
@@ -26,17 +26,17 @@ public class StandingTorch : PlaceableBehaviour, IInteractiveObject
 
         if (fireActive)
         {   
-            timer += Time.deltaTime;
+            fireTimer += Time.deltaTime;
 
-            if(timer >= burnCooldown)
+            if(fireTimer >= burnCooldown)
             {
-                timer = 0;
+                fireTimer = 0;
                 TakeDamage(burnRate);
             }
         }
         else
         {
-            timer = 0;
+            fireTimer = 0;
         }
     }
 

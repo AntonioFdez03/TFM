@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3497014660396893851}
   - component: {fileID: 2409173653356765789}
   - component: {fileID: 1145383505028518564}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: BerryBush
   m_TagString: Harvestable
   m_Icon: {fileID: 0}
@@ -56,6 +56,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Bush
   dropItem: {fileID: 2717929752634245167, guid: 0ab8a685fdb71ec4c97bfb3f8bdfcd32, type: 3}
   hitSound: {fileID: 8300000, guid: 477fae28586de464290f4c8ec525c89a, type: 3}
+  harvestSound: {fileID: 0}
   recolectSound: {fileID: 8300000, guid: 61c850912136ea8499a56b3686983b37, type: 3}
 --- !u!136 &2409173653356765789
 CapsuleCollider:
@@ -237,6 +238,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Berry (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 6294567182878355621, guid: 51a1bcca14a3e034e914cdf5ed363035, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8938224976920836326, guid: 51a1bcca14a3e034e914cdf5ed363035, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -307,6 +316,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Berry (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 6294567182878355621, guid: 51a1bcca14a3e034e914cdf5ed363035, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8938224976920836326, guid: 51a1bcca14a3e034e914cdf5ed363035, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -368,6 +385,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 483aee2a5217b1845a96a8a9ad7b2ccf, type: 3}
       propertyPath: m_Name
       value: BushModel
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 483aee2a5217b1845a96a8a9ad7b2ccf, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 483aee2a5217b1845a96a8a9ad7b2ccf, type: 3}
       propertyPath: m_TagString
@@ -474,6 +495,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Berry
       objectReference: {fileID: 0}
+    - target: {fileID: 6294567182878355621, guid: 51a1bcca14a3e034e914cdf5ed363035, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8938224976920836326, guid: 51a1bcca14a3e034e914cdf5ed363035, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -543,6 +572,14 @@ PrefabInstance:
     - target: {fileID: 6294567182878355621, guid: 51a1bcca14a3e034e914cdf5ed363035, type: 3}
       propertyPath: m_Name
       value: Berry (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6294567182878355621, guid: 51a1bcca14a3e034e914cdf5ed363035, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8938224976920836326, guid: 51a1bcca14a3e034e914cdf5ed363035, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -614,6 +651,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Berry (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 6294567182878355621, guid: 51a1bcca14a3e034e914cdf5ed363035, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8938224976920836326, guid: 51a1bcca14a3e034e914cdf5ed363035, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -684,6 +729,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Berry (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6294567182878355621, guid: 51a1bcca14a3e034e914cdf5ed363035, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8938224976920836326, guid: 51a1bcca14a3e034e914cdf5ed363035, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -753,6 +806,14 @@ PrefabInstance:
     - target: {fileID: 6294567182878355621, guid: 51a1bcca14a3e034e914cdf5ed363035, type: 3}
       propertyPath: m_Name
       value: Berry (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6294567182878355621, guid: 51a1bcca14a3e034e914cdf5ed363035, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8938224976920836326, guid: 51a1bcca14a3e034e914cdf5ed363035, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

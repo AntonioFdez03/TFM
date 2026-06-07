@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6386089069940898899}
   - component: {fileID: 2366898593632955580}
   - component: {fileID: 7913625481810128722}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: BigTree
   m_TagString: Harvestable
   m_Icon: {fileID: 0}

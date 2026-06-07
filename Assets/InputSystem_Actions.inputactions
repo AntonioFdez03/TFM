@@ -131,6 +131,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleActivation",
+                    "type": "Button",
+                    "id": "7a02336b-2c41-4ccb-b127-43aa1188c81d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -615,6 +624,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Rotate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0cbf6d3e-cc28-4d08-9576-4da18df472a1",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleActivation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

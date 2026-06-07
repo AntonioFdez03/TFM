@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2708472368254195945}
   - component: {fileID: 7096988369828536346}
   - component: {fileID: 3521768477407646951}
-  - component: {fileID: 157972612030029712}
+  - component: {fileID: 5662626760672225940}
   m_Layer: 0
   m_Name: Torch
   m_TagString: Item
@@ -87,7 +87,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!114 &157972612030029712
+--- !u!114 &5662626760672225940
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,10 +96,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2621919197999382902}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9932d298fded97e4dacf35547d3695f5, type: 3}
+  m_Script: {fileID: 11500000, guid: 79655328592720046a97c1c06113b810, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ToolBehaviour
+  m_EditorClassIdentifier: Assembly-CSharp::Torch
   data: {fileID: 11400000, guid: 1bfc23f54da4167469044c5e470e85fd, type: 2}
+  fire: {fileID: 3299427528925351659}
+  pointLight: {fileID: 5101403984437641822}
 --- !u!1 &3299427528925351659
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,7 +119,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2760000705046790723
 Transform:
   m_ObjectHideFlags: 0
@@ -4954,7 +4956,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3394009157429603231
 Transform:
   m_ObjectHideFlags: 0

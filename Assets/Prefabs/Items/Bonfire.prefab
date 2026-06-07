@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5041855492731873557}
   m_Layer: 7
   m_Name: Bonfire
-  m_TagString: Item
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5293,7 +5293,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 13c8253195ac5b84290aceff5b45f6bf, type: 3}
       propertyPath: m_Materials.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 13c8253195ac5b84290aceff5b45f6bf, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -5306,7 +5306,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 13c8253195ac5b84290aceff5b45f6bf, type: 3}
       propertyPath: 'm_Materials.Array.data[2]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: 0cd89ff135b005a4db8c26da2f164c6b, type: 2}
     - target: {fileID: -7511558181221131132, guid: 13c8253195ac5b84290aceff5b45f6bf, type: 3}
       propertyPath: 'm_Materials.Array.data[3]'
       value: 

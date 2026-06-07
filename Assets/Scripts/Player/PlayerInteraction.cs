@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
@@ -16,6 +17,7 @@ public class PlayerInteraction : MonoBehaviour
     private InputAction interact;
     private InputAction attack;
     private InputAction rotate;
+    private InputAction toggleActivation;
     private RaycastHit lastHit;
 
     private float interactTime = 0.2f;
@@ -26,6 +28,7 @@ public class PlayerInteraction : MonoBehaviour
         interact = InputSystem.actions.FindAction("Interact");
         attack = InputSystem.actions.FindAction("Attack");
         rotate = InputSystem.actions.FindAction("Rotate");
+        toggleActivation = InputSystem.actions.FindAction("ToggleActivation");
     }
 
     void Update()
@@ -36,6 +39,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             Interact();
             Use();
+            HandleActivateable(HotBarController.instance.GetHandItem());
         }
 
         var current = HotBarController.instance.GetCurrentItem();
@@ -47,13 +51,24 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         ItemBehaviour itemBehaviour = HotBarController.instance.GetCurrentItemBehaviour();
+        GameObject handItem = HotBarController.instance.GetHandItem();
+
         if(itemBehaviour == null)
             GameplayUI.instance.AddKey("RMB", "Punch");
         else if(itemBehaviour is EquipmentBehaviour)
             GameplayUI.instance.AddKey("RMB", "Attack");
 
+        if(handItem != null)
+        {
+            if(handItem.TryGetComponent(out IActivateableObject activateableObject))
+            {   
+                GameplayUI.instance.AddKey("F", activateableObject.isActive() ? "Desactivate" : "Activate");
+            }
+        }
+
         if(InventoryController.instance.CanDrop(HotBarController.instance.GetSelectedIndex()))
             GameplayUI.instance.AddKey("Q", "Drop item");
+
     }
 
     private void Use()
@@ -80,7 +95,7 @@ public class PlayerInteraction : MonoBehaviour
     }
 
     private void Interact()
-    {
+    {  
         Ray ray = new Ray(CameraController.instance.transform.position, CameraController.instance.transform.forward);
         RaycastHit hit;
 
@@ -135,7 +150,6 @@ public class PlayerInteraction : MonoBehaviour
                 ResetTime(consumable);
         }
     }
-
 
     public void ResetTime(ItemBehaviour obj)
     {   
@@ -197,7 +211,7 @@ public class PlayerInteraction : MonoBehaviour
                 case "Item":
                     HandleItemSelection(item, false);
                     InventoryController.instance.AddItem(item);
-                    break;
+                    return;
 
                 case "Interactive":
                     HandleItemSelection(item, false);
@@ -206,6 +220,7 @@ public class PlayerInteraction : MonoBehaviour
                     else
                         item.GetComponentInParent<IInteractiveObject>()?.Interact();
                     break;
+                
             }
         }else if (interact.IsPressed())    
             timer += Time.deltaTime;
@@ -271,7 +286,6 @@ public class PlayerInteraction : MonoBehaviour
             else
                 GameplayUI.instance.HideItemName();
         }
-            
 
         if(item.TryGetComponent<ItemBehaviour>(out var itemBehaviour) && itemBehaviour.GetCurrentHealth() != itemBehaviour.GetMaxHealth())  
             GameplayUI.instance.ShowItemHealth(itemBehaviour.GetCurrentHealth(), itemBehaviour.GetMaxHealth());
@@ -316,4 +330,17 @@ public class PlayerInteraction : MonoBehaviour
             }    
         }
     }
+
+    private void HandleActivateable(GameObject item)
+    {   
+        if(item == null) return;
+
+        print("Item: " + item);
+        if (item.TryGetComponent(out IActivateableObject activateable) && toggleActivation.WasPressedThisFrame())
+        {   
+            print("Entra");
+            activateable.ToggleActivation();
+        }
+    }
+
 }

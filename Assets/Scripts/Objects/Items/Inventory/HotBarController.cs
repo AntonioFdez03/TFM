@@ -21,6 +21,7 @@ public class HotBarController : MonoBehaviour
     
     private Transform[] slots;
     private ItemStack currentItem;
+    private ItemStack lastHandItem;
     private GameObject handItemInstance;
     private ItemBehaviour currentItemBehaviour;
     private GameObject currentPrefab;
@@ -52,6 +53,7 @@ public class HotBarController : MonoBehaviour
     public ItemStack GetCurrentItem() => currentItem;
     public ItemBehaviour GetCurrentItemBehaviour() => currentItemBehaviour;
     public int GetSelectedIndex() => selectedIndex;
+    public GameObject GetHandItem() => handItemInstance;
 
     void Update()
     {   
@@ -136,6 +138,11 @@ public class HotBarController : MonoBehaviour
 
         currentItem = items[selectedIndex];
 
+        if (lastHandItem == currentItem)
+            return;
+
+        lastHandItem = currentItem;
+    
         // limpiar anterior
         if (handItemInstance != null)
             Destroy(handItemInstance);
@@ -255,7 +262,7 @@ public class HotBarController : MonoBehaviour
         }
 
         ItemData item = ItemDataBase.instance.GetByID(items[index].id);
-
+        print("Item data: " + item);
         if (item == null)
             return;
 
@@ -263,6 +270,7 @@ public class HotBarController : MonoBehaviour
 
         if(item is DurableItemData durableItemData)
         {   
+            print("Entra");
             float maxHealth = durableItemData.maxHealth;
             Transform healthBarInstance = slots[index].Find("HealthBar");
 

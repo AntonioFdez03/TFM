@@ -19,7 +19,7 @@ public class ToolBehaviour : EquipmentBehaviour
     public override void Attack(ArmController arm)
     {
         base.Attack(arm);
-        if(toolData.toolType == ToolType.Pickaxe)
+        if(toolData.toolType == ToolType.Pickaxe || toolData.toolType == ToolType.None)
             arm.StartCoroutine(arm.PickaxeSwingCR());
         else if(toolData.toolType == ToolType.Axe)
             arm.StartCoroutine(arm.AxeSwingCR());

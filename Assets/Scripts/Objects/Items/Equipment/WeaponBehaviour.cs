@@ -7,11 +7,12 @@ public class WeaponBehaviour : EquipmentBehaviour
 {
     protected WeaponData weaponData;
 
-    void Start()
+    public override void Initialize(ItemStack stack)
     {
+        base.Initialize(stack);
         weaponData = equipmentData as WeaponData;
     }
-
+    
     public override void Attack(ArmController arm)
     {
         base.Attack(arm);
@@ -34,19 +35,23 @@ public class WeaponBehaviour : EquipmentBehaviour
 
         Debug.DrawRay(ray.origin, ray.direction * weaponData.range, Color.red);
         if (Physics.Raycast(ray, out hit, weaponData.range))
-        {
-            Animal animal = hit.collider.CompareTag("Animal") ? hit.collider.GetComponent<Animal>() : null;
-            if (animal != null)
-            {
-                animal.TakeDamage(weaponData.damage);
-                TakeDamage(animalDamage);
-            }
+            ApplyDamage(hit.collider.gameObject, weaponData.damage);
+        
+    }
 
-            if(hit.collider.TryGetComponent(out PlaceableBehaviour placeable))
-            {
-                placeable.TakeDamage(weaponData.damage/10);
-                TakeDamage(placeableDamage);
-            }
+    protected void ApplyDamage(GameObject target, float damage)
+    {
+        Animal animal = target.CompareTag("Animal") ? target.GetComponent<Animal>() : null;
+        if (animal != null)
+        {
+            animal.TakeDamage(damage);
+            TakeDamage(animalDamage);
+        }
+
+        if(target.TryGetComponent(out PlaceableBehaviour placeable))
+        {
+            placeable.TakeDamage(damage/10);
+            TakeDamage(placeableDamage);
         }
     }
 }

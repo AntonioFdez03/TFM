@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlaceableData
   id: WoodFenceDoor
   itemName: Wood Fence Door
-  icon: {fileID: 21300000, guid: 557d2ce6dbd2d8e4fad2dfdaf6d994df, type: 3}
+  icon: {fileID: 21300000, guid: 21fa75728b952d24cafef9cc695d02a5, type: 3}
   prefab: {fileID: 6505259477395084954, guid: 38678a89eb3c6c04f83b662ea79a0e8a, type: 3}
   maxHealth: 100
   straight: 0

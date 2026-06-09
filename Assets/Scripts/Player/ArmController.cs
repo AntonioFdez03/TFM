@@ -33,6 +33,16 @@ public class ArmController : MonoBehaviour
     private float punchCooldown = 0.2f;
     private Vector3 initialPosition;
 
+    // Movimiento
+    private float idleSwayAmount = 0.01f;
+    private float walkSwayAmount = 0.02f;
+    private float runSwayAmount = 0.05f;
+    private float idleSwaySpeed = 1f;
+    private float walkSwaySpeed = 4f;
+    private float runSwaySpeed = 8f;
+
+    private bool isAiming = false;
+
     void Awake()
     {
         if(instance != null && instance != this)
@@ -52,9 +62,60 @@ public class ArmController : MonoBehaviour
         targetHandRotation = initialHandRotation * Quaternion.Euler(90f, 0f, 0f);
     }
 
+    public void SetAiming(bool value) => isAiming = value;
+    public bool IsAiming() => isAiming;
+
     void Update()
-    {
+    {   
+        GameObject handItem = HotBarController.instance.GetHandItem();
+        if (handItem == null || !handItem.TryGetComponent(out IAim aim))
+        {
+            isAiming = false;
+        }
+        
         UpdateAnimation();
+
+        if (PlayerController.instance.IsMoving())
+        {
+            if(PlayerController.instance.IsSprinting())
+                ApplyMovementSway(runSwaySpeed, runSwayAmount);
+            else
+                ApplyMovementSway(walkSwaySpeed, walkSwayAmount);
+        }
+        else
+            ApplyMovementSway(idleSwaySpeed, idleSwayAmount);    
+    }
+
+    private void LateUpdate()
+    {
+        if (isAiming)
+        {
+            handSlot.localRotation = Quaternion.Slerp(
+                handSlot.localRotation,
+                targetHandRotation,
+                Time.deltaTime * 10f
+            );
+        }
+        else
+        {
+            handSlot.localRotation = Quaternion.Slerp(
+                handSlot.localRotation,
+                initialHandRotation,
+                Time.deltaTime * 10f
+            );
+        }
+    }
+
+    private void ApplyMovementSway(float speed, float amount)
+    {
+        if (isMoving) return;
+
+        float x = Mathf.Sin(Time.time * speed) * amount;
+        float y = Mathf.Cos(Time.time * speed * 2f) * amount * 0.5f;
+
+        Vector3 sway = new(x, y, 0);
+
+        transform.localPosition = initialPosition + sway;
     }
 
     public bool IsMoving() => isMoving;
@@ -260,7 +321,7 @@ public class ArmController : MonoBehaviour
         isMoving = false;
     }
 
-    public IEnumerator SpearMovementCR()
+    public IEnumerator SpearAttackCR()
     {
         isMoving = true;
 
@@ -317,6 +378,28 @@ public class ArmController : MonoBehaviour
         handSlot.localRotation = initialHandRotation;
 
         isMoving = false;
+    }
+
+    public IEnumerator SpearAimCR()
+    {
+        isMoving = true;
+
+        float time = 0f;
+
+        // 1. Retroceso + rotación hacia atrás
+        while (time < punchBackDuration)
+        {
+            float t = time / punchBackDuration;
+
+            ///transform.localPosition = Vector3.Lerp(initialLocalPos, backPos, t);
+
+            handSlot.localRotation = Quaternion.Slerp(initialHandRotation, targetHandRotation, t);
+
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        
     }
 
     IEnumerator AttackCooldownCR()

@@ -14,6 +14,7 @@ public class PlayerInteraction : MonoBehaviour
     private InputAction attack;
     private InputAction rotate;
     private InputAction toggleActivation;
+    private InputAction aim;
     private RaycastHit lastHit;
 
     private float interactTime = 0.2f;
@@ -25,6 +26,7 @@ public class PlayerInteraction : MonoBehaviour
         attack = InputSystem.actions.FindAction("Attack");
         rotate = InputSystem.actions.FindAction("Rotate");
         toggleActivation = InputSystem.actions.FindAction("ToggleActivation");
+        aim = InputSystem.actions.FindAction("Aim");
     }
 
     void Update()
@@ -36,6 +38,7 @@ public class PlayerInteraction : MonoBehaviour
             Interact();
             Use();
             HandleActivateable(HotBarController.instance.GetHandItem());
+            Aim();
         }
 
         var current = HotBarController.instance.GetCurrentItem();
@@ -348,4 +351,19 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+    private void Aim()
+    {   
+        GameObject item = HotBarController.instance.GetHandItem();
+        
+        if(item == null) return;
+
+        if(item.TryGetComponent(out IAim aimItem))
+        {   
+            if(aim.IsPressed())
+                aimItem.Aim();
+            else if(aim.WasReleasedThisFrame())
+                aimItem.Shoot();
+        }
+
+    }
 }

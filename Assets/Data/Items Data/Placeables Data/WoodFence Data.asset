@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlaceableData
   id: WoodFence
   itemName: Wood Fence
-  icon: {fileID: 21300000, guid: b1e97a28ae2e21f4b9a5de5483fff264, type: 3}
+  icon: {fileID: 21300000, guid: 871c46b2d3a1f644a8657232e71759c6, type: 3}
   prefab: {fileID: 3106388889649033562, guid: c4a4012cc0f540f4990f920a80049999, type: 3}
   maxHealth: 100
   straight: 0

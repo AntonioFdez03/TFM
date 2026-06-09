@@ -66,6 +66,7 @@ public class PlayerController : MonoBehaviour
     public PlayerAttributes GetPlayerAttributes() => playerAttributes;
     public void SetCanMove(bool cM) => canMove = cM;
     public bool GetCanMove() => canMove;
+    public bool IsMoving() => isMoving;
     public bool IsSprinting() => isSprinting;
     public bool IsCrouching() => isCrouching;
     public void SetIsDead(bool iD) => isDead = iD;

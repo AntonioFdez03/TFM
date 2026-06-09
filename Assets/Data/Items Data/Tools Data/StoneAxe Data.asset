@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ToolData
   id: StoneAxe
   itemName: Stone Axe
-  icon: {fileID: 21300000, guid: 0d934b2ae90ec9549a408483c7f2b9b9, type: 3}
+  icon: {fileID: 21300000, guid: 800e7b7b7b539f344945a483f1fba5b7, type: 3}
   prefab: {fileID: 2323832488127001772, guid: 79be5dcc78a1afc45be9ce2805926df9, type: 3}
   maxHealth: 50
   damage: 10

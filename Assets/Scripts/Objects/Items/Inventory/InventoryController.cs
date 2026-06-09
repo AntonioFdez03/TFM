@@ -159,6 +159,7 @@ public class InventoryController : MonoBehaviour
 
         ItemData def = ItemDataBase.instance.GetByID(itemStack.id);
         GameObject obj = Instantiate(def.prefab, handSlot.position, Quaternion.identity);
+        obj.transform.SetParent(itemsParent);
 
         // posición / rotación
         Transform player = PlayerController.instance.transform;
@@ -174,7 +175,6 @@ public class InventoryController : MonoBehaviour
 
         if (rb != null)
         {
-            rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
             rb.isKinematic = false;
 
             Vector3 force = CameraController.instance.transform.forward * 50f +

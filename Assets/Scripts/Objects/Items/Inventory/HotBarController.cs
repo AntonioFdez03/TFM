@@ -51,6 +51,7 @@ public class HotBarController : MonoBehaviour
     public ItemBehaviour GetCurrentItemBehaviour() => currentItemBehaviour;
     public int GetSelectedIndex() => selectedIndex;
     public GameObject GetHandItem() => handItemInstance;
+    public void SetHandItem(GameObject item) => handItemInstance = item; 
 
     void Update()
     {   

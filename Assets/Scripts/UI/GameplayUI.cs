@@ -36,6 +36,9 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] Transform keysLayout;
     [SerializeField] GameObject keyInfoPrefab;
 
+    //Aim
+    [SerializeField] Image aimForceBar;
+
     void Awake()
     {
         if(instance != null && instance != this)
@@ -62,8 +65,9 @@ public class GameplayUI : MonoBehaviour
 
     void Update()
     {     
-        HandleBeat();
+        //HandleBeat();
         UpdateStatsBar();
+        UpdateAimBar();
     }
 
     private void HandleBeat()
@@ -185,5 +189,26 @@ public class GameplayUI : MonoBehaviour
         var key = Instantiate(keyInfoPrefab, keysLayout);
         key.GetComponentInChildren<TMP_Text>().text = text;
         key.GetComponentInChildren<Image>().sprite = KeyDataBase.instance.GetIcon(id);
+    }
+
+    public void UpdateAimBar()
+    {   
+        if (ArmController.instance.IsAiming())
+        {
+            aimForceBar.transform.parent.gameObject.SetActive(true);
+        }
+        else
+        {
+            aimForceBar.transform.parent.gameObject.SetActive(false);
+        }
+
+        GameObject item = HotBarController.instance.GetHandItem();
+
+        if(item == null) return;
+        
+        if(item.TryGetComponent(out IAim aimItem))
+        {
+            aimForceBar.fillAmount = aimItem.GetCurrentForce()/aimItem.GetMaxForce();
+        }
     }
 }

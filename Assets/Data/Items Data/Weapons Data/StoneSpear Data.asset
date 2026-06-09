@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   id: StoneSpear
   itemName: Stone Spear
-  icon: {fileID: 21300000, guid: 82b85fbad19149c4ea08686f4a6a0ba8, type: 3}
+  icon: {fileID: 21300000, guid: e2633728cd629124da0b144a19a69727, type: 3}
   prefab: {fileID: 7351978201140487590, guid: e47ed157bd8222a4e8cb3e068acdc09a, type: 3}
   maxHealth: 70
   damage: 15

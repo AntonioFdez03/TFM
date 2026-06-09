@@ -13,6 +13,14 @@ public class CameraController : MonoBehaviour
     private float valueY;
     private float rotationV;
 
+    //Balanceo al moverse
+    private float bobAmount = 0.05f;
+    private float bobSpeed = 8f;
+    private float runMultiplier = 1.6f;
+
+    private Vector3 originalCamPos;
+    private float bobTimer;
+
     void Awake()
     {
         if(instance != null && instance != this)
@@ -28,6 +36,8 @@ public class CameraController : MonoBehaviour
         look = InputSystem.actions.FindAction("Look");
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        originalCamPos = transform.localPosition;
     }
 
     public float GetCurrentRotation() => rotationV;
@@ -44,7 +54,35 @@ public class CameraController : MonoBehaviour
 
             transform.localRotation = Quaternion.Euler(rotationV,0,0);
             
-            PlayerController.instance.transform.Rotate(Vector3.up * valueX);         
+            PlayerController.instance.transform.Rotate(Vector3.up * valueX);      
+            HandleHeadBob();   
         }
+    }
+
+    private void HandleHeadBob()
+    {
+        bool isMoving = PlayerController.instance.IsMoving(); // ajusta a tu sistema
+
+        if (!isMoving)
+        {
+            bobTimer = 0f;
+            transform.localPosition = Vector3.Lerp(
+                transform.localPosition,
+                originalCamPos,
+                Time.deltaTime * 8f
+            );
+            return;
+        }
+
+        float speed = bobSpeed * (PlayerController.instance.IsSprinting() ? runMultiplier : 1f);
+
+        bobTimer += Time.deltaTime * speed;
+
+        float x = Mathf.Sin(bobTimer) * bobAmount;
+        float y = Mathf.Cos(bobTimer * 2f) * bobAmount * 0.5f;
+
+        Vector3 bobOffset = new Vector3(x, y, 0);
+
+        transform.localPosition = originalCamPos + bobOffset;
     }
 }

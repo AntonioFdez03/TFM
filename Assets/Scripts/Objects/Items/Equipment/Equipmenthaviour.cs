@@ -51,6 +51,7 @@ public class EquipmentBehaviour : ItemBehaviour
             AudioManager.instance.PlayOneShot("ToolBroken");
             ArmController.instance.ResetArm();
             InventoryController.instance.RemoveItem(HotBarController.instance.GetCurrentItem());
+            Destroy(gameObject);
         }
 
         HotBarController.instance.UpdateEquipmentHealthBar(

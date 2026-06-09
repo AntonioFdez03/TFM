@@ -45,5 +45,6 @@ public class Torch : ToolBehaviour, IActivateableObject
     public void ToggleActivation()
     {
         fireActive = !fireActive;
+        PlayerController.instance.GetPlayerAttributes().SetInLight(fireActive);
     }
 }

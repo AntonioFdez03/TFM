@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlaceableData
   id: StandingTorch
   itemName: Standing Torch
-  icon: {fileID: 21300000, guid: 14bce5731f81ea545b7785f53c0d241d, type: 3}
+  icon: {fileID: 21300000, guid: f85658333e942854691c9b693731eb7d, type: 3}
   prefab: {fileID: 5740879510879466412, guid: 22a7dd1019308b0489ed106a687dabe4, type: 3}
   maxHealth: 30
   straight: 1

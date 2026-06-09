@@ -74,6 +74,7 @@ public class PlayerAttributes : MonoBehaviour
     public float GetMaxStamina() => maxStamina;
     public float GetCurrentSanity() => currentSanity;
     public float GetMaxSanity() => maxSanity;
+    public void SetInLight(bool value) => inLight = value;
 
     public void TakeDamage(float damage)
     {  

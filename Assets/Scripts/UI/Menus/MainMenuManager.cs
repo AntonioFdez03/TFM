@@ -2,15 +2,20 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.IO;
 using TMPro;
+using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
 {   
     public static MainMenuManager instance;
-    [SerializeField] private TMP_Text startButtonText;
+    [SerializeField] private GameObject mainButtons;
+    [SerializeField] private GameObject secondaryButtons;
+    [SerializeField] private TMP_Text alertText;
+    [SerializeField] private Button continueButton;
     [SerializeField] private AudioClip buttonSound;
     private AudioSource audioSource;
 
-    private bool gameDataFound;
+    private string savePath;
+    private bool gameContinued = false;
 
     void Awake()
     {
@@ -22,26 +27,37 @@ public class MainMenuManager : MonoBehaviour
         instance = this;
     }
 
+    public bool GameContinued() => gameContinued;
+
     void Start()
     {   
         audioSource = GetComponent<AudioSource>();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        
+        ShowMainButtons();
 
-        startButtonText.text = "New game";
-        gameDataFound = false;
-        if (File.Exists(Application.persistentDataPath + "/save.json"))
-        {
-            startButtonText.text = "Load game";
-            gameDataFound = true;
-        }
+        savePath = Application.persistentDataPath + "/save.json";
+        if (!File.Exists(savePath)) 
+            continueButton.interactable = false;
+        else
+            print("Hay partida");
     }
-
-    public bool GameDataFound() => gameDataFound;
     
-    public void StartGame()
+    // Primary buttons
+    public void TryNewGame()
     {   
         audioSource.PlayOneShot(buttonSound);
+        if (File.Exists(savePath))
+            ShowAlert();
+        else
+            SceneManager.LoadScene("GameScene");
+    }
+
+    public void ContinueGame()
+    {
+        audioSource.PlayOneShot(buttonSound);
+        gameContinued = true;
         SceneManager.LoadScene("GameScene");
     }
 
@@ -49,5 +65,34 @@ public class MainMenuManager : MonoBehaviour
     {
         audioSource.PlayOneShot(buttonSound);
         Application.Quit();
+    }
+
+    // Secondary buttons
+    public void Confirm()
+    {
+        audioSource.PlayOneShot(buttonSound);
+        File.Delete(savePath);
+        SceneManager.LoadScene("GameScene");
+    }
+
+    public void Cancel()
+    {
+        audioSource.PlayOneShot(buttonSound);
+        ShowMainButtons();
+    }
+
+    private void ShowAlert()
+    {   
+        print("Entra");
+        mainButtons.SetActive(false);
+        secondaryButtons.SetActive(true);
+        alertText.text = "Are you sure?\nThe saved game will be deleted";
+    }
+
+    private void ShowMainButtons()
+    {
+        mainButtons.SetActive(true);
+        secondaryButtons.SetActive(false);
+        alertText.text = "";
     }
 }

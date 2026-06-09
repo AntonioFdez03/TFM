@@ -27,7 +27,6 @@ public class Torch : ToolBehaviour, IActivateableObject
 
         if (fireActive)
         {   
-            
             timer += Time.deltaTime;
 
             if(timer >= burnCooldown)

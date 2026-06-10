@@ -112,7 +112,7 @@ public class HotBarController : MonoBehaviour
         }
     }
 
-    private void MoveSelectorFrame(int index)
+    public void MoveSelectorFrame(int index)
     {   
         if (index >= 0 && index < slots.Length && slots[index] != null && index != selectedIndex)
         {

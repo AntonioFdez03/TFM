@@ -4,7 +4,7 @@ using UnityEngine;
 public class DayCycleController : MonoBehaviour
 {   
     public static DayCycleController instance;
-    [SerializeField] [Range(0.0f,24f)] float currentHour;
+    [SerializeField] [Range(0.0f,24f)] float currentHour = 10;
     [SerializeField] Transform sun;
     [SerializeField] float dayDuration = 24; //En minutos
     [SerializeField] float intensity = 1;
@@ -23,16 +23,26 @@ public class DayCycleController : MonoBehaviour
         instance = this;
     }
 
-    void Start()
+    public void Initialize(int day, float hour)
     {
-        currentHour = 10;
+        print("Day: " + day);
+        print("Current hour: " + hour);
+        currentDay = day;
+        currentHour = hour;
     }
+
+    public int GetCurrentDay() => currentDay;
+    public float GetCurrentHour() => currentHour;
+
     void Update()
     {   
         currentHour += 24/(60*dayDuration) * Time.deltaTime;
 
-        if(currentHour > 24)
+        if (currentHour >= 24f)
+        {
+            currentHour -= 24f;
             currentDay++;
+        }
 
         currentHour %= 24;
         

@@ -3635,6 +3635,7 @@ MonoBehaviour:
   - {fileID: 2228412806016164105, guid: 902a282c4e6a2554a9fd9de45f3bc82f, type: 3}
   - {fileID: 7512056453246498309, guid: 0f9cad71cf647a148822b91a49b6cfab, type: 3}
   - {fileID: 2621919197999382902, guid: 8b9a895aa6eead14497ac52dbe899042, type: 3}
+  - {fileID: 2717929752634245167, guid: 0ab8a685fdb71ec4c97bfb3f8bdfcd32, type: 3}
   harvestablesPrefabs:
   - {fileID: 3936722399912076011, guid: 2f294005e2faee349a3310b6788d3d0a, type: 3}
   - {fileID: 2920391350216373356, guid: 4604dc18c1f60b044a2b6884d3087eb9, type: 3}

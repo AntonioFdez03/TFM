@@ -20,28 +20,37 @@ public class SaveManager : MonoBehaviour
 
     void Start()
     {
-        if (File.Exists(Application.persistentDataPath + "/save.json"))
+        if (MainMenuManager.instance.GameContinued())
+        {
+            print("Game continued");
             StartCoroutine(LoadGameCR());
+        }
+        else
+        {
+            print("No continued");
+        }
     }
 
     // =====================================================
     // SAVE
     // =====================================================
     public void SaveGame()
-    {
-        SaveData data = new();
+    {   
 
         // ---------------- PLAYER ----------------
-        data.playerData = new SaveData.PlayerData();
+        SaveData data = new();
 
+        data.playerData = new SaveData.PlayerData();
         PlayerAttributes player = PlayerController.instance.GetPlayerAttributes();
 
         data.playerData.playerHealth = player.GetCurrentHealth();
         data.playerData.playerHunger = player.GetCurrentHunger();
         data.playerData.playerStamina = player.GetCurrentStamina();
+        data.playerData.playerSanity = player.GetCurrentSanity();
         data.playerData.playerPosition = player.transform.position;
         data.playerData.playerRotation = player.transform.rotation;
         data.playerData.cameraRotation = CameraController.instance.GetCurrentRotation();
+        data.playerData.selectedHotBarIndex = HotBarController.instance.GetSelectedIndex();
 
         // ---------------- INVENTORY ----------------
         data.inventoryItems = new List<SaveData.InventoryItemData>();
@@ -52,14 +61,14 @@ public class SaveManager : MonoBehaviour
         {
             SaveData.InventoryItemData itemData = new();
 
-            ItemStack instance = inventory.GetInventoryItems()[i];
+            ItemStack inventoryItem = inventory.GetInventoryItems()[i];
 
             itemData.inventoryIndex = i;
 
-            if (instance != null)
+            if (inventoryItem != null)
             {
-                itemData.id = instance.id;
-                itemData.currentHealth = instance.currentHealth;
+                itemData.id = inventoryItem.id;
+                itemData.currentHealth = inventoryItem.currentHealth;
             }
             else
             {
@@ -77,10 +86,11 @@ public class SaveManager : MonoBehaviour
         {
             Transform worldObject = worldObjects.GetChild(i);
 
-            SaveData.WorldObjectData objectData = new();
-
-            objectData.position = worldObject.position;
-            objectData.rotation = worldObject.rotation;
+            SaveData.WorldObjectData objectData = new()
+            {
+                position = worldObject.position,
+                rotation = worldObject.rotation
+            };
 
             // ITEM EN EL MUNDO
             if (worldObject.TryGetComponent(out ItemBehaviour itemBehaviour))
@@ -102,6 +112,12 @@ public class SaveManager : MonoBehaviour
 
             data.worldObjects.Add(objectData);
         }
+
+        data.dayData = new SaveData.DayData
+        {
+            currentDay = DayCycleController.instance.GetCurrentDay(),
+            currentHour = DayCycleController.instance.GetCurrentHour()
+        };
 
         // ---------------- WRITE ----------------
         string json = JsonUtility.ToJson(data, true);
@@ -133,15 +149,16 @@ public class SaveManager : MonoBehaviour
             data.playerData.playerHealth,
             data.playerData.playerHunger,
             data.playerData.playerStamina,
-            0
+            data.playerData.playerSanity
         );
 
         CameraController.instance.SetCurrentRotation(data.playerData.cameraRotation);
+        HotBarController.instance.MoveSelectorFrame(data.playerData.selectedHotBarIndex);
 
         // ---------------- INVENTORY ----------------
         InventoryController inventory = InventoryController.instance;
 
-        for (int i = 0; i < inventory.GetInventoryItems().Length; i++)
+        for (int i = 0; i < inventory.GetInventorySize(); i++)
         {
             var itemData = data.inventoryItems[i];
 
@@ -151,7 +168,7 @@ public class SaveManager : MonoBehaviour
                 continue;
             }
 
-            ItemStack instance = new ItemStack
+            ItemStack instance = new()
             {
                 id = itemData.id,
                 currentHealth = itemData.currentHealth
@@ -165,21 +182,24 @@ public class SaveManager : MonoBehaviour
         {
             var objectData = data.worldObjects[i];
 
-            GameObject prefab = ObjectsPrefabs.instance.GetPrefabByName(
+            GameObject prefab = ObjectsPrefabs.instance.GetPrefabByID(
                 objectData.type,
                 objectData.id
             );
 
             GameObject obj = Instantiate(prefab, worldObjects);
 
-            obj.transform.position = objectData.position;
-            obj.transform.rotation = objectData.rotation;
-
+            obj.transform.SetPositionAndRotation(objectData.position, objectData.rotation);
+            
             if (obj.TryGetComponent(out IObjectHealth health))
             {
                 health.SetCurrentHealth(objectData.currentHealth);
             }
         }
+    
+        // ---------------- DAY CYCLE ----------------
+        DayCycleController dayCycle = DayCycleController.instance;
+        dayCycle.Initialize(data.dayData.currentDay, data.dayData.currentHour);
     }
 
     private IEnumerator LoadGameCR()

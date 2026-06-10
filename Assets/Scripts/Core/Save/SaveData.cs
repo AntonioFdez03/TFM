@@ -11,9 +11,11 @@ public class SaveData
         public float playerHealth;
         public float playerHunger;
         public float playerStamina;
+        public float playerSanity;
         public Vector3 playerPosition;
         public Quaternion playerRotation;
         public float cameraRotation;
+        public int selectedHotBarIndex;
     }
     public PlayerData playerData;
 
@@ -39,4 +41,14 @@ public class SaveData
     }
 
     public List<WorldObjectData> worldObjects;
+
+    // Day cycle
+    [Serializable]
+    public class DayData
+    {
+        public int currentDay;
+        public float currentHour;
+    }
+
+    public DayData dayData;
 }

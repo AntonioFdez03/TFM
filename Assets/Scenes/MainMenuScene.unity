@@ -455,7 +455,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2054147311}
         m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
-        m_MethodName: TryNewGame
+        m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -730,7 +730,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2054147311}
         m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
-        m_MethodName: TryNewGame
+        m_MethodName: ContinueGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1612,7 +1612,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2054147311}
         m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
-        m_MethodName: TryNewGame
+        m_MethodName: Confirm
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2078,7 +2078,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2054147311}
         m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
-        m_MethodName: TryNewGame
+        m_MethodName: Cancel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

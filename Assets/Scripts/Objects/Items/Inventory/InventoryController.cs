@@ -33,6 +33,7 @@ public class InventoryController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
     
+    public float GetInventorySize() => inventoryMax;
     public void SetInventoryItems(ItemStack[] newItems) => items = newItems;
     public ItemStack[] GetInventoryItems() => items;
     public int GetHotBarSize() => hotBarSize;

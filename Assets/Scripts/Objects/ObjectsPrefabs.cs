@@ -16,9 +16,9 @@ public class ObjectsPrefabs : MonoBehaviour
         }
         instance = this;
     }
-    public GameObject GetPrefabByName(string type, string prefabName)
+    public GameObject GetPrefabByID(string type, string id)
     {
-        string cleanName = prefabName.Trim().ToLower();
+        string cleanName = id.Trim().ToLower();
         List<GameObject> prefabList;
 
         if(type == "Item")
@@ -36,7 +36,7 @@ public class ObjectsPrefabs : MonoBehaviour
                 return prefab;
         }
 
-        Debug.LogError("Prefab no encontrado: " + prefabName);
+        Debug.LogError("Prefab no encontrado: " + id);
         return null;
     }
 }

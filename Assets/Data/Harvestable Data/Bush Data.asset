@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbdba2c9b3d26c24ea0604cf36372142, type: 3}
   m_Name: Bush Data
   m_EditorClassIdentifier: Assembly-CSharp::HarvestableData
-  id: Bush
+  id: BerryBush
   maxHealth: 30
   prefab: {fileID: 3936722399912076011, guid: 2f294005e2faee349a3310b6788d3d0a, type: 3}

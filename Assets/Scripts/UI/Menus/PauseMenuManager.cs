@@ -11,7 +11,7 @@ public class PauseMenuManager : MonoBehaviour
 
     public void Settings()
     {
-        
+        UIController.instance.SetState(UIState.Settings);
     }
 
     public void Save()

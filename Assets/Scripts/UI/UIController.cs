@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public enum UIState { None, Gameplay, Inventory, Pause, Crafting, Furnace, Storage }
+public enum UIState { None, Gameplay, Inventory, Pause, Settings, Crafting, Furnace, Storage }
 public class UIController : MonoBehaviour
 {
     public static UIController instance;
@@ -18,6 +18,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject craftPanel;
     [SerializeField] private GameObject furnacePanel;
     [SerializeField] private GameObject storagePanel;
+    [SerializeField] private GameObject settingsPanel;
     [SerializeField] private Transform dragginLayer;
 
     [Header("Sounds")]
@@ -94,6 +95,7 @@ public class UIController : MonoBehaviour
         inventoryCanvas.SetActive(currentState == UIState.Inventory);
         pauseCanvas.SetActive(currentState == UIState.Pause);
         mixCanvas.SetActive(currentState == UIState.Crafting || currentState == UIState.Furnace || currentState == UIState.Storage);
+        settingsPanel.SetActive(currentState == UIState.Settings);
 
         if (currentState == UIState.Storage && newState != UIState.Storage)
             currentStorage = null;
@@ -121,7 +123,13 @@ public class UIController : MonoBehaviour
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 break;
-                
+            
+            case UIState.Settings:
+                Time.timeScale = 0f;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                break;
+
             case UIState.Crafting:
                 Time.timeScale = 1f;
                 Cursor.lockState = CursorLockMode.None;
@@ -146,6 +154,7 @@ public class UIController : MonoBehaviour
                 LoadPanel(storagePanel);
                 PlayerController.instance.SetCanMove(false);
                 break;
+
         }
     }
 

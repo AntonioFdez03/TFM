@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,6 +40,9 @@ public class GameplayUI : MonoBehaviour
     //Aim
     [SerializeField] Image aimForceBar;
 
+    // FPS
+    [SerializeField] private TMP_Text fpsText;
+
     void Awake()
     {
         if(instance != null && instance != this)
@@ -61,6 +65,8 @@ public class GameplayUI : MonoBehaviour
         HideItemName();
         HideItemHealth();
         HideCircularSlider();
+
+        fpsText.gameObject.SetActive(false);
     }
 
     void Update()
@@ -68,6 +74,7 @@ public class GameplayUI : MonoBehaviour
         //HandleBeat();
         UpdateStatsBar();
         UpdateAimBar();
+        UpdateFPS();
     }
 
     private void HandleBeat()
@@ -177,7 +184,6 @@ public class GameplayUI : MonoBehaviour
         }
     }
 
-
     public void ClearKeys()
     {
         foreach (Transform child in keysLayout)
@@ -209,6 +215,26 @@ public class GameplayUI : MonoBehaviour
         if(item.TryGetComponent(out IAim aimItem))
         {
             aimForceBar.fillAmount = aimItem.GetCurrentForce()/aimItem.GetMaxForce();
+        }
+    }
+
+    private void UpdateFPS()
+    {
+        float fps = 1f / Time.deltaTime;
+        fpsText.text = "FPS: " + Mathf.RoundToInt(fps);
+    }
+
+    public void ToggleFPS()
+    {
+        if (fpsText.gameObject.activeSelf)
+        {
+            print("False");
+            fpsText.gameObject.SetActive(false);
+        }
+        else
+        {
+            print("True");
+            fpsText.gameObject.SetActive(true);
         }
     }
 }

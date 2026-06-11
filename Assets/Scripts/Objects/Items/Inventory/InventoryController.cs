@@ -143,8 +143,8 @@ public class InventoryController : MonoBehaviour
             if (items[i] != null && items[i].id == id)
             {
                 items[i] = null;
-
                 UpdateUIs();
+                return;
             }
         }
     }

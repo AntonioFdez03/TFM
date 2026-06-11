@@ -36,10 +36,10 @@ public abstract class Slot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         rt.pivot = new Vector2(0.5f, 0.5f);
 
         Transform originalBar = originalIcon.transform.Find("HealthBar");
-        originalBar.gameObject.SetActive(false);
 
         if (originalBar != null)
-        {
+        {   
+            originalBar.gameObject.SetActive(false);
             Transform cloneBar =
                 Instantiate(originalBar, cloneIcon.transform);
 

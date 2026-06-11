@@ -109,6 +109,7 @@ public class Spear : WeaponBehaviour, IAim
                 );
 
                 ApplyDamage(collision.gameObject, damage);
+                transform.SetParent(collision.transform, true);
             }
         }
     }

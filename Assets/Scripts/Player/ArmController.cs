@@ -42,6 +42,7 @@ public class ArmController : MonoBehaviour
     private float runSwaySpeed = 8f;
 
     private bool isAiming = false;
+    private bool wasAiming = false;
 
     void Awake()
     {
@@ -84,26 +85,6 @@ public class ArmController : MonoBehaviour
         }
         else
             ApplyMovementSway(idleSwaySpeed, idleSwayAmount);    
-    }
-
-    private void LateUpdate()
-    {
-        if (isAiming)
-        {
-            handSlot.localRotation = Quaternion.Slerp(
-                handSlot.localRotation,
-                targetHandRotation,
-                Time.deltaTime * 10f
-            );
-        }
-        else
-        {
-            handSlot.localRotation = Quaternion.Slerp(
-                handSlot.localRotation,
-                initialHandRotation,
-                Time.deltaTime * 10f
-            );
-        }
     }
 
     private void ApplyMovementSway(float speed, float amount)
@@ -322,8 +303,10 @@ public class ArmController : MonoBehaviour
     }
 
     public IEnumerator SpearAttackCR()
-    {
-        isMoving = true;
+    {   
+
+        animator.SetTrigger("SpearAttack");
+        isMoving = true;    
 
         Vector3 backPos = initialPosition + Vector3.back * punchBackDistance;
         Vector3 forwardPos = initialPosition + Vector3.forward * punchForwardDistance;
@@ -437,25 +420,48 @@ public class ArmController : MonoBehaviour
 
 
     private void UpdateAnimation()
-    {
+    {   
         ItemBehaviour currentBehaviour = HotBarController.instance.GetCurrentItemBehaviour();
 
         if(currentBehaviour == null)
-        {
+        {   
+            animator.SetBool("Aim", false);
             animator.SetBool("Clutch",false);
             animator.SetBool("Grab",false);
             return;
         }
 
-        if(currentBehaviour is ToolBehaviour)
+        if (!isAiming)
         {
-            animator.SetBool("Clutch",true);
-            animator.SetBool("Grab",false);
+            if (wasAiming)
+            {
+                handSlot.rotation = handSlot.transform.rotation * Quaternion.Euler(0f,0f,-180f);
+            }
+
+            wasAiming = false;
+
+            if(currentBehaviour is EquipmentBehaviour)
+            {   
+                animator.SetBool("Clutch",true);
+                animator.SetBool("Grab",false);
+            }
+            else
+            {   
+                animator.SetBool("Grab",true);
+                animator.SetBool("Clutch",false);
+            }
         }
         else
-        {   
-            animator.SetBool("Grab",true);
-            animator.SetBool("Clutch",false);
-        } 
+        {
+            animator.SetBool("Aim", true);
+            animator.SetBool("Grab", false);
+            animator.SetBool("Clutch", false);
+
+            if (!wasAiming)
+            {
+                handSlot.rotation = handSlot.transform.rotation * Quaternion.Euler(0f,0f,180f);
+            }
+            wasAiming = true;
+        }
     }
 }

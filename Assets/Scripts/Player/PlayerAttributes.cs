@@ -10,7 +10,7 @@ public class PlayerAttributes : MonoBehaviour
 
     //Health 
     private float currentHealth;
-    private float maxHealth = 100f;
+    private float maxHealth = 1f;
     private bool isInvulnerable = false;
     private float invulnerabilityDuration = 1f;
     private bool canHeal = true;

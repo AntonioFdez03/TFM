@@ -146,6 +146,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 5ba092a0a2fe6cc49a50018955941c62, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 6158fa1dc08f5954286fec7249789619, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 5ba092a0a2fe6cc49a50018955941c62, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3cb3314f68f8cc54cbbdb2583dd65330, type: 2}
     - target: {fileID: 919132149155446097, guid: 5ba092a0a2fe6cc49a50018955941c62, type: 3}
       propertyPath: m_Name
       value: StoneSpear
@@ -156,15 +164,15 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5ba092a0a2fe6cc49a50018955941c62, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4553179308460455417}
+      addedObject: {fileID: 2351402680036048346}
   m_SourcePrefab: {fileID: 100100000, guid: 5ba092a0a2fe6cc49a50018955941c62, type: 3}
 --- !u!1 &6995279056311005914 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5ba092a0a2fe6cc49a50018955941c62, type: 3}
   m_PrefabInstance: {fileID: 7914320898409664395}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &4553179308460455417
-MeshCollider:
+--- !u!136 &2351402680036048346
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -181,10 +189,11 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -9032557090061056480, guid: 5ba092a0a2fe6cc49a50018955941c62, type: 3}
+  serializedVersion: 2
+  m_Radius: 0.060990937
+  m_Height: 4
+  m_Direction: 1
+  m_Center: {x: -0.004063961, y: 0, z: 0.0055437223}
 --- !u!4 &7665101902515136608 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5ba092a0a2fe6cc49a50018955941c62, type: 3}

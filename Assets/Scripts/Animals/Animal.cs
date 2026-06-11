@@ -65,8 +65,6 @@ public class Animal : MonoBehaviour
     public void TakeDamage(float amount)
     {   
         currentHealth = Mathf.Clamp(currentHealth - amount, 0, data.maxHealth);
-
-        print("Vida restante: " + currentHealth);
         
         if (currentHealth <= 0)
         {   
@@ -80,8 +78,11 @@ public class Animal : MonoBehaviour
         }
         else
         {
-            animator.SetTrigger("Flinch");
-            StartCoroutine(FlinchCR());
+            if (!dead)
+            {
+                animator.SetTrigger("Flinch");
+                StartCoroutine(FlinchCR());
+            }
             animalBehaviour.TakeDamage(this);
         }
     }

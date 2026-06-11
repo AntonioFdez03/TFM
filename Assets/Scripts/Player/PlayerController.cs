@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviour
                 finalMovement += CalculateVerticalMovement();
 
                 controller.Move(finalMovement * Time.deltaTime);
-            }     
+            }
         }
     }
 

@@ -270,11 +270,11 @@ public class HotBarController : MonoBehaviour
         {   
             print("Entra");
             float maxHealth = durableItemData.maxHealth;
-            Transform healthBarInstance = slots[index].Find("HealthBar");
+            Transform healthBarInstance = slots[index].GetChild(0).Find("HealthBar");
 
             if (healthBarInstance == null)
             {
-                healthBarInstance = Instantiate(itemHealthBar, slots[index]);
+                healthBarInstance = Instantiate(itemHealthBar, slots[index].GetChild(0));
                 healthBarInstance.name = "HealthBar";
                 healthBarInstance.gameObject.SetActive(false);
             }

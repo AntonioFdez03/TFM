@@ -9,6 +9,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] Transform hotBarPanel;
     [SerializeField] GameObject slotPrefab;
     [SerializeField] Transform dragginLayer;
+    [SerializeField] Transform itemHealthBar;
 
     private List<GameObject> slots = new();
 
@@ -54,6 +55,57 @@ public class InventoryUI : MonoBehaviour
                 slot.sprite = null;
                 slot.gameObject.SetActive(false);
             }
+
+            UpdateEquipmentHealthBar(i);
+        }
+    }
+    public void UpdateEquipmentHealthBar(int index)
+    {
+        ItemStack[] items = InventoryController.instance.GetInventoryItems();
+
+        if (items[index] == null)
+        {
+            Transform existingBar = slots[index].transform.Find("HealthBar");
+            if (existingBar != null)
+                Destroy(existingBar.gameObject);
+
+            return;
+        }
+
+        ItemData item = ItemDataBase.instance.GetByID(items[index].id);
+        print("Item data: " + item);
+        if (item == null)
+            return;
+
+        float currentHealth = items[index].currentHealth;
+
+        if(item is DurableItemData durableItemData)
+        {   
+            float maxHealth = durableItemData.maxHealth;
+            Transform healthBarInstance = slots[index].transform.GetChild(0).Find("HealthBar");
+
+            if (healthBarInstance == null)
+            {
+                healthBarInstance = Instantiate(itemHealthBar, slots[index].transform.GetChild(0));
+                healthBarInstance.name = "HealthBar";
+                healthBarInstance.gameObject.SetActive(false);
+            }
+
+            if (currentHealth < maxHealth)
+                healthBarInstance.gameObject.SetActive(true);
+
+            Transform fill = healthBarInstance.Find("Fill");
+            if (fill == null) return;
+
+            if (!fill.TryGetComponent<Image>(out var fillImage)) return;
+
+            fillImage.fillAmount = Mathf.Clamp01(currentHealth / maxHealth);
+        }
+        else
+        {
+            Transform existingBar = slots[index].transform.Find("HealthBar");
+            if (existingBar != null)
+                Destroy(existingBar.gameObject);
         }
     }
 

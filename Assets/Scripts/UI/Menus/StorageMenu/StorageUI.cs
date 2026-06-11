@@ -5,6 +5,7 @@ public class StorageUI : MonoBehaviour
 {   
     [SerializeField] private GameObject slotPrefab;
     [SerializeField] private Transform gridPanel;
+    [SerializeField] private Transform itemHealthBar;
     private Transform dragginLayer;
     private StorageController storageController;
 
@@ -72,6 +73,60 @@ public class StorageUI : MonoBehaviour
                 iconImage.sprite = null;
                 iconGO.SetActive(false);
             }
+        
+            UpdateEquipmentHealthBar(i);
+        }
+    }
+
+    public void UpdateEquipmentHealthBar(int index)
+    {
+        ItemStack[] items = storageController.GetItems();
+
+        if (items[index] == null)
+        {
+            Transform existingBar = gridPanel.GetChild(index).Find("HealthBar");
+            if (existingBar != null)
+                Destroy(existingBar.gameObject);
+
+            return;
+        }
+
+        ItemData item = ItemDataBase.instance.GetByID(items[index].id);
+        print("Item data: " + item);
+        if (item == null)
+            return;
+
+        float currentHealth = items[index].currentHealth;
+
+        if(item is DurableItemData durableItemData)
+        {   
+            print("Entra");
+            float maxHealth = durableItemData.maxHealth;
+            Transform healthBarInstance = gridPanel.GetChild(index).GetChild(0).Find("HealthBar");
+
+            if (healthBarInstance == null)
+            {
+                healthBarInstance = Instantiate(itemHealthBar, gridPanel.GetChild(index).GetChild(0));
+                healthBarInstance.name = "HealthBar";
+                healthBarInstance.gameObject.SetActive(false);
+            }
+
+            // Mostrar si no está al 100%
+            if (currentHealth < maxHealth)
+                healthBarInstance.gameObject.SetActive(true);
+
+            Transform fill = healthBarInstance.Find("Fill");
+            if (fill == null) return;
+
+            if (!fill.TryGetComponent<Image>(out var fillImage)) return;
+
+            fillImage.fillAmount = Mathf.Clamp01(currentHealth / maxHealth);
+        }
+        else
+        {
+            Transform existingBar = gridPanel.GetChild(index).Find("HealthBar");
+            if (existingBar != null)
+                Destroy(existingBar.gameObject);
         }
     }
 

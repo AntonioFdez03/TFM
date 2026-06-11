@@ -14,6 +14,7 @@ public class CraftingMenuManager : MonoBehaviour
     [SerializeField] private GameObject ingredientPrefab;
     [SerializeField] private Button allButton;
     [SerializeField] private Button toolsButton;
+    [SerializeField] private Button weaponButton;
     [SerializeField] private Button placeablesButton;
     [SerializeField] private Button consumablesButton;
     [SerializeField] private Button resourcesButton;
@@ -87,6 +88,12 @@ public class CraftingMenuManager : MonoBehaviour
         ShowRecipes(ItemType.Tool);
     }
 
+    public void WeaponButtonPressed() {
+        EnableButtons();
+        weaponButton.interactable = false;
+        ShowRecipes(ItemType.Weapon);
+    }
+
     public void PlaceablesButtonPressed() 
     {
         EnableButtons();
@@ -110,6 +117,7 @@ public class CraftingMenuManager : MonoBehaviour
     {
         allButton.interactable = true;
         toolsButton.interactable = true;
+        weaponButton.interactable = true;
         placeablesButton.interactable = true;
         consumablesButton.interactable = true;
         resourcesButton.interactable = true;

@@ -34,6 +34,23 @@ public abstract class Slot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         rt.localScale = Vector3.one; 
         rt.sizeDelta = new Vector2(150f, 150f); // Aumentamos un poco el tamaño
         rt.pivot = new Vector2(0.5f, 0.5f);
+
+        Transform originalBar = originalIcon.transform.Find("HealthBar");
+        originalBar.gameObject.SetActive(false);
+
+        if (originalBar != null)
+        {
+            Transform cloneBar =
+                Instantiate(originalBar, cloneIcon.transform);
+
+            cloneBar.name = "HealthBar";
+            cloneBar.gameObject.SetActive(true);
+
+            RectTransform barRT =
+                cloneBar.GetComponent<RectTransform>();
+
+            cloneBar.transform.localScale = Vector3.one;
+        }
     }
 
     public void OnDrag(PointerEventData eventData)

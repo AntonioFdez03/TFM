@@ -119,6 +119,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StorageUI
   slotPrefab: {fileID: 7747704921109380650, guid: 489bc461faf65aa48bf7bbeaed85f7e7, type: 3}
   gridPanel: {fileID: 2588749789318717950}
+  itemHealthBar: {fileID: 5462241008746714764, guid: 9ec82fa9bfabddc4ebdb2c250419405e, type: 3}
 --- !u!1 &5391439738238696919
 GameObject:
   m_ObjectHideFlags: 0

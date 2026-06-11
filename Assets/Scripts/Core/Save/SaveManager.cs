@@ -19,15 +19,18 @@ public class SaveManager : MonoBehaviour
     }
 
     void Start()
-    {
-        if (MainMenuManager.instance.GameContinued())
+    {   
+        if(MainMenuManager.instance != null)
         {
-            print("Game continued");
-            StartCoroutine(LoadGameCR());
-        }
-        else
-        {
-            print("No continued");
+            if (MainMenuManager.instance.GameContinued())
+            {
+                print("Game continued");
+                StartCoroutine(LoadGameCR());
+            }
+            else
+            {
+                print("No continued");
+            }
         }
     }
 

@@ -10,7 +10,7 @@ public class PlayerAttributes : MonoBehaviour
 
     //Health 
     private float currentHealth;
-    private float maxHealth = 1f;
+    private float maxHealth = 100f;
     private bool isInvulnerable = false;
     private float invulnerabilityDuration = 1f;
     private bool canHeal = true;
@@ -132,8 +132,7 @@ public class PlayerAttributes : MonoBehaviour
                 UpdateSanity(-2f);
 
             timeSinceLastSanityDecrase = 0f;
-        }
-        
+        } 
     }
 
     public void Eat(float amount)

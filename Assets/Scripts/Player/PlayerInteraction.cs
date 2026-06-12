@@ -201,9 +201,11 @@ public class PlayerInteraction : MonoBehaviour
                 case "Interactive":
                     HandleItemSelection(hitObject, true);
                     GameplayUI.instance.AddKey("E", "Interact");
-                    if(hitObject.GetComponent<PlaceableBehaviour>() != null)
-                        GameplayUI.instance.AddKey("HoldE", "Unplace");
                     break;
+            }
+
+            if(hitObject.TryGetComponent(out PlaceableBehaviour placeableBehaviour)){
+                GameplayUI.instance.AddKey("HoldE", "Unplace");
             }
         }
     }

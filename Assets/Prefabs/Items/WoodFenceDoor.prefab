@@ -310,7 +310,8 @@ GameObject:
   - component: {fileID: 7183122040604550816}
   - component: {fileID: 3103041533000536002}
   - component: {fileID: 3259078088694942741}
-  - component: {fileID: 1063926543105526354}
+  - component: {fileID: 4701387683687188734}
+  - component: {fileID: 8621372567898211120}
   m_Layer: 7
   m_Name: WoodFenceDoor
   m_TagString: Interactive
@@ -383,7 +384,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!114 &1063926543105526354
+--- !u!114 &4701387683687188734
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -392,14 +393,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 6505259477395084954}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9aec6246d0a0434cbfbfe9c7e9c33a2, type: 3}
+  m_Script: {fileID: 11500000, guid: daa3e8df43ce2bd4ba69ae29fde22158, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WoodFenceDoor
+  m_EditorClassIdentifier: Assembly-CSharp::PlaceableBehaviour
   data: {fileID: 11400000, guid: 3e5bf8f0ff46ae2418fcad62ba8bd184, type: 2}
   greenMaterial: {fileID: 2100000, guid: c289674975e48194ba656debbe498968, type: 2}
   redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
-  placementMask:
-    serializedVersion: 2
-    m_Bits: 384
+--- !u!114 &8621372567898211120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6505259477395084954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95bdbefa9d1e405419b71b8d5c79f81a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoorController
   rotationPivot: {fileID: 7814146294564194399}
   navObstacle: {fileID: 3688570558793594308}
+  openAngle: 90
+  openSpeed: 2

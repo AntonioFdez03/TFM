@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,6 +43,7 @@ public class GameplayUI : MonoBehaviour
 
     // FPS
     [SerializeField] private TMP_Text fpsText;
+    private float fpsTimer = 0f;
 
     void Awake()
     {
@@ -66,6 +68,7 @@ public class GameplayUI : MonoBehaviour
         HideItemHealth();
         HideCircularSlider();
 
+        fpsText.text = "FPS: 60";
         fpsText.gameObject.SetActive(false);
     }
 
@@ -220,8 +223,16 @@ public class GameplayUI : MonoBehaviour
 
     private void UpdateFPS()
     {
-        float fps = 1f / Time.deltaTime;
-        fpsText.text = "FPS: " + Mathf.RoundToInt(fps);
+        fpsTimer += Time.deltaTime;
+
+        // Espera 1 segundo antes de actualizar
+        if (fpsTimer >= 1f)
+        {
+            float fps = 1f / Time.deltaTime;
+            fpsText.text = "FPS: " + Mathf.RoundToInt(fps);
+
+            fpsTimer = 0f;
+        }
     }
 
     public void ToggleFPS()

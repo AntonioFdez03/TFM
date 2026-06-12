@@ -5,26 +5,25 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
-public class WoodFenceDoor : PlaceableBehaviour, IInteractiveObject
+public class DoorBehaviour : MonoBehaviour, IInteractiveObject
 {
     [SerializeField] Transform rotationPivot;
-    [SerializeField] private NavMeshObstacle navObstacle;
+    [SerializeField] private NavMeshObstacle navObstacle = null;
+    [SerializeField] private float openAngle = 90f;
+    [SerializeField] private float openSpeed = 2f;
     private GameObject pivot;
     private bool doorOpen = false;
-    private float openAngle = 90f;
-    private float openSpeed = 2f;
     private Quaternion closedRotation;
     private Quaternion openRotation;
 
 
-    protected override void Start()
+    protected void Start()
     {   
-        base.Start();
-        
         closedRotation = rotationPivot.rotation;
         openRotation = Quaternion.AngleAxis(openAngle, rotationPivot.up) * closedRotation;
 
-        navObstacle.carveOnlyStationary = false;
+        if(navObstacle != null)
+            navObstacle.carveOnlyStationary = false;
     }
 
     void Update()

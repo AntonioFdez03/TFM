@@ -386,6 +386,7 @@ GameObject:
   - component: {fileID: 5400451129765486188}
   - component: {fileID: 9056452069020009930}
   - component: {fileID: 2980701547378675181}
+  - component: {fileID: 8912449810266268421}
   m_Layer: 3
   m_Name: FloorModel
   m_TagString: Terrain
@@ -465,6 +466,28 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &8912449810266268421
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2701603886877627085}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8615080730997039250, guid: c2b2ddcbab5943342bfb0f1b6ccaddfa, type: 3}
 --- !u!1 &2871803710114161617
 GameObject:
   m_ObjectHideFlags: 0
@@ -732,6 +755,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6385054191024723695}
+  - component: {fileID: 7666964229000132904}
+  - component: {fileID: 133708330478431819}
   m_Layer: 0
   m_Name: WoodShelter
   m_TagString: Untagged
@@ -761,6 +786,44 @@ Transform:
   - {fileID: 7270735827614580504}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!64 &7666964229000132904
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5666519461331007362}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2139216867297115321, guid: c2b2ddcbab5943342bfb0f1b6ccaddfa, type: 3}
+--- !u!208 &133708330478431819
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5666519461331007362}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 13, y: 0.00001, z: 11.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: -11.5}
+  m_TimeToStationary: 0.5
 --- !u!1 &6644377221236670324
 GameObject:
   m_ObjectHideFlags: 0

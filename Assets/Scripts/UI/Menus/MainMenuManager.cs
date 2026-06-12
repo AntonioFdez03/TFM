@@ -12,6 +12,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private TMP_Text alertText;
     [SerializeField] private Button continueButton;
     [SerializeField] private AudioClip buttonSound;
+    [SerializeField] private AudioClip backgroundMusic;
     private AudioSource audioSource;
 
     private string savePath;
@@ -35,6 +36,11 @@ public class MainMenuManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         
+        audioSource.volume = 0.5f;
+        audioSource.clip = backgroundMusic;
+        audioSource.loop = true;
+        audioSource.Play();
+
         ShowMainButtons();
 
         savePath = Application.persistentDataPath + "/save.json";

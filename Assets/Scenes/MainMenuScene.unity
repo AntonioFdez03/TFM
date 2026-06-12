@@ -3288,6 +3288,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2054147312}
   - component: {fileID: 2054147311}
+  - component: {fileID: 2054147314}
   - component: {fileID: 2054147313}
   m_Layer: 0
   m_Name: MenuManager
@@ -3313,6 +3314,7 @@ MonoBehaviour:
   alertText: {fileID: 368763150}
   continueButton: {fileID: 389737786}
   buttonSound: {fileID: 8300000, guid: 3a4d63d1e9226cb4b8978b9547e8d238, type: 3}
+  backgroundMusic: {fileID: 8300000, guid: f80d63f91f2d3704e9e132e01abfeade, type: 3}
 --- !u!4 &2054147312
 Transform:
   m_ObjectHideFlags: 0
@@ -3425,6 +3427,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2054147314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054147310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 521e7a5af50b80b4ebe978d3a483e512, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  sounds: []
 --- !u!4 &2067355408 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d25ec2c92a821da47bb23377d4f35adc, type: 3}

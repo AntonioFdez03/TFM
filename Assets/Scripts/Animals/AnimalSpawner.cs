@@ -58,7 +58,7 @@ public class AnimalSpawner : MonoBehaviour
         }
         else
         {
-            animal.GetComponent<Animal>().SetBehaviour(new PacificBehaviour());
+            animal.GetComponent<Animal>().SetBehaviour(new HostileBehaviour());
         }
         animal.GetComponent<Animal>().SetPlayer(player);
         animal.transform.SetParent(animalsParent);

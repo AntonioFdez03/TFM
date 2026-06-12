@@ -42,12 +42,21 @@ public class HostileBehaviour : IAnimalBehaviour
                     AttackPlayer(animal);
                 }
             }
-            else if(attackTimer < 0f)
+            else
             {
-                agent.ResetPath();
-                LookAtPlayer(animal);
-                animal.GetAnimator().SetTrigger("Attack");
-                TryAttackStructure(animal);
+                MoveToClosestReachablePoint(animal);
+
+                // Solo atacar cuando ya haya llegado
+                if (!agent.pathPending &&
+                    agent.remainingDistance <= agent.stoppingDistance &&
+                    attackTimer < 0f)
+                    {
+                        agent.ResetPath();
+                        LookAtPlayer(animal);
+                        animal.GetAnimator().SetTrigger("Attack");
+                        attackTimer = attackCooldown;
+                        TryAttackStructure(animal);
+                    }
             }
         }
         else
@@ -89,18 +98,23 @@ public class HostileBehaviour : IAnimalBehaviour
 
     private void TryAttackStructure(Animal animal)
     {
+        Vector3 origin =
+            animal.transform.position + Vector3.up * 0.8f;
 
-        Transform player = animal.GetPlayer();
+        Vector3 direction =
+            animal.transform.forward;
 
-        Vector3 origin = animal.transform.position + Vector3.up;
-        Vector3 dir = (player.position - origin).normalized;
-
-        if (Physics.Raycast(origin, dir, out RaycastHit hit, attackDistance))
+        if (Physics.SphereCast(
+            origin,
+            0.7f,
+            direction,
+            out RaycastHit hit,
+            attackDistance))
         {
-            if (hit.collider.TryGetComponent(out PlaceableBehaviour placeableBehaviour))
+            if (hit.collider.TryGetComponent(
+                out PlaceableBehaviour placeableBehaviour))
             {
                 placeableBehaviour.TakeDamage(damage);
-
                 attackTimer = attackCooldown;
             }
         }
@@ -142,5 +156,26 @@ public class HostileBehaviour : IAnimalBehaviour
         agent.CalculatePath(target, path);
 
         return path.status == NavMeshPathStatus.PathComplete;
+    }
+
+    private void MoveToClosestReachablePoint(Animal animal)
+    {
+        NavMeshAgent agent = animal.GetAgent();
+        Transform player = animal.GetPlayer();
+
+        NavMeshPath path = new NavMeshPath();
+
+        if (agent.CalculatePath(player.position, path))
+        {
+            // Si hay algún tramo del camino
+            if (path.corners.Length > 0)
+            {
+                // Último punto alcanzable
+                Vector3 closestPoint =
+                    path.corners[path.corners.Length - 1];
+
+                agent.SetDestination(closestPoint);
+            }
+        }
     }
 }

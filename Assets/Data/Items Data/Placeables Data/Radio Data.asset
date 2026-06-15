@@ -20,3 +20,4 @@ MonoBehaviour:
   handForm: 0
   maxHealth: 50
   straight: 0
+  canUnplace: 1

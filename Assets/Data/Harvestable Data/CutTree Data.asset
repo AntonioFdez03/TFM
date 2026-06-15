@@ -15,3 +15,4 @@ MonoBehaviour:
   id: CutTree
   maxHealth: 50
   prefab: {fileID: 2421277709255642757, guid: 2fe31350ca6056d4f911611083837bab, type: 3}
+  toolsAccepted: 01000000

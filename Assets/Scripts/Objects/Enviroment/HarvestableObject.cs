@@ -11,7 +11,6 @@ public abstract class HarvestableObject : MonoBehaviour, IObjectHealth
     protected string objectName;
     protected float maxHealth;
     protected float currentHealth;
-    protected List<ToolType> toolsAccepted = new();
 
     [SerializeField] private AudioClip hitSound;
     [SerializeField] protected AudioClip harvestSound;
@@ -41,6 +40,5 @@ public abstract class HarvestableObject : MonoBehaviour, IObjectHealth
     }
 
     public abstract void Harvest();
-    public bool CanHarvest(ToolType tool) => toolsAccepted.Contains(tool);
-    public List<ToolType> GetToolsAccepted() => toolsAccepted;
+    public bool CanHarvest(ToolType tool) => data.toolsAccepted.Contains(tool);
 }

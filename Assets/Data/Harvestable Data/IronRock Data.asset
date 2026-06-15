@@ -15,3 +15,4 @@ MonoBehaviour:
   id: IronRock
   maxHealth: 30
   prefab: {fileID: 2303599444185223329, guid: ca1d4aa7f7912de4489d313684ddc29f, type: 3}
+  toolsAccepted: 02000000

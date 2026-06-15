@@ -14,8 +14,6 @@ public class SmallTree : HarvestableObject
     {
         maxHealth = data.maxHealth;
         currentHealth = maxHealth;
-        toolsAccepted.Add(ToolType.Axe);
-        toolsAccepted.Add(ToolType.None);
         rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = true;
         rb.useGravity = false;

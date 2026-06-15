@@ -321,7 +321,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         if(harvestableObject.TryGetComponent(out HarvestableObject harvestable))
         {   
-            string toolName = harvestable.GetToolsAccepted()[0].ToString();
+            string toolName = harvestable.GetData().toolsAccepted[0].ToString();
             char firstLetter = char.ToUpper(toolName[0]);
             //string article = "a";
             if ("AEIOU".IndexOf(firstLetter) >= 0){

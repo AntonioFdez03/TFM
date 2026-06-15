@@ -456,6 +456,8 @@ public class ArmController : MonoBehaviour
                     break;
 
                 case HandForm.None:
+                    animator.SetBool("Grab", false);
+                    animator.SetBool("Clutch", false);
                 break;
             }
         }

@@ -4,4 +4,5 @@ using UnityEngine;
 public class PlaceableData : DurableItemData
 {
     public bool straight;
+    public bool canUnplace;
 }

@@ -15,3 +15,4 @@ MonoBehaviour:
   id: TreeStump
   maxHealth: 50
   prefab: {fileID: 6926759630850403763, guid: b6eff1a9401e81c4ea738e2888d398e7, type: 3}
+  toolsAccepted: 01000000

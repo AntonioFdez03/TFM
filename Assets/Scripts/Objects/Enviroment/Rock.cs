@@ -18,7 +18,6 @@ public class Rock : HarvestableObject
     {   
         maxHealth = data.maxHealth;
         currentHealth = maxHealth;
-        toolsAccepted.Add(ToolType.Pickaxe);
         rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = true;
         rb.useGravity = false;

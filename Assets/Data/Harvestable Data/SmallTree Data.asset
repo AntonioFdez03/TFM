@@ -15,3 +15,4 @@ MonoBehaviour:
   id: 'SmallTree '
   maxHealth: 50
   prefab: {fileID: 1697567960401337852, guid: d6d1315042aee7847b8e5a77f6d4a70f, type: 3}
+  toolsAccepted: 0100000000000000

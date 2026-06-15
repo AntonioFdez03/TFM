@@ -14,7 +14,6 @@ public class CutTree : HarvestableObject
     {
         maxHealth = data.maxHealth;
         currentHealth = maxHealth;
-        toolsAccepted.Add(ToolType.Axe);  
     }
 
     public override void Harvest()

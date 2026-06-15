@@ -15,3 +15,4 @@ MonoBehaviour:
   id: BigTree
   maxHealth: 100
   prefab: {fileID: 2920391350216373356, guid: 4604dc18c1f60b044a2b6884d3087eb9, type: 3}
+  toolsAccepted: 01000000

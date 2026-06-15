@@ -16,5 +16,7 @@ MonoBehaviour:
   itemName: Bonfire
   icon: {fileID: 21300000, guid: b16fd339cd2f70d439c4a6314bba40ad, type: 3}
   prefab: {fileID: 2497555479857757306, guid: 748bd36699227854f81bafc561c3e9c7, type: 3}
+  showInHand: 0
+  handForm: 0
   maxHealth: 25
   straight: 0

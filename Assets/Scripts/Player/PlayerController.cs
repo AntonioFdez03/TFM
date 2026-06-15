@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -65,11 +67,10 @@ public class PlayerController : MonoBehaviour
     
     public PlayerAttributes GetPlayerAttributes() => playerAttributes;
     public void SetCanMove(bool cM) => canMove = cM;
-    public bool GetCanMove() => canMove;
+    public bool CanMove() => canMove;
     public bool IsMoving() => isMoving;
     public bool IsSprinting() => isSprinting;
     public bool IsCrouching() => isCrouching;
-    public void SetIsDead(bool iD) => isDead = iD;
     public bool IsDead() => isDead;
 
     void Update()
@@ -132,6 +133,7 @@ public class PlayerController : MonoBehaviour
 
         if (jump.triggered && controller.isGrounded)
         { 
+            AudioManager.instance.PlayOneShot("PlayerJump");
             yVelocity = jumpForce;
             controller.stepOffset = 0;
         }
@@ -155,5 +157,91 @@ public class PlayerController : MonoBehaviour
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
         groundNormal = hit.normal;
+    }
+
+    public void Die()
+    {   
+        string savePath = Application.persistentDataPath + "/save.json";
+        if(File.Exists(savePath))
+            File.Delete(savePath);
+
+        if(isDead) return;
+
+        isDead = true;
+        canMove = false;
+        isMoving = false;
+
+        AudioManager.instance.PlayOneShot("PlayerDeath");
+        StartCoroutine(DeathCR());
+    }
+
+    private IEnumerator DeathCR()
+    {
+        GameplayUI.instance.HideUI();
+
+        // Esperar a aterrizar
+        while(!controller.isGrounded)
+        {
+            yVelocity += gravity.y * Time.deltaTime;
+            controller.Move(new Vector3(0, yVelocity, 0) * Time.deltaTime);
+
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(0.4f);
+
+        Transform cam = Camera.main.transform;
+
+        // ===== FASE 1: Se desploma =====
+
+        Vector3 camStartPos = cam.localPosition;
+        Vector3 camKneelPos = camStartPos + Vector3.down * 0.7f;
+
+        float timer = 0f;
+        float kneelDuration = 0.4f;
+
+        ScreenEffectsController.instance.PlayDeathEffect();
+        while(timer < kneelDuration)
+        {
+            timer += Time.deltaTime;
+
+            float t = timer / kneelDuration;
+            t = 1f - Mathf.Pow(1f - t, 2f);
+
+            cam.localPosition = Vector3.Lerp(
+                camStartPos,
+                camKneelPos,
+                t
+            );
+
+            yield return null;
+        }
+
+        // Ya no necesitamos el CharacterController
+        controller.enabled = false;
+
+        // ===== FASE 2: Cae =====
+        Quaternion startRot = transform.rotation;
+        Quaternion targetRot =
+            startRot * Quaternion.Euler(85f, 0f, 40f);
+
+        timer = 0f;
+        float fallDuration = 0.8f;
+
+        while(timer < fallDuration)
+        {
+            timer += Time.deltaTime;
+
+            float t = timer / fallDuration;
+            t = t * t;
+
+            transform.rotation = Quaternion.Slerp(
+                startRot,
+                targetRot,
+                t
+            );
+
+            yield return null;
+        }
     }
 }

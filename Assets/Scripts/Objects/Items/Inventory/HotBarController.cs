@@ -171,7 +171,7 @@ public class HotBarController : MonoBehaviour
             currentItemBehaviour.SetCurrentHealth(currentItem.currentHealth);
         }
 
-        if (currentItemBehaviour is not PlaceableBehaviour)
+        if (currentItemBehaviour.GetData().showInHand)
         {
             handItemInstance.transform.SetParent(handSlot, false);
             handItemInstance.transform.localScale = Vector3.one;

@@ -53,9 +53,6 @@ public class UIController : MonoBehaviour
 
     void Update()
     {   
-        if(PlayerController.instance.IsDead())
-            SceneManager.LoadScene("MainMenuScene");
-
         // Detectar cambio a Inventario
         if (inventoryAction.WasPressedThisFrame())
         {
@@ -75,14 +72,6 @@ public class UIController : MonoBehaviour
         {
             if(currentState == UIState.Gameplay || currentState == UIState.Inventory) SetState(UIState.Crafting);
             else if(currentState == UIState.Crafting) SetState(UIState.Inventory);        
-        }
-
-        if (PlayerController.instance.IsDead())
-        {   
-            string savePath = Application.persistentDataPath + "/save.json";
-            if(File.Exists(savePath))
-                File.Delete(savePath);
-            SceneManager.LoadScene("GameOverScene");
         }
     }
 

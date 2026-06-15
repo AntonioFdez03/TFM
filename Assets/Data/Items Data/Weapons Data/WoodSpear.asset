@@ -16,6 +16,8 @@ MonoBehaviour:
   itemName: Wood Spear
   icon: {fileID: 21300000, guid: 6e6269cca8f7a1845aa524172162dd0b, type: 3}
   prefab: {fileID: 6914362959334807342, guid: 6c16754d8d5e96f4cbce31d8e7cf03f2, type: 3}
+  showInHand: 1
+  handForm: 1
   maxHealth: 30
   damage: 10
   range: 7

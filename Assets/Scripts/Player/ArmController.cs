@@ -1,7 +1,10 @@
 using UnityEngine;
 using System.Collections;
 using UnityEditor;
+using System.Diagnostics;
+using Unity.VisualScripting;
 
+public enum HandForm {None, Clutch, Grab};
 public class ArmController : MonoBehaviour
 {   
     public static ArmController instance;
@@ -440,15 +443,20 @@ public class ArmController : MonoBehaviour
 
             wasAiming = false;
 
-            if(currentBehaviour is EquipmentBehaviour)
-            {   
-                animator.SetBool("Clutch",true);
-                animator.SetBool("Grab",false);
-            }
-            else
-            {   
-                animator.SetBool("Grab",true);
-                animator.SetBool("Clutch",false);
+            switch (currentBehaviour.GetData().handForm)
+            {
+                case HandForm.Clutch:
+                    animator.SetBool("Clutch",true);
+                    animator.SetBool("Grab",false);
+                    break;
+
+                case HandForm.Grab:
+                    animator.SetBool("Grab",true);
+                    animator.SetBool("Clutch",false);
+                    break;
+
+                case HandForm.None:
+                break;
             }
         }
         else

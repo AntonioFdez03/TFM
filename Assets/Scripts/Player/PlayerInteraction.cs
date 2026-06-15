@@ -33,7 +33,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         GameplayUI.instance.ClearKeys();
 
-        if (PlayerController.instance.GetCanMove())
+        if (PlayerController.instance.CanMove())
         {
             Interact();
             Use();

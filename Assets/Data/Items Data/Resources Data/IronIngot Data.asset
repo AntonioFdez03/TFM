@@ -16,3 +16,5 @@ MonoBehaviour:
   itemName: Iron Ingot
   icon: {fileID: 21300000, guid: d874b6abaecf40a41becc212a1945937, type: 3}
   prefab: {fileID: 7456756144791194955, guid: 07cfffe96c5ece84399d16eac6e44ca0, type: 3}
+  showInHand: 1
+  handForm: 2

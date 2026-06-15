@@ -72,6 +72,8 @@ public class GameplayUI : MonoBehaviour
         fpsText.gameObject.SetActive(false);
     }
 
+    public void HideUI() => gameObject.SetActive(false);
+
     void Update()
     {     
         //HandleBeat();

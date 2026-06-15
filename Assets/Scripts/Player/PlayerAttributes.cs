@@ -85,7 +85,9 @@ public class PlayerAttributes : MonoBehaviour
         timeSinceLastDamage = 0f;
 
         if(currentHealth == 0)
-            PlayerController.instance.SetIsDead(true);
+            PlayerController.instance.Die();
+        else
+            AudioManager.instance.PlayOneShot("PlayerDamage");
 
         OnHealthChanged?.Invoke(currentHealth / maxHealth);
     }

@@ -16,3 +16,5 @@ MonoBehaviour:
   itemName: Branch
   icon: {fileID: 21300000, guid: 4c19d5317c3f15d45ba0bf6df3d4453c, type: 3}
   prefab: {fileID: 3074230260528391914, guid: 677e5e059ef81a04a923e573c47ba2c1, type: 3}
+  showInHand: 1
+  handForm: 1

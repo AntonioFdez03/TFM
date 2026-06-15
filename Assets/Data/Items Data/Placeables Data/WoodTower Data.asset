@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b22b8a9f9b34898488c1a7533e0a223f, type: 3}
-  m_Name: SmallWoodShelter Data
+  m_Name: WoodTower Data
   m_EditorClassIdentifier: Assembly-CSharp::PlaceableData
-  id: SmallWoodShelter
-  itemName: Small Shelter
-  icon: {fileID: 21300000, guid: 0d934b2ae90ec9549a408483c7f2b9b9, type: 3}
-  prefab: {fileID: 8990391563113719882, guid: be62e825072beee428d8b91142028aaa, type: 3}
+  id: WoodTower
+  itemName: Wood Tower
+  icon: {fileID: 21300000, guid: e569a3eba4e7df44085df3dc8aed67a4, type: 3}
+  prefab: {fileID: 9199389516604714568, guid: 31fc25e0ed903424bb48d18930d1d304, type: 3}
   showInHand: 0
   handForm: 0
-  maxHealth: 200
-  straight: 0
+  maxHealth: 300
+  straight: 1

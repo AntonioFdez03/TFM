@@ -16,6 +16,8 @@ MonoBehaviour:
   itemName: Bandage
   icon: {fileID: 21300000, guid: 31fd5de745ccc6e4c9072570e89034ae, type: 3}
   prefab: {fileID: 1802994727675784924, guid: 114b77f53c3a9fa4fb9dfa022d830a6d, type: 3}
+  showInHand: 1
+  handForm: 2
   hungerPoints: 0
   healthPoints: 15
   sanityPoints: 0

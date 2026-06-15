@@ -16,5 +16,7 @@ MonoBehaviour:
   itemName: Log Wall
   icon: {fileID: 21300000, guid: 1ad469211cbd6f545b490e67ea9e62bc, type: 3}
   prefab: {fileID: 2324461377036682553, guid: 27cf6e1afb427b24798a0565e1e30699, type: 3}
+  showInHand: 0
+  handForm: 0
   maxHealth: 250
   straight: 0

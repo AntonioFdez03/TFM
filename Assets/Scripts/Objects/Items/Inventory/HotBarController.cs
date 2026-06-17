@@ -162,6 +162,7 @@ public class HotBarController : MonoBehaviour
         ItemData item = ItemDataBase.instance.GetByID(currentItem.id);
 
         currentPrefab = item.prefab;
+        ArmController.instance.SetHandForm(currentItem);
         handItemInstance = Instantiate(currentPrefab);
         currentItemBehaviour = handItemInstance.GetComponent<ItemBehaviour>();
 

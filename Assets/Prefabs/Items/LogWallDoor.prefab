@@ -52,6 +52,9 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 33940aefab0618c478f8fc130b3efbdf, type: 2}
   greenMaterial: {fileID: 2100000, guid: c289674975e48194ba656debbe498968, type: 2}
   redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
+  brokeItemsDrop:
+  - {fileID: 5144113718169600618, guid: 8d1c73364dcfaec409f4be7fe2790ee1, type: 3}
+  - {fileID: 5144113718169600618, guid: 8d1c73364dcfaec409f4be7fe2790ee1, type: 3}
 --- !u!54 &3328206661941121287
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -204,7 +207,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 5.0140004, y: 6.6480002, z: 1.25}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: -0.003, y: 6.642, z: 0}
   m_TimeToStationary: 0.5
@@ -333,7 +336,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 1.25, y: 7.4000006, z: 1.25}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: -6.3880005, y: 7.393, z: 0}
   m_TimeToStationary: 0.5
@@ -462,7 +465,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 1.245, y: 7.4210005, z: 1.245}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 6.3170004, y: 7.4140005, z: 0}
   m_TimeToStationary: 0.5

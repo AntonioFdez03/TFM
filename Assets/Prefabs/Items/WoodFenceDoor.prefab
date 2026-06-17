@@ -399,6 +399,9 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 3e5bf8f0ff46ae2418fcad62ba8bd184, type: 2}
   greenMaterial: {fileID: 2100000, guid: c289674975e48194ba656debbe498968, type: 2}
   redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
+  brokeItemsDrop:
+  - {fileID: 3074230260528391914, guid: 677e5e059ef81a04a923e573c47ba2c1, type: 3}
+  - {fileID: 3074230260528391914, guid: 677e5e059ef81a04a923e573c47ba2c1, type: 3}
 --- !u!114 &8621372567898211120
 MonoBehaviour:
   m_ObjectHideFlags: 0

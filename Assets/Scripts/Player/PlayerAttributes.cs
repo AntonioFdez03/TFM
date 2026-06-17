@@ -39,7 +39,8 @@ public class PlayerAttributes : MonoBehaviour
     private float currentSanity;
     private float maxSanity = 100f;
     private float timeSinceLastSanityDecrase = 0f;
-    private float sanityDecreaseInterval = 5f;
+    private float sanityDecreaseInterval = 20f;
+    private float sanityBurnRate = 1f;
     private bool inLight = false;
 
     void Start()
@@ -75,6 +76,7 @@ public class PlayerAttributes : MonoBehaviour
     public float GetCurrentSanity() => currentSanity;
     public float GetMaxSanity() => maxSanity;
     public void SetInLight(bool value) => inLight = value;
+    public bool InLight() => inLight;
 
     public void TakeDamage(float damage)
     {  
@@ -125,13 +127,14 @@ public class PlayerAttributes : MonoBehaviour
     private void HandleSanity()
     {   
         timeSinceLastSanityDecrase += Time.deltaTime;
-
+        sanityBurnRate = Math.Clamp(DayCycleController.instance.GetCurrentDay() - 2, 1, 10);
+        
         if(timeSinceLastSanityDecrase >= sanityDecreaseInterval)
         {
             if(!DayCycleController.instance.IsNight() || inLight)
-                UpdateSanity(2f);
+                UpdateSanity(sanityBurnRate);
             else
-                UpdateSanity(-2f);
+                UpdateSanity(sanityBurnRate);
 
             timeSinceLastSanityDecrase = 0f;
         } 

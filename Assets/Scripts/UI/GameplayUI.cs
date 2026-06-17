@@ -174,10 +174,10 @@ public class GameplayUI : MonoBehaviour
         circularSlider.transform.parent.gameObject.SetActive(false);
     }
 
-    public void ShowCircularSlider(float currentValue, bool delay)
+    public void ShowCircularSlider(float currentValue, float delay = 0.05f)
     {  
         float startTime = 0;
-        if(delay) startTime = 0.05f;
+        startTime = delay;
 
         if(currentValue > startTime)
         {   

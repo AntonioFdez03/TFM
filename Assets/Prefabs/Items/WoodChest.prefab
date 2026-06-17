@@ -314,10 +314,9 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: e815de8f448acf6489f4a3f3b3c19fcd, type: 2}
   greenMaterial: {fileID: 2100000, guid: c289674975e48194ba656debbe498968, type: 2}
   redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
-  placementMask:
-    serializedVersion: 2
-    m_Bits: 384
-  placeSound: {fileID: 8300000, guid: 8399d7d3bd2c38c4aad8e54d04c36f17, type: 3}
+  brokeItemsDrop:
+  - {fileID: 3074230260528391914, guid: 677e5e059ef81a04a923e573c47ba2c1, type: 3}
+  - {fileID: 3074230260528391914, guid: 677e5e059ef81a04a923e573c47ba2c1, type: 3}
   openSound: {fileID: 8300000, guid: d581db0e85450014e927d7ea4599bcb3, type: 3}
   closeSound: {fileID: 8300000, guid: 5af914f8b521e3c4a8d31a79f8015939, type: 3}
   rotationPivot: {fileID: 2618175973170114808}

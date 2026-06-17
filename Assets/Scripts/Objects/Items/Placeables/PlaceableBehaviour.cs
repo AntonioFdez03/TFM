@@ -1,6 +1,5 @@
 using System;
-using System.Collections;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +8,7 @@ public class PlaceableBehaviour : ItemBehaviour
     protected static LayerMask placementMask;
     [SerializeField] Material greenMaterial;
     [SerializeField] Material redMaterial;
+    [SerializeField] List<GameObject> brokeItemsDrop;
 
     protected Vector3 checkBoxSize;
     private GameObject silhouette;
@@ -220,10 +220,19 @@ public class PlaceableBehaviour : ItemBehaviour
     public void TakeDamage(float amount)
     {   
         SetCurrentHealth(Mathf.Clamp(GetCurrentHealth() - amount, 0, GetMaxHealth()));
-        print("Item: " + name + ", daño recibido: " + amount + ", y me queda: " + itemStack.currentHealth);
 
         if (GetCurrentHealth() == 0)
+        {   
+            Vector3 center = GetComponentInChildren<Renderer>().bounds.center;
+            for(int i = 0; i < brokeItemsDrop.Count; i++)
+            {
+                GameObject dropItem = Instantiate(brokeItemsDrop[i], InventoryController.instance.GetItemsParent());
+                Vector3 offset = new Vector3(UnityEngine.Random.Range(-0.3f, 0.3f), UnityEngine.Random.Range(0.1f, 0.5f), UnityEngine.Random.Range(-0.3f, 0.3f));
+                dropItem.transform.position = center + offset; 
+            }
             Destroy(gameObject);
+        }
+            
     }
 
     private void CalculateCheckBoxSize()

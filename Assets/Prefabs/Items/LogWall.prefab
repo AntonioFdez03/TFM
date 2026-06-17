@@ -51,6 +51,9 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: ea99d6ae2ea5b6342b675f640a777f1a, type: 2}
   greenMaterial: {fileID: 2100000, guid: c289674975e48194ba656debbe498968, type: 2}
   redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
+  brokeItemsDrop:
+  - {fileID: 5144113718169600618, guid: 8d1c73364dcfaec409f4be7fe2790ee1, type: 3}
+  - {fileID: 5144113718169600618, guid: 8d1c73364dcfaec409f4be7fe2790ee1, type: 3}
 --- !u!65 &8113819331100763866
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -111,7 +114,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 6.25, y: 6.5, z: 1.15}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 6.5, z: 0}
   m_TimeToStationary: 0.5

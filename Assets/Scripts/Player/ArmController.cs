@@ -114,6 +114,29 @@ public class ArmController : MonoBehaviour
         transform.localPosition = initialPosition + sway;
     }
 
+    public void SetHandForm(ItemStack item)
+    {
+        if (item == null) return;
+
+        ItemData data = ItemDataBase.instance.GetByID(item.id);
+        if (data == null) return;
+
+        HandForm handForm = data.handForm;
+
+        if (handForm == HandForm.HGrab)
+        {
+            handSlot.localPosition = hGrabHandSlotPosition;
+            handSlot.localRotation = hGrabHandSlotRotation;
+            wasHGrab = true;
+        }
+        else
+        {
+            handSlot.localPosition = initialHandSlotPosition;
+            handSlot.localRotation = initialHandSlotRotation;
+            wasHGrab = false;
+        }
+    }
+
     public bool IsMoving() => isMoving;
     public bool CanAttack() => canAttack;
 
@@ -461,26 +484,6 @@ public class ArmController : MonoBehaviour
             }
 
             wasAiming = false;
-
-            HandForm handForm = currentBehaviour.GetData().handForm;
-            if(handForm == HandForm.HGrab)
-            {
-                if(!wasHGrab)
-                {
-                    handSlot.localPosition = hGrabHandSlotPosition;
-                    handSlot.localRotation = hGrabHandSlotRotation;
-                    wasHGrab = true;
-                }
-            }
-            else
-            {
-                if(wasHGrab)
-                {   
-                    handSlot.localPosition = initialHandSlotPosition;
-                    handSlot.localRotation = initialHandSlotRotation;
-                    wasHGrab = false;
-                }
-            }
 
             switch (currentBehaviour.GetData().handForm)
             {

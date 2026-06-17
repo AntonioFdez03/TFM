@@ -52,7 +52,7 @@ public class AnimalSpawner : MonoBehaviour
             }
         }
         
-        if(prefab.GetComponent<Animal>().GetAnimalData().alwaysHostile)
+        if(!prefab.GetComponent<Animal>().GetAnimalData().alwaysHostile)
         {   
             animal.GetComponent<Animal>().SetBehaviour(new HostileBehaviour());
         }

@@ -3,16 +3,19 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class HostileBehaviour : IAnimalBehaviour
-{
-    private float attackDistance = 10f;
+{   
+    private Transform player;
+    private NavMeshAgent agent;
     private float attackTimer;
+    private float attackDistance = 10;
+    private float smoothedSpeed;
 
     public void Act(Animal animal)
     {   
         attackTimer -= Time.deltaTime;
 
-        NavMeshAgent agent = animal.GetAgent();
-        Transform player = animal.GetPlayer();
+        agent = animal.GetAgent();
+        player = animal.GetPlayer();
 
         if (player == null || !agent.isOnNavMesh)
             return;
@@ -32,7 +35,7 @@ public class HostileBehaviour : IAnimalBehaviour
                 else if (attackTimer < 0f)
                 {   
                     agent.ResetPath();
-                    LookAtPlayer(animal);
+                    LookAt(animal, player);
                     animal.GetAnimator().SetTrigger("Attack");
                     AttackPlayer(animal);
                 }
@@ -47,7 +50,7 @@ public class HostileBehaviour : IAnimalBehaviour
                     attackTimer < 0f)
                     {
                         agent.ResetPath();
-                        LookAtPlayer(animal);
+                        //LookAtPlayer(animal);
                         animal.GetAnimator().SetTrigger("Attack");
                         attackTimer = animal.GetAnimalData().attackCooldown;
                         TryAttackStructure(animal);
@@ -59,17 +62,11 @@ public class HostileBehaviour : IAnimalBehaviour
             agent.ResetPath();
         }
 
-        // Animaciones 
-        float speed = agent.velocity.magnitude; 
-        animal.GetAnimator().SetFloat("Vert", speed > 0.1f ? 1 : 0); 
-        animal.GetAnimator().SetFloat( "State", speed > animal.GetAnimalData().speed * 1.1f ? 1 : 0 );
+        UpdateAnimator(animal);
     }
 
     void ChasePlayer(Animal animal)
     {
-        NavMeshAgent agent = animal.GetAgent();
-        Transform player = animal.GetPlayer();
-
         if (!agent.isActiveAndEnabled || !agent.isOnNavMesh)
             return;
 
@@ -79,8 +76,6 @@ public class HostileBehaviour : IAnimalBehaviour
 
     private void AttackPlayer(Animal animal)
     {
-        Transform player = animal.GetPlayer();
-
         if (player != null)
         {
             player.GetComponent<PlayerController>()
@@ -106,9 +101,9 @@ public class HostileBehaviour : IAnimalBehaviour
             out RaycastHit hit,
             attackDistance))
         {
-            if (hit.collider.TryGetComponent(
-                out PlaceableBehaviour placeableBehaviour))
-            {
+            if (hit.collider.TryGetComponent(out PlaceableBehaviour placeableBehaviour))
+            {   
+                LookAt(animal,hit.collider.transform);
                 placeableBehaviour.TakeDamage(animal.GetAnimalData().damage);
                 attackTimer = animal.GetAnimalData().attackCooldown;
             }
@@ -117,16 +112,12 @@ public class HostileBehaviour : IAnimalBehaviour
 
     public void TakeDamage(Animal animal)
     {
-        // Al recibir daño se vuelve aún más agresivo
         ChasePlayer(animal);
     }
 
-    private void LookAtPlayer(Animal animal)
+    private void LookAt(Animal animal, Transform target)
     {
-        Transform player = animal.GetPlayer();
-
-        Vector3 direction =
-            player.position - animal.transform.position;
+        Vector3 direction = target.position - animal.transform.position;
 
         direction.y = 0;
 
@@ -155,9 +146,6 @@ public class HostileBehaviour : IAnimalBehaviour
 
     private void MoveToClosestReachablePoint(Animal animal)
     {
-        NavMeshAgent agent = animal.GetAgent();
-        Transform player = animal.GetPlayer();
-
         NavMeshPath path = new NavMeshPath();
 
         if (agent.CalculatePath(player.position, path))
@@ -172,5 +160,25 @@ public class HostileBehaviour : IAnimalBehaviour
                 agent.SetDestination(closestPoint);
             }
         }
+    }
+
+    private void UpdateAnimator(Animal animal)
+    {
+        float rawSpeed = (agent.velocity.magnitude + agent.desiredVelocity.magnitude) / 2;
+
+        if (rawSpeed < 0.05f)
+            rawSpeed = agent.desiredVelocity.magnitude;
+
+        smoothedSpeed = Mathf.Lerp(smoothedSpeed, rawSpeed, Time.deltaTime * 10f);
+
+        float maxWalk = animal.GetAnimalData().speed;
+        float maxRun = maxWalk * 3f;
+
+        float normalized = Mathf.Clamp01(smoothedSpeed / maxRun);
+
+        float vert = Mathf.InverseLerp(0f, maxWalk, smoothedSpeed);
+
+        animal.GetAnimator().SetFloat("Vert", vert);
+        animal.GetAnimator().SetFloat("State", normalized);
     }
 }

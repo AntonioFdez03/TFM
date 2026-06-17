@@ -18,7 +18,7 @@ MonoBehaviour:
   prefab: {fileID: 5378914829250258113, guid: 9fbb51a33cc946b4b832d2d0fd254d9a, type: 3}
   showInHand: 1
   handForm: 1
-  maxHealth: 100
+  maxHealth: 200
   damage: 20
   range: 5
   toolType: 2

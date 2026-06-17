@@ -115,9 +115,9 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 0fbcef0f89f3165418f4d1ab595172b4, type: 2}
   greenMaterial: {fileID: 2100000, guid: c289674975e48194ba656debbe498968, type: 2}
   redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
-  placementMask:
-    serializedVersion: 2
-    m_Bits: 384
+  brokeItemsDrop:
+  - {fileID: 3074230260528391914, guid: 677e5e059ef81a04a923e573c47ba2c1, type: 3}
+  - {fileID: 3074230260528391914, guid: 677e5e059ef81a04a923e573c47ba2c1, type: 3}
 --- !u!1001 &3291773015913440679
 PrefabInstance:
   m_ObjectHideFlags: 0

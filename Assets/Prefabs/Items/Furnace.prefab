@@ -204,9 +204,10 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 1a6be33acfdb6b642b776b0a3b308741, type: 2}
   greenMaterial: {fileID: 2100000, guid: c289674975e48194ba656debbe498968, type: 2}
   redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
-  placementMask:
-    serializedVersion: 2
-    m_Bits: 384
+  brokeItemsDrop:
+  - {fileID: 5751404862281763555, guid: 200b9b53a5a020c41bb8385f8889899f, type: 3}
+  - {fileID: 5751404862281763555, guid: 200b9b53a5a020c41bb8385f8889899f, type: 3}
+  - {fileID: 5751404862281763555, guid: 200b9b53a5a020c41bb8385f8889899f, type: 3}
 --- !u!114 &807988112466523875
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -152,7 +152,7 @@ public class PlayerInteraction : MonoBehaviour
             if (attack.IsPressed() && consumable != null)
             {
                 consumable.Use();
-                GameplayUI.instance.ShowCircularSlider(consumable.GetCurrentTime() / consumable.GetConsumeTime(), false);
+                GameplayUI.instance.ShowCircularSlider(consumable.GetCurrentTime() / consumable.GetConsumeTime(), 0);
             }
             else
                 ResetTime(consumable);
@@ -248,7 +248,7 @@ public class PlayerInteraction : MonoBehaviour
         if(interact.IsPressed() && placeable != null)
         {   
             placeable.Unplace();
-            GameplayUI.instance.ShowCircularSlider(placeable.GetCurrentTime() / placeable.GetUnplaceTime(), true);
+            GameplayUI.instance.ShowCircularSlider(placeable.GetCurrentTime() / placeable.GetUnplaceTime(), 0.1f);
             return;
         }
         else
@@ -257,7 +257,7 @@ public class PlayerInteraction : MonoBehaviour
         if(interact.IsPressed() && bush != null)
         {   
             bush.Recolect();
-            GameplayUI.instance.ShowCircularSlider(bush.GetCurrentTime() / bush.GetRecolectTime(), true);
+            GameplayUI.instance.ShowCircularSlider(bush.GetCurrentTime() / bush.GetRecolectTime());
             return;
         }
         else
@@ -304,11 +304,6 @@ public class PlayerInteraction : MonoBehaviour
         else if(item.TryGetComponent(out ItemBehaviour behaviour))
             objectHealth = behaviour;
 
-        if(objectHealth != null)
-        {
-            print("current: " + objectHealth.GetCurrentHealth());
-        print("max: " + objectHealth.GetMaxHealth());
-        }
         if(objectHealth != null && objectHealth.GetCurrentHealth() != objectHealth.GetMaxHealth() && objectHealth.GetCurrentHealth() != 0)
         {
             GameplayUI.instance.ShowItemHealth(objectHealth.GetCurrentHealth(), objectHealth.GetMaxHealth());

@@ -55,7 +55,7 @@ public class CameraController : MonoBehaviour
             transform.localRotation = Quaternion.Euler(rotationV,0,0);
             
             PlayerController.instance.transform.Rotate(Vector3.up * valueX);      
-            HandleHeadBob();   
+            //HandleHeadBob();   
         }
     }
 

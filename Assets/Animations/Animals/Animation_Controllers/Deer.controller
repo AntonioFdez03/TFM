@@ -54,7 +54,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -7548651164258897390, guid: d99459e360de2aa41bf8bd404027a969, type: 3}
+  m_Motion: {fileID: 2473029139003606958, guid: d99459e360de2aa41bf8bd404027a969, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -94,7 +94,7 @@ BlendTree:
   m_Name: BlendTree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 8068078803508053857, guid: d99459e360de2aa41bf8bd404027a969, type: 3}
+    m_Motion: {fileID: 9045140504860294006, guid: d99459e360de2aa41bf8bd404027a969, type: 3}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -102,7 +102,7 @@ BlendTree:
     m_DirectBlendParameter: State
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 5850703050174351275, guid: d99459e360de2aa41bf8bd404027a969, type: 3}
+    m_Motion: {fileID: -763174105552834015, guid: d99459e360de2aa41bf8bd404027a969, type: 3}
     m_Threshold: 1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -162,7 +162,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 2685842252776884469, guid: d99459e360de2aa41bf8bd404027a969, type: 3}
+  m_Motion: {fileID: -9185051586368083087, guid: d99459e360de2aa41bf8bd404027a969, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -199,7 +199,7 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7189931910124146595, guid: d99459e360de2aa41bf8bd404027a969, type: 3}
+    m_Motion: {fileID: -2968550426052280370, guid: d99459e360de2aa41bf8bd404027a969, type: 3}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -320,7 +320,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 6983379956500348978, guid: d99459e360de2aa41bf8bd404027a969, type: 3}
+  m_Motion: {fileID: 8193120141286852336, guid: d99459e360de2aa41bf8bd404027a969, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -365,9 +365,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 1.5337167
+  m_TransitionDuration: 0.7525336
   m_TransitionOffset: 0
-  m_ExitTime: 0.3564121
+  m_ExitTime: 7.2287326e-10
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0

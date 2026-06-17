@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
+
 public class Animal : MonoBehaviour
 {
     [SerializeField] protected AnimalData data;
@@ -21,6 +22,8 @@ public class Animal : MonoBehaviour
     private bool dead = false;
     private bool isHostile = false;
     private bool wasHostile = false;
+    private bool isFlinching = false;
+    private bool isFleeing = false;
 
     private float currentHealth;
 
@@ -43,23 +46,31 @@ public class Animal : MonoBehaviour
     public void SetBehaviour(IAnimalBehaviour behaviour) => animalBehaviour = behaviour;
     public Animator GetAnimator() => animator;
     public NavMeshAgent GetAgent() => agent;
-
+    public void SetFleeing(bool value) => isFleeing = value;
+    public bool IsFleeing() => isFleeing;
+    public void SetFlinching(bool value) => isFlinching = value;
+    public bool IsFlinching() => isFlinching;
+    public bool IsBusy() => isFlinching || dead;
+    
     void Update()
     {
         isHostile = PlayerController.instance.GetPlayerAttributes().GetCurrentSanity() < PlayerController.instance.GetPlayerAttributes().GetMaxSanity() * 0.5f;
-        skinnedMesh.material = isHostile ? hostileMaterial : pacificMaterial;
-            
+        skinnedMesh.material = isHostile ? hostileMaterial : pacificMaterial; 
+        
         if (!dead)
-        {
+        {   
+            /*
             if(isHostile && !wasHostile)
                 animalBehaviour = new HostileBehaviour();
             else if(!isHostile && wasHostile)
                 animalBehaviour = new PacificBehaviour();
 
+            */
             animalBehaviour?.Act(this);
         }
 
         wasHostile = isHostile;
+        
     }
 
     public void TakeDamage(float amount)
@@ -83,6 +94,7 @@ public class Animal : MonoBehaviour
                 animator.SetTrigger("Flinch");
                 StartCoroutine(FlinchCR());
             }
+
             animalBehaviour.TakeDamage(this);
         }
     }
@@ -183,7 +195,13 @@ public class Animal : MonoBehaviour
     }
 
     private IEnumerator FlinchCR()
-    {
+    {   
+        isFlinching = true;
+        agent.isStopped = true;
+        agent.velocity = Vector3.zero;
         yield return new WaitForSeconds(2f);
+        isFlinching = false;
+        agent.velocity = Vector3.zero;
+        agent.isStopped = false;
     }
 }

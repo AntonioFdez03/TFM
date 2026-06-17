@@ -149,7 +149,8 @@ public class ArmController : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, punchRange))
         {
-            Animal animal = hit.collider.CompareTag("Animal") ? hit.collider.GetComponent<Animal>() : null;
+            print("Objetivo: " + hit.collider.gameObject.name);
+            Animal animal = hit.collider.CompareTag("Animal") ? hit.collider.GetComponentInParent<Animal>() : null;
             if (animal != null)
             {
                 animal.TakeDamage(punchDamage);

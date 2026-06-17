@@ -2,16 +2,22 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem.Interactions;
-
 public class PacificBehaviour : IAnimalBehaviour
 {
     private float timer;
-    private float chaseDistance = 50f;
+    private float smoothedSpeed;
+    private bool playerDetected;
+
+    private NavMeshAgent agent;
+
 
     public void Act(Animal animal)
-    {
-        NavMeshAgent agent = animal.GetAgent();
+    {      
+        if (animal.IsBusy())
+            return;
+
         Transform player = animal.GetPlayer();
+        agent = animal.GetAgent();
         
         float distanceToPlayer = Vector3.Distance(animal.transform.position, player.position);
 
@@ -19,34 +25,29 @@ public class PacificBehaviour : IAnimalBehaviour
         float dot = Vector3.Dot(animal.transform.forward, directionToPlayer);
         bool isLookingAtPlayer = dot > 0.7f;
 
-        if(distanceToPlayer <= chaseDistance && (!player.GetComponent<PlayerController>().IsCrouching() || isLookingAtPlayer))
+        playerDetected = distanceToPlayer <= animal.GetAnimalData().chaseDistance && (!player.GetComponent<PlayerController>().IsCrouching() || isLookingAtPlayer);
+        if(playerDetected)
             Flee(animal);
         else
-        {
+        {   
+            animal.SetFleeing(false);
             timer -= Time.deltaTime;
             if (timer <= 0)
                 ChooseNewAction(animal);
         }
 
-        float speed = agent.velocity.magnitude;
-
-        animal.GetAnimator().SetFloat("Vert", speed > 0.1f ? 1 : 0);
-
-        animal.GetAnimator().SetFloat("State",
-            agent.velocity.magnitude > animal.GetAnimalData().speed * 1.1f ? 1 : 0
-        );
+        UpdateAnimator(animal,agent);
     }
 
     void ChooseNewAction(Animal animal)
     {   
-        NavMeshAgent agent = animal.GetAgent();
-
         if (!agent.isActiveAndEnabled || !agent.isOnNavMesh)
             return;
     
         timer = Random.Range(5f, 20f);
 
         int action = Random.Range(0, 2);
+        agent.isStopped = false;
 
         if (action == 0)
             agent.ResetPath();
@@ -65,14 +66,17 @@ public class PacificBehaviour : IAnimalBehaviour
     }
 
     public void TakeDamage(Animal animal)
-    {
+    {   
         Flee(animal);
     }
 
     void Flee(Animal animal)
-    {
-        NavMeshAgent agent = animal.GetAgent();
+    {      
+        if(!animal.IsFleeing() && !playerDetected) return;
+
         Transform player = animal.GetPlayer();
+
+        animal.SetFleeing(true);
 
         if (!agent.isOnNavMesh || player == null)
             return;
@@ -103,10 +107,31 @@ public class PacificBehaviour : IAnimalBehaviour
         }
 
         if (bestScore > 0)
-        {
+        {   
             agent.ResetPath();
             agent.SetDestination(bestDirection);
             agent.speed = animal.GetAnimalData().speed * 3;
         }
+    }
+
+
+    private void UpdateAnimator(Animal animal, NavMeshAgent agent)
+    {
+        float rawSpeed = (agent.velocity.magnitude + agent.desiredVelocity.magnitude) / 2;
+
+        if (rawSpeed < 0.05f)
+            rawSpeed = agent.desiredVelocity.magnitude;
+
+        smoothedSpeed = Mathf.Lerp(smoothedSpeed, rawSpeed, Time.deltaTime * 10f);
+
+        float maxWalk = animal.GetAnimalData().speed;
+        float maxRun = maxWalk * 3f;
+
+        float normalized = Mathf.Clamp01(smoothedSpeed / maxRun);
+
+        float vert = Mathf.InverseLerp(0f, maxWalk, smoothedSpeed);
+
+        animal.GetAnimator().SetFloat("Vert", vert);
+        animal.GetAnimator().SetFloat("State", normalized);
     }
 }

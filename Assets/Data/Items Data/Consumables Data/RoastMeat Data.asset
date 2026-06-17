@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ConsumableData
   id: RoastMeat
   itemName: Roast Meat
-  icon: {fileID: 21300000, guid: b1e97a28ae2e21f4b9a5de5483fff264, type: 3}
+  icon: {fileID: 21300000, guid: e140843cf3455f14e8255bd2eada31a9, type: 3}
   prefab: {fileID: 2228412806016164105, guid: 902a282c4e6a2554a9fd9de45f3bc82f, type: 3}
   showInHand: 1
   handForm: 2

@@ -39,7 +39,7 @@ public class MainMenuManager : MonoBehaviour
         audioSource.volume = 0.5f;
         audioSource.clip = backgroundMusic;
         audioSource.loop = true;
-        audioSource.Play();
+        //audioSource.Play();
 
         ShowMainButtons();
 

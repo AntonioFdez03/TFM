@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7940256837438548877}
   - component: {fileID: 7993663974460631541}
   - component: {fileID: 3920659745837221447}
+  - component: {fileID: 1314422951887007200}
   m_Layer: 11
   m_Name: IronRock
   m_TagString: Harvestable
@@ -262,6 +263,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!208 &1314422951887007200
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2303599444185223329}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 4.289, y: 2.3560002, z: 4.1460004}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.148, y: 2.3260002, z: -0.22900002}
+  m_TimeToStationary: 0.5
 --- !u!1 &4372158810184244900
 GameObject:
   m_ObjectHideFlags: 0

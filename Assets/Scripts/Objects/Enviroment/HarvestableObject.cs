@@ -9,7 +9,6 @@ public abstract class HarvestableObject : MonoBehaviour, IObjectHealth
     [SerializeField] protected HarvestableData data;
     [SerializeField] protected GameObject dropItem = null;
     protected string objectName;
-    protected float maxHealth;
     protected float currentHealth;
 
     [SerializeField] private AudioClip hitSound;
@@ -17,7 +16,7 @@ public abstract class HarvestableObject : MonoBehaviour, IObjectHealth
 
     public HarvestableData GetData() => data;
     public float GetCurrentHealth() => currentHealth;
-    public float GetMaxHealth() => maxHealth;
+    public float GetMaxHealth() => data.maxHealth;
 
     public void SetCurrentHealth(float health) => currentHealth = health;
     public virtual void TakeHit(ToolType tool, float damage)
@@ -25,8 +24,11 @@ public abstract class HarvestableObject : MonoBehaviour, IObjectHealth
         Debug.Log("takeHit: " + tool + ", damage: " + damage);
         if (CanHarvest(tool))
         {
-            currentHealth = Math.Clamp(currentHealth - damage, 0 ,maxHealth);
+            currentHealth = Math.Clamp(currentHealth - damage, 0 ,data.maxHealth);
             
+            if(TryGetComponent(out ItemBehaviour itemB))
+                itemB.SetCurrentHealth(currentHealth);
+
             if (currentHealth == 0)
             {
                 AudioManager.instance.PlayOneShot(harvestSound, 0.6f);

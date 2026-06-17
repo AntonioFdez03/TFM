@@ -15,8 +15,9 @@ public class Bush : HarvestableObject
 
     protected void Awake()
     {
-        maxHealth = data.maxHealth;
-        currentHealth = maxHealth;
+        currentHealth = data.maxHealth;
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void SetCurrentTime(float t) => timer = t;

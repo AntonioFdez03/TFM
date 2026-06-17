@@ -125,6 +125,7 @@ GameObject:
   - component: {fileID: 2253134599325682817}
   - component: {fileID: 8898528814708486334}
   - component: {fileID: 8405750622091874904}
+  - component: {fileID: 6809369012652078764}
   m_Layer: 7
   m_Name: Radio
   m_TagString: Interactive
@@ -310,3 +311,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!208 &6809369012652078764
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4066447378700584596}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.005, y: 0.005, z: 0.00001}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5

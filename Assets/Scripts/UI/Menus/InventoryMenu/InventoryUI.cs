@@ -65,7 +65,7 @@ public class InventoryUI : MonoBehaviour
 
         if (items[index] == null)
         {
-            Transform existingBar = slots[index].transform.Find("HealthBar");
+            Transform existingBar = slots[index].transform.GetChild(0).Find("HealthBar");
             if (existingBar != null)
                 Destroy(existingBar.gameObject);
 
@@ -73,7 +73,6 @@ public class InventoryUI : MonoBehaviour
         }
 
         ItemData item = ItemDataBase.instance.GetByID(items[index].id);
-        print("Item data: " + item);
         if (item == null)
             return;
 

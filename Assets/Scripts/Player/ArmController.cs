@@ -4,7 +4,7 @@ using UnityEditor;
 using System.Diagnostics;
 using Unity.VisualScripting;
 
-public enum HandForm {None, Clutch, Grab};
+public enum HandForm {None, Clutch, VGrab, HGrab};
 public class ArmController : MonoBehaviour
 {   
     public static ArmController instance;
@@ -47,6 +47,12 @@ public class ArmController : MonoBehaviour
     private bool isAiming = false;
     private bool wasAiming = false;
 
+    private Quaternion initialHandSlotRotation;
+    private Vector3 initialHandSlotPosition;
+    private Quaternion hGrabHandSlotRotation;
+    private Vector3 hGrabHandSlotPosition;
+    private bool wasHGrab = false;
+
     void Awake()
     {
         if(instance != null && instance != this)
@@ -64,6 +70,12 @@ public class ArmController : MonoBehaviour
 
         initialHandRotation = handSlot.localRotation;
         targetHandRotation = initialHandRotation * Quaternion.Euler(90f, 0f, 0f);
+
+        initialHandSlotPosition = handSlot.localPosition;
+        initialHandSlotRotation = handSlot.localRotation;
+
+        hGrabHandSlotRotation = initialHandSlotRotation * Quaternion.Euler(0f, 0f, 90f);
+        hGrabHandSlotPosition = initialHandSlotPosition + initialHandSlotRotation * Vector3.forward * 0.0015f;
     }
 
     public void SetAiming(bool value) => isAiming = value;
@@ -421,9 +433,15 @@ public class ArmController : MonoBehaviour
         isMoving = false;
     }
 
+    public void DropAnimation()
+    {
+        animator.SetTrigger("Drop");
+    }
+
 
     private void UpdateAnimation()
     {   
+        //handSlot.transform.rotation = Quaternion.identity;
         ItemBehaviour currentBehaviour = HotBarController.instance.GetCurrentItemBehaviour();
 
         if(currentBehaviour == null)
@@ -443,6 +461,26 @@ public class ArmController : MonoBehaviour
 
             wasAiming = false;
 
+            HandForm handForm = currentBehaviour.GetData().handForm;
+            if(handForm == HandForm.HGrab)
+            {
+                if(!wasHGrab)
+                {
+                    handSlot.localPosition = hGrabHandSlotPosition;
+                    handSlot.localRotation = hGrabHandSlotRotation;
+                    wasHGrab = true;
+                }
+            }
+            else
+            {
+                if(wasHGrab)
+                {   
+                    handSlot.localPosition = initialHandSlotPosition;
+                    handSlot.localRotation = initialHandSlotRotation;
+                    wasHGrab = false;
+                }
+            }
+
             switch (currentBehaviour.GetData().handForm)
             {
                 case HandForm.Clutch:
@@ -450,11 +488,17 @@ public class ArmController : MonoBehaviour
                     animator.SetBool("Grab",false);
                     break;
 
-                case HandForm.Grab:
+                case HandForm.VGrab:
                     animator.SetBool("Grab",true);
+                    animator.SetFloat("GrabMode", 0);
+                    //handSlot.transform.rotation = Quaternion.Euler(0,90f,0);
                     animator.SetBool("Clutch",false);
                     break;
-
+                case HandForm.HGrab:
+                    animator.SetBool("Grab",true);
+                    animator.SetFloat("GrabMode", 0);
+                    animator.SetBool("Clutch",false);
+                    break;
                 case HandForm.None:
                     animator.SetBool("Grab", false);
                     animator.SetBool("Clutch", false);

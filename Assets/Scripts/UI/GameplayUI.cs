@@ -177,7 +177,7 @@ public class GameplayUI : MonoBehaviour
     public void ShowCircularSlider(float currentValue, bool delay)
     {  
         float startTime = 0;
-        if(delay) startTime = 0.2f;
+        if(delay) startTime = 0.05f;
 
         if(currentValue > startTime)
         {   

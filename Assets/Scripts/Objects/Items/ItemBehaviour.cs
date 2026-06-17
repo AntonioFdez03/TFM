@@ -45,6 +45,9 @@ public abstract class ItemBehaviour : MonoBehaviour, IObjectHealth
                 currentHealth = maxHealth
             };
         }
+
+        if(TryGetComponent(out HarvestableObject harvestableObject))
+            harvestableObject.SetCurrentHealth(itemStack.currentHealth);
     }
 
     public ItemData GetData() => data;

@@ -12,8 +12,7 @@ public class SmallTree : HarvestableObject
 
     protected void Awake()
     {
-        maxHealth = data.maxHealth;
-        currentHealth = maxHealth;
+        currentHealth = data.maxHealth;
         rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = true;
         rb.useGravity = false;

@@ -17,4 +17,4 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 69198d68bef249849b682d1111dd02b6, type: 3}
   prefab: {fileID: 5751404862281763555, guid: 200b9b53a5a020c41bb8385f8889899f, type: 3}
   showInHand: 1
-  handForm: 0
+  handForm: 3

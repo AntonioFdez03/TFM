@@ -12,8 +12,7 @@ public class CutTree : HarvestableObject
     
     protected void Awake()
     {
-        maxHealth = data.maxHealth;
-        currentHealth = maxHealth;
+        currentHealth = data.maxHealth;
     }
 
     public override void Harvest()

@@ -15,8 +15,6 @@ public class DayCycleController : MonoBehaviour
     [SerializeField] private TMP_Text dayText;
     private int currentDay = 1;
 
-    private bool changeAmbientLight = false;
-
     void Awake()
     {
         if(instance != null && instance != this)

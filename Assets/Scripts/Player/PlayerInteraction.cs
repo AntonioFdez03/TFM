@@ -297,10 +297,26 @@ public class PlayerInteraction : MonoBehaviour
                 GameplayUI.instance.HideItemName();
         }
 
-        if(item.TryGetComponent<IObjectHealth>(out var objectHealth) && objectHealth.GetCurrentHealth() != objectHealth.GetMaxHealth())  
+        IObjectHealth objectHealth = null;
+
+        if(item.TryGetComponent(out HarvestableObject harvestable))
+            objectHealth = harvestable;
+        else if(item.TryGetComponent(out ItemBehaviour behaviour))
+            objectHealth = behaviour;
+
+        if(objectHealth != null)
+        {
+            print("current: " + objectHealth.GetCurrentHealth());
+        print("max: " + objectHealth.GetMaxHealth());
+        }
+        if(objectHealth != null && objectHealth.GetCurrentHealth() != objectHealth.GetMaxHealth() && objectHealth.GetCurrentHealth() != 0)
+        {
             GameplayUI.instance.ShowItemHealth(objectHealth.GetCurrentHealth(), objectHealth.GetMaxHealth());
+        }
         else
+        {
             GameplayUI.instance.HideItemHealth();
+        }
         
         foreach (Transform child in item.transform)
         {

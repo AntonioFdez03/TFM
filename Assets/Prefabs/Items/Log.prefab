@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2449235651524175938
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3891024543774831475}
+  m_Layer: 0
+  m_Name: Spawn1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3891024543774831475
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2449235651524175938}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.46, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2141012679809359357}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2889792831850589819
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,6 +144,37 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 2534964839176971238, guid: 0a2763923248a3747b5d786bd60a0fe2, type: 3}
+--- !u!1 &4064189079451964812
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7012718089439717915}
+  m_Layer: 0
+  m_Name: Spawn2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7012718089439717915
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4064189079451964812}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.27, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2141012679809359357}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5144113718169600618
 GameObject:
   m_ObjectHideFlags: 0
@@ -124,6 +186,7 @@ GameObject:
   - component: {fileID: 2141012679809359357}
   - component: {fileID: 3863709070745723874}
   - component: {fileID: 6878222864573558475}
+  - component: {fileID: 9132113768667273793}
   - component: {fileID: 319804483673510633}
   m_Layer: 0
   m_Name: Log
@@ -146,6 +209,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2544898730861851841}
+  - {fileID: 3891024543774831475}
+  - {fileID: 7012718089439717915}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &3863709070745723874
@@ -188,6 +253,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResourceBehaviour
   data: {fileID: 11400000, guid: b888684973490ed4ca0f0557cabe989f, type: 2}
+--- !u!114 &9132113768667273793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5144113718169600618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd21aa80d8d40004c8b913448bb705d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Log
+  data: {fileID: 11400000, guid: 5e85cbd943562574bbccb0842e56e883, type: 2}
+  dropItem: {fileID: 3074230260528391914, guid: 677e5e059ef81a04a923e573c47ba2c1, type: 3}
+  hitSound: {fileID: 8300000, guid: 477fae28586de464290f4c8ec525c89a, type: 3}
+  harvestSound: {fileID: 8300000, guid: adb6cf5bf8ba6754bbae6d78bec7b1ed, type: 3}
+  branchSpawners:
+  - {fileID: 3891024543774831475}
+  - {fileID: 7012718089439717915}
 --- !u!136 &319804483673510633
 CapsuleCollider:
   m_ObjectHideFlags: 0

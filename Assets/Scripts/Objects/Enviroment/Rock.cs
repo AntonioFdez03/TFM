@@ -16,8 +16,7 @@ public class Rock : HarvestableObject
 
     protected void Awake()
     {   
-        maxHealth = data.maxHealth;
-        currentHealth = maxHealth;
+        currentHealth = data.maxHealth;
         rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = true;
         rb.useGravity = false;
@@ -36,7 +35,7 @@ public class Rock : HarvestableObject
         rockPhase += 1;
         if(rockPhase < rockMeshes.Count)
         {   
-            currentHealth = maxHealth;
+            currentHealth = data.maxHealth;
             meshFilter.mesh = rockMeshes[rockPhase];
             //meshCollider.sharedMesh = rockMeshes[rockPhase];
         }else

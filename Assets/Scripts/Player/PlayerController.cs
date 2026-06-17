@@ -11,9 +11,9 @@ public class PlayerController : MonoBehaviour
     private PlayerAttributes playerAttributes;
     private CharacterController controller;
 
-    private float movementSpeed = 10f; 
+    private float movementSpeed = 13f; 
     private float sprintSpeed = 20f; 
-    private float crouchSpeed = 5f;
+    private float crouchSpeed = 7f;
     private float jumpForce = 10f;
 
     private bool canMove;
@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     private bool isMoving;
     private bool isSprinting;
     private bool isCrouching;
+    private bool isJumping;
 
     private InputAction move;
     private InputAction sprint;
@@ -113,12 +114,15 @@ public class PlayerController : MonoBehaviour
         direction.Normalize();
 
         isMoving = direction.sqrMagnitude > 0.0001f;
-        isSprinting = isMoving && playerAttributes.canSprint && sprint.IsPressed() && controller.isGrounded;
+        isSprinting = isMoving && playerAttributes.canSprint && sprint.IsPressed();
 
         if (isSprinting) playerAttributes.UseStamina();
 
         float currentSpeed = isCrouching ? crouchSpeed : isSprinting? sprintSpeed : movementSpeed;
         
+        if(isJumping && isSprinting)
+            currentSpeed *= 0.75f;
+
         return direction * currentSpeed;
     }
 
@@ -126,13 +130,15 @@ public class PlayerController : MonoBehaviour
     {
         //Estabilizar grounded para que no de fallos
         if (controller.isGrounded && yVelocity < 0)
-        {
+        {   
+            isJumping = false;
             yVelocity = -2f; 
             controller.stepOffset = 0.3f;
         }
 
         if (jump.triggered && controller.isGrounded)
         { 
+            isJumping = true;
             AudioManager.instance.PlayOneShot("PlayerJump");
             yVelocity = jumpForce;
             controller.stepOffset = 0;

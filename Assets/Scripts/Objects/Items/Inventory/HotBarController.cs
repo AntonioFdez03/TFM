@@ -203,9 +203,11 @@ public class HotBarController : MonoBehaviour
     private void DropCurrentItem()
     {   
         if (dropItem.WasPressedThisFrame() && currentItem != null)
-        {
+        {   
             if(!InventoryController.instance.DropItem(selectedIndex))
                 return;
+
+            //ArmController.instance.DropAnimation();
 
             if (handItemInstance != null)
                 Destroy(handItemInstance);
@@ -252,7 +254,7 @@ public class HotBarController : MonoBehaviour
 
         if (items[index] == null)
         {
-            Transform existingBar = slots[index].Find("HealthBar");
+            Transform existingBar = slots[index].GetChild(0).Find("HealthBar");
             if (existingBar != null)
                 Destroy(existingBar.gameObject);
 
@@ -260,7 +262,6 @@ public class HotBarController : MonoBehaviour
         }
 
         ItemData item = ItemDataBase.instance.GetByID(items[index].id);
-        print("Item data: " + item);
         if (item == null)
             return;
 
@@ -268,7 +269,6 @@ public class HotBarController : MonoBehaviour
 
         if(item is DurableItemData durableItemData)
         {   
-            print("Entra");
             float maxHealth = durableItemData.maxHealth;
             Transform healthBarInstance = slots[index].GetChild(0).Find("HealthBar");
 

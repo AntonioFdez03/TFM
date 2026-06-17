@@ -51,14 +51,21 @@ public class AnimalSpawner : MonoBehaviour
                 return;
             }
         }
-
-        if(PlayerController.instance.GetPlayerAttributes().GetCurrentSanity() < PlayerController.instance.GetPlayerAttributes().GetMaxSanity() *0.5f)
+        
+        if(prefab.GetComponent<Animal>().GetAnimalData().alwaysHostile)
         {
             animal.GetComponent<Animal>().SetBehaviour(new HostileBehaviour());
         }
         else
         {
-            animal.GetComponent<Animal>().SetBehaviour(new HostileBehaviour());
+            if(PlayerController.instance.GetPlayerAttributes().GetCurrentSanity() < PlayerController.instance.GetPlayerAttributes().GetMaxSanity() *0.5f)
+            {
+                animal.GetComponent<Animal>().SetBehaviour(new HostileBehaviour());
+            }
+            else
+            {
+                animal.GetComponent<Animal>().SetBehaviour(new PacificBehaviour());
+            }
         }
         animal.GetComponent<Animal>().SetPlayer(player);
         animal.transform.SetParent(animalsParent);

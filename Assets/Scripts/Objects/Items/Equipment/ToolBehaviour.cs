@@ -50,9 +50,7 @@ public class ToolBehaviour : EquipmentBehaviour
                 TakeDamage(animalDamage);
             }
 
-            HarvestableObject harvestableObject = hit.collider.CompareTag("Harvestable") ? hit.collider.GetComponent<HarvestableObject>() : null;
-            if(harvestableObject != null)
-            {   
+            if(hit.collider.TryGetComponent(out HarvestableObject harvestableObject)){
                 harvestableObject.TakeHit(toolData.toolType,toolData.damage);
                 TakeDamage(harvestableDamage);
             }

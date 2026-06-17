@@ -5,12 +5,7 @@ using UnityEngine.AI;
 public class HostileBehaviour : IAnimalBehaviour
 {
     private float attackDistance = 10f;
-    private float chaseDistance = 50f;
-    private float losePlayerDistance = 100f;
-
-    private float attackCooldown = 2f;
     private float attackTimer;
-    private float damage = 2f;
 
     public void Act(Animal animal)
     {   
@@ -26,7 +21,7 @@ public class HostileBehaviour : IAnimalBehaviour
 
         bool canReach = CanReachTarget(agent, player.position);
 
-        if (distanceToPlayer <= chaseDistance)
+        if (distanceToPlayer <= animal.GetAnimalData().chaseDistance)
         {
             if (canReach)
             {
@@ -54,7 +49,7 @@ public class HostileBehaviour : IAnimalBehaviour
                         agent.ResetPath();
                         LookAtPlayer(animal);
                         animal.GetAnimator().SetTrigger("Attack");
-                        attackTimer = attackCooldown;
+                        attackTimer = animal.GetAnimalData().attackCooldown;
                         TryAttackStructure(animal);
                     }
             }
@@ -90,9 +85,9 @@ public class HostileBehaviour : IAnimalBehaviour
         {
             player.GetComponent<PlayerController>()
                 .GetPlayerAttributes()
-                .TakeDamage(damage);
+                .TakeDamage(animal.GetAnimalData().damage);
 
-            attackTimer = attackCooldown;
+            attackTimer = animal.GetAnimalData().attackCooldown;
         }
     }
 
@@ -114,8 +109,8 @@ public class HostileBehaviour : IAnimalBehaviour
             if (hit.collider.TryGetComponent(
                 out PlaceableBehaviour placeableBehaviour))
             {
-                placeableBehaviour.TakeDamage(damage);
-                attackTimer = attackCooldown;
+                placeableBehaviour.TakeDamage(animal.GetAnimalData().damage);
+                attackTimer = animal.GetAnimalData().attackCooldown;
             }
         }
     }

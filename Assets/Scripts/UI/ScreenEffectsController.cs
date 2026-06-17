@@ -56,7 +56,7 @@ public class ScreenEffectsController : MonoBehaviour
     {
         if (vignetteEffect == null || isDying) return;
 
-        if (healthPercent < 0.9f)
+        if (healthPercent < 0.5f)
         {
             vignetteEffect.color.value = Color.red;
             vignetteEffect.intensity.value = 0.4f;
@@ -75,7 +75,7 @@ public class ScreenEffectsController : MonoBehaviour
         if(colorAdjustmentsEffect == null || chromaticAberrationEffect == null || lensDistortionEffect == null || isDying) 
             return;
 
-        if(sanityPercent < 0.9f)
+        if(sanityPercent < 0.5f)
         {
             colorAdjustmentsEffect.active = true;
             colorAdjustmentsEffect.postExposure.value = -1;

@@ -54,7 +54,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da22422b1cde4ed4facca1c3561b0d61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bush
-  data: {fileID: 11400000, guid: 350f991b740559a49b5432c7dd54e31e, type: 2}
+  data: {fileID: 11400000, guid: b3dfaeb24efff9043ac4de3400f942dd, type: 2}
   dropItem: {fileID: 2717929752634245167, guid: 0ab8a685fdb71ec4c97bfb3f8bdfcd32, type: 3}
   hitSound: {fileID: 8300000, guid: 477fae28586de464290f4c8ec525c89a, type: 3}
   harvestSound: {fileID: 0}

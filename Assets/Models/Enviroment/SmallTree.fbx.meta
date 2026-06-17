@@ -8,12 +8,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: HojasArbol
-    second: {fileID: 2100000, guid: 78e54312a36c64f48b99c1075c0c0a58, type: 2}
+    second: {fileID: 2100000, guid: 2fa6e9abe5087374e9bd3c09b601900c, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Material
-    second: {fileID: 2100000, guid: 2fa6e9abe5087374e9bd3c09b601900c, type: 2}
+    second: {fileID: 2100000, guid: 26d497359315b0f45a5f67e92fe188d8, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -9,4 +9,5 @@ public class AnimalData : ScriptableObject
     public bool alwaysHostile;
     public float chaseDistance;
     public float attackCooldown;
+    public float attackDistance;
 }

@@ -24,6 +24,7 @@ public class Animal : MonoBehaviour
     private bool wasHostile = false;
     private bool isFlinching = false;
     private bool isFleeing = false;
+    private bool isAttacking = false;
 
     private float currentHealth;
 
@@ -50,7 +51,9 @@ public class Animal : MonoBehaviour
     public bool IsFleeing() => isFleeing;
     public void SetFlinching(bool value) => isFlinching = value;
     public bool IsFlinching() => isFlinching;
-    public bool IsBusy() => isFlinching || dead;
+    public void SetAttacking(bool value) => isAttacking = value;
+    public bool IsAttacking() => isAttacking;
+    public bool IsBusy() => isFlinching || dead ||isAttacking;
     
     void Update()
     {
@@ -203,5 +206,37 @@ public class Animal : MonoBehaviour
         isFlinching = false;
         agent.velocity = Vector3.zero;
         agent.isStopped = false;
+    }
+
+    public void Attack()
+    {
+        StartCoroutine(AttackCR());
+    }
+
+    public void AttackPlayer()
+    {
+        if (player == null) return;
+
+        float distance = Vector3.Distance(transform.position, player.position);
+
+        if (distance <= data.attackDistance/1.2)
+        {
+            player.GetComponent<PlayerController>()
+                .GetPlayerAttributes()
+                .TakeDamage(data.damage);
+        }
+    }
+    public IEnumerator AttackCR()
+    {
+        isAttacking = true;
+        agent.velocity = Vector3.zero;
+        agent.isStopped = true;
+        agent.ResetPath();
+        yield return new WaitForSeconds(1f);
+        AttackPlayer();
+        yield return new WaitForSeconds(0.5f);
+        isAttacking = false;
+        agent.isStopped = false;
+
     }
 }

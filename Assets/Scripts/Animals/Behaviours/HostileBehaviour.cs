@@ -7,11 +7,16 @@ public class HostileBehaviour : IAnimalBehaviour
     private Transform player;
     private NavMeshAgent agent;
     private float attackTimer;
-    private float attackDistance = 10;
     private float smoothedSpeed;
 
     public void Act(Animal animal)
     {   
+        if(animal.IsAttacking())
+            LookAt(animal, player);
+
+        if (animal.IsBusy())
+            return;
+
         attackTimer -= Time.deltaTime;
 
         agent = animal.GetAgent();
@@ -23,21 +28,22 @@ public class HostileBehaviour : IAnimalBehaviour
         float distanceToPlayer = Vector3.Distance(animal.transform.position, player.position);
 
         bool canReach = CanReachTarget(agent, player.position);
+        agent.isStopped = false;
 
         if (distanceToPlayer <= animal.GetAnimalData().chaseDistance)
         {
             if (canReach)
             {
-                if (distanceToPlayer > attackDistance)
-                {
+                if (distanceToPlayer > animal.GetAnimalData().attackDistance)
+                {   
                     ChasePlayer(animal);
                 }
                 else if (attackTimer < 0f)
                 {   
-                    agent.ResetPath();
+                    animal.Attack();
                     LookAt(animal, player);
                     animal.GetAnimator().SetTrigger("Attack");
-                    AttackPlayer(animal);
+                    attackTimer = animal.GetAnimalData().attackCooldown;
                 }
             }
             else
@@ -72,18 +78,7 @@ public class HostileBehaviour : IAnimalBehaviour
 
         agent.speed = animal.GetAnimalData().speed * 1.5f;
         agent.SetDestination(player.position);
-    }
-
-    private void AttackPlayer(Animal animal)
-    {
-        if (player != null)
-        {
-            player.GetComponent<PlayerController>()
-                .GetPlayerAttributes()
-                .TakeDamage(animal.GetAnimalData().damage);
-
-            attackTimer = animal.GetAnimalData().attackCooldown;
-        }
+        
     }
 
     private void TryAttackStructure(Animal animal)
@@ -99,7 +94,7 @@ public class HostileBehaviour : IAnimalBehaviour
             0.7f,
             direction,
             out RaycastHit hit,
-            attackDistance))
+            animal.GetAnimalData().attackDistance))
         {
             if (hit.collider.TryGetComponent(out PlaceableBehaviour placeableBehaviour))
             {   

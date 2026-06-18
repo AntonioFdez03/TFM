@@ -5109,7 +5109,7 @@ Light:
     m_Strength: 0.5
     m_Bias: 0.05
     m_NormalBias: 0.4
-    m_NearPlane: 0.2
+    m_NearPlane: 0.1
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
@@ -10729,7 +10729,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
   player: {fileID: 1453335105}
   animals:
-  - {fileID: 7402009758359158996, guid: 4ecab060b0afb5d4db61f7f1311b9e24, type: 3}
+  - {fileID: 5563973955744743743, guid: 642f2f7c6b117a947bea511cd83ff90f, type: 3}
   animalsParent: {fileID: 581611944}
 --- !u!1001 &598928284
 PrefabInstance:
@@ -41064,7 +41064,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2592216367598805791, guid: 1af14dd6ffb2a9848a51e702ff8defd3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -263.70496
+      value: -261.6
       objectReference: {fileID: 0}
     - target: {fileID: 2592216367598805791, guid: 1af14dd6ffb2a9848a51e702ff8defd3, type: 3}
       propertyPath: m_LocalPosition.y
@@ -41072,7 +41072,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2592216367598805791, guid: 1af14dd6ffb2a9848a51e702ff8defd3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 641.53
+      value: 640
       objectReference: {fileID: 0}
     - target: {fileID: 2592216367598805791, guid: 1af14dd6ffb2a9848a51e702ff8defd3, type: 3}
       propertyPath: m_LocalRotation.w

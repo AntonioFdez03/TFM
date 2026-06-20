@@ -147,6 +147,8 @@ public class ArmController : MonoBehaviour
 
     public void PlayAttackAnimation()
     {
+        print("Is moving: "+ isMoving);
+        print("CanAttack: " + canAttack);
         if (!isMoving && canAttack)
         {
             ItemBehaviour item = HotBarController.instance.GetCurrentItemBehaviour();

@@ -20,18 +20,14 @@ public class SaveManager : MonoBehaviour
 
     void Start()
     {   
-        print("MainMenu: " + MainMenuManager.instance);
-        if(MainMenuManager.instance != null)
+        if (MainMenuManager.GameContinued())
         {
-            if (MainMenuManager.instance.GameContinued())
-            {
-                print("Game continued");
-                StartCoroutine(LoadGameCR());
-            }
-            else
-            {
-                print("No continued");
-            }
+            print("Game continued");
+            StartCoroutine(LoadGameCR());
+        }
+        else
+        {
+            print("No continued");
         }
     }
 
@@ -51,6 +47,7 @@ public class SaveManager : MonoBehaviour
         data.playerData.playerHunger = player.GetCurrentHunger();
         data.playerData.playerStamina = player.GetCurrentStamina();
         data.playerData.playerSanity = player.GetCurrentSanity();
+        data.playerData.playerInLight = player.InLight();
         data.playerData.playerPosition = player.transform.position;
         data.playerData.playerRotation = player.transform.rotation;
         data.playerData.cameraRotation = CameraController.instance.GetCurrentRotation();
@@ -102,8 +99,104 @@ public class SaveManager : MonoBehaviour
                 ItemStack instance = itemBehaviour.GetItemStack();
 
                 objectData.id = instance.id;
+                print("Guardando item: " + objectData.id);
                 objectData.type = "Item";
                 objectData.currentHealth = instance.currentHealth;
+
+                if(worldObject.TryGetComponent(out StorageController storage))
+                {   
+                    print("Guardando cofre");
+                    objectData.storageItems = new();
+
+                    for(int j = 0; j < storage.GetStorageSize(); j++)
+                    {   
+                        SaveData.InventoryItemData itemData = new();
+                        ItemStack storageItem = storage.GetItem(j);
+                        itemData.inventoryIndex = j;
+
+                        if (storageItem != null)
+                        {
+                            print("Datos guardados");
+                            itemData.id = storageItem.id;
+                            itemData.currentHealth = storageItem.currentHealth;
+                        }
+                        else
+                        {   
+                            print("Datos NO guardados");
+                            itemData.id = "-1";
+                            itemData.currentHealth = 0;
+                        }
+
+                        objectData.storageItems.Add(itemData);
+                    }
+                }else if(worldObject.TryGetComponent(out FurnaceController furnace))
+                {   
+                    print("Gurdando horno");
+                    // Inputs
+                    objectData.furnaceInputItems = new();
+
+                    for(int j = 0; j < furnace.GetInputItems().Length; j++)
+                    {   
+                        SaveData.InventoryItemData itemData = new();
+                        ItemStack furnaceItem = furnace.GetInputItems()[j];
+                        itemData.inventoryIndex = j;
+
+                        if (furnaceItem != null)
+                        {   
+                            print("Hay input");
+                            itemData.id = furnaceItem.id;
+                            itemData.currentHealth = furnaceItem.currentHealth;
+                        }
+                        else
+                        {
+                            itemData.id = "-1";
+                            itemData.currentHealth = 0;
+                        }
+
+                        objectData.furnaceInputItems.Add(itemData);
+                    }
+
+                    // Outputs 
+                    objectData.furnaceOutputItems = new();
+
+                    for(int j = 0; j < furnace.GetOutputItems().Length; j++)
+                    {   
+                        SaveData.InventoryItemData itemData = new();
+                        ItemStack furnaceItem = furnace.GetOutputItems()[j];
+                        itemData.inventoryIndex = j;
+
+                        if (furnaceItem != null)
+                        {
+                            itemData.id = furnaceItem.id;
+                            itemData.currentHealth = furnaceItem.currentHealth;
+                        }
+                        else
+                        {
+                            itemData.id = "-1";
+                            itemData.currentHealth = 0;
+                        }
+
+                        objectData.furnaceOutputItems.Add(itemData);
+                    }
+
+                    // Fuel
+                    SaveData.InventoryItemData fuelData = new();
+                    ItemStack furnaceFuelItem = furnace.GetFuelItem();
+                    fuelData.inventoryIndex = i;
+
+                    if (furnaceFuelItem != null)
+                    {
+                        fuelData.id = furnaceFuelItem.id;
+                        fuelData.currentHealth = furnaceFuelItem.currentHealth;
+                    }
+                    else
+                    {
+                        fuelData.id = "-1";
+                        fuelData.currentHealth = 0;
+                    }
+
+                    objectData.furnaceFuelItem = fuelData;
+                }
             }
             
             // HARVESTABLE
@@ -114,6 +207,7 @@ public class SaveManager : MonoBehaviour
                 objectData.currentHealth = harvestable.GetCurrentHealth();
             }
 
+            print("Item añadido con id: " + objectData.id);
             data.worldObjects.Add(objectData);
         }
 
@@ -142,6 +236,8 @@ public class SaveManager : MonoBehaviour
             return;
         }
 
+        ClearWorld();
+
         print("Cargando datos..");
         string json = File.ReadAllText(path);
         SaveData data = JsonUtility.FromJson<SaveData>(json);
@@ -155,7 +251,8 @@ public class SaveManager : MonoBehaviour
             data.playerData.playerHealth,
             data.playerData.playerHunger,
             data.playerData.playerStamina,
-            data.playerData.playerSanity
+            data.playerData.playerSanity,
+            data.playerData.playerInLight
         );
 
         CameraController.instance.SetCurrentRotation(data.playerData.cameraRotation);
@@ -201,12 +298,105 @@ public class SaveManager : MonoBehaviour
             {
                 health.SetCurrentHealth(objectData.currentHealth);
             }
+
+            if(obj.TryGetComponent(out StorageController storage))
+            {   
+                // Load storage items
+                for(int j = 0; j < storage.GetStorageSize(); j++)
+                {
+                    var itemData = objectData.storageItems[j];
+
+                    if (itemData.id == "-1")
+                    {
+                        storage.SetItem(j, null);
+                        continue;
+                    }
+
+                    ItemStack instance = new()
+                    {
+                        id = itemData.id,
+                        currentHealth = itemData.currentHealth
+                    };
+
+                    storage.SetItem(j, instance);
+                }
+            }else if(obj.TryGetComponent(out FurnaceController furnace))
+            {   
+                // Load inputs
+                for(int j = 0; j < furnace.GetFurnaceSize(); j++)
+                {
+                    var itemData = objectData.furnaceInputItems[j];
+
+                    if (itemData.id == "-1")
+                    {
+                        furnace.AddInput(j, null);
+                        continue;
+                    }
+
+                    ItemStack instance = new()
+                    {
+                        id = itemData.id,
+                        currentHealth = itemData.currentHealth
+                    };
+
+                    furnace.AddInput(j, instance);
+                }
+
+                // Load outputs
+                for(int j = 0; j < furnace.GetFurnaceSize(); j++)
+                {
+                    var itemData = objectData.furnaceOutputItems[j];
+
+                    if (itemData.id == "-1")
+                    {
+                        furnace.AddOutput(j, null);
+                        continue;
+                    }
+
+                    ItemStack instance = new()
+                    {
+                        id = itemData.id,
+                        currentHealth = itemData.currentHealth
+                    };
+
+                    furnace.AddOutput(j, instance);
+                }
+
+                // Load fuel
+                var fuelData = objectData.furnaceFuelItem;
+
+                    if (fuelData.id == "-1")
+                    {
+                        furnace.AddFuel(null);
+                        continue;
+                    }
+
+                    ItemStack fuelInstance = new()
+                    {
+                        id = fuelData.id,
+                        currentHealth = fuelData.currentHealth
+                    };
+
+                    print("Añadiendo fuel: " + fuelInstance);
+                    if(furnace.AddFuel(fuelInstance))
+                        print("Añadido");
+                    
+
+                    furnace.SetCurrentTimer(objectData.furnaceTimer);
+            }
         }
-    
         // ---------------- DAY CYCLE ----------------
         DayCycleController dayCycle = DayCycleController.instance;
         dayCycle.Initialize(data.dayData.currentDay, data.dayData.currentHour);
         print("Fin de la carga");
+    }
+
+    private void ClearWorld()
+    {
+        for (int i = 0; i < worldObjects.childCount; i++)
+        {   
+            Destroy(worldObjects.GetChild(i).gameObject);
+        }
     }
 
     private IEnumerator LoadGameCR()

@@ -26,19 +26,24 @@ public class FurnaceController : MonoBehaviour
 
     [SerializeField] private AudioClip fireSound;
     private AudioSource audioSource;
+    private bool initialized = false;
+
+    void Awake()
+    {   
+        inputItems = new ItemStack[furnaceSize];
+        outputItems = new ItemStack[furnaceSize];
+        currentFuel = 0;
+        activeFuelSlots = new bool[furnaceSize];
+        
+    }
 
     void Start()
-    {   
+    {
         audioSource = GetComponent<AudioSource>();
         audioSource.clip = fireSound;
         audioSource.loop = true;
         audioSource.spatialBlend = 1f;
         audioSource.Play();
-
-        inputItems = new ItemStack[furnaceSize];
-        outputItems = new ItemStack[furnaceSize];
-        currentFuel = 0;
-        activeFuelSlots = new bool[furnaceSize];
     }
 
     void Update()
@@ -64,11 +69,13 @@ public class FurnaceController : MonoBehaviour
         HandleFireSound();
     }
 
+    public int GetFurnaceSize() => furnaceSize;
     public ItemStack[] GetInputItems() => inputItems;
     public ItemStack[] GetOutputItems() => outputItems;
     public ItemStack GetFuelItem() => fuelItem;
     public bool[] GetActiveFuelSlots() => activeFuelSlots;
     public float GetCurrentFuel() => currentFuel;
+    public void SetCurrentTimer(float t) => timer = t;
     public float GetCurrentTimer() => timer;
     public float GetCurrentBakeDuration() => bakeDuration;
     
@@ -96,10 +103,17 @@ public class FurnaceController : MonoBehaviour
     }
 
     public bool AddInput(int index, ItemStack item)
-    {
+    {   
+        print("Add, instancia: " + gameObject.GetInstanceID());
         if(index < 0 || index >= furnaceSize)
             return false;
 
+        if(item == null)
+        {
+            print("Index: " + index);
+            inputItems[index] = null;
+            return false;
+        }
         ItemData itemData = ItemDataBase.instance.GetByID(item.id);
 
         FurnaceRecipe recipe = FurnaceDataBase.instance.GetRecipe(itemData);
@@ -137,7 +151,7 @@ public class FurnaceController : MonoBehaviour
     }
 
     public bool AddFuel(ItemStack item)
-    {
+    {   
         if(item == null) return false;
 
         ItemData itemData = ItemDataBase.instance.GetByID(item.id);
@@ -159,7 +173,7 @@ public class FurnaceController : MonoBehaviour
         return true;
     }
 
-    private void AddOutput(int index, ItemStack item)
+    public void AddOutput(int index, ItemStack item)
     {
         if(index >= 0 && index < furnaceSize)
         {

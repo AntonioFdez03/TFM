@@ -12,6 +12,7 @@ public class SaveData
         public float playerHunger;
         public float playerStamina;
         public float playerSanity;
+        public bool playerInLight;
         public Vector3 playerPosition;
         public Quaternion playerRotation;
         public float cameraRotation;
@@ -38,6 +39,15 @@ public class SaveData
         public Vector3 position;
         public Quaternion rotation;
         public float currentHealth;
+
+        // Storage
+        public List<InventoryItemData> storageItems;
+
+        // Furnace
+        public List<InventoryItemData> furnaceInputItems;
+        public List<InventoryItemData> furnaceOutputItems;
+        public InventoryItemData furnaceFuelItem;
+        public float furnaceTimer;
     }
 
     public List<WorldObjectData> worldObjects;

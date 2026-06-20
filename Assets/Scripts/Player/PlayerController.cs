@@ -64,11 +64,12 @@ public class PlayerController : MonoBehaviour
         crouchCameraPosition.y = initialCameraPosition.y/2;
     }
 
-    public void InitializePlayer(Vector3 position, Quaternion rotation, float health, float hunger, float stamina, float sanity)
+    public void InitializePlayer(Vector3 position, Quaternion rotation, float health, float hunger, float stamina, float sanity, bool inLight)
     {
         transform.position = position;
         transform.rotation = rotation;
         playerAttributes.SetAttributes(health,hunger,stamina, sanity);
+        playerAttributes.SetInLight(inLight);
     }   
     
     public PlayerAttributes GetPlayerAttributes() => playerAttributes;

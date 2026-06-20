@@ -141,7 +141,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HandleItemUses(object currentItem)
     {
-        if (attack.triggered && UIController.instance.GetCurrentState() != UIState.Pause)
+        if (attack.IsPressed() && UIController.instance.GetCurrentState() != UIState.Pause)
         {   
             if (arm != null) 
                 arm.PlayAttackAnimation();
@@ -190,8 +190,11 @@ public class PlayerInteraction : MonoBehaviour
                     HandleItemSelection(hitObject, true);
                     if (InventoryController.instance.CanAdd())
                     {
-                        if(hitObject.GetComponent<PlaceableBehaviour>() != null)
-                            GameplayUI.instance.AddKey("HoldE", "Unplace");
+                        if(hitObject.TryGetComponent(out PlaceableBehaviour placeable))
+                        {   
+                            if(placeable.CanUnplace())
+                                GameplayUI.instance.AddKey("HoldE", "Unplace");
+                        }
                         else
                             GameplayUI.instance.AddKey("E", "Pick up");
                     }
@@ -210,7 +213,8 @@ public class PlayerInteraction : MonoBehaviour
             }
 
             if(hitObject.TryGetComponent(out PlaceableBehaviour placeableBehaviour)){
-                GameplayUI.instance.AddKey("HoldE", "Unplace");
+                if(placeableBehaviour.CanUnplace())
+                    GameplayUI.instance.AddKey("HoldE", "Unplace");
             }
         }
     }

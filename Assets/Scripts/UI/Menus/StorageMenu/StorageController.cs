@@ -9,18 +9,19 @@ public class StorageController : MonoBehaviour
     private int storageSize = 15;
     private ItemStack[] items;
 
-    void Start()
+    void Awake()
     {
         items = new ItemStack[storageSize];
-       
-    }
-
-    void Update()
-    {
-        //print("Working...");
     }
 
     public int GetStorageSize() => storageSize;
+
+    public void SetItem(int index, ItemStack item)
+    {
+        items[index] = item;
+        OnInventoryChanged?.Invoke();
+    }
+    
     public ItemStack GetItem(int index)
     {
         if(index < 0 || index > storageSize) return null;

@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
 {   
-    public static MainMenuManager instance;
+    private static bool gameContinued = false;
+
     [SerializeField] private GameObject mainButtons;
     [SerializeField] private GameObject secondaryButtons;
     [SerializeField] private TMP_Text alertText;
@@ -16,20 +17,9 @@ public class MainMenuManager : MonoBehaviour
     private AudioSource audioSource;
 
     private string savePath;
-    private bool gameContinued = false;
 
-    void Awake()
-    {
-        if(instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
 
-    public bool GameContinued() => gameContinued;
+    public static bool GameContinued() => gameContinued;
 
     void Start()
     {   

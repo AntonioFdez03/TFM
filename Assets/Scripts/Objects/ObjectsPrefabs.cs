@@ -17,7 +17,8 @@ public class ObjectsPrefabs : MonoBehaviour
         instance = this;
     }
     public GameObject GetPrefabByID(string type, string id)
-    {
+    {   
+        print("Buscando item: " + id);
         string cleanName = id.Trim().ToLower();
         List<GameObject> prefabList;
 

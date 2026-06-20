@@ -18,5 +18,6 @@ public class Furnace : PlaceableBehaviour, IInteractiveObject
         UIController.instance.OpenFurnace(this);
     }
 
+    public FurnaceController GetFurnaceController() => furnaceController;
     public override bool CanUnplace() => furnaceController.IsFurnaceEmpty();
 }

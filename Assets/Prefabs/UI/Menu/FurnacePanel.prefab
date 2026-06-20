@@ -792,6 +792,7 @@ MonoBehaviour:
   fuelPanel: {fileID: 2123456840062187743}
   outputPanel: {fileID: 1813211341432893061}
   furnaceBar: {fileID: 333589041701208468, guid: 33bae7482d00c4c4eb82b014f9430c2f, type: 3}
+  itemHealthBar: {fileID: 5462241008746714764, guid: 9ec82fa9bfabddc4ebdb2c250419405e, type: 3}
   fuelBarImages:
   - {fileID: 550551815685989331}
   - {fileID: 3195043356910682028}

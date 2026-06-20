@@ -95,9 +95,9 @@ public class InventoryController : MonoBehaviour
         return false;
     }
 
-    public void AddItemFromStack(ItemStack item)
+    public bool AddItemFromStack(ItemStack item)
     {
-        if (item == null) return;
+        if (item == null) return false;
 
         for (int i = 0; i < items.Length; i++)
         {
@@ -106,9 +106,10 @@ public class InventoryController : MonoBehaviour
                 items[i] = item;
 
                 UpdateUIs();
-                return;
+                return true;
             }
         }
+        return false;
     }
 
     public void AddItemFromStack(ItemStack item, int index)
@@ -121,6 +122,22 @@ public class InventoryController : MonoBehaviour
         UpdateUIs();
     }
 
+    public void FastMove(int index, int origin, int max)
+    {
+        if(items[index] == null) return;
+        ItemStack item = items[index];
+
+        for(int i = origin; i < max; i++)
+        {
+            if(items[i] == null)
+            {
+                items[i] = item;
+                items[index] = null;
+                UpdateUIs();
+                return;
+            }
+        }
+    }
     public void RemoveItem(ItemStack item)
     {
         if (instance == null) return;
@@ -147,6 +164,12 @@ public class InventoryController : MonoBehaviour
                 return;
             }
         }
+    }
+
+    public void RemoveItemByIndex(int index)
+    {
+        items[index] = null;
+        UpdateUIs();
     }
 
     public bool DropItem(int index)

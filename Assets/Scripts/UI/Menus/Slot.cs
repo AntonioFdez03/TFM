@@ -1,11 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using TMPro;
 
 public abstract class Slot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {   
     [SerializeField] protected int slotIndex;
     [SerializeField] protected Transform draggingLayer;
+    [SerializeField] protected TMP_Text itemName;
 
     protected Image originalIcon;
     protected GameObject cloneIcon;
@@ -45,9 +48,6 @@ public abstract class Slot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
             cloneBar.name = "HealthBar";
             cloneBar.gameObject.SetActive(true);
-
-            RectTransform barRT =
-                cloneBar.GetComponent<RectTransform>();
 
             cloneBar.transform.localScale = Vector3.one;
         }

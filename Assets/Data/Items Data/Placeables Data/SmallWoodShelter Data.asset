@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlaceableData
   id: SmallWoodShelter
   itemName: Small Shelter
-  icon: {fileID: 21300000, guid: 0d934b2ae90ec9549a408483c7f2b9b9, type: 3}
+  icon: {fileID: 21300000, guid: 8935fc452695c734a9d1ec15d240749a, type: 3}
   prefab: {fileID: 8990391563113719882, guid: be62e825072beee428d8b91142028aaa, type: 3}
   showInHand: 0
   handForm: 0
   maxHealth: 200
   straight: 0
+  canUnplace: 0

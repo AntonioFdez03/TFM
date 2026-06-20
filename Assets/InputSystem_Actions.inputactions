@@ -142,7 +142,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Aim",
+                    "name": "RMB",
                     "type": "Button",
                     "id": "a26418b2-23c8-457b-a166-dd15ab87a945",
                     "expectedControlType": "",
@@ -654,7 +654,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Aim",
+                    "action": "RMB",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

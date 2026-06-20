@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class PlayerInteraction : MonoBehaviour
     private InputAction attack;
     private InputAction rotate;
     private InputAction toggleActivation;
-    private InputAction aim;
+    private InputAction rmb;
     private RaycastHit lastHit;
 
     private float interactTime = 0.2f;
@@ -26,7 +27,7 @@ public class PlayerInteraction : MonoBehaviour
         attack = InputSystem.actions.FindAction("Attack");
         rotate = InputSystem.actions.FindAction("Rotate");
         toggleActivation = InputSystem.actions.FindAction("ToggleActivation");
-        aim = InputSystem.actions.FindAction("Aim");
+        rmb = InputSystem.actions.FindAction("RMB");
     }
 
     void Update()
@@ -53,15 +54,19 @@ public class PlayerInteraction : MonoBehaviour
         GameObject handItem = HotBarController.instance.GetHandItem();
 
         if(itemBehaviour == null)
-            GameplayUI.instance.AddKey("RMB", "Punch");
+            GameplayUI.instance.AddKey("LMB", "Punch");
         else if(itemBehaviour is EquipmentBehaviour)
-            GameplayUI.instance.AddKey("RMB", "Attack");
+            GameplayUI.instance.AddKey("LMB", "Attack");
 
         if(handItem != null)
         {
             if(handItem.TryGetComponent(out IActivateableObject activateableObject))
             {   
-                GameplayUI.instance.AddKey("F", activateableObject.isActive() ? "Desactivate" : "Activate");
+                GameplayUI.instance.AddKey("F", activateableObject.isActive() ? "Deactivate" : "Activate");
+            }
+            if(handItem.TryGetComponent(out IAim aim))
+            {
+                GameplayUI.instance.AddKey("HoldRMB","Aim");
             }
         }
 
@@ -149,7 +154,7 @@ public class PlayerInteraction : MonoBehaviour
         if(currentItem is ConsumableBehaviour consumable)
         {
             GameplayUI.instance.AddKey("HoldRMB", "Consume");
-            if (attack.IsPressed() && consumable != null)
+            if (rmb.IsPressed() && consumable != null)
             {
                 consumable.Use();
                 GameplayUI.instance.ShowCircularSlider(consumable.GetCurrentTime() / consumable.GetConsumeTime(), 0);
@@ -277,7 +282,7 @@ public class PlayerInteraction : MonoBehaviour
 
         if (hasHit && hit.collider.CompareTag("Terrain"))
         {
-            GameplayUI.instance.AddKey("RMB", "Place");
+            GameplayUI.instance.AddKey("LMB", "Place");
             GameplayUI.instance.AddKey("R", "Rotate");
             placeable.ShowSilhouette(hit);
             if(rotate.IsPressed())
@@ -372,9 +377,9 @@ public class PlayerInteraction : MonoBehaviour
 
         if(item.TryGetComponent(out IAim aimItem))
         {   
-            if(aim.IsPressed())
+            if(rmb.IsPressed())
                 aimItem.Aim();
-            else if(aim.WasReleasedThisFrame())
+            else if(rmb.WasReleasedThisFrame())
                 aimItem.Shoot();
         }
 

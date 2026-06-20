@@ -39,6 +39,20 @@ public class StorageController : MonoBehaviour
         OnInventoryChanged?.Invoke();
     }
 
+    public bool AddItem(ItemStack item)
+    {
+        for(int i = 0; i < storageSize; i++)
+        {
+            if(items[i] == null)
+            {
+                items[i] = item;
+                OnInventoryChanged?.Invoke();
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void RemoveItem(int index)
     {   
         if(index < 0 || index > storageSize) return;

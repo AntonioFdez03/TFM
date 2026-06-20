@@ -88,6 +88,11 @@ public class ArmController : MonoBehaviour
         {
             isAiming = false;
         }
+
+        ItemBehaviour itemBehaviour = HotBarController.instance.GetCurrentItemBehaviour();
+        if(itemBehaviour != null)
+            itemBehaviour.SetCanUse(!isAiming);
+        
         
         UpdateAnimation();
 
@@ -172,26 +177,22 @@ public class ArmController : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, punchRange))
         {
-            print("Objetivo: " + hit.collider.gameObject.name);
             Animal animal = hit.collider.CompareTag("Animal") ? hit.collider.GetComponentInParent<Animal>() : null;
             if (animal != null)
             {
                 animal.TakeDamage(punchDamage);
 
-                Vector3 dir =
-                    (animal.transform.position - transform.position).normalized;
+                Vector3 dir = (animal.transform.position - transform.position).normalized;
 
-                animal.StartCoroutine(
-                    animal.KnockbackCR(dir, 0.8f, 0.15f)
-                );
+                if(!animal.IsDead())
+                    animal.StartCoroutine(animal.KnockbackCR(dir, 0.8f, 0.15f));
             }
 
-            HarvestableObject harvestableObject = hit.collider.CompareTag("Harvestable") ? hit.collider.GetComponent<HarvestableObject>() : null;
-            if(harvestableObject != null)
+            if(hit.collider.TryGetComponent(out HarvestableObject harvestableObject))
             {
                 harvestableObject.TakeHit(ToolType.None,punchDamage);
                 PlayerAttributes player = PlayerController.instance.GetPlayerAttributes();
-                player.TakeDamage(2f);
+                player.TakeDamage(1f);
             }  
         }
     }
@@ -343,7 +344,6 @@ public class ArmController : MonoBehaviour
 
     public IEnumerator SpearAttackCR()
     {   
-
         animator.SetTrigger("SpearAttack");
         isMoving = true;    
 
@@ -462,32 +462,42 @@ public class ArmController : MonoBehaviour
         animator.SetTrigger("Drop");
     }
 
+    private void ResetHandanimation()
+    {
+        animator.SetBool("Aim", false);
+        animator.SetBool("Clutch",false);
+        animator.SetBool("Grab",false);
+    }
 
     private void UpdateAnimation()
     {   
         //handSlot.transform.rotation = Quaternion.identity;
         ItemBehaviour currentBehaviour = HotBarController.instance.GetCurrentItemBehaviour();
+        GameObject handItem = HotBarController.instance.GetHandItem();
 
         if(currentBehaviour == null)
         {   
-            animator.SetBool("Aim", false);
-            animator.SetBool("Clutch",false);
-            animator.SetBool("Grab",false);
+            ResetHandanimation();
             return;
+        }
+
+        if(!handItem.TryGetComponent(out IAim aim))
+        {   
+            ResetHandanimation();
+            if (wasAiming)
+            {
+                handSlot.localRotation = initialHandSlotRotation;
+            }
         }
 
         if (!isAiming)
         {
-            if (wasAiming)
-            {
-                handSlot.rotation = handSlot.transform.rotation * Quaternion.Euler(0f,0f,-180f);
-            }
-
             wasAiming = false;
 
             switch (currentBehaviour.GetData().handForm)
             {
                 case HandForm.Clutch:
+                    print("Entra");
                     animator.SetBool("Clutch",true);
                     animator.SetBool("Grab",false);
                     break;
@@ -510,7 +520,7 @@ public class ArmController : MonoBehaviour
             }
         }
         else
-        {
+        {   
             animator.SetBool("Aim", true);
             animator.SetBool("Grab", false);
             animator.SetBool("Clutch", false);

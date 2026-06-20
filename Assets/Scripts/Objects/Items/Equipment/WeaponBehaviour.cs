@@ -40,9 +40,9 @@ public class WeaponBehaviour : EquipmentBehaviour
     }
 
     protected void ApplyDamage(GameObject target, float damage)
-    {
-        Animal animal = target.CompareTag("Animal") ? target.GetComponent<Animal>() : null;
-        if (animal != null)
+    {   
+        Transform parent = target.transform.parent;
+        if(parent != null && parent.TryGetComponent(out Animal animal))
         {
             animal.TakeDamage(damage);
             TakeDamage(animalDamage);

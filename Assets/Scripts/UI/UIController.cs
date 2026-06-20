@@ -192,6 +192,7 @@ public class UIController : MonoBehaviour
     }
 
     public Storage GetCurrentStorage() => currentStorage;
+    public Furnace GetCurrentFurnace() => currentFurnace;
     public void SetCraftingState() => SetState(UIState.Crafting);
     public void SetInventoryState() => SetState(UIState.Inventory);
 }

@@ -21,7 +21,6 @@ public abstract class HarvestableObject : MonoBehaviour, IObjectHealth
     public void SetCurrentHealth(float health) => currentHealth = health;
     public virtual void TakeHit(ToolType tool, float damage)
     {
-        Debug.Log("takeHit: " + tool + ", damage: " + damage);
         if (CanHarvest(tool))
         {
             currentHealth = Math.Clamp(currentHealth - damage, 0 ,data.maxHealth);

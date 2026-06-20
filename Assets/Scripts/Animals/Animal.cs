@@ -14,7 +14,6 @@ public class Animal : MonoBehaviour
     private NavMeshAgent agent;
     private Transform player;
 
-
     private MeshCollider meshCollider;
     private SkinnedMeshRenderer skinnedMesh;
     private Mesh bakedMesh;
@@ -25,6 +24,8 @@ public class Animal : MonoBehaviour
     private bool isFlinching = false;
     private bool isFleeing = false;
     private bool isAttacking = false;
+
+    private float maxDistance = 400;
 
     private float currentHealth;
 
@@ -54,9 +55,18 @@ public class Animal : MonoBehaviour
     public void SetAttacking(bool value) => isAttacking = value;
     public bool IsAttacking() => isAttacking;
     public bool IsBusy() => isFlinching || dead ||isAttacking;
+    public bool IsDead() => dead;
+
     
     void Update()
-    {
+    {   
+        if(Vector3.Distance(transform.position, player.transform.position) > maxDistance)
+        {   
+            print("Animal eliminado");
+            Destroy(gameObject);
+            return;
+        }
+
         isHostile = PlayerController.instance.GetPlayerAttributes().GetCurrentSanity() < PlayerController.instance.GetPlayerAttributes().GetMaxSanity() * 0.5f;
         skinnedMesh.material = isHostile ? hostileMaterial : pacificMaterial; 
         

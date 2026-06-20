@@ -15,4 +15,4 @@ MonoBehaviour:
   id: BerryBush
   maxHealth: 30
   prefab: {fileID: 3936722399912076011, guid: 2f294005e2faee349a3310b6788d3d0a, type: 3}
-  toolsAccepted: 01000000
+  toolsAccepted: 0100000000000000

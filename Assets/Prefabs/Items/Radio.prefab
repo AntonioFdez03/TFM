@@ -67,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 621558673623690929, guid: 1bad309bd93184f4b8c66b22485fcee8, type: 3}
+  - {fileID: 2100000, guid: 47ea63265064a8744b798f8d86f4f1d4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -164,6 +164,7 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: e6c7905074c24ca45b2753d77984cf88, type: 2}
   greenMaterial: {fileID: 2100000, guid: c289674975e48194ba656debbe498968, type: 2}
   redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
+  brokeItemsDrop: []
   interferenceSound: {fileID: 8300000, guid: d6ef20a9c069aa44fbea54f2c6c77e1b, type: 3}
   radioSound: {fileID: 0}
 --- !u!65 &2253134599325682817
@@ -181,12 +182,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.8, y: 1.6853242, z: 0.5183928}
-  m_Center: {x: 0.00000008940697, y: 0.8426621, z: 0.009196386}
+  m_Size: {x: 1.9512329, y: 1.743454, z: 0.7188721}
+  m_Center: {x: 0.008392334, y: 0.871727, z: 0.02331543}
 --- !u!54 &8898528814708486334
 Rigidbody:
   m_ObjectHideFlags: 0

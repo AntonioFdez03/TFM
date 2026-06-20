@@ -10,7 +10,7 @@ public class Radio : PlaceableBehaviour, IInteractiveObject
     private AudioSource audioSource;
     private bool active = false;
     private bool canToggle = true;
-    private float requiredHeight = 225;
+    private float requiredHeight = 250;
 
     protected override void Start()
     {

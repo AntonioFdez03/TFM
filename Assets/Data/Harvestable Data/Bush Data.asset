@@ -15,4 +15,4 @@ MonoBehaviour:
   id: Bush
   maxHealth: 30
   prefab: {fileID: 5582204427560125438, guid: b193be5b1fb0923449bf89549dffff94, type: 3}
-  toolsAccepted: 01000000
+  toolsAccepted: 0100000000000000

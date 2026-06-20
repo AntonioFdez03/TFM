@@ -53,15 +53,12 @@ public abstract class ItemBehaviour : MonoBehaviour, IObjectHealth
     public ItemData GetData() => data;
     public ItemStack GetItemStack() => itemStack;
     public void SetItemStack(ItemStack stack) => itemStack = stack;
-
     public float GetCurrentHealth() => itemStack != null ? itemStack.currentHealth : 0;
-
     public void SetCurrentHealth(float health)
     {
         if (itemStack != null)
             itemStack.currentHealth = health;
     }
-
     public float GetMaxHealth() {
 
         if(data != null && data is DurableItemData durableItemData)
@@ -69,6 +66,8 @@ public abstract class ItemBehaviour : MonoBehaviour, IObjectHealth
         
         return 0;
     }
+    public void SetCanUse(bool value) => canUse = value;
+    public bool CanUse() => canUse;
 
     public abstract void Use();
 

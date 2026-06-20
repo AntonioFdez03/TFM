@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ResourceItemData
   id: Charcoal
   itemName: Charcoal
-  icon: {fileID: 21300000, guid: 14bce5731f81ea545b7785f53c0d241d, type: 3}
+  icon: {fileID: 21300000, guid: 0718151ee5257b143bb09bd1d8583742, type: 3}
   prefab: {fileID: 8364699222164569434, guid: 4bb5d083e52aba740bafb46f4c6a4788, type: 3}
   showInHand: 1
   handForm: 2
+  maxHealth: 30

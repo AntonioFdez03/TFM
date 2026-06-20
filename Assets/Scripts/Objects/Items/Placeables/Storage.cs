@@ -18,6 +18,7 @@ public class Storage : PlaceableBehaviour, IInteractiveObject
         audioSource = GetComponent<AudioSource>();
     }
 
+    public StorageController GetStorageController() => storageController;
     public void Interact()
     {  
         UIController.instance.OpenStorage(this);

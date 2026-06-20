@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class FurnaceController : MonoBehaviour
 {  
-    public Action OnInventoryChanged;
+    public Action OnFurnaceChanged;
 
     private readonly int furnaceSize = 3;
     private ItemStack[] inputItems;
     private ItemStack[] outputItems;
     private ItemStack fuelItem = null;
     private bool[] activeFuelSlots;
-    private float currentFuel;
+    private int currentFuel;
     private float timer = 0;
     private float bakeDuration = 5f;
     private int currentActiveItem = -1;
@@ -49,8 +49,12 @@ public class FurnaceController : MonoBehaviour
             RemoveItem(FurnaceSlotType.Fuel,0);
 
         if(fuelItem == null)
+        {
             currentFuel = 0;
+            SetActiveFuelSlots();
+        }
 
+        
         SetActiveItem();
         Work();
 
@@ -105,12 +109,37 @@ public class FurnaceController : MonoBehaviour
 
         inputItems[index] = item;
 
-        OnInventoryChanged?.Invoke();
+        OnFurnaceChanged?.Invoke();
         return true;
+    }
+
+    public bool AddInputFast(ItemStack item)
+    {
+        if(item == null)
+            return false;
+
+        ItemData itemData = ItemDataBase.instance.GetByID(item.id);
+        FurnaceRecipe recipe = FurnaceDataBase.instance.GetRecipe(itemData);
+
+        if(recipe == null)
+            return false;
+
+        for(int i = 0; i < furnaceSize; i++)
+        {
+            if(inputItems[i] == null)
+            {
+                inputItems[i] = item;
+                OnFurnaceChanged?.Invoke();
+                return true;
+            }
+        }
+        return false;
     }
 
     public bool AddFuel(ItemStack item)
     {
+        if(item == null) return false;
+
         ItemData itemData = ItemDataBase.instance.GetByID(item.id);
 
         if(itemData == null || fuelItem != null)
@@ -122,14 +151,11 @@ public class FurnaceController : MonoBehaviour
             return false;
         
         fuelItem = item;
-        currentFuel = FurnaceDataBase.instance.GetFuel(itemData).energy;
+        currentFuel = (int)(fuelItem.currentHealth / 10);
 
-        for(int i = 0; i < currentFuel; i++)
-        {
-            activeFuelSlots[i] = true;
-        }
+        SetActiveFuelSlots();
 
-        OnInventoryChanged?.Invoke();
+        OnFurnaceChanged?.Invoke();
         return true;
     }
 
@@ -140,7 +166,7 @@ public class FurnaceController : MonoBehaviour
             outputItems[index] = item;
         }
 
-        OnInventoryChanged?.Invoke();
+        OnFurnaceChanged?.Invoke();
     }
 
     public void RemoveItem(FurnaceSlotType type, int index)
@@ -151,6 +177,9 @@ public class FurnaceController : MonoBehaviour
         {
             case FurnaceSlotType.Input:
                 inputItems[index] = null;
+
+                if(index == currentActiveItem)
+                    currentActiveItem = -1;
                 break;
 
             case FurnaceSlotType.Fuel:
@@ -161,13 +190,20 @@ public class FurnaceController : MonoBehaviour
                 outputItems[index] = null;
                 break;
         }
-        OnInventoryChanged?.Invoke();
+        OnFurnaceChanged?.Invoke();
     }
 
     private void Work()
     {
+        if(currentActiveItem == -1) 
+        {
+            timer = 0;
+            working = false;
+            return;
+        }
         timer += Time.deltaTime;
-        if(currentFuel > 0 && currentActiveItem != -1 && currentFuel >= currentActiveItem + 1)
+
+        if(activeFuelSlots[currentActiveItem])
         {   
             working = true;
             if(timer > bakeDuration)
@@ -195,7 +231,11 @@ public class FurnaceController : MonoBehaviour
             RemoveItem(FurnaceSlotType.Input,index);
             currentFuel -= 1;
             currentActiveItem = -1;
+            fuelItem.currentHealth = Math.Clamp(fuelItem.currentHealth - 10, 0, furnaceSize * 10);
             activeFuelSlots[index] = false;
+
+            if(fuelItem.currentHealth == 0)
+                fuelItem = null;
 
             float maxHealth = 0;
             if(recipe.resultItem is DurableItemData durableItemData)
@@ -212,15 +252,28 @@ public class FurnaceController : MonoBehaviour
     }
 
     private void SetActiveItem()
-    {
+    {   
         if(!IsInputEmpty() && currentActiveItem == -1)
         {
-            for(int i = furnaceSize - 1; i >= 0; i--)
-            {
-                if(inputItems[i] != null && outputItems[i] == null && currentFuel >= i + 1)
+            for(int i = 0; i < furnaceSize; i++)
+            {   
+                if(inputItems[i] != null && outputItems[i] == null)
+                {   
                     currentActiveItem = i;
+                    return;
+                }
             }
         }
+    }
+
+    private void SetActiveFuelSlots()
+    {
+        for(int i = 0; i < furnaceSize; i++)
+        {
+            activeFuelSlots[i] = i < currentFuel;
+        }
+
+        OnFurnaceChanged?.Invoke();
     }
 
     private void SetFuelPrefab()
@@ -263,9 +316,7 @@ public class FurnaceController : MonoBehaviour
             if(inputItems[i] != null || outputItems[i] != null)
                 return false;
         }
-
         return true;
-
     }
 
     private bool IsInputEmpty()

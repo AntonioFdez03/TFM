@@ -111,7 +111,7 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: e87a360d90090b4459f2ba824233fb3c, type: 2}
   dropItem: {fileID: 1691643700860406441, guid: f0851c8e8f5959347af29fc826b18d0f, type: 3}
   hitSound: {fileID: 8300000, guid: aea4c75860ce8fe4a90f74976930597a, type: 3}
-  harvestSound: {fileID: 0}
+  harvestSound: {fileID: 8300000, guid: aea4c75860ce8fe4a90f74976930597a, type: 3}
   rockPhase: 0
   rockMeshes:
   - {fileID: 1679839810921253460, guid: 0419bacc73d8ad14abef78d40fe431b9, type: 3}

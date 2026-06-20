@@ -1,23 +1,14 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class StandingTorch : PlaceableBehaviour, IInteractiveObject
+public class Bonfire : PlaceableBehaviour, IInteractiveObject
 {
     [SerializeField] GameObject fire;
     [SerializeField] GameObject pointLight;
-
-    private bool fireActive;
+    [SerializeField] private bool fireActive = false;
     private float burnRate = 1f;
     private float burnCooldown = 25f;
     private float fireTimer = 0f;
-
-
-    protected override void Start()
-    {
-        base.Start();
-
-        fireActive = false;
-    }
 
     void Update()
     {   

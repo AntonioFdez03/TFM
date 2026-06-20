@@ -134,12 +134,23 @@ public class PlayerAttributes : MonoBehaviour
             if(!DayCycleController.instance.IsNight() || inLight)
                 UpdateSanity(sanityBurnRate);
             else
-                UpdateSanity(sanityBurnRate);
+                UpdateSanity(-sanityBurnRate);
 
             timeSinceLastSanityDecrase = 0f;
         } 
     }
 
+    public bool CanConsume(ConsumableData consumableData)
+    {
+        if(consumableData.hungerPoints > 0 && currentHunger < maxHunger)
+            return true;
+        else if(consumableData.healthPoints > 0 && currentHealth < maxHealth)
+            return true;
+        else if(consumableData.sanityPoints > 0 && currentSanity < maxSanity)
+            return true;
+        else
+            return false;
+    }
     public void Eat(float amount)
     {
         currentHunger = Math.Clamp(currentHunger + amount, 0, maxHunger);

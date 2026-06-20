@@ -9,13 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8447316498555636693}
+  - component: {fileID: 1415758796106976912}
   - component: {fileID: 7763124160392575722}
   - component: {fileID: 5414255455870143931}
-  - component: {fileID: 5901378123933542660}
   - component: {fileID: 5041855492731873557}
   m_Layer: 7
   m_Name: Bonfire
-  m_TagString: Untagged
+  m_TagString: Interactive
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -38,6 +38,27 @@ Transform:
   - {fileID: 520627028125332979}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1415758796106976912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2497555479857757306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34936ad7014a52548a150d8d1b00492b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Bonfire
+  data: {fileID: 11400000, guid: 606dfedea0bbf9e49bc375164bc907e1, type: 2}
+  greenMaterial: {fileID: 2100000, guid: c289674975e48194ba656debbe498968, type: 2}
+  redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
+  brokeItemsDrop:
+  - {fileID: 5751404862281763555, guid: 200b9b53a5a020c41bb8385f8889899f, type: 3}
+  - {fileID: 5751404862281763555, guid: 200b9b53a5a020c41bb8385f8889899f, type: 3}
+  - {fileID: 5751404862281763555, guid: 200b9b53a5a020c41bb8385f8889899f, type: 3}
+  fire: {fileID: 5578237896048782913}
+  pointLight: {fileID: 5970158999985737883}
 --- !u!54 &7763124160392575722
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -88,25 +109,6 @@ CapsuleCollider:
   m_Height: 5
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &5901378123933542660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2497555479857757306}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daa3e8df43ce2bd4ba69ae29fde22158, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlaceableBehaviour
-  data: {fileID: 11400000, guid: 606dfedea0bbf9e49bc375164bc907e1, type: 2}
-  greenMaterial: {fileID: 2100000, guid: c289674975e48194ba656debbe498968, type: 2}
-  redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
-  brokeItemsDrop:
-  - {fileID: 5751404862281763555, guid: 200b9b53a5a020c41bb8385f8889899f, type: 3}
-  - {fileID: 5751404862281763555, guid: 200b9b53a5a020c41bb8385f8889899f, type: 3}
-  - {fileID: 5751404862281763555, guid: 200b9b53a5a020c41bb8385f8889899f, type: 3}
 --- !u!208 &5041855492731873557
 NavMeshObstacle:
   m_ObjectHideFlags: 0

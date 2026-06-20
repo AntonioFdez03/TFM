@@ -90,7 +90,7 @@ public class InventoryUI : MonoBehaviour
                 healthBarInstance.gameObject.SetActive(false);
             }
 
-            if (currentHealth < maxHealth)
+            if (currentHealth < maxHealth && currentHealth != 0)
                 healthBarInstance.gameObject.SetActive(true);
 
             Transform fill = healthBarInstance.Find("Fill");
@@ -98,13 +98,24 @@ public class InventoryUI : MonoBehaviour
 
             if (!fill.TryGetComponent<Image>(out var fillImage)) return;
 
-            fillImage.fillAmount = Mathf.Clamp01(currentHealth / maxHealth);
+            if(maxHealth != 0)
+                fillImage.fillAmount = Mathf.Clamp01(currentHealth / maxHealth);
+            else
+                fillImage.fillAmount = 0;
         }
         else
         {
             Transform existingBar = slots[index].transform.Find("HealthBar");
             if (existingBar != null)
                 Destroy(existingBar.gameObject);
+        }
+    }
+
+    private void ClearSlotsNames()
+    {
+        for(int i = 0; i < slots.Count; i++)
+        {   
+            slots[i].GetComponent<InventorySlot>().ClearItemName();
         }
     }
 
@@ -115,7 +126,9 @@ public class InventoryUI : MonoBehaviour
     }
 
     void OnDisable()
-    {
+    {   
+        ClearSlotsNames();
+        UpdateUI();
         InventoryController.OnInventoryChanged -= UpdateUI;
     }
 }

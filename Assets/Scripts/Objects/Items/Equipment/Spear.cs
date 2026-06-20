@@ -57,8 +57,11 @@ public class Spear : WeaponBehaviour, IAim
 
     public void Aim()
     {
-        currentForce = math.clamp(currentForce + Time.deltaTime * 2, 0, maxForce);
-        ArmController.instance.SetAiming(true);
+        if(!ArmController.instance.IsMoving())
+        {   
+            currentForce = math.clamp(currentForce + Time.deltaTime * 2, 0, maxForce);
+            ArmController.instance.SetAiming(true);
+        }
     }
 
     public void Shoot()

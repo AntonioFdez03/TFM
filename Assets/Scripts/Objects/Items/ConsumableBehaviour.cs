@@ -7,7 +7,7 @@ public class ConsumableBehaviour : ItemBehaviour
     protected ConsumableData consumableData;
     protected float timer;
 
-    InputAction attack;
+    InputAction rmb;
 
     public override void Initialize(ItemStack stack)
     {
@@ -17,17 +17,16 @@ public class ConsumableBehaviour : ItemBehaviour
 
     public override void Use()
     {   
-        attack = InputSystem.actions.FindAction("Attack");
+        rmb = InputSystem.actions.FindAction("RMB");
+        PlayerAttributes player = PlayerController.instance.GetPlayerAttributes();
 
-        if (attack.IsPressed())
+        if (rmb.IsPressed() && player.CanConsume(consumableData))
             timer += Time.deltaTime;
 
         if(timer > consumableData.consumeTime)
         {
             timer = 0;
-            PlayerAttributes player = PlayerController.instance.GetPlayerAttributes();
-            if(player.GetCurrentHunger() < player.GetMaxHunger())
-                Consume();
+            Consume();
         }
     }
 

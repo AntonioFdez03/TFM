@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &5880530853166526837
 Transform:
@@ -52,7 +52,7 @@ GameObject:
   m_TagString: Harvestable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1076173919797036724
 Transform:
@@ -142,7 +142,7 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 0d1d4411db3e0ff4b9ae3190c498844f, type: 2}
   dropItem: {fileID: 5751404862281763555, guid: 200b9b53a5a020c41bb8385f8889899f, type: 3}
   hitSound: {fileID: 8300000, guid: aea4c75860ce8fe4a90f74976930597a, type: 3}
-  harvestSound: {fileID: 0}
+  harvestSound: {fileID: 8300000, guid: aea4c75860ce8fe4a90f74976930597a, type: 3}
   rockPhase: 0
   rockMeshes:
   - {fileID: 1624858771954948895, guid: a4c7ad40eec231644b6e808d013c3356, type: 3}

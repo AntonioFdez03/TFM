@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,6 +32,7 @@ public class GameplayUI : MonoBehaviour
     // Info del item
     [SerializeField] private TMP_Text itemName;
     [SerializeField] private TMP_Text itemHealth;
+    [SerializeField] private TMP_Text hotBarItemName;
     [SerializeField] Image itemHealthSlider;
     [SerializeField] Slider circularSlider;
 
@@ -75,7 +77,9 @@ public class GameplayUI : MonoBehaviour
     public void HideUI() => gameObject.SetActive(false);
 
     void Update()
-    {     
+    {    
+        
+        UpdateHotBarItemName();
         //HandleBeat();
         UpdateStatsBar();
         UpdateAimBar();
@@ -249,5 +253,18 @@ public class GameplayUI : MonoBehaviour
             print("True");
             fpsText.gameObject.SetActive(true);
         }
+    }
+
+    private void UpdateHotBarItemName()
+    {
+        ItemBehaviour hotBarItemBehaviour = HotBarController.instance.GetCurrentItemBehaviour();
+
+        if(hotBarItemBehaviour != null)
+        {   
+            hotBarItemName.gameObject.SetActive(true);
+            hotBarItemName.text = hotBarItemBehaviour.GetData().itemName;
+        }
+        else
+            hotBarItemName.gameObject.SetActive(false);
     }
 }

@@ -8,8 +8,12 @@ public class DayCycleController : MonoBehaviour
     [SerializeField] Transform sun;
     [SerializeField] float dayDuration = 24; //En minutos
     [SerializeField] float intensity = 1;
+
     [SerializeField] private Color dayAmbientLight;
     [SerializeField] private Color nightAmbientLight;
+    [SerializeField] private Color dayFogColor;
+    [SerializeField] private Color nightFogColor;
+
     private float sunRotationX;
 
     [SerializeField] private TMP_Text dayText;
@@ -105,6 +109,8 @@ public class DayCycleController : MonoBehaviour
                 dayAmbientLight,
                 t
             );
+        
+        RenderSettings.fogColor = Color.Lerp(nightFogColor, dayFogColor, t);
 
         // Sol gradual
         sun.GetComponent<Light>().intensity =

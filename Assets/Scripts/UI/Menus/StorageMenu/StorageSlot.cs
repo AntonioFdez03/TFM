@@ -1,18 +1,36 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
-public class StorageSlot : Slot
+public class StorageSlot : Slot, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {   
     private StorageController storageController;
     public void SetController(StorageController controller) => storageController = controller;
     public StorageController GetController() => storageController;
+    private InputAction shift;
+
+    void Start()
+    {
+        shift = InputSystem.actions.FindAction("Sprint");
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {   
+        if (shift.IsPressed())
+        {   
+            ItemStack item = storageController.GetItem(slotIndex);
+            InventoryController inventory = InventoryController.instance;
+
+            if(inventory.AddItemFromStack(item))
+                storageController.RemoveItem(slotIndex);
+            }
+    }     
 
     public override void OnEndDrag(PointerEventData eventData)
     {
         base.OnEndDrag(eventData);
 
-        // Area para soltar el item -> 26% a cada lado 
         if(UIController.instance.GetCurrentState() == UIState.Inventory)
         {
             float margen = Screen.width * 0.26f;
@@ -60,5 +78,28 @@ public class StorageSlot : Slot
             storageController.SwapItems(originIndex,slotIndex);
         }
 
+        UpdateStorageItemName();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {   
+        if (transform.childCount == 0)
+            return;
+
+        UpdateStorageItemName();    
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        itemName.text = "";
+    }
+
+    private void UpdateStorageItemName()
+    {
+        ItemStack item = storageController.GetItem(slotIndex);
+        if(item != null)
+            itemName.text = ItemDataBase.instance.GetByID(item.id).itemName;
+        else
+            itemName.text = "";
     }
 }

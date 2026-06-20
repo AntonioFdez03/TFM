@@ -1,18 +1,37 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public enum FurnaceSlotType {None, Input, Fuel, Output}
-public class FurnaceSlot : Slot
+public class FurnaceSlot : Slot, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {   
     [SerializeField] private FurnaceSlotType furnaceSlotType;
 
     private FurnaceController furnaceController;
 
+    private InputAction shift;
+
+    void Start()
+    {
+        shift = InputSystem.actions.FindAction("Sprint");
+    }
+    
     public FurnaceController GetController() => furnaceController;
     public FurnaceSlotType GetSlotType() => furnaceSlotType;
     public void SetController(FurnaceController controller) => furnaceController = controller;
     public void SetFurnaceSlotType(FurnaceSlotType type) => furnaceSlotType = type;
 
+    public void OnPointerClick(PointerEventData eventData)
+    {   
+        if(!shift.IsPressed())
+            return;
+
+        ItemStack item = furnaceController.GetItem(furnaceSlotType, slotIndex);
+    
+        if(InventoryController.instance.AddItemFromStack(item))
+            furnaceController.RemoveItem(furnaceSlotType, slotIndex);
+          
+    }
     public override void OnDrop(PointerEventData eventData)
     {   
         
@@ -71,5 +90,29 @@ public class FurnaceSlot : Slot
                 }
         }
 
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {   
+        if (transform.childCount == 0)
+            return;
+
+        UpdateFurnaceItemName();    
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        itemName.text = "";
+    }
+
+    public void ClearItemName() => itemName.text = "";
+
+    private void UpdateFurnaceItemName()
+    {
+        ItemStack item = furnaceController.GetItem(furnaceSlotType, slotIndex);
+        if(item != null)
+            itemName.text = ItemDataBase.instance.GetByID(item.id).itemName;
+        else
+            itemName.text = "";
     }
 }

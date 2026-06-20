@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private float crouchSpeed = 7f;
     private float jumpForce = 10f;
 
+    private bool canJump;
     private bool canMove;
     private bool isDead;
     private bool isMoving;
@@ -34,6 +36,9 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 initialCameraPosition;
     private Vector3 crouchCameraPosition;
+
+    private float fallTimer = 0;
+    private float fallLimit = 1.5f;
 
     void Awake()
     {
@@ -128,16 +133,26 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 CalculateVerticalMovement()
     {
+        if (!controller.isGrounded)
+        {
+            fallTimer += Time.deltaTime;
+            if(fallTimer >= fallLimit)
+                playerAttributes.TakeDamage(3*fallTimer);
+        }else
+            fallTimer = 0;
+
         //Estabilizar grounded para que no de fallos
         if (controller.isGrounded && yVelocity < 0)
         {   
+            canJump = true;
             isJumping = false;
             yVelocity = -2f; 
             controller.stepOffset = 0.3f;
         }
 
-        if (jump.triggered && controller.isGrounded)
-        { 
+        if (jump.triggered && canJump)
+        {   
+            canJump = false;
             isJumping = true;
             AudioManager.instance.PlayOneShot("PlayerJump");
             yVelocity = jumpForce;

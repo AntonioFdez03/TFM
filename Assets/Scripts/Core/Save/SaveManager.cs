@@ -20,6 +20,7 @@ public class SaveManager : MonoBehaviour
 
     void Start()
     {   
+        print("MainMenu: " + MainMenuManager.instance);
         if(MainMenuManager.instance != null)
         {
             if (MainMenuManager.instance.GameContinued())
@@ -37,9 +38,9 @@ public class SaveManager : MonoBehaviour
     // =====================================================
     // SAVE
     // =====================================================
-    public void SaveGame()
+    public bool SaveGame()
     {   
-
+        print("Guardando");
         // ---------------- PLAYER ----------------
         SaveData data = new();
 
@@ -125,6 +126,7 @@ public class SaveManager : MonoBehaviour
         // ---------------- WRITE ----------------
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(Application.persistentDataPath + "/save.json", json);
+        return true;
     }
 
     // =====================================================
@@ -140,6 +142,7 @@ public class SaveManager : MonoBehaviour
             return;
         }
 
+        print("Cargando datos..");
         string json = File.ReadAllText(path);
         SaveData data = JsonUtility.FromJson<SaveData>(json);
 
@@ -203,6 +206,7 @@ public class SaveManager : MonoBehaviour
         // ---------------- DAY CYCLE ----------------
         DayCycleController dayCycle = DayCycleController.instance;
         dayCycle.Initialize(data.dayData.currentDay, data.dayData.currentHour);
+        print("Fin de la carga");
     }
 
     private IEnumerator LoadGameCR()

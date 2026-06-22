@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
-public enum ToolType { None, Axe, Pickaxe}
+public enum ToolType { None, Axe, Pickaxe, Hammer}
 public class ToolBehaviour : EquipmentBehaviour
 {   
     protected ToolData toolData;
@@ -19,7 +19,7 @@ public class ToolBehaviour : EquipmentBehaviour
     public override void Attack(ArmController arm)
     {
         base.Attack(arm);
-        if(toolData.toolType == ToolType.Pickaxe || toolData.toolType == ToolType.None)
+        if(toolData.toolType == ToolType.Pickaxe || toolData.toolType == ToolType.None || toolData.toolType == ToolType.Hammer)
             arm.StartCoroutine(arm.PickaxeSwingCR());
         else if(toolData.toolType == ToolType.Axe)
             arm.StartCoroutine(arm.AxeSwingCR());
@@ -57,8 +57,19 @@ public class ToolBehaviour : EquipmentBehaviour
 
             if(hit.collider.TryGetComponent(out PlaceableBehaviour placeable))
             {
-                placeable.TakeDamage(toolData.damage);
-                TakeDamage(placeableDamage);
+                if(toolData.toolType == ToolType.Hammer)
+                {
+                    if(placeable.GetCurrentHealth() < placeable.GetMaxHealth())
+                    {
+                        placeable.Heal(toolData.damage);
+                        TakeDamage(placeableDamage);
+                    }
+                }
+                else
+                {
+                    placeable.TakeDamage(toolData.damage);
+                    TakeDamage(placeableDamage);
+                }
             }
         }
     }

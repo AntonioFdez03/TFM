@@ -34,7 +34,7 @@ public class HostileBehaviour : IAnimalBehaviour
         {
             if (canReach)
             {
-                if (distanceToPlayer > animal.GetAnimalData().attackDistance)
+                if (distanceToPlayer > animal.GetAnimalData().attackDistance + 0.5f)
                 {   
                     ChasePlayer(animal);
                 }
@@ -77,8 +77,11 @@ public class HostileBehaviour : IAnimalBehaviour
             return;
 
         agent.speed = animal.GetAnimalData().speed * 1.5f;
-        agent.SetDestination(player.position);
-        
+
+        Vector3 dir = (animal.transform.position - player.position).normalized;
+        Vector3 targetPos = player.position + dir * animal.GetAnimalData().attackDistance;
+
+        agent.SetDestination(targetPos);
     }
 
     private void TryAttackStructure(Animal animal)

@@ -8,9 +8,9 @@ public class ObjectivesController: MonoBehaviour
     public static ObjectivesController instance;
 
     [SerializeField] private TMP_Text objectiveText;
-
     private ObjectiveType currentObjective;
     private string currentText = "";
+    private int daysToSurvive = 14;
 
     private void Awake()
     {
@@ -27,6 +27,8 @@ public class ObjectivesController: MonoBehaviour
     {
         SetObjective(ObjectiveType.Explore);
     }
+
+    public ObjectiveType GetCurrentObjective() => currentObjective;
 
     public void SetObjective(ObjectiveType objective)
     {
@@ -47,7 +49,7 @@ public class ObjectivesController: MonoBehaviour
                 break;
 
             case ObjectiveType.Survive:
-                currentText = "Survive 14 days more.";
+                currentText = "Survive " +  daysToSurvive + " days more.\n(0/14)";
                 break;
 
             case ObjectiveType.Escape:
@@ -62,8 +64,14 @@ public class ObjectivesController: MonoBehaviour
         objectiveText.text = currentText;
     }
 
-    public ObjectiveType GetCurrentObjective() => currentObjective;
-
+    public void UpdateSurviveObjective(int daysSurvived)
+    {
+        if(currentObjective == ObjectiveType.Survive)
+        {   
+            int daysToSurvive = GameController.instance.GetDaysUntilRescue();
+            currentText = "Survive " +  daysToSurvive + "days more.\n(" + daysSurvived +"/" + daysToSurvive + ")";
+        }
+    }
     public void NextObjective(ObjectiveType nextObjective)
     {
         StartCoroutine(CompleteObjectiveCR(nextObjective));

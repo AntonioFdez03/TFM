@@ -279,6 +279,9 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 4f34726a23ed53040a97c76136206ca4, type: 2}
   greenMaterial: {fileID: 2100000, guid: c289674975e48194ba656debbe498968, type: 2}
   redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
+  brokeItemsDrop: []
+  hitSound: {fileID: 0}
+  brokeSound: {fileID: 0}
 --- !u!54 &8247907462495102569
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -321,11 +324,11 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -2271779791367117769, guid: e54b060de1ba6424e88da1b7ff87b890, type: 3}
 --- !u!208 &1572505793585322241

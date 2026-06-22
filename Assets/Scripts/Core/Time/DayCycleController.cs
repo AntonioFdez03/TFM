@@ -18,6 +18,7 @@ public class DayCycleController : MonoBehaviour
 
     [SerializeField] private TMP_Text dayText;
     private int currentDay = 1;
+    private int objectiveDaysSurvived = 0;
 
     void Awake()
     {
@@ -35,6 +36,7 @@ public class DayCycleController : MonoBehaviour
         currentHour = hour;
     }
 
+    public int GetObjectiveDaysSurvived() => objectiveDaysSurvived;
     public int GetCurrentDay() => currentDay;
     public float GetCurrentHour() => currentHour;
 
@@ -46,6 +48,12 @@ public class DayCycleController : MonoBehaviour
         {
             currentHour -= 24f;
             currentDay++;
+
+            if(ObjectivesController.instance.GetCurrentObjective() == ObjectiveType.Survive)
+            {
+                objectiveDaysSurvived ++;
+                ObjectivesController.instance.UpdateSurviveObjective(objectiveDaysSurvived);
+            }
         }
 
         currentHour %= 24;

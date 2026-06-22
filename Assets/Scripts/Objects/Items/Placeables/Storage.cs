@@ -9,7 +9,6 @@ public class Storage : PlaceableBehaviour, IInteractiveObject
 
     [SerializeField] protected AudioClip openSound;
     [SerializeField] protected AudioClip closeSound;
-    protected AudioSource audioSource;
 
     protected override void Start()
     {

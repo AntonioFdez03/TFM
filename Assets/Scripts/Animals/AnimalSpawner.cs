@@ -8,8 +8,8 @@ public class AnimalSpawner : MonoBehaviour
     [SerializeField] private List<GameObject> animals;
     [SerializeField] private Transform animalsParent;
 
-    private float minSpawnDistance = 150f;
-    private float maxSpawnDistance = 200f;
+    private float minSpawnDistance = 120f;
+    private float maxSpawnDistance = 180f;
     private float spawnRate = 20f;
     private int maxAnimals = 10;
     private float timer;
@@ -75,6 +75,18 @@ public class AnimalSpawner : MonoBehaviour
     {
         Camera cam = Camera.main;
 
+        if(PlayerController.instance.GetPlayerAttributes().GetCurrentSanity() < PlayerController.instance.GetPlayerAttributes().GetMaxSanity() * 0.5f)
+        {
+            maxAnimals = 12;
+            minSpawnDistance = 50;
+            maxSpawnDistance = 100;
+        }
+        else
+        {
+            maxAnimals = 10;
+            minSpawnDistance = 120;
+            maxSpawnDistance = 180;
+        }
         for(int i = 0; i < 20; i++)
         {
             Vector2 randomCircle = Random.insideUnitCircle.normalized;

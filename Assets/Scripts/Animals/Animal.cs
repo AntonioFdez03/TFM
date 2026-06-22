@@ -9,6 +9,9 @@ public class Animal : MonoBehaviour
     [SerializeField] private GameObject dropItem;
     [SerializeField] private Material pacificMaterial;
     [SerializeField] private Material hostileMaterial;
+    [SerializeField] private AudioClip damageSound;
+    [SerializeField] private AudioClip deadSound;
+    private AudioSource audioSource;
     private IAnimalBehaviour animalBehaviour;
     private Animator animator;
     private NavMeshAgent agent;
@@ -33,6 +36,7 @@ public class Animal : MonoBehaviour
     {
         currentHealth = data.maxHealth;
 
+        audioSource = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
 
@@ -62,7 +66,6 @@ public class Animal : MonoBehaviour
     {   
         if(Vector3.Distance(transform.position, player.transform.position) > maxDistance)
         {   
-            print("Animal eliminado");
             Destroy(gameObject);
             return;
         }
@@ -88,6 +91,7 @@ public class Animal : MonoBehaviour
 
     public void TakeDamage(float amount)
     {   
+        AudioManager.instance.PlayOneShot("Hit");
         currentHealth = Mathf.Clamp(currentHealth - amount, 0, data.maxHealth);
         
         if (currentHealth <= 0)
@@ -96,6 +100,7 @@ public class Animal : MonoBehaviour
                 Die();
             else
             {
+                AudioManager.instance.PlayOneShot("GutAnimal");
                 DropItems();
                 Destroy(gameObject);
             }
@@ -104,9 +109,17 @@ public class Animal : MonoBehaviour
         {
             if (!dead)
             {
-                animator.SetTrigger("Flinch");
-                StartCoroutine(FlinchCR());
-            }
+                if(audioSource != null)
+                    audioSource.PlayOneShot(damageSound);
+
+                if (!isAttacking)
+                {
+                    animator.SetTrigger("Flinch");
+                    StartCoroutine(FlinchCR());
+                }
+                
+            }else 
+                AudioManager.instance.PlayOneShot("GutAnimal");
 
             animalBehaviour.TakeDamage(this);
         }
@@ -177,6 +190,9 @@ public class Animal : MonoBehaviour
 
         player.GetComponent<PlayerController>().GetPlayerAttributes().UpdateSanity(-10f);
 
+        if(audioSource != null)
+            audioSource.PlayOneShot(deadSound);
+
         currentHealth = data.maxHealth/2;
         StartCoroutine(BakeDeadMeshCR());
     }
@@ -212,10 +228,14 @@ public class Animal : MonoBehaviour
         isFlinching = true;
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.5f);
         isFlinching = false;
         agent.velocity = Vector3.zero;
-        agent.isStopped = false;
+        
+        if (agent != null && agent.enabled && agent.isOnNavMesh)
+        {
+            agent.isStopped = false;
+        }
     }
 
     public void Attack()
@@ -229,7 +249,7 @@ public class Animal : MonoBehaviour
 
         float distance = Vector3.Distance(transform.position, player.position);
 
-        if (distance <= data.attackDistance/1.2)
+        if (distance <= data.attackDistance + 0.5f)
         {
             player.GetComponent<PlayerController>()
                 .GetPlayerAttributes()
@@ -246,7 +266,10 @@ public class Animal : MonoBehaviour
         AttackPlayer();
         yield return new WaitForSeconds(0.5f);
         isAttacking = false;
-        agent.isStopped = false;
 
+        if (agent != null && agent.enabled && agent.isOnNavMesh)
+        {
+            agent.isStopped = false;
+        }
     }
 }

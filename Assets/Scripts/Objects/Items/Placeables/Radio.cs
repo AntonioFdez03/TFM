@@ -7,7 +7,6 @@ public class Radio : PlaceableBehaviour, IInteractiveObject
 {   
     [SerializeField] private AudioClip interferenceSound;
     [SerializeField] private AudioClip radioSound;
-    private AudioSource audioSource;
     private bool active = false;
     private bool canToggle = true;
     private float requiredHeight = 250;
@@ -15,7 +14,8 @@ public class Radio : PlaceableBehaviour, IInteractiveObject
     protected override void Start()
     {
         base.Start();
-        audioSource = GetComponent<AudioSource>();
+        active = false;
+        canToggle = true;
     }
 
     public void Interact()
@@ -26,7 +26,7 @@ public class Radio : PlaceableBehaviour, IInteractiveObject
         if(active)
         {
             ObjectivesController objectives = ObjectivesController.instance;
-            if(transform.position.y >= requiredHeight)
+            if(transform.position.y >= requiredHeight && objectives.GetCurrentObjective() == ObjectiveType.RadioSignal)
             {
                 audioSource.clip = radioSound;
                 audioSource.loop = false;
@@ -49,10 +49,12 @@ public class Radio : PlaceableBehaviour, IInteractiveObject
     }
 
     private IEnumerator RadioCR()
-    {
+    {   
+        canUnplace = false;
         canToggle = false;
         yield return new WaitForSeconds(20f);
         canToggle = true;
+        canUnplace = true;
         ObjectivesController.instance.NextObjective(ObjectiveType.Survive);
     }
 }

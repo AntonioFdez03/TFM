@@ -6,7 +6,7 @@ public class GameController : MonoBehaviour
     public static GameController instance;
 
     private bool radioUsed = false;
-    private float rescueDays = 14;
+    private int daysUntilRescue = 14;
     private int callDay = 10000;
     private float rescueHour = 7;
 
@@ -20,6 +20,7 @@ public class GameController : MonoBehaviour
         instance = this;
     }
 
+    public int GetDaysUntilRescue() => daysUntilRescue;
     public void RadioUsed(bool value) => radioUsed = value;
     public void SetCallDay(int day) => callDay = day;
 
@@ -27,14 +28,13 @@ public class GameController : MonoBehaviour
     {
         if (radioUsed)
         {
-            int currentDay = DayCycleController.instance.GetCurrentDay();
             float currentHour = DayCycleController.instance.GetCurrentHour();
 
-            if(currentDay >= callDay + rescueDays)
+            if(DayCycleController.instance.GetObjectiveDaysSurvived() == daysUntilRescue)
             {
                 if(currentHour > rescueHour)
                 {
-                    
+                    ObjectivesController.instance.NextObjective(ObjectiveType.Escape);
                 }
             }
         }

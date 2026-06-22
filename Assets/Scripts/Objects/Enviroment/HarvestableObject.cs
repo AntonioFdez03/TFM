@@ -22,7 +22,10 @@ public abstract class HarvestableObject : MonoBehaviour, IObjectHealth
     public virtual void TakeHit(ToolType tool, float damage)
     {
         if (CanHarvest(tool))
-        {
+        {   
+            if(hitSound != null)
+                AudioManager.instance.PlayOneShot(hitSound, 0.4f);
+                
             currentHealth = Math.Clamp(currentHealth - damage, 0 ,data.maxHealth);
             
             if(TryGetComponent(out ItemBehaviour itemB))
@@ -33,8 +36,6 @@ public abstract class HarvestableObject : MonoBehaviour, IObjectHealth
                 AudioManager.instance.PlayOneShot(harvestSound, 0.6f);
                 Harvest();
             }
-            else if(hitSound != null)
-                AudioManager.instance.PlayOneShot(hitSound, 0.4f);
         }
         else
             print("Herramienta no válida para este objeto");   

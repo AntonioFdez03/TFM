@@ -9,6 +9,9 @@ public class PlaceableBehaviour : ItemBehaviour
     [SerializeField] Material greenMaterial;
     [SerializeField] Material redMaterial;
     [SerializeField] List<GameObject> brokeItemsDrop;
+    [SerializeField] private AudioClip hitSound;
+    [SerializeField] private AudioClip brokeSound;
+    protected AudioSource audioSource;
 
     protected Vector3 checkBoxSize;
     private GameObject silhouette;
@@ -30,6 +33,7 @@ public class PlaceableBehaviour : ItemBehaviour
         base.Start();
         GetComponent<Rigidbody>().isKinematic = true;
         interact = InputSystem.actions.FindAction("Interact");
+        audioSource = GetComponent<AudioSource>();
 
         placementMask = LayerMask.GetMask(
             "Items",
@@ -219,6 +223,9 @@ public class PlaceableBehaviour : ItemBehaviour
 
     public void TakeDamage(float amount)
     {   
+        if(audioSource != null)
+            audioSource.PlayOneShot(hitSound);
+
         SetCurrentHealth(Mathf.Clamp(GetCurrentHealth() - amount, 0, GetMaxHealth()));
 
         if (GetCurrentHealth() == 0)
@@ -230,9 +237,15 @@ public class PlaceableBehaviour : ItemBehaviour
                 Vector3 offset = new Vector3(UnityEngine.Random.Range(-0.3f, 0.3f), UnityEngine.Random.Range(0.1f, 0.5f), UnityEngine.Random.Range(-0.3f, 0.3f));
                 dropItem.transform.position = center + offset; 
             }
+            AudioManager.instance.PlayOneShot("WoodBroken");
             Destroy(gameObject);
         }
             
+    }
+
+    public void Heal(float amount)
+    {
+        SetCurrentHealth(Mathf.Clamp(GetCurrentHealth() + amount, 0, GetMaxHealth()));
     }
 
     private void CalculateCheckBoxSize()

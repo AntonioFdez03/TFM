@@ -10,6 +10,7 @@ public class Rock : HarvestableObject
 
     [SerializeField] private int rockPhase = 0;
     [SerializeField] private List<Mesh> rockMeshes;
+    [SerializeField] private List<Transform> dropPositions;
     private Rigidbody rb;
     private MeshFilter meshFilter;
     private MeshCollider meshCollider;
@@ -30,35 +31,43 @@ public class Rock : HarvestableObject
 
     public override void Harvest()
     {   
-        DropItem();
-        DropItem();
         rockPhase += 1;
         if(rockPhase < rockMeshes.Count)
         {   
             currentHealth = data.maxHealth;
             meshFilter.mesh = rockMeshes[rockPhase];
-            //meshCollider.sharedMesh = rockMeshes[rockPhase];
-        }else
+            meshCollider.sharedMesh = rockMeshes[rockPhase];
+
+            Collider[] hits = Physics.OverlapSphere(dropPositions[1].position, 5f);
+
+            foreach (Collider hit in hits)
+            {
+                print("Colisiona: " + hit.name);
+                Rigidbody rb = hit.attachedRigidbody;
+
+                if (rb != null)
+                    rb.WakeUp();
+            }
+
+            DropItem();
+            DropItem();
+        }
+        else
+        {
+            DropItem();
+            DropItem();
             Destroy(gameObject);
+        }
     }
 
     private void DropItem()
     {
-        Vector3 dropPosition = transform.position + Vector3.up * 4;
-
-        GameObject dropItemInstance = Instantiate(dropItem, dropPosition, Quaternion.identity);
+        GameObject dropItemInstance = Instantiate(dropItem, dropPositions[rockPhase-1].position, Quaternion.identity);
 
         dropItemInstance.transform.SetParent(InventoryController.instance.GetItemsParent());
 
         Rigidbody dropItemRB = dropItemInstance.GetComponent<Rigidbody>();
         if(dropItemRB != null)
-        {
-            // Genera una dirección aleatoria horizontal
-            Vector3 randomDirection = new Vector3(Random.Range(-0.5f, 0.5f), 0.5f, Random.Range(-0.5f, 0.5f)).normalized;
-
-            float forceMagnitude = Random.Range(50f, 100f);
             dropItemRB.isKinematic = false;
-            dropItemRB.AddForce(randomDirection * forceMagnitude, ForceMode.Impulse);
-        }
     }
 }

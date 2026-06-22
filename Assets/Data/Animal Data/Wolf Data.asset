@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e693d6f0e0c954e87d09094e5766d3, type: 3}
   m_Name: Wolf Data
   m_EditorClassIdentifier: Assembly-CSharp::AnimalData
-  speed: 12
+  speed: 16
   damage: 10
   maxHealth: 40
   alwaysHostile: 1
-  chaseDistance: 75
+  chaseDistance: 125
   attackCooldown: 2
-  attackDistance: 10
+  attackDistance: 5

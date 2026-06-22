@@ -55,6 +55,7 @@ public class Radio : PlaceableBehaviour, IInteractiveObject
         yield return new WaitForSeconds(20f);
         canToggle = true;
         canUnplace = true;
+        GameController.instance.RadioUsed(true);
         ObjectivesController.instance.NextObjective(ObjectiveType.Survive);
     }
 }

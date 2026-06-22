@@ -5,10 +5,14 @@ public class GameController : MonoBehaviour
 {
     public static GameController instance;
 
+    [SerializeField] private GameObject helicopterPrefab;
+    [SerializeField] private Transform helicopterSpawn;
+    [SerializeField] private Transform helicopterTarget;
+    private bool helicopterInstantiated = false;
+
     private bool radioUsed = false;
-    private int daysUntilRescue = 14;
-    private int callDay = 10000;
-    private float rescueHour = 7;
+    private int daysUntilRescue = 0;
+    private float rescueHour = 0;
 
     void Awake()
     {
@@ -22,7 +26,6 @@ public class GameController : MonoBehaviour
 
     public int GetDaysUntilRescue() => daysUntilRescue;
     public void RadioUsed(bool value) => radioUsed = value;
-    public void SetCallDay(int day) => callDay = day;
 
     void Update()
     {
@@ -30,11 +33,16 @@ public class GameController : MonoBehaviour
         {
             float currentHour = DayCycleController.instance.GetCurrentHour();
 
-            if(DayCycleController.instance.GetObjectiveDaysSurvived() == daysUntilRescue)
-            {
+            if(DayCycleController.instance.GetObjectiveDaysSurvived() == daysUntilRescue && !helicopterInstantiated)
+            {   
                 if(currentHour > rescueHour)
-                {
+                {   
+                    helicopterInstantiated = true;
                     ObjectivesController.instance.NextObjective(ObjectiveType.Escape);
+                    GameObject helicopter = Instantiate(helicopterPrefab);
+                    helicopter.transform.SetParent(InventoryController.instance.GetItemsParent());
+                    helicopter.transform.position = helicopterSpawn.position;
+                    helicopter.GetComponent<Helicopter>().SetTarget(helicopterTarget.position);
                 }
             }
         }

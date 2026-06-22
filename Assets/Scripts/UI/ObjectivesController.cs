@@ -10,7 +10,6 @@ public class ObjectivesController: MonoBehaviour
     [SerializeField] private TMP_Text objectiveText;
     private ObjectiveType currentObjective;
     private string currentText = "";
-    private int daysToSurvive = 14;
 
     private void Awake()
     {
@@ -49,7 +48,7 @@ public class ObjectivesController: MonoBehaviour
                 break;
 
             case ObjectiveType.Survive:
-                currentText = "Survive " +  daysToSurvive + " days more.\n(0/14)";
+                currentText = "Survive " +  GameController.instance.GetDaysUntilRescue() + " days more.\n(0/" +  GameController.instance.GetDaysUntilRescue() + ")";
                 break;
 
             case ObjectiveType.Escape:

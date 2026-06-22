@@ -22439,6 +22439,8 @@ Transform:
   - {fileID: 631565644}
   - {fileID: 612836993}
   - {fileID: 1137143384}
+  - {fileID: 2027007581}
+  - {fileID: 849184028}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &624792789
@@ -27151,6 +27153,7 @@ MonoBehaviour:
   - {fileID: 4066447378700584596, guid: d41db881cb7dfe944854c918b3ff3968, type: 3}
   - {fileID: 9199389516604714568, guid: 31fc25e0ed903424bb48d18930d1d304, type: 3}
   - {fileID: 5259844289933257287, guid: 8e3e3388f30e654459b05868c3b94c8b, type: 3}
+  - {fileID: 100006, guid: ebfa405660e25c549bb7039f0b44f8ff, type: 3}
   harvestablesPrefabs:
   - {fileID: 5582204427560125438, guid: b193be5b1fb0923449bf89549dffff94, type: 3}
   - {fileID: 3936722399912076011, guid: 2f294005e2faee349a3310b6788d3d0a, type: 3}
@@ -27256,6 +27259,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79ea823c9f4be7640b04f6b5f3af07d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameController
+  helicopterPrefab: {fileID: 100006, guid: ebfa405660e25c549bb7039f0b44f8ff, type: 3}
+  helicopterSpawn: {fileID: 2027007581}
+  helicopterTarget: {fileID: 849184028}
 --- !u!1001 &705367301
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32622,6 +32628,37 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: 1
   m_LayoutPriority: 1
+--- !u!1 &849184027
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 849184028}
+  m_Layer: 0
+  m_Name: HelicopterTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &849184028
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 849184027}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -505.6, y: 362, z: -577}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 623429580}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &856174823
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -77039,6 +77076,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6385793646264243655, guid: 4604dc18c1f60b044a2b6884d3087eb9, type: 3}
   m_PrefabInstance: {fileID: 2026139561}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2027007580
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2027007581}
+  m_Layer: 0
+  m_Name: HelicopterSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2027007581
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027007580}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1537, y: 362, z: 522}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 623429580}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2027227177
 PrefabInstance:
   m_ObjectHideFlags: 0

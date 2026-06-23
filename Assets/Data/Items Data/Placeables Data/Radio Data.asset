@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlaceableData
   id: Radio
   itemName: Radio
-  icon: {fileID: 21300000, guid: 31fd5de745ccc6e4c9072570e89034ae, type: 3}
+  icon: {fileID: 21300000, guid: 5e2d09d15ee10b64488fdd44714c4aa5, type: 3}
   prefab: {fileID: 4066447378700584596, guid: d41db881cb7dfe944854c918b3ff3968, type: 3}
   showInHand: 0
   handForm: 0

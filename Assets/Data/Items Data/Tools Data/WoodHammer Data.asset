@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ToolData
   id: WoodHammer
   itemName: Wood Hammer
-  icon: {fileID: 21300000, guid: 4cca19c60f3f09a40ae0a669387250b9, type: 3}
+  icon: {fileID: 21300000, guid: f9a925920ee177f47802832bc0472223, type: 3}
   prefab: {fileID: 5259844289933257287, guid: 8e3e3388f30e654459b05868c3b94c8b, type: 3}
   showInHand: 1
   handForm: 1

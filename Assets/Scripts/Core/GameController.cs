@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour
     private bool helicopterInstantiated = false;
 
     private bool radioUsed = false;
-    private int daysUntilRescue = 0;
+    private int daysUntilRescue = 3;
     private float rescueHour = 0;
 
     void Awake()

@@ -138,7 +138,7 @@ public class PlayerController : MonoBehaviour
         {
             fallTimer += Time.deltaTime;
             if(fallTimer >= fallLimit)
-                playerAttributes.TakeDamage(3*fallTimer);
+                playerAttributes.TakeDamage(5*fallTimer);
         }else
             fallTimer = 0;
 

@@ -1,8 +1,9 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public enum ObjectiveType { None, Explore, RadioSignal, SendSOS, Survive, Escape}
+public enum ObjectiveType { None, Explore, HighPlace, SendSOS, Survive, Escape, NoEscape}
 public class ObjectivesController: MonoBehaviour
 {
     public static ObjectivesController instance;
@@ -39,12 +40,12 @@ public class ObjectivesController: MonoBehaviour
                 currentText = "Find a way to escape.";
                 break;
 
-            case ObjectiveType.RadioSignal:
+            case ObjectiveType.HighPlace:
                 currentText = "Find a high place.";
                 break;
 
             case ObjectiveType.SendSOS:
-                currentText = "Send a SOS signal.";
+                currentText = "Use the radio.";
                 break;
 
             case ObjectiveType.Survive:
@@ -53,6 +54,11 @@ public class ObjectivesController: MonoBehaviour
 
             case ObjectiveType.Escape:
                 currentText = "Escape in the helicopter.";
+                break;
+            
+            case ObjectiveType.NoEscape:
+                currentText = "You have lost the helicopter.";
+                StartCoroutine(TextCooldownCR());
                 break;
 
             case ObjectiveType.None:
@@ -68,9 +74,24 @@ public class ObjectivesController: MonoBehaviour
         if(currentObjective == ObjectiveType.Survive)
         {   
             int daysToSurvive = GameController.instance.GetDaysUntilRescue();
-            currentText = "Survive " +  daysToSurvive + "days more.\n(" + daysSurvived +"/" + daysToSurvive + ")";
+            objectiveText.text = "Survive " +  daysToSurvive + " days more.\n(" + daysSurvived +"/" + daysToSurvive + ")";
         }
     }
+
+    public void UpdateHelicopterTime(float timer)
+    {
+        if(currentObjective == ObjectiveType.Escape)
+        {    
+            float timeUntilHelicopterLeaves = GameController.instance.GetHelicopterWaitTime();
+            float remainingTime = Mathf.CeilToInt(timeUntilHelicopterLeaves - timer);
+
+            if( timer >= timeUntilHelicopterLeaves)
+                remainingTime = 0;
+
+            objectiveText.text = "Escape in the helicopter.\n" +  remainingTime + "s";
+        }
+    }
+
     public void NextObjective(ObjectiveType nextObjective)
     {
         StartCoroutine(CompleteObjectiveCR(nextObjective));
@@ -83,5 +104,10 @@ public class ObjectivesController: MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         SetObjective(nextObjective);
+    }
+
+    private IEnumerator TextCooldownCR()
+    {
+        yield return new WaitForSeconds(10f);
     }
 }

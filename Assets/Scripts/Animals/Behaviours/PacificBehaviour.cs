@@ -7,6 +7,9 @@ public class PacificBehaviour : IAnimalBehaviour
     private float timer;
     private float smoothedSpeed;
     private bool playerDetected;
+    private Vector3 fleeTarget;
+    private float fleeTimer;
+    private bool hasFleeTarget;
 
     private NavMeshAgent agent;
 
@@ -72,7 +75,7 @@ public class PacificBehaviour : IAnimalBehaviour
 
     void Flee(Animal animal)
     {      
-        if(!animal.IsFleeing() && !playerDetected) return;
+        if(animal.IsFleeing()) return;
 
         Transform player = animal.GetPlayer();
 

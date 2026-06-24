@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.Video;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
+using System.Collections;
 
 public class MainMenuManager : MonoBehaviour
 {   
@@ -30,6 +31,7 @@ public class MainMenuManager : MonoBehaviour
     private float timer = 0;
 
     private string savePath;
+    private ScreenFaderController fader;
 
 
     public static bool GameContinued() => gameContinued;
@@ -50,6 +52,8 @@ public class MainMenuManager : MonoBehaviour
 
         titleInitPosition = title.transform.position;
         creditsInitPosition = creditsPanel.transform.position;
+
+        fader = GetComponent<ScreenFaderController>();
 
         ShowMainButtons();
 
@@ -86,14 +90,16 @@ public class MainMenuManager : MonoBehaviour
         if (File.Exists(savePath))
             ShowAlert();
         else
-            SceneManager.LoadScene("GameScene");
+        {   
+            StartCoroutine(FadeCooldownCR());
+        }
     }
 
     public void ContinueGame()
     {
         audioSource.PlayOneShot(buttonSound);
         gameContinued = true;
-        SceneManager.LoadScene("GameScene");
+        StartCoroutine(FadeCooldownCR());
     }
 
     public void QuitGame()
@@ -119,7 +125,7 @@ public class MainMenuManager : MonoBehaviour
     {
         audioSource.PlayOneShot(buttonSound);
         File.Delete(savePath);
-        SceneManager.LoadScene("GameScene");
+        StartCoroutine(FadeCooldownCR());
     }
 
     public void Cancel()
@@ -148,5 +154,12 @@ public class MainMenuManager : MonoBehaviour
 
         title.transform.position = titleInitPosition;
         creditsPanel.transform.position = creditsInitPosition;
+    }
+
+    private IEnumerator FadeCooldownCR()
+    {   
+        fader.FadeOut();
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene("GameScene");
     }
 }

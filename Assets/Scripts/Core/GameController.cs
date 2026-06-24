@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,9 +11,12 @@ public class GameController : MonoBehaviour
     [SerializeField] private Transform helicopterTarget;
     private bool helicopterInstantiated = false;
 
+    private float requiredHeight = 260;
     private bool radioUsed = false;
-    private int daysUntilRescue = 3;
+    private int daysUntilRescue = 0;
     private float rescueHour = 0;
+    private float helicoperWaitTime = 120f;
+    private bool playerEscaped = false;
 
     void Awake()
     {
@@ -26,6 +30,9 @@ public class GameController : MonoBehaviour
 
     public int GetDaysUntilRescue() => daysUntilRescue;
     public void RadioUsed(bool value) => radioUsed = value;
+    public float GetRequiredHeight() => requiredHeight;
+    public float GetHelicopterWaitTime() => helicoperWaitTime;
+    public void SetPlayerEscaped(bool value) => playerEscaped = value;
 
     void Update()
     {
@@ -46,11 +53,23 @@ public class GameController : MonoBehaviour
                 }
             }
         }
+
+        if (playerEscaped)
+        {
+            StartCoroutine(FaderCR("GameCompleteScene"));
+        }
     }
 
     public void GameOver()
     {
-        SceneManager.LoadScene("GameOverScene");
+        StartCoroutine(FaderCR("GameOverScene"));
+    }
+
+    private IEnumerator FaderCR(string sceneName)
+    {   
+        ScreenFaderController.instance.FadeOut();
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene(sceneName);
     }
 
 }

@@ -83,7 +83,12 @@ public class PlayerController : MonoBehaviour
     void Update()
     {   
         if (!isDead)
-        {  
+        {   
+            if(transform.position.y >= GameController.instance.GetRequiredHeight() && ObjectivesController.instance.GetCurrentObjective() == ObjectiveType.HighPlace)
+            {
+                ObjectivesController.instance.NextObjective(ObjectiveType.SendSOS);
+            }
+
             float angle = Vector3.Angle(groundNormal, Vector3.up);
 
             if (angle > controller.slopeLimit)

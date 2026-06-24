@@ -4,6 +4,8 @@ using UnityEngine.AI;
 
 public class AnimalSpawner : MonoBehaviour
 {   
+    public static AnimalSpawner instance;
+
     [SerializeField] private Transform player;
     [SerializeField] private List<GameObject> animals;
     [SerializeField] private Transform animalsParent;
@@ -14,15 +16,42 @@ public class AnimalSpawner : MonoBehaviour
     private int maxAnimals = 10;
     private float timer;
 
+    void Awake()
+    {
+        if(instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+    }
+
     void Update()
     {
         timer += Time.deltaTime;
 
-        if (timer >= spawnRate && animalsParent.childCount < maxAnimals)
+        if (timer >= spawnRate && GetAliveAnimals() < maxAnimals)
         {
             SpawnAnimal();
             timer = 0f;
         }
+    }
+
+    private int GetAliveAnimals()
+    {
+        int count = 0;
+
+        foreach (Transform child in animalsParent)
+        {
+            Animal animal = child.GetComponent<Animal>();
+
+            if (animal != null && !animal.IsDead())
+            {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     private void SpawnAnimal()

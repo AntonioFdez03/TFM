@@ -165,6 +165,8 @@ MonoBehaviour:
   greenMaterial: {fileID: 2100000, guid: c289674975e48194ba656debbe498968, type: 2}
   redMaterial: {fileID: 2100000, guid: 64f8591451a01de41b521ab79fbd0fcb, type: 2}
   brokeItemsDrop: []
+  hitSound: {fileID: 0}
+  brokeSound: {fileID: 0}
   interferenceSound: {fileID: 8300000, guid: d6ef20a9c069aa44fbea54f2c6c77e1b, type: 3}
   radioSound: {fileID: 0}
 --- !u!65 &2253134599325682817
@@ -236,8 +238,8 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 0
-  MaxDistance: 500
+  MinDistance: 10
+  MaxDistance: 50
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0

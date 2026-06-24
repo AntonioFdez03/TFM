@@ -9,7 +9,7 @@ public class Radio : PlaceableBehaviour, IInteractiveObject
     [SerializeField] private AudioClip radioSound;
     private bool active = false;
     private bool canToggle = true;
-    private float requiredHeight = 250;
+    private bool radioUsed = false;
 
     protected override void Start()
     {
@@ -26,8 +26,10 @@ public class Radio : PlaceableBehaviour, IInteractiveObject
         if(active)
         {
             ObjectivesController objectives = ObjectivesController.instance;
-            if(transform.position.y >= requiredHeight && objectives.GetCurrentObjective() == ObjectiveType.RadioSignal)
-            {
+            float requiredHeight = GameController.instance.GetRequiredHeight();
+            if(transform.position.y >= requiredHeight && objectives.GetCurrentObjective() == ObjectiveType.SendSOS && !radioUsed)
+            {   
+                radioUsed = true;
                 audioSource.clip = radioSound;
                 audioSource.loop = false;
                 StartCoroutine(RadioCR());
@@ -38,10 +40,10 @@ public class Radio : PlaceableBehaviour, IInteractiveObject
                 audioSource.loop = true;
                 if (objectives.GetCurrentObjective() == ObjectiveType.Explore)
                 {
-                    objectives.NextObjective(ObjectiveType.RadioSignal);
+                    objectives.NextObjective(ObjectiveType.HighPlace);
                 }
             }
-            audioSource.volume = 4f;
+            audioSource.volume = 0.6f;
             audioSource.Play();
         }
         else

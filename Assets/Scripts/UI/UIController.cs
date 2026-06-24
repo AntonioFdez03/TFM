@@ -21,6 +21,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject settingsPanel;
     [SerializeField] private Transform dragginLayer;
 
+
     [Header("Sounds")]
     [SerializeField] private AudioClip inventoryOpen;
     [SerializeField] private AudioClip inventoryClose;
@@ -42,10 +43,12 @@ public class UIController : MonoBehaviour
     }
 
     void Start()
-    {
+    {   
         inventoryAction = InputSystem.actions.FindAction("Inventory");
         pauseAction = InputSystem.actions.FindAction("Pause");
         craftAction = InputSystem.actions.FindAction("Craft");
+
+        ScreenFaderController.instance.FadeIn();
         SetState(UIState.Gameplay);
     }
 

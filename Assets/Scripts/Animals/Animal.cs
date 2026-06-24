@@ -32,6 +32,9 @@ public class Animal : MonoBehaviour
 
     private float currentHealth;
 
+    private float decompositionTime = 120f;
+    private float timer = 0;
+
     void Start()
     {
         currentHealth = data.maxHealth;
@@ -70,19 +73,34 @@ public class Animal : MonoBehaviour
             return;
         }
 
-        isHostile = PlayerController.instance.GetPlayerAttributes().GetCurrentSanity() < PlayerController.instance.GetPlayerAttributes().GetMaxSanity() * 0.5f;
+        isHostile = (PlayerController.instance.GetPlayerAttributes().GetCurrentSanity() <= PlayerController.instance.GetPlayerAttributes().GetMaxSanity() * 0.5f) || data.alwaysHostile;
         skinnedMesh.material = isHostile ? hostileMaterial : pacificMaterial; 
         
         if (!dead)
         {   
-            /*
+            
             if(isHostile && !wasHostile)
+            {   
                 animalBehaviour = new HostileBehaviour();
+            }
             else if(!isHostile && wasHostile)
+            {   
                 animalBehaviour = new PacificBehaviour();
+            }
 
-            */
+
             animalBehaviour?.Act(this);
+        }
+        else
+        {
+            timer += Time.deltaTime;
+
+            if(timer >= decompositionTime)
+            {
+                DropItems();
+                Destroy(gameObject);
+                return;
+            }   
         }
 
         wasHostile = isHostile;

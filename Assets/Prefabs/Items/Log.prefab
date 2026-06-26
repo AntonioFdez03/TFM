@@ -300,7 +300,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Log
   data: {fileID: 11400000, guid: 5e85cbd943562574bbccb0842e56e883, type: 2}
   dropItem: {fileID: 3074230260528391914, guid: 677e5e059ef81a04a923e573c47ba2c1, type: 3}
-  hitSound: {fileID: 8300000, guid: 477fae28586de464290f4c8ec525c89a, type: 3}
+  hitSound: {fileID: 8300000, guid: 69b569f0e3961a948a12fc8f64997676, type: 3}
   harvestSound: {fileID: 8300000, guid: adb6cf5bf8ba6754bbae6d78bec7b1ed, type: 3}
   branchSpawners:
   - {fileID: 3891024543774831475}

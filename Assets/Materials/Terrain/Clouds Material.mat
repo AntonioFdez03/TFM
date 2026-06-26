@@ -54,14 +54,14 @@ Material:
     - _AlphaClip: 0.03
     - _CloudScale: 120
     - _CloudsAlpha: 0.02
-    - _CloudsPower: 10.15
-    - _CloudsScale: 78.41
-    - _DistorsionScale: 3.49
+    - _CloudsPower: 9.11
+    - _CloudsScale: 76.96
+    - _DistorsionScale: 3.45
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _VertexOffset: -0.02
+    - _VertexOffset: 0.03
     m_Colors:
-    - _CloudsColor: {r: 3.9533496, g: 3.9533496, b: 3.9533496, a: 0}
+    - _CloudsColor: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 0}
     - _CloudsSpeed: {r: 0.001, g: 0.002, b: 0, a: 0}
     - _DistorsionSpeed: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

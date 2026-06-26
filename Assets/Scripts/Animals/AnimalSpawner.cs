@@ -30,16 +30,16 @@ public class AnimalSpawner : MonoBehaviour
     {
         timer += Time.deltaTime;
 
-        if (timer >= spawnRate && GetAliveAnimals() < maxAnimals)
+        if (timer >= spawnRate && GetAliveAnimals().Count < maxAnimals)
         {
             SpawnAnimal();
             timer = 0f;
         }
     }
 
-    private int GetAliveAnimals()
+    private List<Animal> GetAliveAnimals()
     {
-        int count = 0;
+        List<Animal> aliveAnimals = new(); 
 
         foreach (Transform child in animalsParent)
         {
@@ -47,11 +47,11 @@ public class AnimalSpawner : MonoBehaviour
 
             if (animal != null && !animal.IsDead())
             {
-                count++;
+                aliveAnimals.Add(animal);
             }
         }
 
-        return count;
+        return aliveAnimals;
     }
 
     private void SpawnAnimal()
@@ -80,6 +80,8 @@ public class AnimalSpawner : MonoBehaviour
                 return;
             }
         }
+
+        AnimalSpawnSound(prefab);
         
         if(prefab.GetComponent<Animal>().GetAnimalData().alwaysHostile)
         {   
@@ -87,7 +89,7 @@ public class AnimalSpawner : MonoBehaviour
         }
         else
         {
-            if(PlayerController.instance.GetPlayerAttributes().GetCurrentSanity() < PlayerController.instance.GetPlayerAttributes().GetMaxSanity() *0.5f)
+            if(PlayerController.instance.GetPlayerAttributes().LowSanity())
             {
                 animal.GetComponent<Animal>().SetBehaviour(new HostileBehaviour());
             }
@@ -104,7 +106,7 @@ public class AnimalSpawner : MonoBehaviour
     {
         Camera cam = Camera.main;
 
-        if(PlayerController.instance.GetPlayerAttributes().GetCurrentSanity() < PlayerController.instance.GetPlayerAttributes().GetMaxSanity() * 0.5f)
+        if(PlayerController.instance.GetPlayerAttributes().LowSanity())
         {
             maxAnimals = 12;
             minSpawnDistance = 50;
@@ -144,5 +146,30 @@ public class AnimalSpawner : MonoBehaviour
         }
 
         return Vector3.zero;
+    }
+
+    private void AnimalSpawnSound(GameObject animal)
+    {
+        if(animal.GetComponent<Animal>().GetAnimalData().id == "Wolf" && DayCycleController.instance.IsNight())
+        {   
+            bool wolvesExist = false;
+
+            foreach (Animal a in GetAliveAnimals())
+            {
+                if (a.GetAnimalData().id == "Wolf")
+                {
+                    wolvesExist = true;
+                    break;
+                }
+            }
+
+            AudioManager.instance.PlayOneShot(wolvesExist ? "MultipleWolfSpawn" : "SingleWolfSpawn");
+        }
+
+        if(animal.GetComponent<Animal>().GetAnimalData().id == "Deer" && DayCycleController.instance.IsNight())
+        {
+            AudioManager.instance.PlayOneShot("SingleDeerSpawn");
+        }
+
     }
 }

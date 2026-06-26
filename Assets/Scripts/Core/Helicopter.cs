@@ -1,11 +1,10 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Helicopter : MonoBehaviour
 {   
     [SerializeField] private GameObject rescueRope;
     [SerializeField] private AudioClip helicopterSound;
+    [SerializeField] private bool movement = true;
     private AudioSource audioSource;
     private Vector3 helicopterTarget;
     private float speed = 40f;
@@ -20,7 +19,12 @@ public class Helicopter : MonoBehaviour
         rescueRope.SetActive(false);
 
         audioSource = GetComponent<AudioSource>();
-        audioSource.volume = 10f;
+
+        if(movement)
+            audioSource.volume = 1f;
+        else
+            audioSource.volume = 0.5f;
+            
         audioSource.spatialBlend = 1;
         audioSource.clip = helicopterSound;
         audioSource.loop = true;
@@ -36,41 +40,44 @@ public class Helicopter : MonoBehaviour
 
     void Update()
     {
-        float distance = 0;
+        if(movement)
+        {
+            float distance = 0;
         
-        if(!helicopterArrived)
-            distance = Vector3.Distance(transform.position, helicopterTarget);
+            if(!helicopterArrived)
+                distance = Vector3.Distance(transform.position, helicopterTarget);
 
 
-        if (distance > 10)
-            speed = 40f;
-        else if (distance > 5)
-            speed = 20f;
-        else
-        {   
-            helicopterArrived = true;
-            speed = 0f;
+            if (distance > 10)
+                speed = 40f;
+            else if (distance > 5)
+                speed = 20f;
+            else
+            {   
+                helicopterArrived = true;
+                speed = 0f;
 
-            if (!ropeActive)
-            {
-                ropeActive = true;
-                rescueRope.SetActive(true);
+                if (!ropeActive)
+                {
+                    ropeActive = true;
+                    rescueRope.SetActive(true);
+                }
+
+                timer += Time.deltaTime;
+                ObjectivesController.instance.UpdateHelicopterTime(timer);
+
+                if(timer >= GameController.instance.GetHelicopterWaitTime())
+                {
+                    print("Tiempo superado");
+                    rescueRope.GetComponent<RescueRope>().RemoveRope();
+                }
             }
 
-            timer += Time.deltaTime;
-            ObjectivesController.instance.UpdateHelicopterTime(timer);
+            if (leave)
+                speed = 20f;
 
-            if(timer >= GameController.instance.GetHelicopterWaitTime())
-            {
-                print("Tiempo superado");
-                rescueRope.GetComponent<RescueRope>().RemoveRope();
-            }
+            transform.position += transform.forward * speed * Time.deltaTime;
         }
-
-        if (leave)
-            speed = 20f;
-
-        transform.position += transform.forward * speed * Time.deltaTime;
 
         ApplyHelicopterWobble();
     }
@@ -80,12 +87,23 @@ public class Helicopter : MonoBehaviour
         // Dirección hacia el objetivo
         Vector3 dir = (helicopterTarget - transform.position).normalized;
 
+        if(!movement)
+            dir = transform.forward;
+
         // Rotación principal hacia el objetivo
         Quaternion lookRotation = Quaternion.LookRotation(dir);
 
+        float rollMultiply = 4f;
+        float pitchMultiply = 2f;
+
+        if (!movement)
+        {
+            rollMultiply = 2f;
+            pitchMultiply = 1f;
+        }
         // Bamboleos naturales
-        float roll = Mathf.Sin(Time.time * 0.8f) * 4f;     // izquierda/derecha
-        float pitch = Mathf.Sin(Time.time * 1.3f) * 2f;    // adelante/atrás
+        float roll = Mathf.Sin(Time.time * 0.8f) * rollMultiply;     // izquierda/derecha
+        float pitch = Mathf.Sin(Time.time * 1.3f) * pitchMultiply;    // adelante/atrás
 
         if(speed == 0)
         {

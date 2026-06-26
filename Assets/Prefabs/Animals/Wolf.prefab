@@ -1058,8 +1058,12 @@ MonoBehaviour:
   dropItem: {fileID: 5442471255067961418, guid: 08d42728e0e98714fb8c8261d3146e7e, type: 3}
   pacificMaterial: {fileID: 2100000, guid: b5ac7c407444429429f082c614a40ea9, type: 2}
   hostileMaterial: {fileID: 2100000, guid: b5ac7c407444429429f082c614a40ea9, type: 2}
+  footsteps: {fileID: 8300000, guid: 6a69476ffbf22544892038f205b792cc, type: 3}
+  lowSanityAttackSound: {fileID: 8300000, guid: 2360e9c63bb659846b3aa4089dee23f5, type: 3}
   damageSound: {fileID: 8300000, guid: 42fd883671e9a6745b71511032a784dc, type: 3}
   deadSound: {fileID: 8300000, guid: fa179adc2cfacfd4daea24837a322a3f, type: 3}
+  barkSound: {fileID: 8300000, guid: 75a50e1f5fc831740a45965051cf17e3, type: 3}
+  growlingSound: {fileID: 8300000, guid: 5667cc05204ca1845b249be947b12d4e, type: 3}
 --- !u!195 &7672277601227422115
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1073,8 +1077,8 @@ NavMeshAgent:
   m_Speed: 3.5
   m_Acceleration: 20
   avoidancePriority: 50
-  m_AngularSpeed: 700
-  m_StoppingDistance: 5
+  m_AngularSpeed: 1000
+  m_StoppingDistance: 2
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1

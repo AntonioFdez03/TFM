@@ -9,9 +9,14 @@ public class Animal : MonoBehaviour
     [SerializeField] private GameObject dropItem;
     [SerializeField] private Material pacificMaterial;
     [SerializeField] private Material hostileMaterial;
+    [SerializeField] private AudioClip footsteps;
+    [SerializeField] private AudioClip lowSanityAttackSound;
     [SerializeField] private AudioClip damageSound;
     [SerializeField] private AudioClip deadSound;
+    [SerializeField] private AudioClip barkSound;
+    [SerializeField] private AudioClip growlingSound;
     private AudioSource audioSource;
+    private AudioSource footstepSource;
     private IAnimalBehaviour animalBehaviour;
     private Animator animator;
     private NavMeshAgent agent;
@@ -32,7 +37,7 @@ public class Animal : MonoBehaviour
 
     private float currentHealth;
 
-    private float decompositionTime = 120f;
+    private float decompositionTime = 300f;
     private float timer = 0;
 
     void Start()
@@ -47,6 +52,13 @@ public class Animal : MonoBehaviour
         meshCollider = GetComponentInChildren<MeshCollider>();
 
         bakedMesh = new Mesh();
+
+        footstepSource = gameObject.AddComponent<AudioSource>();
+        footstepSource.clip = footsteps;
+        footstepSource.loop = true;
+        footstepSource.playOnAwake = false;
+        footstepSource.spatialBlend = 1f; // 3D
+        footstepSource.Play();
     }
 
     public AnimalData GetAnimalData() => data;
@@ -73,7 +85,7 @@ public class Animal : MonoBehaviour
             return;
         }
 
-        isHostile = (PlayerController.instance.GetPlayerAttributes().GetCurrentSanity() <= PlayerController.instance.GetPlayerAttributes().GetMaxSanity() * 0.5f) || data.alwaysHostile;
+        isHostile = PlayerController.instance.GetPlayerAttributes().LowSanity() || data.alwaysHostile;
         skinnedMesh.material = isHostile ? hostileMaterial : pacificMaterial; 
         
         if (!dead)
@@ -109,7 +121,6 @@ public class Animal : MonoBehaviour
 
     public void TakeDamage(float amount)
     {   
-        AudioManager.instance.PlayOneShot("Hit");
         currentHealth = Mathf.Clamp(currentHealth - amount, 0, data.maxHealth);
         
         if (currentHealth <= 0)
@@ -144,7 +155,8 @@ public class Animal : MonoBehaviour
     }
 
     private void DropItems()
-    {
+    {   
+        
         int amount = Random.Range(2, 5);
 
         for (int i = 0; i < amount; i++)
@@ -202,6 +214,7 @@ public class Animal : MonoBehaviour
 
     private void Die()
     {
+        StatisticsController.instance.AddAnimalHunted();
         dead = true;
         agent.enabled = false;
         animator.SetTrigger("Dead");
@@ -256,9 +269,12 @@ public class Animal : MonoBehaviour
         }
     }
 
-    public void Attack()
-    {
-        StartCoroutine(AttackCR());
+    public void Attack(string target, PlaceableBehaviour placeable = null)
+    {   
+        if(PlayerController.instance.GetPlayerAttributes().LowSanity())
+            audioSource.PlayOneShot(lowSanityAttackSound);
+
+        StartCoroutine(AttackCR(target, placeable));
     }
 
     public void AttackPlayer()
@@ -267,21 +283,34 @@ public class Animal : MonoBehaviour
 
         float distance = Vector3.Distance(transform.position, player.position);
 
-        if (distance <= data.attackDistance + 0.5f)
+        if (distance <= data.attackDistance + 1f)
         {
             player.GetComponent<PlayerController>()
                 .GetPlayerAttributes()
                 .TakeDamage(data.damage);
         }
     }
-    public IEnumerator AttackCR()
-    {
+
+    public void AttackStructure(PlaceableBehaviour placeableBehaviour)
+    {   
+        if(placeableBehaviour != null)
+            placeableBehaviour.TakeDamage(data.damage);
+
+    }
+    public IEnumerator AttackCR(string target, PlaceableBehaviour placeable = null)
+    {   
+        audioSource.PlayOneShot(growlingSound, 0.6f);
         isAttacking = true;
         agent.velocity = Vector3.zero;
         agent.isStopped = true;
         agent.ResetPath();
-        yield return new WaitForSeconds(1f);
-        AttackPlayer();
+        yield return new WaitForSeconds(0.8f);
+
+        if(target == "Player")
+            AttackPlayer();
+        else
+            AttackStructure(placeable);
+
         yield return new WaitForSeconds(0.5f);
         isAttacking = false;
 
@@ -289,5 +318,43 @@ public class Animal : MonoBehaviour
         {
             agent.isStopped = false;
         }
+    }   
+
+    public void UpdateFootsteps(float speed)
+    {      
+        if (dead)
+        {
+            if (footstepSource.isPlaying)
+                footstepSource.Stop();
+
+            return;
+        }
+
+        if (isAttacking || isFlinching || UIController.instance.GetCurrentState() != UIState.Gameplay)
+        {
+            footstepSource.volume = 0f;
+            return;
+        }
+
+        float maxSpeed = data.speed * 3f;
+        float normalized = Mathf.Clamp01(speed / maxSpeed);
+
+        // volumen según movimiento
+        float targetVolume = (normalized > 0.05f) ? 1f : 0f;
+
+        // suavizado para que no sea brusco
+        footstepSource.volume = Mathf.Lerp(
+            footstepSource.volume,
+            targetVolume,
+            Time.deltaTime * 10f
+        );
+
+        // pitch según velocidad
+        footstepSource.pitch = Mathf.Lerp(0.8f, 1.4f, normalized);
+    }
+
+    public void DetectSound()
+    {
+        audioSource.PlayOneShot(barkSound, 0.3f);
     }
 }

@@ -1311,6 +1311,8 @@ MonoBehaviour:
   dropItem: {fileID: 5442471255067961418, guid: 08d42728e0e98714fb8c8261d3146e7e, type: 3}
   pacificMaterial: {fileID: 2100000, guid: 9359f49b84d2f154592644e673b40ff1, type: 2}
   hostileMaterial: {fileID: 2100000, guid: e4882107b3e2a594fab0451d492925f8, type: 2}
+  footsteps: {fileID: 8300000, guid: 6a69476ffbf22544892038f205b792cc, type: 3}
+  lowSanityAttackSound: {fileID: 8300000, guid: 2360e9c63bb659846b3aa4089dee23f5, type: 3}
   damageSound: {fileID: 8300000, guid: 42fd883671e9a6745b71511032a784dc, type: 3}
   deadSound: {fileID: 8300000, guid: fa179adc2cfacfd4daea24837a322a3f, type: 3}
 --- !u!195 &1353840603495440698

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1705401816808064949}
   - component: {fileID: 8369887631185066507}
   m_Layer: 0
-  m_Name: CutTreeModel
+  m_Name: CutTree
   m_TagString: Harvestable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -162,7 +162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CutTree
   data: {fileID: 11400000, guid: 5b1a371bab4c4cd4abd3dd4ca8809435, type: 2}
   dropItem: {fileID: 5144113718169600618, guid: 8d1c73364dcfaec409f4be7fe2790ee1, type: 3}
-  hitSound: {fileID: 8300000, guid: 477fae28586de464290f4c8ec525c89a, type: 3}
+  hitSound: {fileID: 8300000, guid: c6c1376c65b27694daff6990468352cf, type: 3}
   harvestSound: {fileID: 8300000, guid: adb6cf5bf8ba6754bbae6d78bec7b1ed, type: 3}
   logSpawners:
   - {fileID: 2313665013719026095}

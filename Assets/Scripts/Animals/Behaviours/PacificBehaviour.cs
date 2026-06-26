@@ -136,5 +136,7 @@ public class PacificBehaviour : IAnimalBehaviour
 
         animal.GetAnimator().SetFloat("Vert", vert);
         animal.GetAnimator().SetFloat("State", normalized);
+
+        animal.UpdateFootsteps(smoothedSpeed);
     }
 }

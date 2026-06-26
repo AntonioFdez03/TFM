@@ -138,7 +138,7 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 6c227efe38eb04e4e8d2d777dcbb257b, type: 2}
   dropItem: {fileID: 5144113718169600618, guid: 8d1c73364dcfaec409f4be7fe2790ee1, type: 3}
   hitSound: {fileID: 8300000, guid: 477fae28586de464290f4c8ec525c89a, type: 3}
-  harvestSound: {fileID: 8300000, guid: adb6cf5bf8ba6754bbae6d78bec7b1ed, type: 3}
+  harvestSound: {fileID: 8300000, guid: 477fae28586de464290f4c8ec525c89a, type: 3}
   cutTreePrefab: {fileID: 2421277709255642757, guid: 2fe31350ca6056d4f911611083837bab, type: 3}
   stumpPrefab: {fileID: 6926759630850403763, guid: b6eff1a9401e81c4ea738e2888d398e7, type: 3}
 --- !u!136 &6386089069940898899

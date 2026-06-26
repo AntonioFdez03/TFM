@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instance;
 
     private AudioSource audioSource;
+    private AudioSource loopSource;
 
     [SerializeField] private SoundEntry[] sounds;
 
@@ -40,6 +42,10 @@ public class AudioManager : MonoBehaviour
                 soundDictionary[sound.name] = sound.clip;
             }
         }
+
+        loopSource = gameObject.AddComponent<AudioSource>();
+        loopSource.playOnAwake = false;
+        loopSource.loop = true;
     }
 
     public void PlayOneShot(AudioClip audioClip, float audioScale = 1f)
@@ -73,5 +79,72 @@ public class AudioManager : MonoBehaviour
     public void Stop()
     {
         audioSource.Stop();
+    }
+
+    public void PlayAmbient(string name)
+    {
+        if (soundDictionary.TryGetValue(name, out AudioClip clip))
+        {   
+            print("Entra al sonido");
+            StartCoroutine(FadeInCR(clip, 2, 0.5f));
+        }
+    }
+
+    public IEnumerator FadeInCR(AudioClip audio, float duration, float targetVolume)
+    {   
+        print("Entra");
+
+        yield return StartCoroutine(FadeOutCR(duration));
+
+        audioSource.clip = audio;
+        audioSource.volume = 0f;
+        audioSource.loop = true;
+        audioSource.Play();
+
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(0f, targetVolume, elapsed / duration);
+            yield return null;
+        }
+
+        audioSource.volume = targetVolume;
+    }
+
+    public IEnumerator FadeOutCR(float duration)
+    {
+        float startVolume = audioSource.volume;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(startVolume, 0f, elapsed / duration);
+            yield return null;
+        }
+
+        audioSource.volume = 0f;
+        audioSource.Stop();
+    }
+
+    public void PlayLoop(string audioName)
+    {
+        if (soundDictionary.TryGetValue(audioName, out AudioClip clip))
+        {
+            if (loopSource.clip == clip && loopSource.isPlaying)
+                return;
+
+            loopSource.volume = 0.6f;
+            loopSource.clip = clip;
+            loopSource.Play();
+        }
+    }
+
+    public void StopLoop()
+    {
+        loopSource.Stop();
+        loopSource.clip = null;
     }
 }

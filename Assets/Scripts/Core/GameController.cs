@@ -9,12 +9,13 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject helicopterPrefab;
     [SerializeField] private Transform helicopterSpawn;
     [SerializeField] private Transform helicopterTarget;
+    [SerializeField] private ScreenFaderController screenFaderController;
     private bool helicopterInstantiated = false;
 
     private float requiredHeight = 260;
     private bool radioUsed = false;
-    private int daysUntilRescue = 0;
-    private float rescueHour = 0;
+    private int daysUntilRescue = 3;
+    private float rescueHour = 6;
     private float helicoperWaitTime = 120f;
     private bool playerEscaped = false;
 
@@ -56,7 +57,7 @@ public class GameController : MonoBehaviour
 
         if (playerEscaped)
         {
-            StartCoroutine(FaderCR("GameCompleteScene"));
+            StartCoroutine(FaderCR("GameCompletedScene"));
         }
     }
 
@@ -67,8 +68,14 @@ public class GameController : MonoBehaviour
 
     private IEnumerator FaderCR(string sceneName)
     {   
-        ScreenFaderController.instance.FadeOut();
-        yield return new WaitForSeconds(2);
+        screenFaderController.FadeOut();
+
+        Time.timeScale = 0f;
+
+        yield return new WaitForSecondsRealtime(2f); 
+
+        Time.timeScale = 1f;
+
         SceneManager.LoadScene(sceneName);
     }
 

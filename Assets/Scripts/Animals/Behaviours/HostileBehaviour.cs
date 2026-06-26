@@ -9,6 +9,9 @@ public class HostileBehaviour : IAnimalBehaviour
     private float attackTimer;
     private float smoothedSpeed;
 
+    private bool playerDetected = false;
+    private float timer;
+
     public void Act(Animal animal)
     {   
         if(animal.IsAttacking())
@@ -32,6 +35,11 @@ public class HostileBehaviour : IAnimalBehaviour
 
         if (distanceToPlayer <= animal.GetAnimalData().chaseDistance)
         {
+            if (!playerDetected)
+            {
+                playerDetected = true;
+                animal.DetectSound();
+            }
             if (canReach)
             {
                 if (distanceToPlayer > animal.GetAnimalData().attackDistance + 0.5f)
@@ -40,7 +48,7 @@ public class HostileBehaviour : IAnimalBehaviour
                 }
                 else if (attackTimer < 0f)
                 {   
-                    animal.Attack();
+                    animal.Attack("Player");
                     LookAt(animal, player);
                     animal.GetAnimator().SetTrigger("Attack");
                     attackTimer = animal.GetAnimalData().attackCooldown;
@@ -64,8 +72,11 @@ public class HostileBehaviour : IAnimalBehaviour
             }
         }
         else
-        {
-            agent.ResetPath();
+        {   
+            timer -= Time.deltaTime;
+            if (timer <= 0)
+                ChooseNewAction(animal);
+        
         }
 
         UpdateAnimator(animal);
@@ -86,24 +97,28 @@ public class HostileBehaviour : IAnimalBehaviour
 
     private void TryAttackStructure(Animal animal)
     {
-        Vector3 origin =
-            animal.transform.position + Vector3.up * 0.8f;
+        Collider[] hits = Physics.OverlapSphere(
+            animal.transform.position,
+            animal.GetAnimalData().attackDistance);
 
-        Vector3 direction =
-            animal.transform.forward;
-
-        if (Physics.SphereCast(
-            origin,
-            0.7f,
-            direction,
-            out RaycastHit hit,
-            animal.GetAnimalData().attackDistance))
+        foreach (var hit in hits)
         {
-            if (hit.collider.TryGetComponent(out PlaceableBehaviour placeableBehaviour))
-            {   
-                LookAt(animal,hit.collider.transform);
-                placeableBehaviour.TakeDamage(animal.GetAnimalData().damage);
-                attackTimer = animal.GetAnimalData().attackCooldown;
+            if (hit.TryGetComponent(out PlaceableBehaviour placeableBehaviour))
+            {
+                Vector3 direction =
+                    hit.transform.position - animal.transform.position;
+
+                direction.y = 0;
+
+                if (direction != Vector3.zero)
+                {
+                    animal.transform.rotation =
+                        Quaternion.LookRotation(direction);
+                }
+
+                animal.Attack("Placeable", placeableBehaviour);
+
+                return;
             }
         }
     }
@@ -128,7 +143,7 @@ public class HostileBehaviour : IAnimalBehaviour
                 Quaternion.Slerp(
                     animal.transform.rotation,
                     rotation,
-                    Time.deltaTime * 10f
+                    Time.deltaTime * 20f
                 );
         }
     }
@@ -160,6 +175,32 @@ public class HostileBehaviour : IAnimalBehaviour
         }
     }
 
+    void ChooseNewAction(Animal animal)
+    {   
+        if (!agent.isActiveAndEnabled || !agent.isOnNavMesh)
+            return;
+    
+        timer = Random.Range(5f, 20f);
+
+        int action = Random.Range(0, 2);
+        agent.isStopped = false;
+
+        if (action == 0)
+            agent.ResetPath();
+        else
+        {
+            Vector3 randomDirection = Random.insideUnitSphere * 40f;
+            randomDirection += animal.transform.position;
+
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomDirection, out hit, 40f, NavMesh.AllAreas))
+            {
+                agent.speed = animal.GetAnimalData().speed;
+                agent.SetDestination(hit.position);
+            }
+        }
+    }
+
     private void UpdateAnimator(Animal animal)
     {
         float rawSpeed = (agent.velocity.magnitude + agent.desiredVelocity.magnitude) / 2;
@@ -178,5 +219,7 @@ public class HostileBehaviour : IAnimalBehaviour
 
         animal.GetAnimator().SetFloat("Vert", vert);
         animal.GetAnimator().SetFloat("State", normalized);
+
+        animal.UpdateFootsteps(smoothedSpeed);
     }
 }

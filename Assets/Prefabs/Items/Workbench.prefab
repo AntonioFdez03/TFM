@@ -55,6 +55,8 @@ MonoBehaviour:
   brokeItemsDrop:
   - {fileID: 3074230260528391914, guid: 677e5e059ef81a04a923e573c47ba2c1, type: 3}
   - {fileID: 3074230260528391914, guid: 677e5e059ef81a04a923e573c47ba2c1, type: 3}
+  hitSound: {fileID: 8300000, guid: 69b569f0e3961a948a12fc8f64997676, type: 3}
+  brokeSound: {fileID: 8300000, guid: 92a4e56ede2a5f84d9dd6c7812142be1, type: 3}
 --- !u!65 &3460342307138450448
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -169,6 +169,12 @@ MonoBehaviour:
   brokeSound: {fileID: 0}
   interferenceSound: {fileID: 8300000, guid: d6ef20a9c069aa44fbea54f2c6c77e1b, type: 3}
   radioSound: {fileID: 0}
+  audio1: {fileID: 8300000, guid: 3830836fd55345f418be04fd2bfc9a17, type: 3}
+  audio2: {fileID: 8300000, guid: 1d76368e32d1bdc4e8e2665af29f43f6, type: 3}
+  audio3: {fileID: 8300000, guid: a9d39e5f1b106934d8a56af4c54399ae, type: 3}
+  audio4: {fileID: 8300000, guid: 1199d077ed3d0af49a7d2e7153678785, type: 3}
+  audio5: {fileID: 8300000, guid: 8cf046bc1259f54419ffbe5ea3bbd90b, type: 3}
+  audio6: {fileID: 8300000, guid: 1b48dd2917967254190cff856bb40c6f, type: 3}
 --- !u!65 &2253134599325682817
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -19,6 +19,6 @@ MonoBehaviour:
   showInHand: 1
   handForm: 2
   hungerPoints: 0
-  healthPoints: 15
+  healthPoints: 20
   sanityPoints: 0
   consumeTime: 7

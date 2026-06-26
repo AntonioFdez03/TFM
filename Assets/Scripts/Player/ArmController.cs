@@ -157,6 +157,7 @@ public class ArmController : MonoBehaviour
                 item.Attack(this);
             else
             {
+                AudioManager.instance.PlayOneShot("Punch");
                 animator.SetTrigger("Punch");
                 StartCoroutine(PunchMovementCR());
             }
@@ -181,7 +182,8 @@ public class ArmController : MonoBehaviour
         {
             Animal animal = hit.collider.CompareTag("Animal") ? hit.collider.GetComponentInParent<Animal>() : null;
             if (animal != null)
-            {
+            {   
+                AudioManager.instance.PlayOneShot("Hit", 0.5f);
                 animal.TakeDamage(punchDamage);
 
                 Vector3 dir = (animal.transform.position - transform.position).normalized;
@@ -191,11 +193,13 @@ public class ArmController : MonoBehaviour
             }
 
             if(hit.collider.TryGetComponent(out HarvestableObject harvestableObject))
-            {
+            {   
+                AudioManager.instance.PlayOneShot("Hit");
                 harvestableObject.TakeHit(ToolType.None,punchDamage);
                 PlayerAttributes player = PlayerController.instance.GetPlayerAttributes();
                 player.TakeDamage(1f);
             }  
+             
         }
     }
 
@@ -278,6 +282,7 @@ public class ArmController : MonoBehaviour
         }
 
         // 2. Fase de bajada
+        //AudioManager.instance.PlayOneShot("ToolSlash", 07f);
         Quaternion hitRot = Quaternion.Euler(0, -40, -65);
         elapsed = 0;
         while (elapsed < returnDuration)
@@ -320,6 +325,7 @@ public class ArmController : MonoBehaviour
         }
 
         Quaternion hitRotation = Quaternion.Euler(30, 0, 0);
+        //AudioManager.instance.PlayOneShot("ToolSlash", 07f);
         // 2. Fase de golpeo
         elapsed = 0;
         while (elapsed < returnDuration)

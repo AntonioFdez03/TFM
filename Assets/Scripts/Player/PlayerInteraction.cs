@@ -91,7 +91,9 @@ public class PlayerInteraction : MonoBehaviour
             var behaviour = HotBarController.instance.GetCurrentItemBehaviour();
 
             if (behaviour is ConsumableBehaviour consumable)
-                consumable.SetCurrentTime(0f);
+            {   
+                consumable.ResetConsume();
+            }
 
             if (behaviour is PlaceableBehaviour placeable)
                 placeable.SetCurrentTime(0f);
@@ -172,7 +174,9 @@ public class PlayerInteraction : MonoBehaviour
             return;
 
         if (obj.TryGetComponent<ConsumableBehaviour>(out var consumable))
-            consumable.SetCurrentTime(0f);
+        {   
+            consumable.ResetConsume();
+        }
 
         if (obj.TryGetComponent<PlaceableBehaviour>(out var placeable))
             placeable.SetCurrentTime(0f);

@@ -19,6 +19,7 @@ public class ToolBehaviour : EquipmentBehaviour
     public override void Attack(ArmController arm)
     {
         base.Attack(arm);
+
         if(toolData.toolType == ToolType.Pickaxe || toolData.toolType == ToolType.None || toolData.toolType == ToolType.Hammer)
             arm.StartCoroutine(arm.PickaxeSwingCR());
         else if(toolData.toolType == ToolType.Axe)
@@ -36,7 +37,7 @@ public class ToolBehaviour : EquipmentBehaviour
     }
 
     protected void UseTool()
-    {
+    {   
         Ray ray = new Ray(CameraController.instance.transform.position, CameraController.instance.transform.forward);
         RaycastHit hit;
 
@@ -48,11 +49,13 @@ public class ToolBehaviour : EquipmentBehaviour
             {
                 animal.TakeDamage(toolData.damage);
                 TakeDamage(animalDamage);
+                AudioManager.instance.PlayOneShot("Hit", 0.6f);
             }
 
             if(hit.collider.TryGetComponent(out HarvestableObject harvestableObject)){
                 harvestableObject.TakeHit(toolData.toolType,toolData.damage);
                 TakeDamage(harvestableDamage);
+                //AudioManager.instance.PlayOneShot("Hit", 0.6f);
             }
 
             if(hit.collider.TryGetComponent(out PlaceableBehaviour placeable))
@@ -63,12 +66,14 @@ public class ToolBehaviour : EquipmentBehaviour
                     {
                         placeable.Heal(toolData.damage);
                         TakeDamage(placeableDamage);
+                        AudioManager.instance.PlayOneShot("Hit", 0.6f);
                     }
                 }
                 else
                 {
                     placeable.TakeDamage(toolData.damage);
                     TakeDamage(placeableDamage);
+                    AudioManager.instance.PlayOneShot("Hit", 0.6f);
                 }
             }
         }

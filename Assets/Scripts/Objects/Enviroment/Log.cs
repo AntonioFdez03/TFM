@@ -10,8 +10,9 @@ public class Log : HarvestableObject
     [SerializeField] private List<Transform> branchSpawners;
     
     protected void Awake()
-    {
-        currentHealth = data.maxHealth;
+    {   
+        if(!initialized)
+            currentHealth = data.maxHealth;
     }
 
     public override void Harvest()

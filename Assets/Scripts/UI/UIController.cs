@@ -21,7 +21,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject settingsPanel;
     [SerializeField] private Transform dragginLayer;
 
-
+    [SerializeField] private ScreenFaderController screenFaderController;
     [Header("Sounds")]
     [SerializeField] private AudioClip inventoryOpen;
     [SerializeField] private AudioClip inventoryClose;
@@ -47,8 +47,9 @@ public class UIController : MonoBehaviour
         inventoryAction = InputSystem.actions.FindAction("Inventory");
         pauseAction = InputSystem.actions.FindAction("Pause");
         craftAction = InputSystem.actions.FindAction("Craft");
-
-        ScreenFaderController.instance.FadeIn();
+        
+        screenFaderController.gameObject.SetActive(true);
+        screenFaderController.FadeIn();
         SetState(UIState.Gameplay);
     }
 
@@ -74,7 +75,7 @@ public class UIController : MonoBehaviour
         if (craftAction.WasPressedThisFrame())
         {
             if(currentState == UIState.Gameplay || currentState == UIState.Inventory) SetState(UIState.Crafting);
-            else if(currentState == UIState.Crafting) SetState(UIState.Inventory);        
+            else if(currentState == UIState.Crafting ||currentState == UIState.Furnace ||currentState == UIState.Storage) SetState(UIState.Inventory);        
         }
     }
 

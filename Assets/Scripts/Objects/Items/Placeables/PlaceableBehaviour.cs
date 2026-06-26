@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PlaceableBehaviour : ItemBehaviour
 {   
+    protected PlaceableData placeableData;
+
     protected static LayerMask placementMask;
     [SerializeField] Material greenMaterial;
     [SerializeField] Material redMaterial;
@@ -26,6 +28,7 @@ public class PlaceableBehaviour : ItemBehaviour
     private float timer;
 
     private float maxSlopeAngle = 35f;
+    private HashSet<PlaceableBehaviour> touching = new();
 
 
     protected override void Start()
@@ -41,14 +44,17 @@ public class PlaceableBehaviour : ItemBehaviour
             "Enviroment"
         );
 
-        print($"[Start] placementMask = {placementMask.value}");
+        CheckInitialContacts();
+        placeableData = data as PlaceableData;
     }
 
     protected void SetCheckBoxSize(Vector3 boxSize) => checkBoxSize = boxSize; 
     public float GetCurrentTime() => timer; 
     public float SetCurrentTime(float time) => timer = time; 
     public float GetUnplaceTime() => unplaceTime;
-    public virtual bool CanUnplace() => canUnplace;
+    public virtual bool CanUnplace() => canUnplace && placeableData.canUnplace;
+    public void AddTouchingItem(PlaceableBehaviour pb) => touching.Add(pb);
+    public void RemoveTouchingItem(PlaceableBehaviour pb) => touching.Remove(pb);
 
     public override void Use()
     {
@@ -79,6 +85,7 @@ public class PlaceableBehaviour : ItemBehaviour
         }
 
         InventoryController.instance.RemoveItem(GetItemStack());
+        StatisticsController.instance.AddItemPlaced();
     }
 
     private bool Collides(Vector3 position, Quaternion rotation)
@@ -238,6 +245,7 @@ public class PlaceableBehaviour : ItemBehaviour
                 dropItem.transform.position = center + offset; 
             }
             AudioManager.instance.PlayOneShot("WoodBroken");
+            ManagePlacedItems();
             Destroy(gameObject);
         }
             
@@ -308,5 +316,75 @@ public class PlaceableBehaviour : ItemBehaviour
     {
         float slopeAngle = Vector3.Angle(Vector3.up, hit.normal);
         return slopeAngle <= maxSlopeAngle;
+    }
+
+
+    public void ManagePlacedItems()
+    {
+        foreach (var placeable in touching)
+        {
+            if (placeable == null || placeable == this)
+                continue;
+
+            if (placeable is Radio)
+            {
+                Rigidbody rb = placeable.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.isKinematic = false;
+                    rb.useGravity = true;
+                }
+            }
+            else
+            {
+                Destroy(placeable.gameObject);
+            }
+        }
+
+        touching.Clear();
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.TryGetComponent(out PlaceableBehaviour pb))
+        {   
+            print("Item añadido: " + pb.gameObject.name);
+            touching.Add(pb);
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.TryGetComponent(out PlaceableBehaviour pb))
+        {
+            print("Item retirado: " + pb.gameObject.name);
+            touching.Remove(pb);
+        }
+    }
+
+    private void CheckInitialContacts()
+    {
+        Collider col = GetComponentInChildren<Collider>();
+        if (col == null) return;
+
+        Bounds bounds = col.bounds;
+
+        Collider[] hits = Physics.OverlapBox(
+            bounds.center,
+            bounds.extents,
+            transform.rotation
+        );
+
+        foreach (var hit in hits)
+        {
+            if (hit.gameObject == gameObject)
+                continue;
+
+            if (hit.TryGetComponent(out PlaceableBehaviour pb))
+            {
+                touching.Add(pb);
+                print("Inicial añadido: " + pb.name);
+            }
+        }
     }
 }

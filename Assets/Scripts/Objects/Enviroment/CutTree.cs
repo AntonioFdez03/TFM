@@ -9,10 +9,20 @@ public class CutTree : HarvestableObject
 {   
     [SerializeField] private List<Transform> logSpawners = new();
     [SerializeField] private GameObject trigger;
+    private Rigidbody rb;
+
+    private bool onTerrain = false;
+    private float treeDamage = 20;
     
     protected void Awake()
+    {   
+        if(!initialized)
+            currentHealth = data.maxHealth;
+    }
+
+    void Start()
     {
-        currentHealth = data.maxHealth;
+        rb = GetComponent<Rigidbody>();
     }
 
     public override void Harvest()
@@ -40,7 +50,19 @@ public class CutTree : HarvestableObject
     {
         if (other.CompareTag("Terrain"))
         {
-            //Sonido
+            onTerrain = true;
+        }
+    }
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        if(!onTerrain && rb.linearVelocity.sqrMagnitude > 1f && collision.gameObject.CompareTag("Player"))
+        {   
+            Vector3 pushDir = (transform.position - collision.transform.position).normalized;
+            pushDir.y = 0f; // evitar que lo levante
+
+            rb.AddForce(pushDir * 8, ForceMode.Impulse);
+            PlayerController.instance.GetPlayerAttributes().TakeDamage(treeDamage);
         }
     }
 }

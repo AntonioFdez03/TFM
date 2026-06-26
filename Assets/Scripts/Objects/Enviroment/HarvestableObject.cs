@@ -13,18 +13,28 @@ public abstract class HarvestableObject : MonoBehaviour, IObjectHealth
 
     [SerializeField] private AudioClip hitSound;
     [SerializeField] protected AudioClip harvestSound;
+    protected bool initialized = false;
+
+    public void Initialize(float health)
+    {
+        if (health > 0)
+            currentHealth = health;
+        else
+            currentHealth = data.maxHealth;
+
+        initialized = true;
+    }
 
     public HarvestableData GetData() => data;
     public float GetCurrentHealth() => currentHealth;
     public float GetMaxHealth() => data.maxHealth;
-
     public void SetCurrentHealth(float health) => currentHealth = health;
     public virtual void TakeHit(ToolType tool, float damage)
     {
         if (CanHarvest(tool))
         {   
             if(hitSound != null)
-                AudioManager.instance.PlayOneShot(hitSound, 0.4f);
+                AudioManager.instance.PlayOneShot(hitSound, 0.9f);
                 
             currentHealth = Math.Clamp(currentHealth - damage, 0 ,data.maxHealth);
             

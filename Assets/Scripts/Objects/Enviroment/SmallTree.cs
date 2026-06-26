@@ -11,15 +11,18 @@ public class SmallTree : HarvestableObject
     [SerializeField] private List<Transform> branchSpawners;
 
     protected void Awake()
-    {
-        currentHealth = data.maxHealth;
+    {   
+        if(!initialized)
+            currentHealth = data.maxHealth;
+            
         rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = true;
         rb.useGravity = false;
     }
 
     public override void Harvest()
-    {
+    {   
+        StatisticsController.instance.AddTreeChopped();
         rb.isKinematic = false;
         rb.useGravity = true;
 

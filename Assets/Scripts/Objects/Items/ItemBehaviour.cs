@@ -9,9 +9,12 @@ public abstract class ItemBehaviour : MonoBehaviour, IObjectHealth
 
     protected float useCooldown = 1f;
     protected bool canUse = true;
+    protected bool initialized = false;
 
     protected virtual void Start()
     {   
+        if(initialized) return;
+
         if (data != null && itemStack == null)
         {   
             float maxHealth = 0;
@@ -30,7 +33,8 @@ public abstract class ItemBehaviour : MonoBehaviour, IObjectHealth
     }
 
     public virtual void Initialize(ItemStack stack)
-    {
+    {   
+        initialized = true;
         itemStack = stack;
 
         if (data != null && itemStack == null)

@@ -17,6 +17,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject secondaryButtons;
     [SerializeField] private GameObject creditsPanel;
     [SerializeField] private TMP_Text alertText;
+    [SerializeField] private GameObject Keys;
     [SerializeField] private Button continueButton;
     [SerializeField] private AudioClip buttonSound;
     [SerializeField] private AudioClip backgroundMusic;
@@ -27,7 +28,7 @@ public class MainMenuManager : MonoBehaviour
     private Vector3 titleInitPosition;
     private Vector3 creditsInitPosition;
     private float titleWaitTime = 10f;
-    private float creditsSpeed = 20f;
+    private float creditsSpeed = 30f;
     private float timer = 0;
 
     private string savePath;
@@ -38,6 +39,7 @@ public class MainMenuManager : MonoBehaviour
 
     void Start()
     {   
+        Time.timeScale = 1f;
         audioSource = GetComponent<AudioSource>();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -45,7 +47,7 @@ public class MainMenuManager : MonoBehaviour
         audioSource.volume = 0.5f;
         audioSource.clip = backgroundMusic;
         audioSource.loop = true;
-        //audioSource.Play();
+        audioSource.Play();
 
         space = InputSystem.actions.FindAction("Jump");
         escape = InputSystem.actions.FindAction("Pause");
@@ -112,6 +114,7 @@ public class MainMenuManager : MonoBehaviour
     {
         audioSource.PlayOneShot(buttonSound);
 
+        Keys.SetActive(true);
         creditsPanel.SetActive(true);
         mainButtons.SetActive(false);
         secondaryButtons.SetActive(false);
@@ -151,6 +154,7 @@ public class MainMenuManager : MonoBehaviour
         secondaryButtons.SetActive(false);
         creditsPanel.gameObject.SetActive(false);
         alertText.text = "";
+        Keys.SetActive(false);
 
         title.transform.position = titleInitPosition;
         creditsPanel.transform.position = creditsInitPosition;

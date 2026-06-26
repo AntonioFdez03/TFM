@@ -6,6 +6,8 @@ public class ConsumableBehaviour : ItemBehaviour
 {   
     protected ConsumableData consumableData;
     protected float timer;
+    protected bool isConsuming;
+    protected string consumeSound = "";
 
     InputAction rmb;
 
@@ -13,19 +15,39 @@ public class ConsumableBehaviour : ItemBehaviour
     {
         base.Initialize(stack);
         consumableData = data as ConsumableData;
+
+        if(consumableData.id == "Bandage")
+            consumeSound = "Bandage";
+        else if(consumableData.hungerPoints > 0)
+            consumeSound = "PlayerEat";
     }
 
+    public void SetConsuming(bool value) => isConsuming = value;
     public override void Use()
     {   
         rmb = InputSystem.actions.FindAction("RMB");
         PlayerAttributes player = PlayerController.instance.GetPlayerAttributes();
 
-        if (rmb.IsPressed() && player.CanConsume(consumableData))
+        bool holding = rmb.IsPressed();
+
+        if (holding && player.CanConsume(consumableData))
+        {
             timer += Time.deltaTime;
 
-        if(timer > consumableData.consumeTime)
+            if (!isConsuming)
+            {
+                isConsuming = true;
+
+                if(consumeSound != "")
+                    AudioManager.instance.PlayLoop(consumeSound);
+            }
+        }
+
+        if (timer > consumableData.consumeTime)
         {
             timer = 0;
+            AudioManager.instance.StopLoop();
+            isConsuming = false;
             Consume();
         }
     }
@@ -45,6 +67,11 @@ public class ConsumableBehaviour : ItemBehaviour
     }
 
     public float GetCurrentTime() => timer;
-    public float SetCurrentTime(float time) => timer = time;
+    public void SetCurrentTime(float time) => timer = time;
+    public void ResetConsume(){
+        timer = 0;
+        isConsuming = false;
+        AudioManager.instance.StopLoop();
+    }
     public float GetConsumeTime() => consumableData.consumeTime;
 }

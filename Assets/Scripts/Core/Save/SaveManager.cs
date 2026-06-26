@@ -59,7 +59,7 @@ public class SaveManager : MonoBehaviour
         InventoryController inventory = InventoryController.instance;
 
         for (int i = 0; i < inventory.GetInventoryItems().Length; i++)
-        {
+        { 
             SaveData.InventoryItemData itemData = new();
 
             ItemStack inventoryItem = inventory.GetInventoryItems()[i];
@@ -99,13 +99,11 @@ public class SaveManager : MonoBehaviour
                 ItemStack instance = itemBehaviour.GetItemStack();
 
                 objectData.id = instance.id;
-                print("Guardando item: " + objectData.id);
                 objectData.type = "Item";
                 objectData.currentHealth = instance.currentHealth;
 
                 if(worldObject.TryGetComponent(out StorageController storage))
                 {   
-                    print("Guardando cofre");
                     objectData.storageItems = new();
 
                     for(int j = 0; j < storage.GetStorageSize(); j++)
@@ -116,13 +114,11 @@ public class SaveManager : MonoBehaviour
 
                         if (storageItem != null)
                         {
-                            print("Datos guardados");
                             itemData.id = storageItem.id;
                             itemData.currentHealth = storageItem.currentHealth;
                         }
                         else
                         {   
-                            print("Datos NO guardados");
                             itemData.id = "-1";
                             itemData.currentHealth = 0;
                         }
@@ -131,7 +127,6 @@ public class SaveManager : MonoBehaviour
                     }
                 }else if(worldObject.TryGetComponent(out FurnaceController furnace))
                 {   
-                    print("Gurdando horno");
                     // Inputs
                     objectData.furnaceInputItems = new();
 
@@ -143,7 +138,6 @@ public class SaveManager : MonoBehaviour
 
                         if (furnaceItem != null)
                         {   
-                            print("Hay input");
                             itemData.id = furnaceItem.id;
                             itemData.currentHealth = furnaceItem.currentHealth;
                         }
@@ -207,7 +201,6 @@ public class SaveManager : MonoBehaviour
                 objectData.currentHealth = harvestable.GetCurrentHealth();
             }
 
-            print("Item añadido con id: " + objectData.id);
             data.worldObjects.Add(objectData);
         }
 
@@ -215,6 +208,24 @@ public class SaveManager : MonoBehaviour
         {
             currentDay = DayCycleController.instance.GetCurrentDay(),
             currentHour = DayCycleController.instance.GetCurrentHour()
+        };
+
+        data.objectiveData = new SaveData.ObjectiveData
+        {
+            currentObjective = ObjectivesController.instance.GetCurrentObjective(),
+            objectiveDaysSurvived = DayCycleController.instance.GetObjectiveDaysSurvived()
+        };
+
+        StatisticsController stats = StatisticsController.instance;
+        data.statsData = new SaveData.StatsData
+        {   
+            daysSurvived = stats.GetDaysSurvived(),
+            treesChopped = stats.GetTreesChopped(),
+            rocksDestroyed = stats.GetRocksDestroyed(),
+            bushesRecolected = stats.GetBushesHarvested(),
+            animalsHunted = stats.GetAnimalsHunted(),
+            itemsCrafted = stats.GetItemsCrafted(),
+            itemsPlaced = stats.GetItemsPlaced()
         };
 
         // ---------------- WRITE ----------------
@@ -294,9 +305,16 @@ public class SaveManager : MonoBehaviour
 
             obj.transform.SetPositionAndRotation(objectData.position, objectData.rotation);
             
-            if (obj.TryGetComponent(out IObjectHealth health))
+            if (obj.TryGetComponent(out ItemBehaviour item))
             {
-                health.SetCurrentHealth(objectData.currentHealth);
+                item.Initialize(new ItemStack
+                {
+                    id = objectData.id,
+                    currentHealth = objectData.currentHealth
+                });
+            }else if (obj.TryGetComponent(out HarvestableObject harvestable))
+            {
+                harvestable.Initialize(objectData.currentHealth);
             }
 
             if(obj.TryGetComponent(out StorageController storage))
@@ -388,6 +406,18 @@ public class SaveManager : MonoBehaviour
         // ---------------- DAY CYCLE ----------------
         DayCycleController dayCycle = DayCycleController.instance;
         dayCycle.Initialize(data.dayData.currentDay, data.dayData.currentHour);
+
+        ObjectivesController.instance.SetObjective(data.objectiveData.currentObjective);
+        dayCycle.SetObjectiveDaysSurvived(data.objectiveData.objectiveDaysSurvived);
+
+        StatisticsController stats = StatisticsController.instance;
+        stats.SetDaysSurvived(data.statsData.daysSurvived);
+        stats.SetTreesChopped(data.statsData.treesChopped);
+        stats.SetRocksDestroyed(data.statsData.rocksDestroyed);
+        stats.SetBushesHarvested(data.statsData.bushesRecolected);
+        stats.SetAnimalsHunted(data.statsData.animalsHunted);
+        stats.SetItemsCrafted(data.statsData.itemsCrafted);
+        stats.SetItemsPlaced(data.statsData.itemsPlaced);
         print("Fin de la carga");
     }
 

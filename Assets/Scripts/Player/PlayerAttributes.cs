@@ -33,17 +33,17 @@ public class PlayerAttributes : MonoBehaviour
     private float timeSinceLastHungerDecrase = 0f;
     private float hungerDecreaseInterval = 10f;
     private float hungerDamage = 5f;
-    private float hungerHeal = 5f;
+    private float hungerHeal = 1f;
 
     //Sanity
     private float currentSanity;
     private float maxSanity = 100f;
     private float timeSinceLastSanityDecrase = 0f;
-    private float sanityDecreaseInterval = 20f;
+    private float sanityDecreaseInterval = 15f;
     private float sanityBurnRate = 1f;
     private bool inLight = false;
 
-    void Start()
+    void Awake()
     {
         currentHealth = maxHealth;
         currentStamina = maxStamina;
@@ -77,7 +77,7 @@ public class PlayerAttributes : MonoBehaviour
     public float GetMaxSanity() => maxSanity;
     public void SetInLight(bool value) => inLight = value;
     public bool InLight() => inLight;
-
+    public bool LowSanity() => currentSanity < maxSanity * 0.5f;
     public void TakeDamage(float damage)
     {  
         if (isInvulnerable)

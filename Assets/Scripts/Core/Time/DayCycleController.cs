@@ -20,6 +20,9 @@ public class DayCycleController : MonoBehaviour
     private int currentDay = 1;
     private int objectiveDaysSurvived = 0;
 
+    private bool wasNight;
+    private bool wasLowSanity;
+
     void Awake()
     {
         if(instance != null && instance != this)
@@ -30,12 +33,19 @@ public class DayCycleController : MonoBehaviour
         instance = this;
     }
 
+    void Start()
+    {   
+        wasNight = IsNight();
+        SetInitialAmbient();
+    }
+
     public void Initialize(int day, float hour)
     {
         currentDay = day;
         currentHour = hour;
     }
 
+    public void SetObjectiveDaysSurvived(int days) => objectiveDaysSurvived = days;
     public int GetObjectiveDaysSurvived() => objectiveDaysSurvived;
     public int GetCurrentDay() => currentDay;
     public float GetCurrentHour() => currentHour;
@@ -64,6 +74,7 @@ public class DayCycleController : MonoBehaviour
         sun.localEulerAngles = new Vector3(sunRotationX,0,0);
 
         UpdateAmbientLight();
+        UpdateAmbientSound();
     }
 
     public bool IsNight() => currentHour < 6 || currentHour > 18;
@@ -123,5 +134,54 @@ public class DayCycleController : MonoBehaviour
         // Sol gradual
         sun.GetComponent<Light>().intensity =
             Mathf.Lerp(0, intensity, t);
+    }
+
+
+    private void UpdateAmbientSound()
+    {
+         bool isNight = IsNight();
+         bool isLowSanity = PlayerController.instance.GetPlayerAttributes().LowSanity();
+
+        if (isNight != wasNight || isLowSanity != wasLowSanity)
+        {
+            wasNight = isNight;
+            wasLowSanity = isLowSanity;
+
+            if (PlayerController.instance.GetPlayerAttributes().LowSanity())
+            {
+                if (IsNight())
+                    AudioManager.instance.PlayAmbient("LowSanityNight");
+                else
+                    AudioManager.instance.PlayAmbient("LowSanityDay");
+            }
+            else
+            {
+                if (IsNight())
+                    AudioManager.instance.PlayAmbient("ForestNight");
+                else
+                    AudioManager.instance.PlayAmbient("ForestDay");
+            }
+        }
+    }
+
+    private void SetInitialAmbient()
+    {   
+        if (PlayerController.instance.GetPlayerAttributes().LowSanity())
+        {   
+            if (IsNight())
+                AudioManager.instance.PlayAmbient("LowSanityNight");
+            else
+                AudioManager.instance.PlayAmbient("LowSanityDay");
+        }
+        else
+        {   
+            if (IsNight())
+                AudioManager.instance.PlayAmbient("ForestNight");
+            else
+                AudioManager.instance.PlayAmbient("ForestDay");
+        }
+
+        wasNight = IsNight();
+        wasLowSanity = PlayerController.instance.GetPlayerAttributes().LowSanity();
     }
 }

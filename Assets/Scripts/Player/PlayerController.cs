@@ -97,16 +97,21 @@ public class PlayerController : MonoBehaviour
                 controller.Move(slide * 5f * Time.deltaTime);
             }
 
+            Vector3 finalMovement = Vector3.zero;
             if (canMove)
             {
                 Crouch();
 
-                Vector3 finalMovement = Vector3.zero;
                 finalMovement += CalculateHorizontalMovement();
                 finalMovement += CalculateVerticalMovement();
-
-                controller.Move(finalMovement * Time.deltaTime);
             }
+            else
+            {
+                yVelocity += gravity.y * Time.deltaTime;
+                finalMovement.y = yVelocity;
+            }
+
+            controller.Move(finalMovement * Time.deltaTime);
         }
     }
 

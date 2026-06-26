@@ -13,14 +13,17 @@ public class BigTree : HarvestableObject
     
     protected void Awake()
     {
-        currentHealth = data.maxHealth;
+        if(!initialized)
+            currentHealth = data.maxHealth;
+            
         rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = true;
         rb.useGravity = false;
     }
 
     public override void Harvest()
-    {
+    {   
+        StatisticsController.instance.AddTreeChopped();
         GameObject stump = Instantiate(stumpPrefab, InventoryController.instance.GetItemsParent());
         stump.transform.position = transform.position;
 

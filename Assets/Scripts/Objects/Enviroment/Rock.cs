@@ -16,8 +16,10 @@ public class Rock : HarvestableObject
     private MeshCollider meshCollider;
 
     protected void Awake()
-    {   
-        currentHealth = data.maxHealth;
+    {      
+        if(!initialized)
+            currentHealth = data.maxHealth;
+            
         rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = true;
         rb.useGravity = false;
@@ -54,6 +56,7 @@ public class Rock : HarvestableObject
         }
         else
         {
+            StatisticsController.instance.AddRockDestroyed();
             DropItem();
             DropItem();
             Destroy(gameObject);

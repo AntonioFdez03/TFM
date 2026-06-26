@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
@@ -61,4 +62,29 @@ public class SaveData
     }
 
     public DayData dayData;
+
+    [Serializable] 
+    public class ObjectiveData
+    {
+        public ObjectiveType currentObjective;
+        public int objectiveDaysSurvived;
+
+    }
+
+    public ObjectiveData objectiveData;
+
+    [Serializable]
+    public class StatsData
+    {
+        public int daysSurvived;
+        public int treesChopped;
+        public int rocksDestroyed;
+        public int bushesRecolected;
+        public int animalsHunted;
+        public int itemsCrafted;
+        public int itemsPlaced;
+
+    }
+
+    public StatsData statsData;
 }

@@ -14,8 +14,9 @@ public class Bush : HarvestableObject
     private AudioSource audioSource;
 
     protected void Awake()
-    {
-        currentHealth = data.maxHealth;
+    {   
+        if(!initialized)
+            currentHealth = data.maxHealth;
 
         audioSource = GetComponent<AudioSource>();
     }
@@ -64,8 +65,6 @@ public class Bush : HarvestableObject
         {
             Transform berry = transform.GetChild(1);
 
-            print("berry " + i + " de " + berriesCount);
-
             berry.SetParent(InventoryController.instance.GetItemsParent());
 
             Rigidbody rb = berry.GetComponent<Rigidbody>();
@@ -92,6 +91,7 @@ public class Bush : HarvestableObject
             }
         }
 
+        StatisticsController.instance.AddBushRecolected();
         Destroy(gameObject);
     }
 

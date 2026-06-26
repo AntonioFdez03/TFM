@@ -66,6 +66,7 @@ public class CraftingController : MonoBehaviour
 
         // 3. añadir al inventario
         InventoryController.instance.AddItemFromStack(newItem);
+        StatisticsController.instance.AddItemCrafted();
     }
 
     public bool CanCraft(CraftingRecipe recipe)

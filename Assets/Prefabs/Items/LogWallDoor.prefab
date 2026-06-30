@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6442841987664509429}
   - component: {fileID: 3328206661941121287}
   - component: {fileID: 6565950417579938547}
+  - component: {fileID: 5886182053779364938}
   m_Layer: 7
   m_Name: LogWallDoor
   m_TagString: Untagged
@@ -55,6 +56,8 @@ MonoBehaviour:
   brokeItemsDrop:
   - {fileID: 5144113718169600618, guid: 8d1c73364dcfaec409f4be7fe2790ee1, type: 3}
   - {fileID: 5144113718169600618, guid: 8d1c73364dcfaec409f4be7fe2790ee1, type: 3}
+  hitSound: {fileID: 8300000, guid: 69b569f0e3961a948a12fc8f64997676, type: 3}
+  brokeSound: {fileID: 8300000, guid: 92a4e56ede2a5f84d9dd6c7812142be1, type: 3}
 --- !u!54 &3328206661941121287
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -103,6 +106,103 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 15.041229, y: 15.432884, z: 1.9822388}
   m_Center: {x: -0.14935303, y: 7.216442, z: -0.013397217}
+--- !u!82 &5886182053779364938
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 405301464927842553}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1431711766076386767
 GameObject:
   m_ObjectHideFlags: 0
@@ -535,7 +635,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95bdbefa9d1e405419b71b8d5c79f81a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorBehaviour
+  audioSource: {fileID: 5886182053779364938}
+  openSound: {fileID: 8300000, guid: 127429f071a3154478639d6d2ce4588b, type: 3}
+  closeSound: {fileID: 8300000, guid: 21066cb1a4d78ba44972929a4ff762b8, type: 3}
   rotationPivot: {fileID: 6357955596055238779}
   navObstacle: {fileID: 1118203059577525257}
   openAngle: 110
   openSpeed: 1
+  closeSounDelay: 2

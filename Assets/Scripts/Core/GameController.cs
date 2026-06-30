@@ -14,9 +14,9 @@ public class GameController : MonoBehaviour
 
     private float requiredHeight = 260;
     private bool radioUsed = false;
-    private int daysUntilRescue = 3;
+    private int daysUntilRescue = 1;
     private float rescueHour = 6;
-    private float helicoperWaitTime = 120f;
+    private float helicoperWaitTime = 25f;
     private bool playerEscaped = false;
 
     void Awake()

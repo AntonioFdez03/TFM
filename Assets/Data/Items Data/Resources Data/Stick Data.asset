@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06a98d063fcfb4444ae86e7fbc4773ec, type: 3}
   m_Name: Stick Data
   m_EditorClassIdentifier: Assembly-CSharp::ResourceItemData
-  id: Branch
-  itemName: Branch
+  id: Stick
+  itemName: Stick
   icon: {fileID: 21300000, guid: 4c19d5317c3f15d45ba0bf6df3d4453c, type: 3}
   prefab: {fileID: 3074230260528391914, guid: 677e5e059ef81a04a923e573c47ba2c1, type: 3}
   showInHand: 1
-  handForm: 2
+  handForm: 1
   maxHealth: 10

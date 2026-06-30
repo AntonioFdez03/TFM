@@ -29,6 +29,11 @@ public class Helicopter : MonoBehaviour
         audioSource.clip = helicopterSound;
         audioSource.loop = true;
         audioSource.Play();
+
+        if(helicopterArrived && timer >= GameController.instance.GetHelicopterWaitTime())
+        {
+            leave = true;
+        }
     }
 
     public void SetTarget(Vector3 target){
@@ -36,7 +41,8 @@ public class Helicopter : MonoBehaviour
         transform.LookAt(helicopterTarget);
     }
 
-    public void Leave() => leave = true;
+    public void Leave() => leave = true; 
+    public bool TimePassed() => timer >= GameController.instance.GetHelicopterWaitTime();
 
     void Update()
     {
@@ -68,13 +74,12 @@ public class Helicopter : MonoBehaviour
 
                 if(timer >= GameController.instance.GetHelicopterWaitTime())
                 {
-                    print("Tiempo superado");
-                    rescueRope.GetComponent<RescueRope>().RemoveRope();
+                    if(!leave)
+                        ObjectivesController.instance.NextObjective(ObjectiveType.NoEscape);
+
+                    speed = 25f;
                 }
             }
-
-            if (leave)
-                speed = 20f;
 
             transform.position += transform.forward * speed * Time.deltaTime;
         }
@@ -87,7 +92,7 @@ public class Helicopter : MonoBehaviour
         // Dirección hacia el objetivo
         Vector3 dir = (helicopterTarget - transform.position).normalized;
 
-        if(!movement)
+        if(!movement || leave)
             dir = transform.forward;
 
         // Rotación principal hacia el objetivo

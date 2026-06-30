@@ -176,6 +176,13 @@ public class PlaceableBehaviour : ItemBehaviour
         {
             chest.enabled = false;
         }
+
+        DoorBehaviour door = silhouette.GetComponentInChildren<DoorBehaviour>();
+
+        if (door != null)
+        {
+            door.enabled = false;
+        }
     }
 
     private void AdjustSilhouette(RaycastHit hit)

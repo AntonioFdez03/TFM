@@ -18,6 +18,6 @@ MonoBehaviour:
   prefab: {fileID: 8990391563113719882, guid: be62e825072beee428d8b91142028aaa, type: 3}
   showInHand: 0
   handForm: 0
-  maxHealth: 200
+  maxHealth: 350
   straight: 0
   canUnplace: 0

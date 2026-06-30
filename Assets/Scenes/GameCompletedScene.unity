@@ -912,8 +912,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPROGRAMACI\xD3N\n\nANTONIO
-    FERN\xC1NDEZ SANTIAGO\n\n"
+  m_text: "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nA GAME BY\n\nANTONIO
+    FERN\xC1NDEZ SANTIAGO\n\n\n\nPROGRAMMING, 3D ART & UI DESIGN\n\nANTONIO FERN\xC1NDEZ
+    SANTIAGO\n\n\n\nBETA TESTER\n\nRICARDO GARZ\xD3N JIM\xC9NEZ\n\n\n\nRADIO VOICE\n\nRICARDO
+    GARZ\xD3N JIM\xC9NEZ\n\n\n\n\n\n\nTHANKS FOR PLAYING\n\n\n\n\n\n\n\n\n\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

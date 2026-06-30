@@ -10,6 +10,7 @@ TagManager:
   - Interactive
   - Animal
   - Light
+  - Floor
   layers:
   - Default
   - TransparentFX

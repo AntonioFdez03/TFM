@@ -7,10 +7,24 @@ public class RescueRope : MonoBehaviour, IInteractiveObject
     private float currentLength;
 
     void Update()
-    {
+    {   
+        float targetLenght = maxLength;
+
+        if(transform.parent.TryGetComponent(out Helicopter helicopter))
+        {   
+            if(targetLenght == 0 && currentLength == 0)
+            {
+                helicopter.Leave();
+                return;
+            }
+
+            if(helicopter.TimePassed())
+                targetLenght = 0;
+        }
+
         currentLength = Mathf.MoveTowards(
             currentLength,
-            maxLength,
+            targetLenght,
             dropSpeed * Time.deltaTime
         );
 
@@ -24,27 +38,5 @@ public class RescueRope : MonoBehaviour, IInteractiveObject
     public void Interact()
     {
         GameController.instance.SetPlayerEscaped(true);
-    }
-
-    public void RemoveRope()
-    {   
-        if(currentLength == 0)
-        {
-            print("Leaving");
-            transform.parent.GetComponent<Helicopter>().Leave();
-            return;
-        }
-
-        currentLength = Mathf.MoveTowards(
-            currentLength,
-            0f,
-            dropSpeed * Time.deltaTime
-        );
-
-        transform.localScale = new Vector3(
-            transform.localScale.x,
-            currentLength,
-            transform.localScale.z
-        );
     }
 }

@@ -39,6 +39,12 @@ public class PlayerController : MonoBehaviour
 
     private float fallTimer = 0;
     private float fallLimit = 1.5f;
+    [SerializeField] private LayerMask groundMask;
+    [SerializeField] private AudioClip grass;
+    [SerializeField] private AudioClip wood;
+    private AudioClip targetStepSound = null;
+    private AudioSource audioSource;
+
 
     void Awake()
     {
@@ -53,6 +59,10 @@ public class PlayerController : MonoBehaviour
         
         controller = GetComponent<CharacterController>();
         playerAttributes = GetComponent<PlayerAttributes>();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = grass;
+        audioSource.loop = true;
+        audioSource.Play();
 
         move = InputSystem.actions.FindAction("Move");
         sprint = InputSystem.actions.FindAction("Sprint");
@@ -104,6 +114,14 @@ public class PlayerController : MonoBehaviour
 
                 finalMovement += CalculateHorizontalMovement();
                 finalMovement += CalculateVerticalMovement();
+
+                if (new Vector2(finalMovement.x, finalMovement.z).magnitude > 0.1f && controller.isGrounded)
+                {
+                    print("Pasos");
+                    StepsSound();
+                }
+                else    
+                    audioSource.volume = 0;
             }
             else
             {
@@ -275,5 +293,47 @@ public class PlayerController : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    private void StepsSound(){
+
+        float baseSpeed = 1;
+        if(GetGroundTag() == "Terrain")
+        {
+            audioSource.volume = 1;
+            targetStepSound = grass;
+            baseSpeed = 1.75f;
+        }else if(GetGroundTag() == "Floor")
+        {   
+            audioSource.volume = 0.8f;
+            targetStepSound = wood;
+            baseSpeed = 1.5f;
+        }
+
+        if (audioSource.clip != targetStepSound)
+        {
+            audioSource.clip = targetStepSound;
+            audioSource.Play();
+        }
+
+        if(isSprinting)
+            audioSource.pitch = baseSpeed * 1.5f;
+        else
+            audioSource.pitch = baseSpeed;
+
+        if(isCrouching){
+            audioSource.volume = 0.5f;
+            audioSource.pitch = 1f;
+        }
+    }
+
+    private string GetGroundTag()
+    {
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1.5f, groundMask))
+        {
+            return hit.collider.tag;
+        }
+
+        return "";
     }
 }

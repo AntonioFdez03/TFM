@@ -164,6 +164,9 @@ public class HotBarController : MonoBehaviour
         currentPrefab = item.prefab;
         ArmController.instance.SetHandForm(currentItem);
         handItemInstance = Instantiate(currentPrefab);
+
+        RemoveHandItemShadows();
+
         currentItemBehaviour = handItemInstance.GetComponent<ItemBehaviour>();
 
         if (currentItemBehaviour != null)
@@ -203,7 +206,7 @@ public class HotBarController : MonoBehaviour
 
     private void DropCurrentItem()
     {   
-        if (dropItem.WasPressedThisFrame() && currentItem != null)
+        if (dropItem.WasPressedThisFrame() && currentItem != null && !ArmController.instance.IsMoving())
         {   
             if(!InventoryController.instance.DropItem(selectedIndex))
                 return;
@@ -296,6 +299,19 @@ public class HotBarController : MonoBehaviour
             Transform existingBar = slots[index].Find("HealthBar");
             if (existingBar != null)
                 Destroy(existingBar.gameObject);
+        }
+    }
+
+    private void RemoveHandItemShadows()
+    {
+        if (handItemInstance == null) return;
+
+        MeshRenderer[] renderers = handItemInstance.GetComponentsInChildren<MeshRenderer>();
+
+        foreach (MeshRenderer renderer in renderers)
+        {
+            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
         }
     }
 }

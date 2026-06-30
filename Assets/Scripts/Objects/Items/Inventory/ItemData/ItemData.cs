@@ -10,4 +10,5 @@ public class ItemData : ScriptableObject
     public GameObject prefab;
     public bool showInHand;
     public HandForm handForm;
+    public int maxStack;
 }

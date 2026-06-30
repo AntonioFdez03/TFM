@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEditor;
 using System.Diagnostics;
 using Unity.VisualScripting;
+using UnityEngine.XR;
 
 public enum HandForm {None, Clutch, VGrab, HGrab};
 public class ArmController : MonoBehaviour
@@ -83,6 +84,8 @@ public class ArmController : MonoBehaviour
 
     void Update()
     {   
+        if(isMoving) return;
+
         GameObject handItem = HotBarController.instance.GetHandItem();
         if (handItem == null || !handItem.TryGetComponent(out IAim aim))
         {
@@ -93,9 +96,8 @@ public class ArmController : MonoBehaviour
         if(itemBehaviour != null)
             itemBehaviour.SetCanUse(!isAiming);
         
-        
         UpdateAnimation();
-
+        
         if (PlayerController.instance.IsMoving())
         {
             if(PlayerController.instance.IsSprinting())
@@ -147,8 +149,6 @@ public class ArmController : MonoBehaviour
 
     public void PlayAttackAnimation()
     {
-        print("Is moving: "+ isMoving);
-        print("CanAttack: " + canAttack);
         if (!isMoving && canAttack)
         {
             ItemBehaviour item = HotBarController.instance.GetCurrentItemBehaviour();
@@ -158,7 +158,6 @@ public class ArmController : MonoBehaviour
             else
             {
                 AudioManager.instance.PlayOneShot("Punch");
-                animator.SetTrigger("Punch");
                 StartCoroutine(PunchMovementCR());
             }
 
@@ -206,6 +205,19 @@ public class ArmController : MonoBehaviour
     public IEnumerator PunchMovementCR()
     {   
         isMoving = true;
+        ResetHandanimation();
+        GameObject handItem = HotBarController.instance.GetHandItem();
+
+        animator.SetTrigger("Punch");
+
+        if(handItem != null)
+        {
+            foreach (Renderer r in handItem.GetComponentsInChildren<Renderer>())
+            {
+                r.enabled = false;
+            }
+            yield return new WaitForSeconds(0.25f);
+        }
 
         Vector3 backPos = initialPosition + Vector3.back * punchBackDistance;
         Vector3 forwardPos = initialPosition + Vector3.forward * punchForwardDistance;
@@ -215,6 +227,7 @@ public class ArmController : MonoBehaviour
         // 1. Retroceso
         while (time < punchBackDuration)
         {
+            print("ENTRA");
             transform.localPosition = Vector3.Lerp(
                 initialPosition, backPos, time / punchBackDuration
             );
@@ -225,7 +238,8 @@ public class ArmController : MonoBehaviour
         // 2. Golpe hacia delante
         time = 0f;
         while (time < punchForwardDuration)
-        {
+        {   
+            print("Si");
             transform.localPosition = Vector3.Lerp(
                 backPos, forwardPos, time / punchForwardDuration
             );
@@ -250,6 +264,15 @@ public class ArmController : MonoBehaviour
         yield return new WaitForSeconds(punchCooldown);
 
         transform.localPosition = initialPosition;
+
+        if(handItem != null)
+        {
+            foreach (Renderer r in handItem.GetComponentsInChildren<Renderer>())
+            {
+                r.enabled = true;
+            }
+        }
+
         isMoving = false;
     }
 
@@ -485,6 +508,7 @@ public class ArmController : MonoBehaviour
 
         if(currentBehaviour == null)
         {   
+            print("Reset");
             ResetHandanimation();
             return;
         }

@@ -224,7 +224,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TreeStump
   data: {fileID: 11400000, guid: 978fd459397f44b4298737d641f350d5, type: 2}
   dropItem: {fileID: 3074230260528391914, guid: 677e5e059ef81a04a923e573c47ba2c1, type: 3}
-  hitSound: {fileID: 8300000, guid: c6c1376c65b27694daff6990468352cf, type: 3}
+  hitSound: {fileID: 8300000, guid: 477fae28586de464290f4c8ec525c89a, type: 3}
   harvestSound: {fileID: 8300000, guid: adb6cf5bf8ba6754bbae6d78bec7b1ed, type: 3}
   branchSpawners:
   - {fileID: 3544261860677522736}

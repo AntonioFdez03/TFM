@@ -20,6 +20,8 @@ public class PlayerInteraction : MonoBehaviour
 
     private float interactTime = 0.2f;
     private float timer;
+    private bool wasConsuming = false;
+    private bool wasRecolecting = false;
 
     void Start()
     {   
@@ -53,7 +55,7 @@ public class PlayerInteraction : MonoBehaviour
         ItemBehaviour itemBehaviour = HotBarController.instance.GetCurrentItemBehaviour();
         GameObject handItem = HotBarController.instance.GetHandItem();
 
-        if(itemBehaviour == null)
+        if(!ArmController.instance.IsMoving() && (itemBehaviour == null || itemBehaviour is ResourceBehaviour || itemBehaviour is ConsumableBehaviour))
             GameplayUI.instance.AddKey("LMB", "Punch");
         else if(itemBehaviour is EquipmentBehaviour)
             GameplayUI.instance.AddKey("LMB", "Attack");
@@ -134,7 +136,7 @@ public class PlayerInteraction : MonoBehaviour
             return;
         }
 
-        if(hit.collider.CompareTag("Terrain"))
+        if(hit.collider.CompareTag("Terrain") || hit.collider.CompareTag("Floor"))
             GameplayUI.instance.HideItemName();
         
         HandleInteraction(tag,hitObject);
@@ -158,11 +160,15 @@ public class PlayerInteraction : MonoBehaviour
             GameplayUI.instance.AddKey("HoldRMB", "Consume");
             if (rmb.IsPressed() && consumable != null)
             {
+                wasConsuming = true;
                 consumable.Use();
                 GameplayUI.instance.ShowCircularSlider(consumable.GetCurrentTime() / consumable.GetConsumeTime(), 0);
             }
-            else
+            else if (wasConsuming)
+            {   
+                wasConsuming = false;
                 ResetTime(consumable);
+            }
         }
     }
 
@@ -288,7 +294,7 @@ public class PlayerInteraction : MonoBehaviour
         if (HotBarController.instance.GetCurrentItemBehaviour() is not PlaceableBehaviour placeable)
             return;
 
-        if (hasHit && hit.collider.CompareTag("Terrain"))
+        if (hasHit && (hit.collider.CompareTag("Terrain") || hit.collider.CompareTag("Floor")))
         {
             GameplayUI.instance.AddKey("LMB", "Place");
             GameplayUI.instance.AddKey("R", "Rotate");
@@ -385,6 +391,7 @@ public class PlayerInteraction : MonoBehaviour
 
         if(item.TryGetComponent(out IAim aimItem))
         {   
+            GameplayUI.instance.AddKey("HoldRMB", "Aim");
             if(rmb.IsPressed())
                 aimItem.Aim();
             else if(rmb.WasReleasedThisFrame())

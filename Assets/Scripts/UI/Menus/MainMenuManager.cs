@@ -28,7 +28,7 @@ public class MainMenuManager : MonoBehaviour
     private Vector3 titleInitPosition;
     private Vector3 creditsInitPosition;
     private float titleWaitTime = 10f;
-    private float creditsSpeed = 30f;
+    private float creditsSpeed = 50f;
     private float timer = 0;
 
     private string savePath;

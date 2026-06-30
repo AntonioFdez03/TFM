@@ -501,6 +501,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Helicopter
   rescueRope: {fileID: 9155147804848171788}
   helicopterSound: {fileID: 8300000, guid: 57406cff82f2feb42a6e2f6f4807bf51, type: 3}
+  movement: 1
 --- !u!64 &6400000
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -857,7 +858,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 3
+  m_Radius: 10
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}

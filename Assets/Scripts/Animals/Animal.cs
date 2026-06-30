@@ -226,6 +226,8 @@ public class Animal : MonoBehaviour
 
         currentHealth = data.maxHealth/2;
         StartCoroutine(BakeDeadMeshCR());
+
+        StartCoroutine(ForceDeathAnimation());
     }
 
     private IEnumerator BakeDeadMeshCR()
@@ -285,9 +287,15 @@ public class Animal : MonoBehaviour
 
         if (distance <= data.attackDistance + 1f)
         {
+            float damage = data.damage;
+
+            if(ObjectivesController.instance.GetCurrentObjective() >= ObjectiveType.Survive)
+            {
+                damage = data.damage + 2;
+            }
             player.GetComponent<PlayerController>()
                 .GetPlayerAttributes()
-                .TakeDamage(data.damage);
+                .TakeDamage(damage);
         }
     }
 
@@ -356,5 +364,19 @@ public class Animal : MonoBehaviour
     public void DetectSound()
     {
         audioSource.PlayOneShot(barkSound, 0.3f);
+    }
+
+    private IEnumerator ForceDeathAnimation()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+
+        if (!state.IsName("Dead"))
+        {
+            animator.Play("Dead", 0, 0f);
+        }
+
+        StartCoroutine(BakeDeadMeshCR());
     }
 }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2831262638433720075}
   m_Layer: 3
   m_Name: FloorModel
-  m_TagString: Terrain
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

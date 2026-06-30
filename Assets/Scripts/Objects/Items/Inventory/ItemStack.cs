@@ -3,4 +3,5 @@ public class ItemStack
 {
     public string id;
     public float currentHealth;
+    public int currentStack;
 }

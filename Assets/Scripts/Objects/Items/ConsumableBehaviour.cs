@@ -74,4 +74,10 @@ public class ConsumableBehaviour : ItemBehaviour
         AudioManager.instance.StopLoop();
     }
     public float GetConsumeTime() => consumableData.consumeTime;
+
+    public override void Attack(ArmController arm)
+    {
+        base.Attack(arm);
+        StartCoroutine(ArmController.instance.PunchMovementCR());
+    }
 }

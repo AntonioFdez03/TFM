@@ -38,7 +38,16 @@ public class Rock : HarvestableObject
         {   
             currentHealth = data.maxHealth;
             meshFilter.mesh = rockMeshes[rockPhase];
+
+            meshCollider.enabled = false;
+            meshCollider.sharedMesh = null;
             meshCollider.sharedMesh = rockMeshes[rockPhase];
+            meshCollider.enabled = true;
+
+            Debug.Log("COLLIDER DE LA ROCA " + meshCollider.sharedMesh);
+            Debug.Log("aaaaa" + meshCollider.bounds);
+
+            Physics.SyncTransforms();
 
             Collider[] hits = Physics.OverlapSphere(dropPositions[1].position, 5f);
 
@@ -51,8 +60,7 @@ public class Rock : HarvestableObject
                     rb.WakeUp();
             }
 
-            DropItem();
-            DropItem();
+            StartCoroutine(StoneSpawnCR());
         }
         else
         {
@@ -61,6 +69,13 @@ public class Rock : HarvestableObject
             DropItem();
             Destroy(gameObject);
         }
+    }
+
+    private IEnumerator StoneSpawnCR()
+    {
+       yield return null;
+       DropItem();
+       DropItem();
     }
 
     private void DropItem()

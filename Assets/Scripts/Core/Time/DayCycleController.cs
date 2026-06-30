@@ -77,7 +77,7 @@ public class DayCycleController : MonoBehaviour
         UpdateAmbientSound();
     }
 
-    public bool IsNight() => currentHour < 6 || currentHour > 18;
+    public bool IsNight() => currentHour < 6 || currentHour > 20;
 
     private void UpdateAmbientLight()
     {

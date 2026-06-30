@@ -16,8 +16,6 @@ public class InventoryController : MonoBehaviour
 
     private ItemStack[] items;
 
-    [SerializeField] private AudioClip itemPickUpSound;
-    [SerializeField] private AudioClip itemDropSound;
     private AudioSource audioSource;
 
     void Awake()
@@ -83,7 +81,7 @@ public class InventoryController : MonoBehaviour
         {
             if (items[i] == null)
             {   
-                audioSource.PlayOneShot(itemPickUpSound, 0.4f);
+                AudioManager.instance.PlayOneShot("ItemPickUp", 0.9f);
                 items[i] = newItem;
                 Destroy(item);
 
@@ -177,7 +175,7 @@ public class InventoryController : MonoBehaviour
         if(!CanDrop(index))
             return false;
 
-        audioSource.PlayOneShot(itemDropSound, 0.4f);
+        AudioManager.instance.PlayOneShot("ItemDrop", 0.9f);
         
         ItemStack itemStack = items[index];
 
@@ -218,6 +216,7 @@ public class InventoryController : MonoBehaviour
         if (index < 0 || index >= items.Length || items[index] == null)
             return false;
         
+        if(ArmController.instance.IsMoving()) return false;
 
         ItemStack itemStack = items[index];
 

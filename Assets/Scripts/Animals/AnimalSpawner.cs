@@ -149,8 +149,14 @@ public class AnimalSpawner : MonoBehaviour
     }
 
     private void AnimalSpawnSound(GameObject animal)
-    {
-        if(animal.GetComponent<Animal>().GetAnimalData().id == "Wolf" && DayCycleController.instance.IsNight())
+    {   
+        if(!DayCycleController.instance.IsNight()) return;
+
+        int index = Random.Range(0, 2);
+
+        if(index == 0) return;
+
+        if(animal.GetComponent<Animal>().GetAnimalData().id == "Wolf")
         {   
             bool wolvesExist = false;
 
@@ -166,7 +172,7 @@ public class AnimalSpawner : MonoBehaviour
             AudioManager.instance.PlayOneShot(wolvesExist ? "MultipleWolfSpawn" : "SingleWolfSpawn");
         }
 
-        if(animal.GetComponent<Animal>().GetAnimalData().id == "Deer" && DayCycleController.instance.IsNight())
+        if(animal.GetComponent<Animal>().GetAnimalData().id == "Deer")
         {
             AudioManager.instance.PlayOneShot("SingleDeerSpawn");
         }

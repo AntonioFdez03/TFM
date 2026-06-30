@@ -111,8 +111,19 @@ public class Spear : WeaponBehaviour, IAim
                     )
                 );
 
-                ApplyDamage(collision.gameObject, damage);
-                transform.SetParent(collision.transform, true);
+                if (collision.gameObject.CompareTag("Animal"))
+                {
+                    ApplyDamage(collision.gameObject, damage * 2);
+                    AudioManager.instance.PlayOneShot("Hit");
+                    AudioManager.instance.PlayOneShot("ToolBroken");
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    AudioManager.instance.PlayOneShot("Hit");
+                    ApplyDamage(collision.gameObject, damage);
+                    transform.SetParent(collision.transform, true);
+                }
             }
         }
     }
